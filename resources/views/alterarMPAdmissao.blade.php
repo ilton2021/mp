@@ -22,7 +22,7 @@
 	  @endif
 		<form action="{{route('updateMPAdmissao', array($idMP, $idA))}}" method="post">
 		 <input type="hidden" name="_token" value="{{ csrf_token() }}"> 
-	      <center>
+	     <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0"> 
 			<tr>
 			  <td colspan="2"><center><strong><h3><br>Alterar - Movimentação de Pessoal</h3></strong></center></td>

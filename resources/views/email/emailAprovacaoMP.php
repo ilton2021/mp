@@ -1,0 +1,1 @@
+<p> {{ $motivo }} - sua vez de validar a MP. </p>

@@ -1,4 +1,4 @@
-@if(Auth::user()->funcao == "Superintendencia" || Auth::user()->funcao == "RH")
+@if(Auth::user()->funcao != "Gestor")
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -307,13 +307,15 @@
                 <td><center>FLUXO</center></td>
                 <td><center>JUSTIFICATIVA</center></td>
                 <td><center></center></td>
+                @if(Auth::user()->id == 30)
                 <td><center>GESTOR</center></td>
+                @endif
                </tr>
                <?php $b = 1; ?>
                 @foreach($demissao as $dem)
                <tr>
                  <td> <br><center> <input type="checkbox" id="check2_<?php echo $b ?>" name="check2_<?php echo $b ?>" /> </center> </td>
-				         <td> <br><center> <b> @if($adm->unidade_id == 2) <?php echo "HMR"; ?>  
+				         <td> <br><center> <b> @if($dem->unidade_id == 2) <?php echo "HMR"; ?>  
                       @elseif($dem->unidade_id == 3) <?php echo "BELO JARDIM"; ?>  
                       @elseif($dem->unidade_id == 4) <?php echo "ARCOVERDE"; ?>  
                       @elseif($dem->unidade_id == 5) <?php echo "ARRUDA"; ?>  
@@ -360,7 +362,26 @@
                  @endif 
                  <?php } ?> 
                  </td>       
-                 <td> <p><center> <input type="button" class="btn btn-info btn-sm" id="just" name="just" title="<?php echo $dem->just ?>" value="Justificativa" />  </center> </p>  </td>
+                 <td><br>
+                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $dem->id?>"> 
+                    Justificativa
+                  </button> 
+                  <div class="modal fade" id="exampleModal<?php echo $dem->id ?>" >
+                  <div class="modal-dialog" role="document">
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                    <h5 class='modal-title' align="left"></h5>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                    </div>
+                    <div class='modal-body'>
+                    <div class='panel panel-default'>
+                    <div class='panel-heading'><b>Justificativa:</b> <br><br> </div>
+                    <div class='panel-body'>
+                      <p align="justify">{{ $dem->just }}</a>
+                    </div>
+                    </div>
+                  </div>
+                 </div> </td>
                  <td> <p><center> <a href="{{ route('validarMP', $dem->mp_id) }}" target="_blank" class="btn btn-dark btn-sm">Visualizar</a> </center></p> </td>
 				         <td> <input hidden type="text" id="id_mp_<?php echo $b ?>" name="id_mp2_<?php echo $b ?>" value="<?php echo $dem->mp_id; ?>" />  </td>
                  @if(Auth::user()->id == 30)
@@ -450,7 +471,9 @@
                 <td><center>FLUXO</center></td>
                 <td><center>JUSTIFICATIVA</center></td>
                 <td><center></center></td>
+                @if(Auth::user()->id == 30)
                 <td><center>GESTOR</center></td>
+                @endif
                </tr> <?php $c = 1; ?>
                 @foreach($alteracF as $altF)
                 <tr>
@@ -506,7 +529,26 @@
                  @endif 
                  <?php } ?>                      
                  </td>
-                 <td> <p><center> <input type="button" class="btn btn-info btn-sm" id="just" name="just" title="<?php echo $altF->just ?>" value="Justificativa" />  </center> </p>  </td>
+                 <td><br>
+                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $altF->id?>"> 
+                    Justificativa
+                  </button> 
+                  <div class="modal fade" id="exampleModal<?php echo $altF->id ?>" >
+                  <div class="modal-dialog" role="document">
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                    <h5 class='modal-title' align="left"></h5>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                    </div>
+                    <div class='modal-body'>
+                    <div class='panel panel-default'>
+                    <div class='panel-heading'><b>Justificativa:</b> <br><br> </div>
+                    <div class='panel-body'>
+                      <p align="justify">{{ $altF->just }}</a>
+                    </div>
+                    </div>
+                  </div>
+                 </div> </td>
                  <td> <p><center> <a href="{{ route('validarMP', $altF->mp_id) }}" target="_blank" class="btn btn-dark btn-sm">Visualizar</a> </center></p>
                  <input hidden type="text" id="id_mp_<?php echo $c ?>" name="id_mp3_<?php echo $c ?>" value="<?php echo $altF->mp_id; ?>" /> </td>
 				         @if(Auth::user()->id == 30)

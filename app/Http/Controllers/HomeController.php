@@ -1410,9 +1410,23 @@ class HomeController extends Controller
 				$idG = 30;
 			} else {
 				$input['resposta']  = 1;
-				$idG 	 = Auth::user()->id; 
-				if($idG == 93 || $idG == 19){
+				$idMP = $mp[0]->id;
+				$ap   = DB::table('aprovacao')->where('mp_id', $idMP)->max('id');
+				
+				if($ap == NULL){
 					$idG = 30;
+				} else {
+					$ap   = Aprovacao::where('id',$ap)->get();
+					$idA  = $ap[0]->gestor_anterior;	
+					if($idA == 30){
+						$idG = 62;
+					} else {
+						$idG = 30;
+					}
+				}
+				var_dump($idG); exit();
+				if($idG == 65){
+					$idG = 59;
 				}
 				$gestor  = Gestor::where('id',$idG)->get();
 				$gestorI = $gestor[0]->gestor_imediato;

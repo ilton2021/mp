@@ -212,11 +212,167 @@ class VagaController extends Controller
 	
 	public function indexValidaVaga()
 	{
-		$vagas 	   = Vaga::all();
-		$aprovacao = Aprovacao::all();
+		$idG = Auth::user()->id;
+		$vagas  = DB::table('vaga')
+			->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
+			->select('vaga.*','justificativa_vaga.descricao as just')
+			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+		$aprovacao = AprovacaoVaga::all();
 		$text 	   = false;
 		$gestores  = Gestor::all();
 		return view('validar_vaga', compact('text','vagas','aprovacao','gestores'));
+	}
+
+	public function storeValidaVaga(Request $request)
+	{
+		$input = $request->all();
+		$idG   = Auth::user()->id;
+		$vagas = DB::table('vaga')
+			->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
+			->select('vaga.*','justificativa_vaga.descricao as just')
+			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+		$qtdVagas = sizeof($vagas);
+		$ap = 0;
+		for($a = 1; $a <= $qtdVagas; $a++) { 
+			if(!empty($input['check_'.$a])){ 
+				if($input['check_'.$a] == "on"){
+					if(Auth::user()->id == 30){
+						$id_vaga = $input['id_vaga_'.$a];
+						$idG     = $input['gestor_id_'.$a]; 
+						VagaController::aprovar($id_vaga,$idG);
+						$ap = 1;
+					} else {
+						$id_vaga = $input['id_vaga_'.$a];
+						$idG 	 = 0;
+						VagaController::aprovar($id_vaga,$idG);
+						$ap = 1;
+					}
+					
+				}
+			}
+		}
+
+		if($ap > 0) {
+			$vagas  = DB::table('vaga')
+			->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
+			->select('vaga.*','justificativa_vaga.descricao as just')
+			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+			$qtdVagas = sizeof($vagas);
+			$aprovacao = AprovacaoVaga::all();
+			$text 	   = 'sim';
+			$gestores  = Gestor::all();
+			\Session::flash('mensagem', ['msg' => 'Aprovação Realizada com Sucesso!','class'=>'green white-text']);
+			return view('validar_vaga', compact('text','vagas','aprovacao','gestores'));
+		} else {
+			$vagas  = DB::table('vaga')
+			->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
+			->select('vaga.*','justificativa_vaga.descricao as just')
+			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+			$qtdVagas = sizeof($vagas);
+			$aprovacao = AprovacaoVaga::all();
+			$text 	   = 'nao';
+			$gestores  = Gestor::all();
+			$idG       = Auth::user()->id;
+			\Session::flash('mensagem', ['msg' => 'Selecione uma Vaga!','class'=>'green white-text']);
+			return view('validar_vaga', compact('text','vagas','aprovacao','gestores','idG'));
+		}
+	}
+
+	function aprovar($id_vaga, $idG){ 
+		$vaga = Vaga::where('id',$id_vaga)->get();
+		$id	  = $vaga[0]->id;
+		if(Auth::user()->funcao == "Superintendencia"){
+			$input['resposta'] = 3;
+			DB::statement('UPDATE vaga SET concluida = 1 WHERE id  = '.$id.';');
+			DB::statement('UPDATE vaga SET aprovada  = 1 WHERE id  = '.$id.';');
+			DB::statement('UPDATE vaga SET gestor_id = 30 WHERE id = '.$id.';');
+			DB::statement('UPDATE aprovacao_vaga SET ativo = 0 WHERE vaga_id  = '.$id.';');
+			$input['gestor_id'] = 30;
+			$idG = 30;
+		} else if(Auth::user()->funcao == "RH") {
+			$input['resposta']  = 1; 
+			$input['gestor_id'] = $idG;
+			DB::statement('UPDATE aprovacao_vaga SET ativo = 0 WHERE vaga_id  = '.$id.';');
+			DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
+		} else {
+			$input['resposta'] = 1;
+				$idVaga  = $vaga[0]->id;
+				$idG 	 = Auth::user()->id;
+				$aprovacao = AprovacaoVaga::where('vaga_id',$idVaga)->get();
+				$qtdAP 	   = sizeof($aprovacao); 
+				if($qtdAP > 0){
+					$idAp = DB::table('aprovacao_vaga')->where('vaga_id', $idVaga)->max('id');
+					$ap   = AprovacaoVaga::where('id',$idAp)->get(); 
+					$idA  = $ap[0]->gestor_anterior;	
+					if($idG == 61){
+						if($idA == 30 || $idA == 163) {
+							$idG = 62;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 60 || $idG == 5 || $idG == 48 || $idG == 1 || $idG == 34 || $idG == 59 
+					|| $idG == 155 || $idG == 165 || $idG == 160 || $idG == 166){
+						if($idA == 30) {
+							$idG = 62;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 65) {
+						if($idA == 30) {
+							$idG = 59;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 163){ 
+						if($idA == 30){
+							$idG = 61;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 19 || $idG == 39){
+						$idG = 30;
+					}
+				} else {
+					$idG = 30;
+				}
+				$input['gestor_id'] = $idG;
+				DB::statement('UPDATE aprovacao_vaga SET ativo = 0 WHERE vaga_id  = '.$id.';');
+				DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
+		}
+		$input['data_aprovacao']  = date('Y-m-d',(strtotime('now')));
+		$input['gestor_anterior'] = Auth::user()->id;
+		$input['unidade_id'] 	  = $vaga[0]->unidade_id;
+		$input['vaga_id'] 	  	  = $vaga[0]->id;
+		$input['motivo'] 	  	  = "Autorizado";
+		$input['ativo'] 	  	  = 1;
+		$aprovacao = AprovacaoVaga::create($input);
+		$gestor = Gestor::where('id', $idG)->get();
+		$email  = $gestor[0]->email;
+		$solicitante = $vaga[0]->solicitante;
+		$sol = Gestor::where('nome', $solicitante)->get();
+		$email2 = $sol[0]->email;
+		$email3 = '';
+		$email4 = '';
+		$motivo = $input['motivo'];
+		$vaga   = $vaga[0]->vaga;
+		/*if(Auth::user()->funcao == "Superintendencia"){
+			Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$vaga) {
+				$m->from('portal@hcpgestao.org.br', 'Abertura de Vaga');
+				$m->subject('MP - '.$numeroMP.' foi Assinada e está Concluída!!');
+				$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+				$m->to($email);
+				$m->cc($email2);
+				$m->cc($email3);
+				$m->cc($email4);
+			});
+		} else {
+			Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+				$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+				$m->subject('MP - '.$numeroMP.' Autorizada!');
+				$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+				$m->to($email);
+			});
+		}*/
 	}
 	
 	public function validarVaga($id) {
@@ -809,6 +965,7 @@ class VagaController extends Controller
 			'codigo_vaga' 				=> 'required|max:255',
 			'area' 						=> 'required|max:255',
 			'edital_disponivel'			=> 'required|max:255',
+			'processo_seletivo'			=> 'required|max:255',
 			'data_prevista'				=> 'required',
 			'cargo'						=> 'required|max:255',
 			'salario' 					=> 'required|max:255',

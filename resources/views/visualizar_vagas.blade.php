@@ -86,7 +86,7 @@
 			  </select>
 			</tr>
 			<tr>
-			  <td colspan="2">Área: <input class="form-control" disabled="true" type="text" id="area" name="area" value="<?php echo $vaga->area; ?>" required /></td>
+			  <td>Área: <input class="form-control" disabled="true" type="text" id="area" name="area" value="<?php echo $vaga->area; ?>" required /></td>
 			  <td>Vaga disponível em Edital: <br>  
 			    <select class="form-control" disabled="true" id="edital_disponivel" name="edital_disponivel" required="true">
 				 	@if($vaga->edital_disponivel == 'Sim')
@@ -95,6 +95,16 @@
 					<option id="edital_disponivel" name="edital_disponivel" value="Não" selected> {{ 'Não' }}</option>
 					@endif
 				</select>
+			  </td>
+			  <td>Processo Seletivo:
+			   <select class="form-control" disabled="true" id="processo_seletivo" name="processo_seletivo" required="true">
+				   @if($vaga->processo_seletivo == 'externo')
+					<option id="processo_seletivo" name="processo_seletivo" value="externo">Externo</option>
+				   @elseif($vaga->processo_seletivo == 'interno')
+					<option id="processo_seletivo" name="processo_seletivo" value="interno">Interno (Programa Degrau)</option>
+				   @endif
+			   </select>
+			  </td>	
 			</tr>
 		   </table>
 		  </center>

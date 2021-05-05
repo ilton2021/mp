@@ -17,6 +17,7 @@ class Vaga extends Model
 		'gestor_id',
 		'area',
 		'edital_disponivel',
+		'processo_seletivo',
 		'data_prevista',
 		'cargo',
 		'salario',

@@ -124,7 +124,7 @@
 			  <td hidden><input id="tipo_vaga" name="tipo_vaga" value="{{ $tipo_vaga }}" /></td>
 			</tr>
 			<tr>
-			  <td colspan="2">Área: <input class="form-control" type="text" id="area" name="area" value="{{ old('area') }}" required /></td>
+			  <td>Área: <input class="form-control" type="text" id="area" name="area" value="{{ old('area') }}" required /></td>
 			  <td>Vaga disponível em Edital: <br>  
 			    <select class="form-control" id="edital_disponivel" name="edital_disponivel" required="true">
 				 	@if(old('edital_disponivel') == 'Sim')
@@ -141,6 +141,14 @@
 				    <option id="edital_disponivel" name="edital_disponivel" value="Não"> {{ 'Não' }}</option>	
 					@endif
 				</select>
+			  </td>
+			  <td>Processo Seletivo:
+			   <select class="form-control" id="processo_seletivo" name="processo_seletivo" required="true">
+			    <option id="processo_seletivo" name="processo_seletivo" value="">Selecione...</option>
+				<option id="processo_seletivo" name="processo_seletivo" value="externo">Externo</option>
+				<option id="processo_seletivo" name="processo_seletivo" value="interno">Interno (Programa Degrau)</option>
+			   </select>
+			  </td>
 			</tr>
 		   </table>
 		  </center>

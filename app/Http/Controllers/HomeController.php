@@ -1470,7 +1470,7 @@ class HomeController extends Controller
 						} else {
 							$idG = 30;
 						}
-					} else if($idG == 19 || $idG == 39){
+					} else if($idG == 19 || $idG == 39 || $idG == 99){
 						$idG = 30;
 					}
 				} else {

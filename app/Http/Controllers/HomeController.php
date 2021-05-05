@@ -1338,7 +1338,13 @@ class HomeController extends Controller
 			if(!empty($input['check_'.$a])){
 				if($input['check_'.$a] == "on"){
 					$id_mp = $input['id_mp_'.$a];
-					HomeController::aprovar($id_mp);
+					if(Auth::user()->id == 30){
+						$idG   = $input['gestor_id_'.$a]; 
+						HomeController::aprovar($id_mp,$idG);
+					} else {
+						$idG   = 0; 
+						HomeController::aprovar($id_mp,$idG);
+					}
 					$ap += 1;
 				}
 			}
@@ -1348,7 +1354,13 @@ class HomeController extends Controller
 			if(!empty($input['check2_'.$b])){
 				if($input['check2_'.$b] == "on"){
 					$id_mp = $input['id_mp2_'.$b];
-					HomeController::aprovar($id_mp);
+					if(Auth::user()->id == 30){
+						$idG   = $input['gestor_id2_'.$b]; 
+						HomeController::aprovar($id_mp,$idG);
+					} else {
+						$idG   = 0; 
+						HomeController::aprovar($id_mp,$idG);
+					}
 					$ap += 1;
 				}
 			}
@@ -1358,7 +1370,13 @@ class HomeController extends Controller
 			if(!empty($input['check3_'.$c])){
 				if($input['check3_'.$c] == "on"){
 					$id_mp = $input['id_mp3_'.$c];
-					HomeController::aprovar($id_mp);
+					if(Auth::user()->id == 30) {
+						$idG   = $input['gestor_id3_'.$c]; 
+						HomeController::aprovar($id_mp,$idG);
+					} else {
+						$idG   = 0; 
+						HomeController::aprovar($id_mp,$idG);
+					}
 					$ap += 1;
 				}
 			}
@@ -1367,8 +1385,12 @@ class HomeController extends Controller
 		$text 	   = true;
 		$gestores  = Gestor::all();
 		if($ap == 0){
+			$idG = Auth::user()->id;
+			$text = 'nao';
+			\Session::flash('mensagem', ['msg' => 'Selecione uma MP!','class'=>'green white-text']);
 			return view('validar', compact('text','mps','aprovacao','gestores','admissao','demissao','alteracF'));
 		} else {
+			$idG = Auth::user()->id;
 			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
 			->join('justificativa','justificativa.mp_id','=','mp.id')
 			->select('mp.*','justificativa.descricao as just','admissao.*')
@@ -1384,13 +1406,13 @@ class HomeController extends Controller
 			->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
 			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
 			$qtdAlt = sizeof($alteracF);
-			$text = true;
-			
+			$text = 'sim';
+			\Session::flash('mensagem', ['msg' => 'Aprovação Realizada com Sucesso!','class'=>'green white-text']);
 			return view('validar', compact('text','mps','aprovacao','gestores','admissao','demissao','alteracF'));
 		}
 	}
 
-	function aprovar($id_mp){
+	function aprovar($id_mp, $idG){
 		$mp    = MP::where('id',$id_mp)->get();
 		$id	   = $mp[0]->id;
 		if(Auth::user()->name == $mp[0]->solicitante){
@@ -1408,33 +1430,55 @@ class HomeController extends Controller
 				DB::statement('UPDATE mp SET gestor_id = 30 WHERE id = '.$id.';');
 				$input['gestor_id'] = 30;
 				$idG = 30;
+			} else if (Auth::user()->funcao == "RH") {
+				$input['resposta']  = 1; 
+				$input['gestor_id'] = $idG;
+				DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id  = '.$id.';');
+				DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 			} else {
-				$input['resposta']  = 1;
+				$input['resposta'] = 1;
 				$idMP = $mp[0]->id;
-				$ap   = DB::table('aprovacao')->where('mp_id', $idMP)->max('id');
-				
-				if($ap == NULL){
-					$idG = 30;
-				} else {
-					$ap   = Aprovacao::where('id',$ap)->get();
+				$idG  = Auth::user()->id;
+				$aprovacao = Aprovacao::where('mp_id',$idMP)->get();
+				$qtdAP 	   = sizeof($aprovacao); 
+				if($qtdAP > 0){
+					$idAp = DB::table('aprovacao')->where('mp_id', $idMP)->max('id');
+					$ap   = Aprovacao::where('id',$idAp)->get(); 
 					$idA  = $ap[0]->gestor_anterior;	
-					if($idA == 30){
-						$idG = 62;
-					} else {
+					if($idG == 61){
+						if($idA == 30 || $idA == 163) {
+							$idG = 62;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 60 || $idG == 5 || $idG == 48 || $idG == 1 || $idG == 34 || $idG == 59 
+					|| $idG == 155 || $idG == 165 || $idG == 160 || $idG == 166){
+						if($idA == 30) {
+							$idG = 62;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 65) {
+						if($idA == 30) {
+							$idG = 59;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 163){ 
+						if($idA == 30){
+							$idG = 61;
+						} else {
+							$idG = 30;
+						}
+					} else if($idG == 19 || $idG == 39){
 						$idG = 30;
 					}
+				} else {
+					$idG = 30;
 				}
-				var_dump($idG); exit();
-				if($idG == 65){
-					$idG = 59;
-				}
-				$gestor  = Gestor::where('id',$idG)->get();
-				$gestorI = $gestor[0]->gestor_imediato;
-				$gestorI = Gestor::where('nome',$gestorI)->get();
-				$idGI    = $gestorI[0]->id;
-				$input['gestor_id'] = $idGI;
+				$input['gestor_id'] = $idG;
 				DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id  = '.$id.';');
-				DB::statement('UPDATE mp SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
+				DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 			}
 			$input['data_aprovacao']  = date('Y-m-d',(strtotime('now')));
 			$input['gestor_anterior'] = Auth::user()->id;

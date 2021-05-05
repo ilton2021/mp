@@ -53,6 +53,9 @@ class MPController extends Controller
 		} else if($gIm == "CINTHIA MARIA DE OLIVEIRA LIMA KOMURO"){
 			$idI = 65;
 			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "ALEXANDRA SILVESTRE AMARAL PEIXOTO"){ 
+			$idI = 5;
+			$gestores = Gestor::where('id',$idI)->get();
 		} else {
 			$gestores = Gestor::where('nome',$gIm)->get();
 		}
@@ -224,12 +227,12 @@ class MPController extends Controller
 					}
 					$idG 	= $input['gestor_id'];
 					$gestor = Gestor::where('id', $idG)->get();
-					$email  = $gestor[0]->email;
+					$email  = $gestor[0]->email; /*
 					Mail::send('email.emailMP', array($email), function($m) use ($email) {
 						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 						$m->subject('Validar MP!');
 						$m->to($email);
-					});
+					});*/
 				} else {
 					$text 	   = true;
 					$validator = "Informe a Justificativa!";
@@ -324,12 +327,12 @@ class MPController extends Controller
 					}
 					$idG    = $input['gestor_id'];
 					$gestor = Gestor::where('id', $idG)->get();
-					$email  = $gestor[0]->email;
+					$email  = $gestor[0]->email; /*
 					Mail::send('email.emailMP', array($email), function($m) use ($email) {
 						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 						$m->subject('Validar MP!');
 						$m->to($email);
-					});
+					}); */
 				} else {
 					$text 	   = true;
 					$validator = "Informe a Justificativa!";
@@ -424,12 +427,12 @@ class MPController extends Controller
 					}
 					$idG 	= $input['gestor_id'];
 					$gestor = Gestor::where('id', $idG)->get();
-					$email  = $gestor[0]->email;
+					$email  = $gestor[0]->email; /*
 					Mail::send('email.emailMP', array($email), function($m) use ($email) {
 						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 						$m->subject('Validar MP!');
 						$m->to($email);
-					});
+					}); */
 				} else {
 					$text 	   = true;
 					$validator = "Informe a Justificativa!";

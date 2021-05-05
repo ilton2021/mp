@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeVaga/unidade','VagaController@indexVaga2')->name('indexVaga2');
 		Route::get('/homeVaga/unidade/escolha/{id}/vaga','VagaController@escolha_vaga')->name('escolha_vaga');
 		Route::get('/homeVaga/validar', 'VagaController@indexValidaVaga')->name('indexValidaVaga');
+		Route::post('/homeVaga/validar', 'VagaController@storeValidaVaga')->name('storeValidaVaga');
 		Route::get('/homeVaga/validar/{id}', 'VagaController@validarVaga')->name('validarVaga');
 		Route::post('/homeVaga/validar/{id}', 'VagaController@salvarVaga')->name('salvarVaga');
 		Route::get('/homeVaga/validar/{id}/salvarVaga/{idG}', 'VagaController@salvarVaga')->name('salvarVaga');

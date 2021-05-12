@@ -920,6 +920,40 @@ class HomeController extends Controller
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+		} else if($pesq2 == "data"){
+			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+			$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
+			if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
+				$data_f = date('Y-m-d', strtotime('now')); 
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();
+			}else if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();  
+			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();
+			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
+				$data_f = date('Y-m-d', strtotime('now')); 
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();
+			}
 		} else if($unidade_id != "0") {
 			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
 				->where('concluida', 1)->get();
@@ -1020,6 +1054,40 @@ class HomeController extends Controller
 				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+			}
+		} else if($pesq2 == "data"){
+			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+			$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
+			if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
+				$data_f = date('Y-m-d', strtotime('now')); 
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();
+			}else if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();  
+			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();
+			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
+				$data_f = date('Y-m-d', strtotime('now')); 
+				$mps = DB::table('mp')
+							->join('aprovacao','mp.id','=','aprovacao.mp_id')
+							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+							->where('mp.concluida',1)
+							->where('aprovacao.resposta',3)
+							->select('mp.*')->orderBy('mp.id')->get();
 			}
 		} else if($unidade_id != "0") {
 			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)

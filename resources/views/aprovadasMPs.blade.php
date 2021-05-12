@@ -14,6 +14,25 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
+		<script type="text/javascript">
+			function data(value) {
+				var a = document.getElementById('pesq2').value;
+
+				if(a == "data") {
+					document.getElementById('linha').hidden       = false;
+					document.getElementById('data_inicio').hidden = false;
+					document.getElementById('data_fim').hidden    = false;
+					document.getElementById('txtInicio').hidden   = false;
+					document.getElementById('txtFim').hidden 	  = false;
+				} else {
+					document.getElementById('linha').hidden		  = true;
+					document.getElementById('data_inicio').hidden = true;
+					document.getElementById('data_fim').hidden    = true;
+					document.getElementById('txtInicio').hidden   = true;
+					document.getElementById('txtFim').hidden      = true;
+				}
+			}
+		</script>
 		<style>
 		.navbar .dropdown-menu .form-control {
 			width: 300px;
@@ -94,7 +113,7 @@
 		 </select>
 		</td>
 		<td align="right"> 
-			<select class="form-control" id="pesq2" name="pesq2">
+			<select class="form-control" id="pesq2" name="pesq2" onchange="data('sim')">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
 			  <option id="pesq2" name="pesq2" value="admissao">ADMISSÃO</option>
 			  <option id="pesq2" name="pesq2" value="alteracao">ALTERAÇÃO FUNCIONAL</option>
@@ -103,10 +122,17 @@
 			  <option id="pesq2" name="pesq2" value="numero">NÚMERO MP</option>	
 			  <option id="pesq2" name="pesq2" value="rpa">RPA</option>
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
+			  <option id="pesq2" name="pesq2" value="data">DATA</option>
 			</select>	
 		</td> 
 		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
 		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
+	 </tr>
+	 <tr hidden id="linha">
+	 <td id="txtInicio" hidden><p align="center"> Data Início: </p></td>
+	 <td> <input hidden type="date" id="data_inicio" name="data_inicio" class="form-control" /> </td>
+	 <td id="txtFim" hidden><p align="center"> Data Fim: </p></td>
+	 <td> <input hidden type="date" id="data_fim" name="data_fim" class="form-control" /> </td>
 	 </tr>
 	</table>
 	</form>

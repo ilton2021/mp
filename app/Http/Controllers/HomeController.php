@@ -705,7 +705,7 @@ class HomeController extends Controller
 	public function aprovadasMPs()
 	{
 		$unidades  = Unidade::all();
-		$mps 	   = MP::orderBy('unidade_id', 'ASC')->get();
+		$mps 	   = MP::orderBy('unidade_id', 'ASC')->where('concluida',1)->where('aprovada',1)->paginate(10);
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('aprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
@@ -714,7 +714,7 @@ class HomeController extends Controller
 	public function reprovadasMPs()
 	{
 		$unidades  = Unidade::all();
-		$mps 	   = MP::orderBy('unidade_id', 'ASC')->get();
+		$mps 	   = MP::orderBy('unidade_id', 'ASC')->where('concluida',1)->where('aprovada',0)->paginate(10);
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('reprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
@@ -821,16 +821,6 @@ class HomeController extends Controller
 	public function pesquisaMPsAp(Request $request)
 	{
 		$unidades   = Unidade::all();
-		$mps 	    = MP::all();
-		$qtd  = sizeof($mps); 
-		if($qtd > 0) {
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $mps[$a]->id;
-			}
-		} else {
-			$ids[] = 0;
-		}
-		$aprovacao  = Aprovacao::all();
 		$gestores   = Gestor::all();
 		$input 	    = $request->all();
 		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
@@ -842,11 +832,20 @@ class HomeController extends Controller
 		if($pesq2 == "numero") {
 			if($unidade_id == "0") {
 				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->get();
+				->where('aprovada',1)->where('concluida', 1)->get();
 			} else {
 				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
+				->where('unidade_id',$unidade_id)->where('aprovada',1)->where('concluida', 1)->get();
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "solicitante") {
 			if($unidade_id == "0"){
 				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
@@ -855,9 +854,27 @@ class HomeController extends Controller
 				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
 				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "funcionario"){
 			$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
 				->where('concluida', 1)->get();
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "rpa") { 
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
@@ -875,51 +892,91 @@ class HomeController extends Controller
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('admissao.tipo','rpa')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "admissao") {
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				->select('mp.*')->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			} else if($unidade_id == "0" && $pesq != "") {
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
+				->select('mp.*')->where('mp.aprovada',1)->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
 			} else if ($unidade_id == "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
+				->select('mp.*')->where('mp.aprovada',1)->where('mp.concluida',1)->get(); 
 			} else {
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "demissao") {
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				->select('mp.*')->where('mp.aprovada',1)->where('mp.concluida',1)
+				->where('mp.unidade_id',$unidade_id)->get(); 
 			} else if($unidade_id == "0" && $pesq != "") {
 				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
+				->select('mp.*')->where('mp.aprovada',1)->where('mp.numeroMP', 'like', '%' .$pesq. '%')
+				->where('mp.concluida',1)->get(); 
 			} else if ($unidade_id == "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
+				->where('mp.aprovada',1)->select('mp.*')->where('mp.concluida',1)->get(); 
 			} else {
 				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "alteracao"){
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				->select('mp.*')->where('mp.concluida',1)->where('mp.aprovada',1)
+				->where('mp.unidade_id',$unidade_id)->get(); 
 			} else if($unidade_id == "0" && $pesq != "") {
 				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
+				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.aprovada',1)
+				->where('mp.concluida',1)->get(); 
 			} else if ($unidade_id == "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
+				->where('mp.aprovada',1)->select('mp.*')->where('mp.concluida',1)->get(); 
 			} else {
 				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "data"){
 			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 			$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
@@ -954,9 +1011,30 @@ class HomeController extends Controller
 							->where('aprovacao.resposta',3)
 							->select('mp.*')->orderBy('mp.id')->get();
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($unidade_id != "0") {
 			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
 				->where('concluida', 1)->get();
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
+		} else if(($unidade_id == "0" && $pesq2 == "") && ($pesq == "" || $pesq != "")){
+			$mps = MP::where('aprovada',1)->where('concluida',1)->paginate(10);
+			$aprovacao = Aprovacao::all();
 		}
 		return view('aprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}
@@ -964,8 +1042,6 @@ class HomeController extends Controller
 	public function pesquisaMPsRe(Request $request)
 	{
 		$unidades   = Unidade::all();
-		$mps 	    = MP::all();
-		$aprovacao  = Aprovacao::all();
 		$gestores   = Gestor::all();
 		$input 	    = $request->all();
 		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
@@ -982,6 +1058,15 @@ class HomeController extends Controller
 				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
 				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "solicitante") {
 			if($unidade_id == "0"){
 				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
@@ -990,9 +1075,27 @@ class HomeController extends Controller
 				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
 				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "funcionario"){
 			$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
 				->where('concluida', 1)->get();
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "rpa") { 
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
@@ -1010,6 +1113,15 @@ class HomeController extends Controller
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('admissao.tipo','rpa')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "admissao") {
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
@@ -1025,6 +1137,15 @@ class HomeController extends Controller
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "demissao") {
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
@@ -1040,6 +1161,15 @@ class HomeController extends Controller
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "alteracao"){
 			if($unidade_id != "0" && $pesq == ""){
 				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
@@ -1055,6 +1185,15 @@ class HomeController extends Controller
 				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
 				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($pesq2 == "data"){
 			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 			$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
@@ -1089,9 +1228,30 @@ class HomeController extends Controller
 							->where('aprovacao.resposta',3)
 							->select('mp.*')->orderBy('mp.id')->get();
 			}
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else if($unidade_id != "0") {
 			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
 				->where('concluida', 1)->get();
+			$qtd  = sizeof($mps); 
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mps[$a]->id;
+				}
+			} else {
+				$ids[] = 0;
+			}	
+			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
+		} else if(($unidade_id == "0" && $pesq2 == "") && ($pesq == "" || $pesq != "")){
+			$mps = MP::where('aprovada',0)->where('concluida',1)->paginate(10);
+			$aprovacao = Aprovacao::all();
 		}
 		return view('reprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}

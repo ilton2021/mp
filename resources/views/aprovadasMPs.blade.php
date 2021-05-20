@@ -307,6 +307,9 @@
 			   </td>
 			   <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
 			  </tr>
+			  <tr>
+				<td colspan="4"> {{ $mps->appends(['pesq' => isset($pesq) ? $pesq : ''])->render("pagination::bootstrap-4") }} </td>
+			  </tr>
 			 </tbody>
 			 @endif
 			 @endforeach

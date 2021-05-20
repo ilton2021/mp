@@ -72,109 +72,74 @@
                     </ul>
                 </div>
     </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">     
-            
-            </div>
-            <div class="col-sm-4">
-            </div>
-        </div>
-    </div>
-	@if(Auth::user()->funcao == "Administrador")
-	<section id="unidade">
-	<div class="container" style="margin-top:30px; margin-bottom:20px;">
-        <div class="row">
-            <div class="col-12 text-center">
-                <table>
-				 <tr>
-                   <td><h4 style="color:#65b345; margin-bottom:0px;">Unidade:</h4></td>
-				   <td><a href="{{ route('cadastroUnidade') }}" class="btn-info btn">Cadastro</a></td> 
-                   <td> &nbsp; &nbsp; </td>
-				   <td><h4 style="color:#65b345; margin-bottom:0px;">Gestor:</h4></td>
-				   <td><a href="{{ route('cadastroGestor') }}" class="btn-info btn">Cadastro</a></td>
-                   <td> &nbsp; &nbsp; </td>
-                   <td><h4 style="color:#65b345; margin-bottom:0px;">Excluir MP:</h4></td>
-				   <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">Excluir</a></td>
-				 </tr>
-				</table>
-            </div>
-        </div>
-    </div>
-	</section>
-	@endif
-    <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
-	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
-        <div class="row" style="margin-top: -40px;">
-            <div class="col-12 text-center">
-                <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-2 text-center"></div>
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div>
-		<table>
-		 <tr>
-		  <td>
-			<img style="margin-left: 80px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 80px;" href="{{ route('index2') }}" class="btn btn-outline-success">CADASTRAR NOVA MP</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  @foreach($mps as $mp)
-		   @if($mp->gestor_id == Auth::user()->id && $mp->concluida == 0 || ($mp->gestor_id == 61 && Auth::user()->id == 104))
-			<td>
-			  <img style="margin-left: 360px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-				<div class="card-body text-center">
-				  <a style="margin-left: 360px;" href="{{ route('indexValida') }}" class="btn btn-outline-dark">VALIDAR MP</a>
-				  <span class="font-weight-bold"></span>
-			    </div>
-			</td>
-			<?php break; ?>
-		   @endif
-		  @endforeach
-		 </tr>
-		</table>
-    </div>
-    </div>
-    </section>
-	
+	@if($errors->any())
+      <div class="alert alert-success">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+      </div>
+	@endif 
+	<p style="margin-left: 1170px"> <a href="{{url('homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
 	<center>
-	<table>
+	<form action="{{ route('pesquisaMPsExclusao') }}" method="POST">
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid;"> 
 	 <tr>
-	  <td>
-	   <img style="margin-top: -100px; margin-left: 30px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-		 <div class="card-body text-center">
-			<a href="{{ route('visualizarMPs') }}" class="btn btn-outline-info">VISUALIZAR MP'S</a>
-			  <span class="font-weight-bold"></span>
-		 </div>
-	  </td>
+		<td align="right"> <p style="margin-top: 10px;"> Unidade: </p> </td>
+		<td> 
+		 <select class="form-control" id="unidade_id" name="unidade_id">
+		     <option id="unidade_id" name="unidade_id" value="0">Selecione...</option>
+			 <option id="unidade_id" name="unidade_id" value="1">HCP GESTÃO</option>
+			 <option id="unidade_id" name="unidade_id" value="2">HMR</option>
+			 <option id="unidade_id" name="unidade_id" value="3">UPAE BELO JARDIM</option>
+			 <option id="unidade_id" name="unidade_id" value="4">UPAE ARCOVERDE</option>
+			 <option id="unidade_id" name="unidade_id" value="5">UPAE ARRUDA</option>
+			 <option id="unidade_id" name="unidade_id" value="6">UPAE CARUARU</option>
+			 <option id="unidade_id" name="unidade_id" value="7">HSS</option>
+			 <option id="unidade_id" name="unidade_id" value="8">HPR</option>
+		 </select>
+		</td>
+		<td align="right"> 
+			<select class="form-control" id="pesq2" name="pesq2">
+			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
+			  <option id="pesq2" name="pesq2" value="funcionario">FUNCIONÁRIO</option>
+			  <option id="pesq2" name="pesq2" value="numero">NÚMERO MP</option>	
+			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
+			</select>	
+		</td> 
+		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
+		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
 	 </tr>
 	</table>
-	</center>
-		 
-		  </td>
+	</form>
+    <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:red;">
+		 <tr>
+		    <thead>
+			  <tr>
+			   <td colspan="4"><center><font color="red"><b>MP'S:</b></font><center></td>
+			  </tr>
+			  <tr>
+			   <td><center>NOME DA MP</center></td>
+			   <td><center>SOLICITANTE</center></td>
+			   <td><center>EXCLUIR</center></td>
+			  </tr>
+			 </thead>
+			 <?php $qtd = sizeof($mps); ?>
+			 @if($qtd > 0)
+			 @foreach($mps as $mp)
+			 <tbody>
+			  <tr>  
+			   <td><center>{{ $mp->numeroMP }}</center></td>
+			   <td><center>{{ $mp->solicitante }}</center></td>   
+			   <td><center><a href="{{ route('excluirMP', $mp->id) }}" class="btn-danger btn">EXCLUIR</center></a></td>
+			  </tr>
+			 </tbody>
+			 @endforeach
+			 @endif
 		 </tr>
 		 </table>
-	   </td>
-	 </tr>
-	</table>
-	</center>
 	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

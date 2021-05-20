@@ -854,4 +854,98 @@ class MPController extends Controller
 		});
 		return view('home', compact('unidade','idMP','idG'));
 	}
+
+	public function excluirMPs()
+	{
+		$mps = MP::where('id',0)->get();
+		return view('excluirMPs', compact('mps'));
+	}
+
+	public function excluirMP($id)
+	{
+		$mps  = MP::where('id', $id)->get();
+		$idU = $mps[0]->unidade_id;
+		$unidade = Unidade::where('id',$idU)->get();
+		$idG = $mps[0]->solicitante;
+		$gestor = Gestor::where('nome',$idG)->get();
+		return view('excluirMP', compact('mps','unidade','gestor'));
+	}
+
+	public function pesquisaMPsExclusao(Request $request)
+	{
+		$input = $request->all();
+		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$unidade_id = $input['unidade_id'];
+		$pesq 	    = $input['pesq'];
+		$pesq2      = $input['pesq2'];
+		if($pesq2 == "numero") {
+			if($unidade_id == "0"){
+				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')->get();
+			} else {
+				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
+				->where('mp.unidade_id',$unidade_id)->get();
+			}
+		} else if($pesq2 == "funcionario"){
+			if($unidade_id == "0"){
+				$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')->get();
+			} else {
+				$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
+				->where('mp.unidade_id',$unidade_id)->get();
+			}
+		} else if($pesq2 == "solicitante"){
+			if($unidade_id == "0"){
+				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')->get();
+			} else {
+				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
+				->where('mp.unidade_id',$unidade_id)->get();
+			}
+		} else if($pesq2 == ""){
+			if($unidade_id == "0"){
+				$mps = MP::where('id',0)->get();
+			} else {
+				$mps = MP::where('unidade_id',$unidade_id)->get();
+			}
+		}
+		return view('excluirMPs', compact('mps'));
+	}
+
+	public function deleteMP($id, Request $request)
+	{
+		$input = $request->all();
+		$mp    = MP::where('id',$id)->get();
+		$idMP  = $mp[0]->id;
+		$aprovacao = Aprovacao::where('mp_id',$idMP)->get();
+		$qtdAp 	   = sizeof($aprovacao);
+		if($qtdAp > 0){
+			DB::statement('delete from aprovacao where mp_id = '.$idMP);
+		}
+		$justificativa = Justificativa::where('mp_id',$idMP)->get();
+		$qtdJust   	   = sizeof($justificativa);
+		if($qtdJust > 0){
+			DB::statement('delete from justificativa where mp_id = '.$idMP);
+		}
+		$admissao = Admissao::where('mp_id',$idMP)->get();
+		$qtdAdm   = sizeof($admissao);
+		if($qtdAdm > 0){
+			DB::statement('delete from admissao where mp_id = '.$idMP);
+		}
+		$alteracaoF = Alteracao_Funcional::where('mp_id',$idMP)->get();
+		$qtdAltF    = sizeof($alteracaoF);
+		if($qtdAltF > 0){
+			DB::statement('delete from alteracao_funcional where mp_id = '.$idMP);
+		}
+		$demissao = Demissao::where('mp_id',$idMP)->get();
+		$qtdDem   = sizeof($demissao);
+		if($qtdDem > 0){
+			DB::statement('delete from demissao where mp_id = '.$idMP);
+		}
+		DB::statement('delete from mp where id = '.$idMP);
+		$mps = MP::where('id',0)->get();
+		$validator 	   = "MP Excluída com sucesso!";
+		return view('excluirMPs', compact('mps'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+	}
 }

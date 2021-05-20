@@ -273,7 +273,7 @@
           </table>
           <table style="width: 1340px;">
             <tr>
-                <td> <a href="{{ route('homeVaga') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>  </td>
+                <td> <a href="{{ url('homeVaga') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>  </td>
                 @if(Auth::user()->funcao == "Gestor" && Auth::user()->funcao == "Gestor Imediato")
                 <td> <center> <b>*** Para Alterar clique em Visualizar</b> </center> </td>
                 @endif

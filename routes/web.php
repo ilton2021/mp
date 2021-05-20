@@ -60,6 +60,10 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}/n_autorizar/', 'HomeController@storeNAutMP')->name('storeNAutMP');
 		Route::post('/home/unidade/mp/{id}/{i}/', 'MPController@storeMP')->name('storeMP');
 		Route::get('/pdf/{idG}/{idMP}','MPController@mpPDF')->name('mpPDF');
+		Route::get('/home/excluir/mp','MPController@excluirMPs')->name('excluirMPs');
+		Route::post('/home/excluir/mp','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
+		Route::get('/home/excluir/mp/{id}','MPController@excluirMP')->name('excluirMP');
+		Route::post('/home/excluir/mp/{id}','MPController@deleteMP')->name('deleteMP');
 		////
 		
 		//Vaga

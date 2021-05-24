@@ -21,7 +21,6 @@
 			document.getElementById('salario').disabled 		  = false;
 			document.getElementById('outras_verbas').disabled 	  = false;
 			document.getElementById('horario_trabalho').disabled  = false;
-			document.getElementById('horario_trabalho2').disabled = false;
 			document.getElementById('escala_trabalho').disabled   = false;
 			document.getElementById('escala_trabalho2').disabled  = false;
 			document.getElementById('escala_trabalho3').disabled  = false;
@@ -49,7 +48,6 @@
 			document.getElementById('salario').disabled 		  = true;
 			document.getElementById('outras_verbas').disabled	  = true;
 			document.getElementById('horario_trabalho').disabled  = true;
-			document.getElementById('horario_trabalho2').disabled = true;
 			document.getElementById('escala_trabalho').disabled   = true;
 			document.getElementById('escala_trabalho2').disabled  = true;
 			document.getElementById('escala_trabalho3').disabled  = true;
@@ -184,6 +182,16 @@
 			document.getElementById('motivo6').disabled = true;  
 		  }
 		}
+
+		function ativarOutra(valor){
+			var x = document.getElementById('horario_trabalho'); 
+			var y = x.options[x.selectedIndex].text;  
+			if(y == "Outro..."){
+				document.getElementById('horario_trabalho2').disabled = false;
+			} else {
+				document.getElementById('horario_trabalho2').disabled = true;
+			}
+		}
 		
     </script>
 <body>
@@ -310,9 +318,8 @@
 			 @endif
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
-			    
 				  @if(old('tipo_mov1') == "on")
-				  <select class="form-control" id="horario_trabalho" name="horario_trabalho" required="true">
+				  <select class="form-control" id="horario_trabalho" name="horario_trabalho" required="true" onchange="ativarOutra('sim')">
 				  @if(old('horario_trabalho') == "07:00 as 16:00")
 				  <option id="horario_trabalho" name="horario_trabalho" value="07:00 as 16:00" selected>07h às 16h</option>
 				  <option id="horario_trabalho" name="horario_trabalho" value="08:00 as 17:00">08h às 17h</option>
@@ -348,7 +355,7 @@
 				  @endif
 				  </select>
 				  @else
-				  <select class="form-control" disabled="true" id="horario_trabalho" name="horario_trabalho" required="true"> 
+				  <select class="form-control" disabled="true" id="horario_trabalho" name="horario_trabalho" required="true" onchange="ativarOutra('sim')"> 
 				  <option id="horario_trabalho" name="horario_trabalho" value="">Selecione...</option>
 				  <option id="horario_trabalho" name="horario_trabalho" value="07:00 as 16:00">07h às 16h</option>
 				  <option id="horario_trabalho" name="horario_trabalho" value="08:00 as 17:00">08h às 17h</option>
@@ -359,7 +366,7 @@
 				  @endif
 				
 				Outro:
-				<input class="form-control" disabled="true" type="text" id="horario_trabalho2" name="horario_trabalho2" />	
+				<input class="form-control" disabled="true" type="text" id="horario_trabalho2" name="horario_trabalho2" disabled="true" />	
 			 </td>
 			</tr>
 			<tr>

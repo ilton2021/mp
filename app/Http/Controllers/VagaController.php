@@ -281,6 +281,14 @@ class VagaController extends Controller
 	function aprovar($id_vaga, $idG){ 
 		$vaga = Vaga::where('id',$id_vaga)->get();
 		$id	  = $vaga[0]->id;
+		if(Auth::user()->name == $vaga[0]->solicitante){
+			$idG 	 = Auth::user()->id; 
+			$gestor  = Gestor::where('id',$idG)->get();
+			$gestorI = $gestor[0]->gestor_imediato;
+			$gestorI = Gestor::where('nome',$gestorI)->get();
+			$idGI    = $gestorI[0]->id;
+			DB::statement('UPDATE vaga SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
+		} else {
 		if(Auth::user()->funcao == "Superintendencia"){
 			$input['resposta'] = 3;
 			DB::statement('UPDATE vaga SET concluida = 1 WHERE id  = '.$id.';');
@@ -296,48 +304,50 @@ class VagaController extends Controller
 			DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 		} else {
 			$input['resposta'] = 1;
-				$idVaga  = $vaga[0]->id;
-				$idG 	 = Auth::user()->id;
-				$aprovacao = AprovacaoVaga::where('vaga_id',$idVaga)->get();
-				$qtdAP 	   = sizeof($aprovacao); 
-				if($qtdAP > 0){
-					$idAp = DB::table('aprovacao_vaga')->where('vaga_id', $idVaga)->max('id');
-					$ap   = AprovacaoVaga::where('id',$idAp)->get(); 
-					$idA  = $ap[0]->gestor_anterior;	
-					if($idG == 61){
-						if($idA == 30 || $idA == 163) {
-							$idG = 62;
-						} else {
-							$idG = 30;
-						}
-					} else if($idG == 60 || $idG == 5 || $idG == 48 || $idG == 1 || $idG == 34 || $idG == 59 
-					|| $idG == 155 || $idG == 165 || $idG == 160 || $idG == 166){
-						if($idA == 30) {
-							$idG = 62;
-						} else {
-							$idG = 30;
-						}
-					} else if($idG == 65) {
-						if($idA == 30) {
-							$idG = 59;
-						} else {
-							$idG = 30;
-						}
-					} else if($idG == 163){ 
-						if($idA == 30){
-							$idG = 61;
-						} else {
-							$idG = 30;
-						}
-					} else if($idG == 19 || $idG == 39 || $idG == 99){
+			$idVaga  = $vaga[0]->id;
+			$idG 	 = Auth::user()->id;
+			$aprovacao = AprovacaoVaga::where('vaga_id',$idVaga)->get();
+			$qtdAP 	   = sizeof($aprovacao); 
+			if($qtdAP > 0){
+				$idAp = DB::table('aprovacao_vaga')->where('vaga_id', $idVaga)->max('id');
+				$ap   = AprovacaoVaga::where('id',$idAp)->get(); 
+				$idA  = $ap[0]->gestor_anterior;	
+				if($idG == 61){
+					if($idA == 30 || $idA == 163) {
+						$idG = 62;
+					} else {
 						$idG = 30;
 					}
+				} else if($idG == 60 || $idG == 5 || $idG == 48 || $idG == 1 || $idG == 34 || $idG == 59 
+				|| $idG == 155 || $idG == 165 || $idG == 160 || $idG == 166){
+					if($idA == 30) {
+						$idG = 62;
+					} else {
+						$idG = 30;
+					}
+				} else if($idG == 65) {
+					if($idA == 30) {
+						$idG = 59;
+					} else {
+						$idG = 30;
+					}
+				} else if($idG == 163){ 
+					if($idA == 30){
+						$idG = 61;
+					} else {
+						$idG = 30;
+					}
+				} else if($idG == 19 || $idG == 39 || $idG == 99){
+					$idG = 30;
 				} else {
 					$idG = 30;
 				}
-				$input['gestor_id'] = $idG;
-				DB::statement('UPDATE aprovacao_vaga SET ativo = 0 WHERE vaga_id  = '.$id.';');
-				DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
+			} else {
+				$idG = 30;
+			}
+			$input['gestor_id'] = $idG;
+			DB::statement('UPDATE aprovacao_vaga SET ativo = 0 WHERE vaga_id  = '.$id.';');
+			DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 		}
 		$input['data_aprovacao']  = date('Y-m-d',(strtotime('now')));
 		$input['gestor_anterior'] = Auth::user()->id;
@@ -373,6 +383,7 @@ class VagaController extends Controller
 				$m->to($email);
 			});
 		}*/
+		}
 	}
 	
 	public function validarVaga($id) {

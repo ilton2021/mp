@@ -87,11 +87,36 @@ class MPController extends Controller
 		$dataEmissao  = date('d-m-Y', strtotime('now'));
 		$dataP 		  = $input['data_prevista'];
 		$dataPrevista = date('d-m-Y', strtotime($dataP));
-		if($id_unidade == 1){
-		    $gestores = Gestor::where('funcao','=','rh')->where('gestor_sim',1)->get(); 
-    	} else {
-    	    $gestores = DB::select("SELECT * FROM gestor WHERE (funcao = 'rh' OR funcao = 'gestor imediato') AND (unidade_id = 0 OR unidade_id = ".$id_unidade.")");
-    	}
+		$idG 	  = Auth::user()->id;
+		$gest = Gestor::where('id',$idG)->get(); 
+		$gIm  = $gest[0]->gestor_imediato; 
+		if($gIm == "LUCIANA MELO DA SILVA"){
+			$idI = 60;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "FILIPE BITU") { 
+			$idI = 30;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "LUCIANA VENANCIO SANTOS SOUZA") {
+			$idI = 61;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "CINTHIA MARIA DE OLIVEIRA LIMA KOMURO"){
+			$idI = 65;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "ALEXANDRA SILVESTRE AMARAL PEIXOTO"){ 
+			$idI = 5;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else {
+			$gestores = Gestor::where('nome',$gIm)->get();
+		}
+		if($idG == 29) {
+			if($id_unidade == 3){
+				$idI = 5;
+				$gestores = Gestor::where('id',$idI)->get();
+			} else if($id_unidade == 4){
+				$idI = 1;
+				$gestores = Gestor::where('id',$idI)->get();
+			}
+		}
 		$unidades 		 = Unidade::all();
 		$cargos   		 = Cargos::all();
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
@@ -151,11 +176,27 @@ class MPController extends Controller
 			} else {
 				if($input['horario_trabalho'] == "0")
 				{
-					$input['horario_trabalho'] = $input['horario_trabalho2'];
+					if($input['horario_trabalho2'] == ""){
+						$text = true;
+						$validator = "Informe qual é o Horário de Trabalho!";
+					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    ->withErrors($validator)
+                        ->withInput(session()->flashInput($request->input()));
+					} else {
+						$input['horario_trabalho'] = $input['horario_trabalho2'];
+					}
 				}
 				if($input['escala_trabalho'] == "outra")
 				{
-					$input['escala_trabalho'] = $input['escala_trabalho6'];
+					if($input['escala_trabalho6'] == ""){
+						$text = true;
+						$validator = "Informe qual é a Escala de Trabalho!";
+					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    ->withErrors($validator)
+                        ->withInput(session()->flashInput($request->input()));
+					} else {
+						$input['escala_trabalho'] = $input['escala_trabalho6'];
+					}
 				}
 				if($input['motivo'] != "substituicao_definitiva")
 				{
@@ -163,10 +204,27 @@ class MPController extends Controller
 				}
 				if($input['motivo'] == "substituicao_definitiva")
 				{
-					$input['motivo2'] = $input['motivo6'];
+					if($input['motivo6'] == ""){
+						$text = true;
+						$validator = "Informe qual é o Funcionário que vai ser substituído!";
+					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    ->withErrors($validator)
+                        ->withInput(session()->flashInput($request->input()));
+					} else {
+						$input['motivo2'] = $input['motivo6'];
+					}
 				}
-				if($input['tipo'] == "RPA")
+				if($input['tipo'] == "rpa")
 				{
+					if($input['periodo_contrato'] == ""){
+						$text = true;
+						$validator = "Informe qual é o Período do Contrato do RPA!";
+					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    ->withErrors($validator)
+                        ->withInput(session()->flashInput($request->input()));
+					} else {
+
+					}
 					$input['tipo'] = $input['periodo_contrato'];
 				}
 				if($input['descricao'] != "") {

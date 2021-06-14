@@ -235,7 +235,7 @@ class MPController extends Controller
 					for($i = 1; $i <= $qtdU; $i++) {
 						if($id_unidade == $i) {
 							$idU   = $input['unidade_id'];
-							$mp1   = DB::table('mp')->where('unidade_id', $idU)->max('ordem');
+							$mp1   = DB::table('mp')->where('unidade_id', $id_unidade)->max('ordem');
 							$mps   = MP::where('unidade_id',$id_unidade)->get();
 							$qtd1  = sizeof($mps);
 							$sigla = Unidade::where('id',$id_unidade)->get();
@@ -334,7 +334,7 @@ class MPController extends Controller
 					for($i = 1; $i <= $qtdU; $i++) {
 						if($id_unidade == $i) {
 							$idU   = $input['unidade_id'];
-							$mp1   = DB::table('mp')->where('unidade_id', $idU)->max('ordem');
+							$mp1   = DB::table('mp')->where('unidade_id', $id_unidade)->max('ordem');
 							$mps   = MP::where('unidade_id',$id_unidade)->get();
 							$qtd1  = sizeof($mps);
 							$sigla = Unidade::where('id',$id_unidade)->get();
@@ -434,7 +434,7 @@ class MPController extends Controller
 					for($i = 1; $i <= $qtdU; $i++) {
 						if($id_unidade == $i) {
 							$idU   = $input['unidade_id'];
-							$mp1   = DB::table('mp')->where('unidade_id', $idU)->max('ordem');
+							$mp1   = DB::table('mp')->where('unidade_id', $id_unidade)->max('ordem');
 							$mps   = MP::where('unidade_id',$id_unidade)->get();
 							$qtd1  = sizeof($mps);
 							$sigla = Unidade::where('id',$id_unidade)->get();

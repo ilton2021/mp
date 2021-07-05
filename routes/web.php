@@ -149,6 +149,9 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/home/graphics8','HomeController@graphics8')->name('graphics8');
 		Route::post('/home/graphics8','HomeController@graphics8')->name('graphics8');
 		Route::post('/home/graphics8','HomeController@pesquisarGrafico8')->name('pesquisarGrafico8');
+		Route::get('/home/graphics9','HomeController@graphics9')->name('graphics9');
+		Route::post('/home/graphics9','HomeController@graphics9')->name('graphics9');
+		Route::post('/home/graphics9','HomeController@pesquisarGrafico9')->name('pesquisarGrafico9');
 		Route::get('/homeVaga/graphicsVagaIndex','VagaController@graphicsVagaIndex')->name('graphicsVagaIndex');
 		Route::get('/homeVaga/graphicsVaga','VagaController@graphicsVaga')->name('graphicsVaga');
 		Route::get('/homeVaga/graphicsVaga2','VagaController@graphicsVaga2')->name('graphicsVaga2');

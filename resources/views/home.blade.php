@@ -33,7 +33,11 @@
 		  <center>
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
-		    <td align="right"> <a href="{{ url('/home') }}" class="btn btn-success">Voltar</a></td>
+		    @if($a == 0)
+		    <td align="right"> <a href="{{ route('indexValida') }}" class="btn btn-success">Voltar</a></td>
+			@else
+			<td align="right"> <a href="{{ url('/home') }}" class="btn btn-success">Voltar</a></td>
+			@endif
 		   </tr>
 		  </table>
 		  </center>

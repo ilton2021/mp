@@ -70,7 +70,7 @@ class HomeController extends Controller
 		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
 			$row5 = MP::all();
 		} 
-		$qtd  		= sizeof($row5); 
+		$qtd = sizeof($row5); 
 		for($a = 0; $a < $qtd; $a++){
 			$ids[] = $row5[$a]->id;
 		}
@@ -682,6 +682,89 @@ class HomeController extends Controller
 		}
 		$unidades = Unidade::all();
 		return view('/graphics/graphics8', compact('row5','qtd','qtdAlt','totalRPA_SAL','totalRPA_OV','unidades'));
+    }
+
+	public function graphics9()
+    {
+		if(Auth::user()->id == 5){
+			$row5 = MP::where('unidade_id', 3)->get();
+		} else if(Auth::user()->id == 1){
+			$row5 = MP::where('unidade_id', 4)->get();
+		} else if(Auth::user()->id == 34){
+			$row5 = MP::where('unidade_id', 5)->get();
+		} else if(Auth::user()->id == 48){
+			$row5 = MP::where('unidade_id', 6)->get();
+		} else if(Auth::user()->id == 60){
+			$row5 = MP::where('unidade_id', 7)->get();
+		} else if(Auth::user()->id == 61){
+			$row5 = MP::where('unidade_id', 8)->get();
+		} else if(Auth::user()->id == 59){
+			$row5 = MP::where('unidade_id', 2)->get();
+		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
+			$row5 = MP::all();
+		}
+		$qtd  = sizeof($row5);
+		for($a = 0; $a < $qtd; $a++){
+			$ids[] = $row5[$a]->id;
+		}
+		$adm = Admissao::whereIn('mp_id',$ids)->where('motivo','aumento_quadro')->get();
+		$qtdAlt     = sizeof($adm);
+		$totalRPA_SAL = 0; $totalRPA_OV = 0;
+		for($c = 0; $c < $qtdAlt; $c++)
+		{
+			$totalRPA_SAL += $adm[$c]->salario;
+			$totalRPA_OV  += $adm[$c]->outras_verbas;
+		}
+		$unidades = Unidade::all();
+		return view('/graphics/graphics9', compact('row5','qtd','qtdAlt','adm','totalRPA_SAL','totalRPA_OV','unidades'));
+    }
+	
+	public function pesquisarGrafico9(Request $request)
+    {
+		$input = $request->all();
+		$idU   = $input['unidade_id'];
+		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+		$data_f = date('Y-m-d', strtotime($input['data_fim']));
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
+			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+				$row5 = MP::all();
+			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+				$data_i = "1970-01-01";
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->get();
+			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			}
+		} 
+		$qtd  = sizeof($row5);
+		if($qtd > 0) {
+			for($a = 0; $a < $qtd; $a++){
+				$ids[] = $row5[$a]->id;
+			} 
+		} else {
+			$ids[] = 0;
+		}
+		$adm = Admissao::whereIn('mp_id',$ids)->where('motivo','aumento_quadro')->get();
+		$qtdAlt     = sizeof($adm);
+		$totalRPA_SAL = 0; $totalRPA_OV = 0;
+		for($c = 0; $c < $qtdAlt; $c++)
+		{
+			$totalRPA_SAL += $adm[$c]->salario;
+			$totalRPA_OV  += $adm[$c]->outras_verbas;
+		}
+		$unidades = Unidade::all();
+		return view('/graphics/graphics9', compact('row5','qtd','qtdAlt','totalRPA_SAL','totalRPA_OV','unidades'));
     }
 	
 	public function visualizarMPs()
@@ -1831,7 +1914,8 @@ class HomeController extends Controller
 					$m->to($email);
 				});
 			}
-			return view('home', compact('unidade','idG','idMP'));
+			$a = 0;
+			return view('home', compact('unidade','idG','idMP','a'));
 		}
 	}
 	

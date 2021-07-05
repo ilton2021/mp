@@ -68,6 +68,7 @@
  				  <a type="button" href="{{ route('graphics6') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Admissão</a>
 				  <a type="button" href="{{ route('graphics7') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Alteração Funcional</a>
 				  <a type="button" href="{{ route('graphics8') }}" class="btn btn-success btn-info">Gráfico Total de Salário por RPA</a>
+                  <a type="button" href="{{ route('graphics9') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Aumento de Quadro</a>
 				 </td>
 				</tr>
                </table>

@@ -311,8 +311,8 @@ class MPController extends Controller
 				$aprovacao 	   = Aprovacao::where('mp_id', $idMP)->get();		
 				$idG 		   = $input['gestor_id'];
 				$gestor 	   = Gestor::where('id', $idG)->get();				
-				
-				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao'));
+				$a = 1;
+				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao','a'));
 			}
 		} else if (!empty($input['tipo_mov2'])) {
 			$validator = Validator::make($request->all(), [
@@ -406,8 +406,8 @@ class MPController extends Controller
 				$aprovacao 	   = Aprovacao::where('mp_id', $idMP)->get();		
 				$idG 		   = $input['gestor_id'];
 				$gestor = Gestor::where('id', $idG)->get();				
-				
-				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao'));
+				$a = 1;
+				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao','a'));
 			}
 		} else if (!empty($input['tipo_mov3'])) { 
 			$validator = Validator::make($request->all(), [
@@ -507,8 +507,8 @@ class MPController extends Controller
 				$aprovacao 	   = Aprovacao::where('mp_id', $idMP)->get();		
 				$idG 		   = $input['gestor_id'];
 				$gestor 	   = Gestor::where('id', $idG)->get();				
-				
-				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao'));
+				$a = 1;
+				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao','a'));
 			}
 		}else {
 			$text 	   = true;

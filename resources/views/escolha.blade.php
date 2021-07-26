@@ -17,23 +17,30 @@
 	  <center>
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0"> 
 		   <tr>
-		    <td width="400"><center><h4><b> Movimentação de Pessoal: </b></h4></center></td>
-			<td>&nbsp;</td>
-			<td width="400"><center><h4><b>Solicitação de Abertura de Vaga:</b></h4></center></td>
+		    <td width="500"><center><h4><b> Movimentação de Pessoal </b></h4></center></td>
+			<td>&nbsp;&nbsp;&nbsp;</td>
+			<td width="500"><center><h4><b>Solicitação de Abertura de Vaga</b></h4></center></td>
+			<td>&nbsp;&nbsp;&nbsp;</td>
+			<td width="800"><center><h4><b>Solicitação de Inscrição <br>Programa Degrau</b></h4></center></td>
 		   </tr>
 		   <tr>
-		    <td><p align="justify"><center><b>Formulário de Movimentação de Pessoal (MP).</b></center></p>
-			<center><img src="img/foto.jpeg" width="430" height="350" /></center>
+		    <td><p align="justify"><center><b>Formulário de Movimentação de Pessoal (MP)</b></center></p>
+			<center><img src="img/foto.jpeg" width="350" height="350" /></center>
 			</td>
 			<td></td>
-			<td><p align="justify"><center><b>Formulário de Solicitação de Abertura de Vagas.</b></center></p>
-			<center><img src="img/foto2.jpeg" width="430" height="350" /></center>
+			<td><p align="justify"><center><b>Formulário de Solicitação de Abertura de Vagas</b></center></p>
+			<center><img src="img/foto2.jpeg" width="350" height="350" /></center>
+			<td></td>
+			<td><p align="justify"><center><b>Formulário de Solicitação de Inscrição</b></center></p>
+			<center><img src="img/programaDegrau.png" width="350" height="350" /></center>
 			</td>
 		   </tr>
 		   <tr>
 		    <td><center> <a href="{{ route('inicioMP') }}" id="Selecionar" name="Selecionar" type="button" class="btn btn-info btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Selecionar </a> </center></td>
 			<td>&nbsp;</td>
 			<td><center> <a href="{{ route('inicioVaga') }}" id="Selecionar" name="Selecionar" type="button" class="btn btn-info btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Selecionar </a> </center></td>
+			<td>&nbsp;</td>
+			<td><center> <a href="{{ route('inicioDegrau') }}" id="Selecionar" name="Selecionar" type="button" class="btn btn-info btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Selecionar </a> </center></td>
 		   </tr>
 		   
 		 </table>

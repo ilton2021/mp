@@ -77,9 +77,9 @@ return [
         'array' => 'The :attribute must not have more than :value items.',
     ],
     'max' => [
-        'numeric' => 'O :attribute não pode ser maior que :max.',
+        'numeric' => 'O campo :attribute não pode ser maior que :max.',
         'file' => 'The :attribute não pode ser maior que :max kilobytes.',
-        'string' => 'O :attribute não pode ser maior que :max characters.',
+        'string' => 'O campo :attribute não pode ser maior que :max caracteres.',
         'array' => 'The :attribute não pode ser maior que :max items.',
     ],
     'mimes' => 'The :attribute must be a file of type: :values.',
@@ -105,9 +105,9 @@ return [
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
     'same' => 'The :attribute and :other must match.',
     'size' => [
-        'numeric' => 'O :attribute deve ser :size.',
+        'numeric' => 'O campo :attribute deve ser :size.',
         'file' => 'The :attribute must be :size kilobytes.',
-        'string' => 'The :attribute must be :size characters.',
+        'string' => 'O campo :attribute must be :size caracteres.',
         'array' => 'The :attribute must contain :size items.',
     ],
     'starts_with' => 'The :attribute must start with one of the following: :values.',

@@ -126,6 +126,32 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/pdf/vaga/{idG}/{idVaga}','VagaController@vagaPDF')->name('vagaPDF');
 		////
 		
+		//ProgramaDegrau
+		Route::get('/homeProgramaDegrau', 'ProgramaDegrauController@inicioDegrau')->name('inicioDegrau');
+		Route::get('/homeProgramaDegrau/unidade','ProgramaDegrauController@index3')->name('index3');
+		Route::get('/homeProgramaDegrau/unidade/programaDegrau/{id}', 'ProgramaDegrauController@cadastroPD')->name('cadastroPD');
+		Route::post('/homeProgramaDegrau/unidade/programaDegrau/{id}', 'ProgramaDegrauController@storePD')->name('storePD');
+		Route::get('/degrauPdf/{idG}/{idVI}','ProgramaDegrauController@degrauPDF')->name('degrauPDF');
+		Route::get('/homeProgramaDegrau/visualizarVagasProgramaDegrau', 'ProgramaDegrauController@visualizarVagasPD')->name('visualizarVagasPD');
+		Route::post('/homeProgramaDegrau/visualizarVagasProgramaDegrau', 'ProgramaDegrauController@pesquisaPD')->name('pesquisaPD');
+		Route::get('/homeProgramaDegrau/visualizarVagasProgramaDegrau/v/{id}', 'ProgramaDegrauController@visualizarVagaPD')->name('visualizarVagaPD');
+		Route::get('/homeProgramaDegrau/visualizarVagasProgramaDegrau/{id}', 'ProgramaDegrauController@updateVagaPD')->name('updateVagaPD');
+		Route::get('/homeProgramaDegrau/visualizarVagasProgramaDegrau/{id}/up/', 'ProgramaDegrauController@alterarPD')->name('alterarPD');
+		Route::post('/homeProgramaDegrau/visualizarVagasProgramaDegrau/{id}/up/', 'ProgramaDegrauController@alterarPDs')->name('alterarPDs');
+		Route::get('/homeProgramaDegrau/validarPD/', 'ProgramaDegrauController@validarPD')->name('validarPD');
+		Route::post('/homeProgramaDegrau/validarPD/', 'ProgramaDegrauController@validarPDs')->name('validarPDs');
+		Route::get('/homeProgramaDegrau/inscricaoPD/', 'ProgramaDegrauController@inscricaoPD')->name('inscricaoPD');
+		Route::get('/homeProgramaDegrau/inscricaoPDs/{id}', 'ProgramaDegrauController@inscricaoPDs')->name('inscricaoPDs');
+		Route::post('/homeProgramaDegrau/inscricaoPDs/{id}', 'ProgramaDegrauController@storeInscricaoPD')->name('storeInscricaoPD');
+		Route::get('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}', 'ProgramaDegrauController@inscricaoAprovarPDs')->name('inscricaoAprovarPDs');
+		Route::get('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}/aprovar', 'ProgramaDegrauController@aprovarInscricao')->name('aprovarInscricao');
+		Route::get('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}/reprovar', 'ProgramaDegrauController@reprovarInscricao')->name('reprovarInscricao');
+		Route::get('/homeProgramaDegrau/validar/{id}/n_autorizarPD', 'ProgramaDegrauController@n_autorizarPD')->name('n_autorizarPD');
+		Route::post('/homeProgramaDegrau/validar/{id}/n_autorizarPD', 'ProgramaDegrauController@storeNAutPD')->name('storeNAutPD');
+		Route::get('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@autorizarPD')->name('autorizarPD');
+		Route::post('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@storeAutPD')->name('storeAutPD');
+		////
+
 		Route::get('/home/graphicsIndex','HomeController@graphicsIndex')->name('graphicsIndex');
 		Route::get('/home/graphics','HomeController@graphics')->name('graphics');
 		Route::post('/home/graphics','HomeController@graphics')->name('graphics');

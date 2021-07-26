@@ -1627,8 +1627,8 @@ class HomeController extends Controller
 	public function validarMPs(Request $request)
 	{
 		$input = $request->all();
-		$mps 	   = MP::all();
-		$idG = Auth::user()->id;
+		$mps   = MP::all();
+		$idG   = Auth::user()->id;
 		$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
 		->join('justificativa','justificativa.mp_id','=','mp.id')
 		->select('mp.*','justificativa.descricao as just','admissao.*')

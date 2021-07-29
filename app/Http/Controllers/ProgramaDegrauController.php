@@ -183,7 +183,7 @@ class ProgramaDegrauController extends Controller
 				 ->withErrors($validator)
 				  ->withInput(session()->flashInput($request->input()));
 			  }
-			}
+			} 
 			$input['data_emissao']  = date('Y-m-d',(strtotime($dataEmissao)));
 			$input['data_prevista'] = date('Y-m-d',(strtotime($dataPrevista)));
 			$input['concluida'] = 0;
@@ -196,11 +196,12 @@ class ProgramaDegrauController extends Controller
 			$id = DB::table('vaga_interna')->max('id');
 			$input['vaga_interna_id'] = $id;
 			$just_vaga = JustificativaVagaInterna::create($input);
-			$a = 0;
+			$a = 0; 
 			for($j = 1; $j <= 9; $j++) {
 				if(!empty($input['motivoA' .$j])) {
-					if($input['descricao'] == "outros"){
-						$input['outros'] = $input['outras_competencias'];
+					if($input['motivoA' .$j] == "outros"){
+						$input['descricao'] = 'outros';
+						$input['outros']    = $input['outras_competencias'];
 					} else {
 						$input['descricao'] = $input['motivoA' .$j];
 						$input['outros']    = NULL;
@@ -221,10 +222,12 @@ class ProgramaDegrauController extends Controller
 			$b = 0;
 			for($i = 1; $i <= 11; $i++) {
 				if(!empty($input['comportamental' .$i])) {
-					if($input['descricao'] == "outros"){
-						$input['outros'] = $input['perfil'];
+					if($input['comportamental' .$i] == "outros"){
+						$input['descricao'] = 'outros';
+						$input['outros']    = $input['perfil'];
 					} else {
 						$input['descricao'] = $input['comportamental' .$i];
+						$input['outros']	= NULL;
 					}
 					$comportamental = PerfilComportamentalVagaInterna::create($input);
 					$b += 1;
@@ -241,11 +244,11 @@ class ProgramaDegrauController extends Controller
 			}
 			$gestor = Gestor::where('id', $input['gestor_id'])->get();
 			$email  = 'camila.fernandes@hcpgestao.org.br';
-			/*Mail::send('email.emailPD', array($email), function($m) use ($email) {
+			Mail::send('email.emailPD', array($email), function($m) use ($email) {
 				$m->from('portal@hcpgestao.org.br', 'Program Degrau');
 				$m->subject('Validar Vaga do Programa Degrau!');
 				$m->to($email);
-			});*/
+			});
 			$unidades = Unidade::all();
 			$unidade  = Unidade::where('id',$id_unidade)->get();
 			$usuario_id = Auth::user()->id;
@@ -714,11 +717,11 @@ class ProgramaDegrauController extends Controller
 		$input['ativo'] 	  	  = 1;
 		$aprovacao = AprovacaoVagaInterna::create($input);
 		$vaga = $vaga[0]->vaga;
-		/*Mail::send('email.emailPD', array($email), function($m) use ($email,$vaga) {
+		Mail::send('email.emailPD', array($email), function($m) use ($email,$vaga) {
 			$m->from('portal@hcpgestao.org.br', 'Program Degrau');
 			$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Aprovada!');
 			$m->to($email);	
-		});*/
+		});
 	}
 
 	public function n_autorizarPD($id)
@@ -775,12 +778,12 @@ class ProgramaDegrauController extends Controller
 				$email  = $gestor[0]->email;
 				$motivo = $input['motivo'];
 				$vaga 	= $vaga[0]->vaga;
-				/*Mail::send([], [], function($m) use ($email,$motivo,$vaga,$nome) {
-					$m->from('portal@hcpgestao.org.br', 'Solicitação de Vaga');
+				Mail::send([], [], function($m) use ($email,$motivo,$vaga,$nome) {
+					$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
 					$m->subject('O Gestor: '.$nome.' solicitou uma mudança na sua Vaga solicitada - '.$vaga.'!!!');
-					$m->setBody($motivo .'! Acesse o portal da Solicitação de Vaga: www.hcpgestao-mprh.hcpgestao.org.br');
+					$m->setBody($motivo .'! Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});*/
+				});
 				\Session::flash('mensagem', ['msg' => 'Vaga voltou para o Solicitante Corrigir!!','class'=>'green white-text']);		
 			} else {
 				$input['resposta'] = 3;
@@ -796,12 +799,12 @@ class ProgramaDegrauController extends Controller
 				$email  = $gestor[0]->email;
 				$motivo = $input['motivo'];
 				$vaga   = $vaga[0]->vaga;
-				/*Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
-					$m->from('portal@hcpgestao.org.br', 'Solicitação de Vaga');
+				Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+					$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
 					$m->subject('Sua Vaga - '.$vaga. ' Não foi Autorizada!');
 					$m->setBody($motivo .'! Acesse: http:/www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});*/
+				});
 				\Session::flash('mensagem', ['msg' => 'Vaga não Autorizada!!','class'=>'green white-text']);		
 			}
 			$unidades = Unidade::all();
@@ -874,21 +877,21 @@ class ProgramaDegrauController extends Controller
 			$motivo   = $input['motivo'];
 			$vaga = $pd[0]->vaga;
 			if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) {
-				/*Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+				Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
 					$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
 					$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
 					$m->cc($email3);
 					$m->cc($email4);
-				});*/
+				});
 			} else {
-				/*Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+				Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
 					$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
 					$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Autorizada!');
 					$m->setBody($motivo .'! Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});*/
+				});
 			}
 			$unidades = Unidade::all();
 			$id = Auth::user()->id;

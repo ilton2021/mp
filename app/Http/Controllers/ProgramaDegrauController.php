@@ -42,7 +42,7 @@ class ProgramaDegrauController extends Controller
 		$unidades   = Unidade::all();
 		$usuario_id = Auth::user()->id;
 		$gestor 	= Gestor::where('id',$usuario_id)->get();	
-        return view('welcome_degrau_', compact('unidades','gestor'));
+        return view('programaDegrau/welcome_degrau_', compact('unidades','gestor'));
     }
 
     public function cadastroPD($id_unidade)
@@ -54,7 +54,7 @@ class ProgramaDegrauController extends Controller
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$text = false;
-		return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'));
+		return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'));
 	}
 
     public function storePD($id_unidade, Request $request)
@@ -72,13 +72,13 @@ class ProgramaDegrauController extends Controller
 		if(strtotime($dataEmissao) == strtotime($dataPrevista)){
 			$text 	   = true;
 			$validator = "Data Prevista não pode ser Igual a Data de Emissão!";
-			return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else if(strtotime($dataPrevista) < strtotime($dataEmissao)) {
 			$text 	   = true;
 			$validator = "Data Prevista não pode ser Menor que a Data de Emissão!";
-			return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -105,7 +105,7 @@ class ProgramaDegrauController extends Controller
 		]);
 		if ($validator->fails()) {
 			$text = true;
-			return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
         } else { 
@@ -114,7 +114,7 @@ class ProgramaDegrauController extends Controller
 				if($input['horario_trabalho2'] == "0"){
 					$text = true;
 					$validator = "Informe qual é o Horário de Trabalho!";
-				    return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				    return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 			  	     ->withErrors($validator)
                      ->withInput(session()->flashInput($request->input()));
 				} else {
@@ -123,7 +123,7 @@ class ProgramaDegrauController extends Controller
 			  } else {
 				$text = true;
 				$validator = "Informe qual é o Horário de Trabalho!";
-				return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				   ->withErrors($validator)
 				 ->withInput(session()->flashInput($request->input()));
 			  } 
@@ -133,7 +133,7 @@ class ProgramaDegrauController extends Controller
 				if($input['escala_trabalho6'] == ""){
 					$text = true;
 					$validator = "Informe qual é a Escala de Trabalho!";
-				    return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				    return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				     ->withErrors($validator)
                      ->withInput(session()->flashInput($request->input()));
 				} else {
@@ -142,7 +142,7 @@ class ProgramaDegrauController extends Controller
 			  } else {
 				$text = true;
 				$validator = "Informe qual é a Escala de Trabalho!";
-				return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				 ->withErrors($validator)
 				 ->withInput(session()->flashInput($request->input()));
 			  }
@@ -152,14 +152,14 @@ class ProgramaDegrauController extends Controller
 				if($input['periodo_contrato'] == ""){
 					$text = true;
 					$validator = "Informe qual é o Período do Contrato do RPA!";
-				    return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				    return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 			 	     ->withErrors($validator)
                      ->withInput(session()->flashInput($request->input()));
 				}
 			  } else {
 				$text = true;
 				$validator = "Informe qual é o Período do Contrato do RPA!";
-				return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				  ->withErrors($validator)
 				 ->withInput(session()->flashInput($request->input()));
 			  } 
@@ -170,7 +170,7 @@ class ProgramaDegrauController extends Controller
 				if($input['motivo6'] == ""){
 					$text = true;
 					$validator = "Informe qual é o Funcionário que vai ser substituído!";
-				    return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				    return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				     ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 				} else {
@@ -179,7 +179,7 @@ class ProgramaDegrauController extends Controller
 			  } else {
 				$text = true;
 				$validator = "Informe qual é o Funcionário que vai ser substituído!";
-				return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				 ->withErrors($validator)
 				  ->withInput(session()->flashInput($request->input()));
 			  }
@@ -215,7 +215,7 @@ class ProgramaDegrauController extends Controller
 				$pd = DB::select('DELETE FROM VAGA_INTERNA WHERE id = '.$id);
 				$text = true;
 				$validator = "Informe Qual Perfil(s) Comportamental(s) sua Vaga Necessita!";
-				return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				 ->withErrors($validator)
 				  ->withInput(session()->flashInput($request->input()));
 			}
@@ -238,24 +238,24 @@ class ProgramaDegrauController extends Controller
 				$pd = DB::select('DELETE FROM VAGA_INTERNA WHERE id = '.$id);
 				$text = true;
 				$validator = "Informe Qual Competencência(s) sua Vaga Necessita!";
-				return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('programaDegrau/programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				 ->withErrors($validator)
 				  ->withInput(session()->flashInput($request->input()));
 			}
 			$gestor = Gestor::where('id', $input['gestor_id'])->get();
 			$email  = 'camila.fernandes@hcpgestao.org.br';
-			Mail::send('email.emailPD', array($email), function($m) use ($email) {
+			/*Mail::send('email.emailPD', array($email), function($m) use ($email) {
 				$m->from('portal@hcpgestao.org.br', 'Program Degrau');
 				$m->subject('Validar Vaga do Programa Degrau!');
 				$m->to($email);
-			});
+			});*/
 			$unidades = Unidade::all();
 			$unidade  = Unidade::where('id',$id_unidade)->get();
 			$usuario_id = Auth::user()->id;
 			$gestor 	= Gestor::where('id',$usuario_id)->get();	
 			$idVI 	    = $id;
 			$idG  = Auth::user()->id;
-			return view('home_vaga_degrau', compact('unidade','idVI','idG','gestor','unidades','unidade'));
+			return view('programaDegrau/home_vaga_degrau', compact('unidade','idVI','idG','gestor','unidades','unidade'));
 		}
 	}
 
@@ -279,7 +279,7 @@ class ProgramaDegrauController extends Controller
 		$pd        = VagaInterna::all();
 		$aprovacao = AprovacaoVagaInterna::all();
 		$gestores  = Gestor::all();
-		return view('visualizarPD', compact('unidades','pd','aprovacao','gestores'));
+		return view('programaDegrau/visualizarPD', compact('unidades','pd','aprovacao','gestores'));
 	}
 
 	public function visualizarVagaPD($id)
@@ -298,7 +298,7 @@ class ProgramaDegrauController extends Controller
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
-		return view('programaDegrauVisualizar', compact('unidades','unidade','pd','aprovacao','gestor','gestores','cargos','centro_custos','setores','centro_custo_nv','just_vaga','comportamental','competencias'));
+		return view('programaDegrau/programaDegrauVisualizar', compact('unidades','unidade','pd','aprovacao','gestor','gestores','cargos','centro_custos','setores','centro_custo_nv','just_vaga','comportamental','competencias'));
 	}
 
 	public function pesquisaPD(Request $request)
@@ -358,7 +358,7 @@ class ProgramaDegrauController extends Controller
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade . '%')->orderBy('nome','ASC')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade . '%')->orderBy('nome','ASC')->get();
-		return view('visualizarPD', compact('unidades','unidade','pd','gestores','cargos','centro_custos','setores','centro_custo_nv'));
+		return view('programaDegrau/visualizarPD', compact('unidades','unidade','pd','gestores','cargos','centro_custos','setores','centro_custo_nv'));
 	}
 
 	public function validarPD()
@@ -372,7 +372,7 @@ class ProgramaDegrauController extends Controller
 		->where('vaga_interna.concluida',0)->where('vaga_interna.gestor_id',$id)->get();
 		$gestores = Gestor::all();
 		$text = false;
-		return view('validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
+		return view('programaDegrau/validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
 	}
 
 	public function inscricaoPD()
@@ -382,7 +382,7 @@ class ProgramaDegrauController extends Controller
 		$vagas 	   = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
 		$gestores  = Gestor::all();
 		$text 	   = false;
-		return view('inscricaoPD', compact('unidades','vagas','gestores','text'));
+		return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','text'));
 	}
 
 	public function vincularInscritosPD($id, Request $request)
@@ -402,11 +402,11 @@ class ProgramaDegrauController extends Controller
 			$gestores  = Gestor::all();
 			$text 	   = true;
 			$validator = "Nenhum Candidato Aprovado para esta Vaga!!";
-			return view('inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
+			return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
-			return view('vincularInscritosPD', compact('inscricao'));
+			return view('programaDegrau/vincularInscritosPD', compact('inscricao'));
 		}
 	}
 
@@ -423,7 +423,7 @@ class ProgramaDegrauController extends Controller
 		$text 	  = true;
 		$validator = "Vínculo realizado com sucesso!!";
 		$inscricao = InscricaoVagaInterna::all();
-		return view('inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
+		return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 	}
@@ -438,7 +438,7 @@ class ProgramaDegrauController extends Controller
 					->where('vaga_interna_id',$id)->get();
 		$gestores  = Gestor::all();
 		$text 	   = false;
-		return view('inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
+		return view('programaDegrau/inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
 	}
 
 	public function inscricaoPDs($id)
@@ -457,7 +457,7 @@ class ProgramaDegrauController extends Controller
 		$unidade  = Unidade::where('id',$unidade)->get();
 		$gestores = Gestor::all();
 		$text 	  = false;
-		return view('inscricaoPDs', compact('unidades','unidade','pd','gestores','text','just_v','comportamental','competencias','cargos','centro_custos'));
+		return view('programaDegrau/inscricaoPDs', compact('unidades','unidade','pd','gestores','text','just_v','comportamental','competencias','cargos','centro_custos'));
 	}
 
 	public function storeInscricaoPD($id, Request $request)
@@ -483,7 +483,7 @@ class ProgramaDegrauController extends Controller
 			$unidade  = Unidade::where('id',$unidade)->get();
 			$gestores = Gestor::all();
 			$text 	  = false;
-			return view('inscricaoPDs', compact('unidades','unidade','pd','gestores','text','just_v','comportamental','competencias','cargos','centro_custos'))
+			return view('programaDegrau/inscricaoPDs', compact('unidades','unidade','pd','gestores','text','just_v','comportamental','competencias','cargos','centro_custos'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
@@ -505,7 +505,7 @@ class ProgramaDegrauController extends Controller
 			$text 	  = true;
 			$validator = "Inscrição realizada com sucesso! Aguarde a aprovação final!";
 			$inscricao = InscricaoVagaInterna::all();
-			return view('inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
+			return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		}
@@ -528,7 +528,7 @@ class ProgramaDegrauController extends Controller
 		$unidade  = Unidade::where('id',$unidade)->get();
 		$gestores = Gestor::all();
 		$text 	  = false;
-		return view('inscricaoAprovarPDs', compact('unidades','unidade','pd','gestores','text','just_v','comportamental','competencias','cargos','centro_custos','inscricao'));
+		return view('programaDegrau/inscricaoAprovarPDs', compact('unidades','unidade','pd','gestores','text','just_v','comportamental','competencias','cargos','centro_custos','inscricao'));
 	}
 
 	public function aprovarInscricao($id_inscricao, $id, Request $request)
@@ -546,7 +546,7 @@ class ProgramaDegrauController extends Controller
 					 ->get();
 		$gestores  = Gestor::all();
 		$text 	   = false;
-		return view('aprovar_inscricao', compact('unidades','pd','unidade','inscricao','gestores','text'));
+		return view('programaDegrau/aprovar_inscricao', compact('unidades','pd','unidade','inscricao','gestores','text'));
 	}
 
 	public function storeAprovarInscricao($id_inscricao, $id, Request $request)
@@ -577,7 +577,7 @@ class ProgramaDegrauController extends Controller
 					->where('vaga_interna_id',$id)->get();
 		$gestores  = Gestor::all();
 		$text 	   = true;
-		return view('inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
+		return view('programaDegrau/inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
 	}
 
 	public function reprovarInscricao($id_inscricao, $id, Request $request)
@@ -595,7 +595,7 @@ class ProgramaDegrauController extends Controller
 					 ->get();
 		$gestores  = Gestor::all();
 		$text 	   = false;
-		return view('reprovar_inscricao', compact('unidades','pd','unidade','inscricao','gestores','text'));
+		return view('programaDegrau/reprovar_inscricao', compact('unidades','pd','unidade','inscricao','gestores','text'));
 	}
 
 	public function storeReprovarInscricao($id_inscricao, $id, Request $request)
@@ -626,7 +626,7 @@ class ProgramaDegrauController extends Controller
 					->where('vaga_interna_id',$id)->get();
 		$gestores  = Gestor::all();
 		$text 	   = true;
-		return view('inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
+		return view('programaDegrau/inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
 	}
 
 	public function validarPDs(Request $request)
@@ -664,11 +664,11 @@ class ProgramaDegrauController extends Controller
 		if($ap == 0){
 			$text = 1;
 			\Session::flash('mensagem', ['msg' => 'Selecione uma Vaga!','class'=>'danger white-text']);
-			return view('validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
+			return view('programaDegrau/validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
 		} else {
 			$text = 0;
 			\Session::flash('mensagem', ['msg' => 'Vaga(s) Aprovada(s) com Sucesso!','class'=>'green white-text']);
-			return view('validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
+			return view('programaDegrau/validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
 		}
 	}
 
@@ -734,7 +734,7 @@ class ProgramaDegrauController extends Controller
  		$idG 	   = $pd[0]->solicitante;
 		$gestores  = Gestor::where('nome',$idG)->get();
 		$text 	   = false;
-		return view('home_nao_autorizado_degrau', compact('unidade','pd','gestores','text'));
+		return view('programaDegrau/home_nao_autorizado_degrau', compact('unidade','pd','gestores','text'));
 	}
 
 	public function storeNAutPD($id, Request $request)
@@ -757,7 +757,7 @@ class ProgramaDegrauController extends Controller
 				\Session::flash('mensagem', ['msg' => 'O campo justificativa possui no máximo 1000 caracteres!','class'=>'green white-text']);
 			}
 			$text = true;
-			return view('home_autorizado_vaga', compact('unidade','vaga','gestores','text'));
+			return view('programaDegrau/home_autorizado_vaga', compact('unidade','vaga','gestores','text'));
 		} else {
 			if(!empty($input['voltarVaga'])){
 				$check = $input['voltarVaga'];
@@ -816,7 +816,7 @@ class ProgramaDegrauController extends Controller
 			->where('vaga_interna.concluida',0)->where('vaga_interna.gestor_id',$id)->get();
 			$gestores = Gestor::all();
 			$text = 0;
-			return view('validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
+			return view('programaDegrau/validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
 		}
 	}
 
@@ -830,7 +830,7 @@ class ProgramaDegrauController extends Controller
  		$idG 	   = $pd[0]->solicitante;
 		$gestores  = Gestor::where('nome',$idG)->get();
 		$text 	   = false;
-		return view('home_autorizado_degrau', compact('unidade','pd','gestores','text','aprovacao'));
+		return view('programaDegrau/home_autorizado_degrau', compact('unidade','pd','gestores','text','aprovacao'));
 	}
 
 	public function storeAutPD($id, Request $request)
@@ -852,7 +852,7 @@ class ProgramaDegrauController extends Controller
 				\Session::flash('mensagem', ['msg' => 'O campo justificativa é obrigatório!','class'=>'green white-text']);
 			}
 			$text = true;
-			return view('home_autorizado_degrau', compact('unidade','pd','gestores','text','aprovacao'));
+			return view('programaDegrau/home_autorizado_degrau', compact('unidade','pd','gestores','text','aprovacao'));
 		} else {
 			if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) {
 				$input['resposta'] = 3;
@@ -903,7 +903,7 @@ class ProgramaDegrauController extends Controller
 			$gestores = Gestor::all();
 			$text = 1;
 			\Session::flash('mensagem', ['msg' => 'Vaga(s) Aprovada(s) com Sucesso!!','class'=>'green white-text']);		
-			return view('validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
+			return view('programaDegrau/validarPD', compact('unidades','vagas','gestores','aprovacao','text'));
 		}
 	}
 
@@ -926,7 +926,7 @@ class ProgramaDegrauController extends Controller
 		$cargos   = Cargos::orderBy('nome','ASC')->get();
 		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
-		return view('programaDegrauAlterar', compact('unidade','text','gestores','unidades','pd','idVaga','cargos','centro_custos','just_vaga','gestor','aprovacao','setores','comportamental','competencias'));
+		return view('programaDegrau/programaDegrauAlterar', compact('unidade','text','gestores','unidades','pd','idVaga','cargos','centro_custos','just_vaga','gestor','aprovacao','setores','comportamental','competencias'));
    }
 
    public function alterarPDs($id, Request $request)
@@ -966,7 +966,7 @@ class ProgramaDegrauController extends Controller
 			$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 			$setores 	  = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 			$text = true;
-			return view('programaDegrauAlterar', compact('unidade','text','pd','unidades','cargos','centro_custos','setores','just_vaga','aprovacao','competencias','comportamental'))
+			return view('programaDegrau/programaDegrauAlterar', compact('unidade','text','pd','unidades','cargos','centro_custos','setores','just_vaga','aprovacao','competencias','comportamental'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		} else {
@@ -1058,6 +1058,6 @@ class ProgramaDegrauController extends Controller
 	   $gestores = Gestor::all();
 	   $text = 1;
 	   \Session::flash('mensagem', ['msg' => 'Vaga Alterada com Sucesso!!','class'=>'green white-text']);		
-	   return view('validarPD', compact('unidades','vagas','gestores','aprovacao','text')); 	
+	   return view('programaDegrau/validarPD', compact('unidades','vagas','gestores','aprovacao','text')); 	
    }
 }

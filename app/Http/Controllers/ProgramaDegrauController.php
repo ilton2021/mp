@@ -109,9 +109,9 @@ class ProgramaDegrauController extends Controller
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
         } else { 
-			if($input['horario_trabalho'] == "") {
+			if($input['horario_trabalho'] == "0") {
 			  if(!empty($input['horario_trabalho2'])){		
-				if($input['horario_trabalho2'] == ""){
+				if($input['horario_trabalho2'] == "0"){
 					$text = true;
 					$validator = "Informe qual é o Horário de Trabalho!";
 				    return view('programaDegrau', compact('unidade','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
@@ -185,9 +185,10 @@ class ProgramaDegrauController extends Controller
 			  }
 			}
 			$input['data_emissao']  = date('Y-m-d',(strtotime($dataEmissao)));
-			$input['data_prevista'] = date('Y-m-d',(strtotime($dataPrevista)));;
+			$input['data_prevista'] = date('Y-m-d',(strtotime($dataPrevista)));
 			$input['concluida'] = 0;
 			$input['aprovada']  = 0;
+			$input['vinculo']   = 0;
 			if($input['codigo_vaga'] == ""){
 				$input['codigo_vaga'] = '0000';
 			} 
@@ -198,7 +199,12 @@ class ProgramaDegrauController extends Controller
 			$a = 0;
 			for($j = 1; $j <= 9; $j++) {
 				if(!empty($input['motivoA' .$j])) {
-					$input['descricao'] = $input['motivoA' .$j];
+					if($input['descricao'] == "outros"){
+						$input['outros'] = $input['outras_competencias'];
+					} else {
+						$input['descricao'] = $input['motivoA' .$j];
+						$input['outros']    = NULL;
+					}
 					$competencias = CompetenciasVagaInterna::create($input);
 					$a += 1;
 				}
@@ -215,7 +221,11 @@ class ProgramaDegrauController extends Controller
 			$b = 0;
 			for($i = 1; $i <= 11; $i++) {
 				if(!empty($input['comportamental' .$i])) {
-					$input['descricao'] = $input['comportamental' .$i];
+					if($input['descricao'] == "outros"){
+						$input['outros'] = $input['perfil'];
+					} else {
+						$input['descricao'] = $input['comportamental' .$i];
+					}
 					$comportamental = PerfilComportamentalVagaInterna::create($input);
 					$b += 1;
 				}
@@ -230,12 +240,12 @@ class ProgramaDegrauController extends Controller
 				  ->withInput(session()->flashInput($request->input()));
 			}
 			$gestor = Gestor::where('id', $input['gestor_id'])->get();
-			$email  = 'ilton.albuquerque@hcpgestao.org.br';
-			Mail::send('email.emailPD', array($email), function($m) use ($email) {
+			$email  = 'camila.fernandes@hcpgestao.org.br';
+			/*Mail::send('email.emailPD', array($email), function($m) use ($email) {
 				$m->from('portal@hcpgestao.org.br', 'Program Degrau');
 				$m->subject('Validar Vaga do Programa Degrau!');
 				$m->to($email);
-			});
+			});*/
 			$unidades = Unidade::all();
 			$unidade  = Unidade::where('id',$id_unidade)->get();
 			$usuario_id = Auth::user()->id;
@@ -249,11 +259,11 @@ class ProgramaDegrauController extends Controller
 	public function degrauPDF($idG, $idVI)
 	{
 		$unidades = Unidade::all();
-		$pd = VagaInterna::where('id', $idVI)->get(); 
+		$pd 	  = VagaInterna::where('id', $idVI)->get(); 
 		$just_vaga_int = JustificativaVagaInterna::where('vaga_interna_id', $idVI)->get();	
-		$aprovacaoVI = AprovacaoVagaInterna::where('vaga_interna_id', $idVI)->get();		
-		$gestor = Gestor::where('id', $idG)->get();
-		$idU = $pd[0]->unidade_id;
+		$aprovacaoVI   = AprovacaoVagaInterna::where('vaga_interna_id', $idVI)->get();		
+		$gestor  = Gestor::where('id', $idG)->get();
+		$idU     = $pd[0]->unidade_id;
 		$unidade = Unidade::where('id', $idU)->get();
 		$pdf = PDF::loadView('pdf.degraupdf', compact('pd','gestor','unidades','unidade','just_vaga_int','aprovacaoVI'));
 		$pdf->setPaper('A4', 'landscape');
@@ -367,10 +377,65 @@ class ProgramaDegrauController extends Controller
 		$unidades  = Unidade::all();
 		$id 	   = Auth::user()->id;
 		$vagas 	   = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
-		$inscricao = InscricaoVagaInterna::all();
 		$gestores  = Gestor::all();
 		$text 	   = false;
-		return view('inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'));
+		return view('inscricaoPD', compact('unidades','vagas','gestores','text'));
+	}
+
+	public function vincularInscritosPD($id, Request $request)
+	{
+		$input = $request->all();
+		$inscricao = DB::table('inscricao_vaga_interna')
+		             ->join('vaga_interna','vaga_interna.id','=','inscricao_vaga_interna.vaga_interna_id')
+					 ->join('unidade','unidade.id','=','inscricao_vaga_interna.unidade_id')
+					 ->join('gestor','gestor.id','=','inscricao_vaga_interna.solicitante')
+					 ->select('inscricao_vaga_interna.*','vaga_interna.vaga as vaga','gestor.nome as Nome','unidade.nome as nomeUnidade')
+					 ->where('inscricao_vaga_interna.vaga_interna_id',$id)->where('inscricao_vaga_interna.concluida',1)->get();
+		$qtd = sizeof($inscricao);
+		if($qtd == 0){
+			$unidades  = Unidade::all();
+			$id 	   = Auth::user()->id;
+			$vagas 	   = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
+			$gestores  = Gestor::all();
+			$text 	   = true;
+			$validator = "Nenhum Candidato Aprovado para esta Vaga!!";
+			return view('inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
+		} else {
+			return view('vincularInscritosPD', compact('inscricao'));
+		}
+	}
+
+	public function storeVincularInscricao($id, Request $request)
+	{
+		$input = $request->all();
+		$input['vinculo']  = $input['nome_funcionario'];
+		$pd = VagaInterna::find($id);
+		$pd->update($input);
+		$unidades = Unidade::all();
+		$id 	  = Auth::user()->id;
+		$vagas 	  = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
+		$gestores = Gestor::all();
+		$text 	  = true;
+		$validator = "Vínculo realizado com sucesso!!";
+		$inscricao = InscricaoVagaInterna::all();
+		return view('inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
+	}
+
+	public function inscricaoInscritosPD($id)
+	{
+		$unidades  = Unidade::all();
+		$vagas 	   = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
+		$inscricao = DB::table('inscricao_vaga_interna')
+					->join('vaga_interna','vaga_interna.id','=','inscricao_vaga_interna.vaga_interna_id')
+					->select('inscricao_vaga_interna.*','vaga_interna.vaga as NomeVaga')
+					->where('vaga_interna_id',$id)->get();
+		$gestores  = Gestor::all();
+		$text 	   = false;
+		return view('inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
 	}
 
 	public function inscricaoPDs($id)
@@ -423,6 +488,13 @@ class ProgramaDegrauController extends Controller
 			$input['data_aprovacao']  = NULL;
 			$input['vaga_interna_id'] = $id;
 			$inscricao = InscricaoVagaInterna::create($input);
+			$email = 'ilton.albuquerque@hcpgestao.org.br';
+			$vaga = $input['vaga'];
+			Mail::send('email.emailInscricaoPD', array($email), function($m) use ($email,$vaga) {
+				$m->from('portal@hcpgestao.org.br', 'Program Degrau');
+				$m->subject('Foi realizada uma Inscrição da Vaga: '.$vaga.' do Programa Degrau!!');
+				$m->to($email);
+			});
 			$unidades = Unidade::all();
 			$id 	  = Auth::user()->id;
 			$vagas 	  = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
@@ -462,14 +534,96 @@ class ProgramaDegrauController extends Controller
 		$pd = VagaInterna::where('id',$id)->get();
 		$unidade   = $pd[0]->unidade_id;
 		$inscricao = InscricaoVagaInterna::where('id',$id_inscricao)->get();
+		$inscricao = DB::table('inscricao_vaga_interna')
+					 ->join('vaga_interna','vaga_interna.id','=','inscricao_vaga_interna.vaga_interna_id')
+					 ->join('gestor','gestor.id','=','inscricao_vaga_interna.solicitante')
+					 ->select('inscricao_vaga_interna.*','gestor.nome as Nome','vaga_interna.vaga as vaga')
+					 ->where('inscricao_vaga_interna.vaga_interna_id',$id)
+					 ->where('inscricao_vaga_interna.id',$id_inscricao)
+					 ->get();
 		$gestores  = Gestor::all();
 		$text 	   = false;
 		return view('aprovar_inscricao', compact('unidades','pd','unidade','inscricao','gestores','text'));
 	}
 
+	public function storeAprovarInscricao($id_inscricao, $id, Request $request)
+	{
+		$input = $request->all();
+		$data  = date('Y-m-d', strtotime('now'));
+		$input['concluida'] = 1;
+		$input['aprovada'] = 1;
+		$input['data_aprovacao'] = $data;
+		$inscricao = InscricaoVagaInterna::find($id_inscricao);
+		$inscricao->update($input);
+		$inscricao = InscricaoVagaInterna::where('id',$id_inscricao)->get();
+		$email = Gestor::where('id',$inscricao[0]->solicitante)->get();
+		$vaga_id = $inscricao[0]->vaga_interna_id;
+		$vaga  = VagaInterna::where('id',$vaga_id)->get();
+		$vaga  = $vaga[0]->vaga;
+		$email = 'ilton.albuquerque@hcpgestao.org.br';
+		Mail::send('email.emailAprovarInscricaoPD', array($email), function($m) use ($email,$vaga) {
+			$m->from('portal@hcpgestao.org.br', 'Program Degrau');
+			$m->subject('A Inscrição da Vaga: '.$vaga.' do Programa Degrau foi Aprovada!');
+			$m->to($email);
+		});
+		$unidades  = Unidade::all();
+		$vagas 	   = DB::table('vaga_interna')->where('id',$id)->get();
+		$inscricao = DB::table('inscricao_vaga_interna')
+					->join('vaga_interna','vaga_interna.id','=','inscricao_vaga_interna.vaga_interna_id')
+					->select('inscricao_vaga_interna.*','vaga_interna.vaga as NomeVaga')
+					->where('vaga_interna_id',$id)->get();
+		$gestores  = Gestor::all();
+		$text 	   = true;
+		return view('inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
+	}
+
 	public function reprovarInscricao($id_inscricao, $id, Request $request)
 	{
+		$unidades = Unidade::all();
+		$pd = VagaInterna::where('id',$id)->get();
+		$unidade   = $pd[0]->unidade_id;
+		$inscricao = InscricaoVagaInterna::where('id',$id_inscricao)->get();
+		$inscricao = DB::table('inscricao_vaga_interna')
+					 ->join('vaga_interna','vaga_interna.id','=','inscricao_vaga_interna.vaga_interna_id')
+					 ->join('gestor','gestor.id','=','inscricao_vaga_interna.solicitante')
+					 ->select('inscricao_vaga_interna.*','gestor.nome as Nome','vaga_interna.vaga as vaga')
+					 ->where('inscricao_vaga_interna.vaga_interna_id',$id)
+					 ->where('inscricao_vaga_interna.id',$id_inscricao)
+					 ->get();
+		$gestores  = Gestor::all();
+		$text 	   = false;
+		return view('reprovar_inscricao', compact('unidades','pd','unidade','inscricao','gestores','text'));
+	}
 
+	public function storeReprovarInscricao($id_inscricao, $id, Request $request)
+	{ 
+		$input = $request->all();
+		$data = date('Y-m-d', strtotime('now'));
+		$input['concluida'] = 1;
+		$input['aprovada'] = 0;
+		$input['data_aprovacao'] = $data;
+		$inscricao = InscricaoVagaInterna::find($id_inscricao);
+		$inscricao->update($input);
+		$inscricao = InscricaoVagaInterna::where('id',$id_inscricao)->get();
+		$email = Gestor::where('id',$inscricao[0]->solicitante)->get();
+		$vaga_id = $inscricao[0]->vaga_interna_id;
+		$vaga = VagaInterna::where('id',$vaga_id)->get();
+		$vaga = $vaga[0]->vaga;
+		$email = 'ilton.albuquerque@hcpgestao.org.br';
+		Mail::send('email.emailReprovarInscricaoPD', array($email), function($m) use ($email,$vaga) {
+			$m->from('portal@hcpgestao.org.br', 'Program Degrau');
+			$m->subject('A Inscrição da Vaga: '.$vaga.' do Programa Degrau foi Reprovada!');
+			$m->to($email);
+		});
+		$unidades  = Unidade::all();
+		$vagas 	   = DB::table('vaga_interna')->where('id',$id)->get();
+		$inscricao = DB::table('inscricao_vaga_interna')
+					->join('vaga_interna','vaga_interna.id','=','inscricao_vaga_interna.vaga_interna_id')
+					->select('inscricao_vaga_interna.*','vaga_interna.vaga as NomeVaga')
+					->where('vaga_interna_id',$id)->get();
+		$gestores  = Gestor::all();
+		$text 	   = true;
+		return view('inscricaoInscritosPD', compact('unidades','vagas','gestores','text','inscricao'));
 	}
 
 	public function validarPDs(Request $request)
@@ -524,21 +678,26 @@ class ProgramaDegrauController extends Controller
 			$idGI   = 73;
 			$input['gestor_id'] = 73;
 			$input['resposta'] = 1;
+			$email = 'camila.fernandes@hcpgestao.org.br';
 			DB::statement('UPDATE vaga_interna SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
 			DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 		} else {
 			if($idU == 73){
 				$input['resposta']  = 1; 
 				$input['gestor_id'] = 30;
+				$email = 'rafaela.carazzai@hcpgestao.org.br';
 				DB::statement('UPDATE vaga_interna SET gestor_id = 30 WHERE id = '.$id.';');
 				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 			} else if($idU == 30) {
 				$input['resposta']  = 1; 
 				$input['gestor_id'] = $idG;
+				$e_gestor = Gestor::where('id',$idG)->get();
+				$email = $e_gestor[0]->email; 
 				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 				DB::statement('UPDATE vaga_interna SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 			} else if($idU == 59 || $idU == 60 || $idU == 61 || $idU == 155 || $idU == 160 || $idU == 5 || $idU == 166) {
 				$input['resposta'] = 3;
+				$email = 'camila.fernandes@hcpgestao.org.br';
 				DB::statement('UPDATE vaga_interna SET concluida = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE vaga_interna SET aprovada  = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE vaga_interna SET gestor_id = 30 WHERE id = '.$id.';');
@@ -554,6 +713,12 @@ class ProgramaDegrauController extends Controller
 		$input['motivo'] 	  	  = "Autorizado";
 		$input['ativo'] 	  	  = 1;
 		$aprovacao = AprovacaoVagaInterna::create($input);
+		$vaga = $vaga[0]->vaga;
+		/*Mail::send('email.emailPD', array($email), function($m) use ($email,$vaga) {
+			$m->from('portal@hcpgestao.org.br', 'Program Degrau');
+			$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Aprovada!');
+			$m->to($email);	
+		});*/
 	}
 
 	public function n_autorizarPD($id)
@@ -704,8 +869,8 @@ class ProgramaDegrauController extends Controller
 			$solicitante = $pd[0]->solicitante;
 			$sol = Gestor::where('nome', $solicitante)->get();
 			$email = $sol[0]->email;
-			//$email3 = 'janaina.lima@hcpgestao.org.br';
-			//$email4 = 'rogerio.reis@hcpgestao.org.br';
+			$email3 = 'janaina.lima@hcpgestao.org.br';
+			$email4 = 'rogerio.reis@hcpgestao.org.br';
 			$motivo   = $input['motivo'];
 			$vaga = $pd[0]->vaga;
 			if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) {
@@ -714,9 +879,8 @@ class ProgramaDegrauController extends Controller
 					$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-					//$m->cc($email2);
-					//$m->cc($email3);
-					//$m->cc($email4);
+					$m->cc($email3);
+					$m->cc($email4);
 				});*/
 			} else {
 				/*Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
@@ -749,9 +913,9 @@ class ProgramaDegrauController extends Controller
 		$aprovacao = AprovacaoVagaInterna::where('vaga_interna_id',$id)->get();
 		$comportamental = PerfilComportamentalVagaInterna::where('vaga_interna_id',$id)->get();
 		$competencias   = CompetenciasVagaInterna::where('vaga_interna_id',$id)->get();
-		$solic     = Gestor::where('nome',$solicitante)->get();
-		$gestor    = $solic[0]->gestor_imediato;
-		$gestor    = Gestor::where('nome', $gestor)->get();
+		$solic    = Gestor::where('nome',$solicitante)->get();
+		$gestor   = $solic[0]->gestor_imediato;
+		$gestor   = Gestor::where('nome', $gestor)->get();
 		$id_unidade = $pd[0]->unidade_id;
 		$unidade  = Unidade::where('id',$id_unidade)->get();
 		$text 	  = false;
@@ -784,7 +948,7 @@ class ProgramaDegrauController extends Controller
 			'conhecimento_desejado'	 => 'required|max:500',
 			'formacao'				 => 'required|max:400',
 			'idiomas'				 => 'required|max:400',
-			'descricao'				 => 'required|max:1000'
+			'descricao'				 => 'required|max:3000'
 		]);
 		if ($validator->fails()) {
 			$pd = VagaInterna::where('id',$id)->get();
@@ -808,6 +972,7 @@ class ProgramaDegrauController extends Controller
 			$input['gestor_id'] = Auth::user()->id;
 			$input['concluida'] = 0;
 			$input['aprovada']  = 0;
+			$input['vinculo']   = 0;
 			$pd = VagaInterna::find($id);
 			$pd->update($input);
 			$just = JustificativaVagaInterna::where('vaga_interna_id',$id)->get();
@@ -849,7 +1014,14 @@ class ProgramaDegrauController extends Controller
 					$comportamental = PerfilComportamentalVagaInterna::create($input);
 				}
 			}
-
+			$email = 'camila.fernandes@hcpgestao.org.br';
+			$vaga  = $input['vaga'];
+			Mail::send([], [], function($m) use ($email,$vaga) {
+				$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
+				$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Alterada!');
+				$m->setBody('Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
+				$m->to($email);
+			});
 			$unidades = Unidade::all();
 			$id = Auth::user()->id;
 			$aprovacao = AprovacaoVagaInterna::all();
@@ -868,8 +1040,9 @@ class ProgramaDegrauController extends Controller
    {
 	   $input = $request->all();
 	   $input['gestor_id'] = 73;
-	   $input['data_emissao'] = date('Y-m-d', strtotime($input['data_emissao']));
+	   $input['data_emissao']  = date('Y-m-d', strtotime($input['data_emissao']));
 	   $input['data_prevista'] = date('Y-m-d', strtotime($input['data_prevista']));
+	   $input['vinculo'] = 0;
 	   $pd = VagaInterna::find($id); 
 	   $pd->update($input);	   
 	   $unidades = Unidade::all();

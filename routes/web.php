@@ -142,10 +142,15 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeProgramaDegrau/validarPD/', 'ProgramaDegrauController@validarPDs')->name('validarPDs');
 		Route::get('/homeProgramaDegrau/inscricaoPD/', 'ProgramaDegrauController@inscricaoPD')->name('inscricaoPD');
 		Route::get('/homeProgramaDegrau/inscricaoPDs/{id}', 'ProgramaDegrauController@inscricaoPDs')->name('inscricaoPDs');
+		Route::get('/homeProgramaDegrau/inscricaoInscritosPD/{id}', 'ProgramaDegrauController@inscricaoInscritosPD')->name('inscricaoInscritosPD');
+		Route::get('/homeProgramaDegrau/vincularInscritosPD/{id}', 'ProgramaDegrauController@vincularInscritosPD')->name('vincularInscritosPD');
+		Route::post('/homeProgramaDegrau/vincularInscritosPD/{id}', 'ProgramaDegrauController@storeVincularInscricao')->name('storeVincularInscricao');
 		Route::post('/homeProgramaDegrau/inscricaoPDs/{id}', 'ProgramaDegrauController@storeInscricaoPD')->name('storeInscricaoPD');
 		Route::get('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}', 'ProgramaDegrauController@inscricaoAprovarPDs')->name('inscricaoAprovarPDs');
 		Route::get('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}/aprovar', 'ProgramaDegrauController@aprovarInscricao')->name('aprovarInscricao');
+		Route::post('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}/aprovar', 'ProgramaDegrauController@storeAprovarInscricao')->name('storeAprovarInscricao');
 		Route::get('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}/reprovar', 'ProgramaDegrauController@reprovarInscricao')->name('reprovarInscricao');
+		Route::post('/homeProgramaDegrau/inscricaoAprovarPDs/{id_vaga}/{id}/reprovar', 'ProgramaDegrauController@storeReprovarInscricao')->name('storeReprovarInscricao');
 		Route::get('/homeProgramaDegrau/validar/{id}/n_autorizarPD', 'ProgramaDegrauController@n_autorizarPD')->name('n_autorizarPD');
 		Route::post('/homeProgramaDegrau/validar/{id}/n_autorizarPD', 'ProgramaDegrauController@storeNAutPD')->name('storeNAutPD');
 		Route::get('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@autorizarPD')->name('autorizarPD');

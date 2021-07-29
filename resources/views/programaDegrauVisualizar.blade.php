@@ -62,7 +62,7 @@
 		   </table>
 		  </center> 
 		  <?php $a = 0; ?>
-			 @if(Auth::user()->funcao == "RH" || $pd[0]->gestor_id == Auth::user()->id)
+		  @if(Auth::user()->id != 73 && Auth::user()->id != 30 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
 			  @if(empty($aprovacao))
 			      <a style="margin-left: 180px;" class="btn btn-primary" href="{{ route('alterarPD', $pd[0]->id) }}">Alterar</a></td>
 			  @else 
@@ -442,7 +442,7 @@
 			</td>
 		   </tr>
 		   <tr>
-			<td>Recrutador</td>
+			<td>Coordenador de Seleção</td>
 			<td>
 			@foreach($aprovacao as $ap)	
 			  @if($ap->gestor_anterior == 73)

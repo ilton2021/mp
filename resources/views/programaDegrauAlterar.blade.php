@@ -545,7 +545,7 @@
 			</td>
 		   </tr>
 		   <tr>
-			<td>Recrutador</td>
+			<td>Coordenador de Seleção</td>
 			<td>
 			 @foreach($aprovacao as $ap)
 			  @if($ap->gestor_anterior == 73)

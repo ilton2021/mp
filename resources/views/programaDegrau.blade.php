@@ -95,6 +95,7 @@
 			  <td hidden><input hidden class="form-control" type="text" id="concluida" name="concluida" value="" readonly="true" /></td>
 			  <td hidden><input hidden class="form-control" type="text" id="aprovada" name="aprovada" value="0" readonly="true" /></td>
 			  <td hidden><input hidden class="form-control" type="text" id="descricao" name="descricao" value="" readonly="true" /></td>
+			  <td hidden><input hidden class="form-control" type="text" id="vinculo" name="vinculo" value="" readonly="true" value="0" /></td>
 			  <td hidden><input hidden class="form-control" type="text" id="data_emissao" name="data_emissao" value="<?php echo date('Y-m-d', strtotime('now')); ?>" readonly="true" /></td>
 			</tr>
 			<tr>
@@ -559,7 +560,7 @@
 			<td>Solicitante </td><td><input readonly="true" type="date" id="data_solicitante" name="data_solicitante" class="form-control" /></td>
 		   </tr>
 		   <tr>
-			<td>Recrutador</td><td><input readonly="true" type="date" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" /></td>
+			<td>Coordenador de Seleção</td><td><input readonly="true" type="date" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" /></td>
 		   </tr>
 		   <tr>
 			<td>Gerente de RH</td><td><input readonly="true" type="date" id="data_rec_humanos" name="data_rec_humanos" class="form-control" /></td>

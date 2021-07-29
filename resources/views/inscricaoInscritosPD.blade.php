@@ -101,26 +101,22 @@
          <div class="row"> 
          <form action="{{ \Request::route('validarPDs') }}" method="post">
 	     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+         @if(Auth::user()->id == 73)
           <table class="table table-sm table-bordered" style="font-size: 12px;">
             <?php $qtdVagas = sizeof($vagas); ?>
               @if($qtdVagas > 0) 
-              <tr><td colspan="12"><br><b><font size="04px">VAGAS:</font></b></td></tr>
+              <tr><td colspan="12"><br><b><font size="04px">APROVAR INSCRIÇÃO:</font></b></td></tr>
               <tr>
                 <td><center>UNIDADE</center></td>
-                <td><center>NOME</center></td>
-                <td><center>DEPARTAMENTO</center></td>
-                <td><center>CARGO</center></td>
-                <td><center>SALÁRIO</center></td>
-                <td><center>CENTRO DE CUSTO</center></td>
-                <td><center>VISUALIZAR</center></td>
-                @if(Auth::user()->id != 73)
-                <td><center>INSCRIÇÃO</center></td>
-                @else
-                <td><center>INSCRITOS</center></td>
-                <td><center>VINCULAR CANDIDATO/VAGA</center></td>
-                @endif
+                <td><center>VAGA</center></td>
+                <td><center>SOLICITANTE</center></td>
+                <td><center>FUNCIONÁRIO</center></td>
+                <td><center>MATRÍCULA</center></td>
+                <td><center>DATA EMISSÃO</center></td>
+                <td><center>VALIDAR</center></td>
+                <td><center>STATUS</center></td>
               </tr> <?php $a = 1; ?>
-				@foreach($vagas as $vaga)
+				@foreach($inscricao as $vaga)
               	<tr> 
                  <td> <br><center> <b>  @if($vaga->unidade_id == 1) <?php echo "HCP GESTÃO"; ?>  
                       @elseif($vaga->unidade_id == 2) <?php echo "HMR"; ?>  
@@ -131,30 +127,35 @@
                       @elseif($vaga->unidade_id == 7) <?php echo "HSS"; ?>  
                       @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?>  
                       @endif </b> </center> </td>
-                 <td title="<?php echo $vaga->vaga; ?>"> <p><center> {{ substr($vaga->vaga, 0, 30) }} </center> </p>  </td>
-                 <td title="<?php echo $vaga->departamento; ?>"> <p><center> {{ $vaga->departamento }} </center> </p>  </td>
-                 <td> <p><center> {{ $vaga->cargo }} </center> </p> </td>
-                 <td> <p><center> {{ "R$ ".number_format($vaga->salario, 2,',','.') }} </center> </p> </td>
-                 <td> <br> <center> {{ $vaga->centro_custo }} </center> </td>
-                 <td> <p><center> <a href="{{ route('visualizarVagaPD', $vaga->id) }}" class="btn btn-dark btn-sm">VISUALIZAR</a> </center></p></td>
-                 @if(Auth::user()->id != 73)
-                 <td> <p><center> <a href="{{ route('inscricaoPDs', $vaga->id) }}" class="btn btn-success btn-sm">INSCRIÇÃO</a> </center></p></td>
-                 @else  
-                 <td> <p><center> <a href="{{ route('inscricaoInscritosPD', $vaga->id) }}" class="btn btn-info btn-sm">INSCRITOS</a> </center></p></td>
-                  @if($vaga->vinculo == '0')
-                   <td> <p><center> <a href="{{ route('vincularInscritosPD', $vaga->id) }}" class="btn btn-success btn-sm">VINCULAR</a> </center></p></td>
-                  @else
-                   <td> <p><center> {{ $vaga->vinculo }} </center></p></td> 
+                 <td><p><center> {{ $vaga->NomeVaga }} </center></td>
+                 @foreach($gestores as $gestor)     
+                  @if($gestor->id == $vaga->solicitante)
+                   <td title="<?php echo $vaga->solicitante; ?>"> <p><center> {{ substr($gestor->nome, 0, 30) }} </center> </p>  </td>
                   @endif
+                 @endforeach
+                 <td title="<?php echo $vaga->nome_funcionario; ?>"> <p><center> {{ $vaga->nome_funcionario }} </center> </p>  </td>
+                 <td> <p><center> {{ $vaga->matricula_funcionario }} </center> </p> </td>
+                 <td> <p><center> {{ date('d-m-Y', strtotime($vaga->data_emissao)) }} </center> </p> </td>
+                 <td> <p><center> 
+                 @if($vaga->concluida == 0)
+                    <a href="{{ route('inscricaoAprovarPDs', array($vaga->id,$vaga->vaga_interna_id)) }}" class="btn btn-info btn-sm">VALIDAR</a> 
                  @endif
+                 </center></p></td>
+                 <td> <p><center>  
+                 @if($vaga->concluida == 1 && $vaga->aprovada == 0)
+                   <a href="" class="btn btn-danger btn-sm">REPROVADO</a>
+                 @elseif($vaga->concluida == 1 && $vaga->aprovada == 1)
+                   <a href="" class="btn btn-success btn-sm">APROVADO</a>
+                 @endif
+                 </center> </td>
                 @endforeach
                @endif
                </tr>
           </table>
-          
+          @endif
           <table style="width: 1340px;">
             <tr>
-              <td> <a href="{{ url('/homeProgramaDegrau') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>  </td>
+              <td> <a href="{{ route('inscricaoPD') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>  </td>
             </tr>    
           </table>
           <input hidden type="text" id="resposta" name="resposta" value="" /> 

@@ -36,6 +36,7 @@ class VagaInterna extends Model
 		'idiomas',
 		'concluida',
 		'aprovada',
+		'vinculo',
 		'data_emissao',
 		'created_at',
 		'updated_at'

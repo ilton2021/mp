@@ -153,116 +153,138 @@
 		   <tr>
 			<td colspan="3">Motivo: <br><br> 
 			@if($altF->motivo == "promocao")
-						<input type="checkbox" checked id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "merito")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" checked id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "mudanca_setor_area")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" checked id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "transferencia_outra_unidade")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" checked id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "enquadramento")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" checked id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "mudanca_horaria")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" checked id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "substituicao_demissao_voluntaria")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" checked id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "recrutamento_interno")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" checked id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "aumento_quadro")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" checked id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@elseif($altF->motivo == "substituicao_demissao_forcada")
-						<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
-						<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade <br><br>
-						<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
-						<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-						<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" checked id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
-						@endif
+			<input type="checkbox" checked id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "merito")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" checked id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "mudanca_setor_area")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" checked id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "transferencia_outra_unidade")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" checked id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "substituicao_temporaria")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"   /> Transferência para outra unidade
+			<input type="checkbox" checked id="motivo" name="motivo" value="substituicao_temporaria" /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "enquadramento")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" checked id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "mudanca_horaria")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" checked id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "substituicao_demissao_voluntaria")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" checked id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "recrutamento_interno")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" checked id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "aumento_quadro")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" checked id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@elseif($altF->motivo == "substituicao_demissao_forcada")
+			<input type="checkbox" id="motivo" name="motivo" value="promocao"  /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+			<input type="checkbox" id="motivo" name="motivo" value="merito"  /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_setor_area"  /> Mudança de Setor/Área &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="transferencia_outra_unidade"  /> Transferência para outra unidade
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_temporaria"  /> Substituição Temporária <br><br>
+			<input type="checkbox" id="motivo" name="motivo" value="enquadramento"  /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="mudanca_horaria"  /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="substituicao_demissao_voluntaria"  /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivo" name="motivo" value="recrutamento_interno"  /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivo" name="motivo" value="aumento_quadro"  /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" checked id="motivo" name="motivo" value="substituicao_demissao_forcada"  /> Substituição por demissão forçada  </td>
+			@endif
 			</tr>
 		  </table>
 		  </center>

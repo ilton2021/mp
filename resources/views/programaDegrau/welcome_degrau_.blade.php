@@ -22,8 +22,7 @@
 				<h4 class="d-none d-sm-block">Programa Degrau - RH</h4>
 			</span>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
+                    <ul class="navbar-nav mr-auto"> </ul>
 
                     <ul class="navbar-nav ml-auto">
                         @guest

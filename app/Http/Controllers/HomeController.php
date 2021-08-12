@@ -1997,7 +1997,8 @@ class HomeController extends Controller
 					$m->to($email);
 				});
 			}
-			return view('home', compact('unidade', 'idG', 'idMP'));
+			$a = 0;
+			return view('home', compact('unidade', 'idG', 'idMP','a'));
 		}
 	}
 	

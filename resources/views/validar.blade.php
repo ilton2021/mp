@@ -536,6 +536,8 @@
                                     {{ "Mudança Setor/Área" }} </center> </p>  </td>
                                   <?php }else if($altF->motivo == "transferencia_outra_unidade"){ ?>
                                     {{ "Transferência para outra unidade" }} </center> </p>  </td>
+                                  <?php }else if($altF->motivo == "substituicao_temporaria"){ ?>
+                                    {{ "Substituição Temporária" }} </center> </p>  </td>
                                   <?php }else if($altF->motivo == "enquadramento"){ ?>
                                     {{ "Enquadramento" }} </center> </p>  </td>
                                   <?php }else if($altF->motivo == "mudanca_horaria"){ ?>

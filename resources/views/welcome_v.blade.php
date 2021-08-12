@@ -21,7 +21,7 @@
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
 				<h4 class="d-none d-sm-block">Abertura de Vaga</h4>
 			</span>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                     </ul>
 

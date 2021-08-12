@@ -270,6 +270,8 @@
 			<input type="checkbox" checked id="motivo" name="motivo" value="mudanca_setor_area" disabled="true" /> Mudança de Setor/Área 
 			@elseif($altF->motivo == "transferencia_outra_unidade")
 			<input type="checkbox" checked id="motivo" name="motivo" value="transferencia_outra_unidade" disabled="true" /> Transferência para outra unidade 
+			@elseif($altF->motivo == "substituicao_temporaria")
+			<input type="checkbox" checked id="motivo" name="motivo" value="substituicao_temporaria" disabled="true" /> Substituição Temporária 
 			@elseif($altF->motivo == "enquadramento")
 			<input type="checkbox" checked id="motivo" name="motivo" value="enquadramento" disabled="true" /> Enquadramento 
 			@elseif($altF->motivo == "mudanca_horaria")

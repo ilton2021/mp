@@ -125,6 +125,7 @@
 			  document.getElementById('motivoA8').disabled  = false;
 			  document.getElementById('motivoA9').disabled  = false;
 			  document.getElementById('motivoA10').disabled = false;
+			  document.getElementById('motivoA11').disabled = false;
 		  } else {
 			  document.getElementById('unidade_id2').disabled    = true;
 			  document.getElementById('setor').disabled 	     = true;
@@ -144,6 +145,7 @@
 			  document.getElementById('motivoA8').disabled  = true;
 			  document.getElementById('motivoA9').disabled  = true;
 			  document.getElementById('motivoA10').disabled = true;
+			  document.getElementById('motivoA11').disabled = true;
 		  }
 		}
 		
@@ -923,6 +925,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -934,6 +937,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" checked /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -945,6 +949,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" checked /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -956,6 +961,19 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" checked /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
+			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			@elseif(old('motivo') == "substituicao_temporaria")
+			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" checked /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -967,6 +985,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" checked /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -978,6 +997,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" checked /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -989,6 +1009,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" checked /> Substituição por demissão voluntária <br><br> 
@@ -1000,6 +1021,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1011,6 +1033,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1022,6 +1045,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1033,6 +1057,7 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1046,6 +1071,7 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<input disabled="true" type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input disabled="true" type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input disabled="true" type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input disabled="true" type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input disabled="true" type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

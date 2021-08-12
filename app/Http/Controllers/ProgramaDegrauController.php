@@ -465,7 +465,8 @@ class ProgramaDegrauController extends Controller
 		$input = $request->all();
 		$validator = \Validator::make($request->all(), [
 			'nome_funcionario' 	    => 'required|max:255',
-			'matricula_funcionario' => 'required|max:255'
+			'matricula_funcionario' => 'required|max:255',
+			'unidade_funcionario'   => 'required|max:255'
 		]);
 		if ($validator->fails()) {
 			$text = true;

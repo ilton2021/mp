@@ -62,15 +62,24 @@
 		  <center>
 		  <table class="table table-bordered" style="width: 1000px;" cellspancing="0">
 			<tr>
-			  <td colspan="2"> <b>Funcionário:</b> </td>
+			  <td colspan="3"> <b>Funcionário:</b> </td>
 			</tr>
 			<tr>
-			  <td style="width: 800px;"> Nome: </td>
+			  <td style="width: 500px;"> Nome: </td>
 			  <td> Matrícula: </td>
+			  <td> Unidade: </td>
 			</tr>
 			<tr>
-			  <td> <input type="text" name="nome_funcionario" id="nome_funcionario" class="form-control" /> </td>
-			  <td> <input type="text" name="matricula_funcionario" id="matricula_funcionario" class="form-control" /> </td>
+			  <td> <input type="text" name="nome_funcionario" id="nome_funcionario" class="form-control" required="true" /> </td>
+			  <td> <input type="text" name="matricula_funcionario" id="matricula_funcionario" class="form-control" required="true" /> </td>
+			  <td> 
+			   <select class="form-control" id="unidade_funcionario" name="unidade_funcionario" required="true">
+				 <option id="unidade_funcionario" name="unidade_funcionario" value=""> Selecione... </option>
+				 @foreach($unidades as $und)
+					<option id="unidade_funcionario" name="unidade_funcionario" value="<?php echo $und->nome; ?>">{{ $und->nome }} </option>
+				 @endforeach
+			   </select>
+			  </td>
 			</tr>
 		  </table>	
 		  </center>

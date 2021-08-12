@@ -111,6 +111,7 @@
                 <td><center>VAGA</center></td>
                 <td><center>SOLICITANTE</center></td>
                 <td><center>FUNCIONÁRIO</center></td>
+                <td title="UNIDADE FUNCIONÁRIO"><center>UND. FUNCIONÁRIO</center></td>
                 <td><center>MATRÍCULA</center></td>
                 <td><center>DATA EMISSÃO</center></td>
                 <td><center>VALIDAR</center></td>
@@ -134,6 +135,7 @@
                   @endif
                  @endforeach
                  <td title="<?php echo $vaga->nome_funcionario; ?>"> <p><center> {{ $vaga->nome_funcionario }} </center> </p>  </td>
+                 <td> <p><center> {{ $vaga->unidade_funcionario }} </center></p></td>
                  <td> <p><center> {{ $vaga->matricula_funcionario }} </center> </p> </td>
                  <td> <p><center> {{ date('d-m-Y', strtotime($vaga->data_emissao)) }} </center> </p> </td>
                  <td> <p><center> 

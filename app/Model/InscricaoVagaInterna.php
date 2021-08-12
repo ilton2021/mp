@@ -15,6 +15,7 @@ class InscricaoVagaInterna extends Model
         'gestor_id',
         'nome_funcionario',
         'matricula_funcionario',
+        'unidade_funcionario',
         'concluida',
         'aprovada',
         'data_emissao',

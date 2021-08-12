@@ -66,15 +66,17 @@
 		  <center>
 		  <table class="table table-bordered" style="width: 1000px;" cellspancing="0">
 			<tr>
-			  <td colspan="2"> <b>Funcionário:</b> </td>
+			  <td colspan="3"> <b>Funcionário:</b> </td>
 			</tr>
 			<tr>
-			  <td style="width: 800px;"> Nome: </td>
+			  <td style="width: 500px;"> Nome: </td>
 			  <td> Matrícula: </td>
+			  <td> Unidade: </td>
 			</tr>
 			<tr>
 			  <td> <input readonly="true" type="text" name="nome_funcionario" id="nome_funcionario" class="form-control" value="<?php echo $inscricao[0]->nome_funcionario; ?>" /> </td>
 			  <td> <input readonly="true" type="text" name="matricula_funcionario" id="matricula_funcionario" class="form-control" value="<?php echo $inscricao[0]->matricula_funcionario; ?>" /> </td>
+			  <td> <input readonly="true" type="text" name="unidade_funcionario" id="unidade_funcionario" class="form-control" value="<?php echo $inscricao[0]->unidade_funcionario; ?>" /> </td>
 			</tr>
 		  </table>	
 		  </center>

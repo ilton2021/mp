@@ -90,14 +90,25 @@
             <div class="col-12 text-center">
                 <table>
 				 <tr>
-                   <td><h4 style="color:#65b345; margin-bottom:0px;">Unidade:</h4></td>
-				   <td><a href="{{ route('cadastroUnidade') }}" class="btn-info btn">Cadastro</a></td> 
-                   <td> &nbsp; &nbsp; </td>
-				   <td><h4 style="color:#65b345; margin-bottom:0px;">Gestor:</h4></td>
-				   <td><a href="{{ route('cadastroGestor') }}" class="btn-info btn">Cadastro</a></td>
-                   <td> &nbsp; &nbsp; </td>
-                   <td><h4 style="color:#65b345; margin-bottom:0px;">Excluir MP:</h4></td>
-				   <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">Excluir</a></td>
+                    <td>
+                        <div class="dropdown">
+                            <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                CADASTRAR
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
+                                <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
+                                <a class="dropdown-item" href="{{ route('cadastroCargo') }}">Cargo</a>
+                                <a class="dropdown-item" href="{{ route('cadastroCentrocusto') }}">Centro de Custo</a>
+
+                            </div>
+                        </div>
+                    </td>
+                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
+				    <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MP'S</a></td>
+
+
+
 				 </tr>
 				</table>
             </div>

@@ -89,14 +89,22 @@
         <div class="row">
             <div class="col-12 text-center">
                 <table>
-				 <tr>
-				  <td><h4 style="color:#65b345; margin-bottom:0px;">Unidade:</h4></td>
-				  <td><a href="{{ route('cadastroUnidade') }}" class="btn-info btn">Cadastro</a></td>
-				 </tr>
-				 <tr> 
-				   <td><h4 style="color:#65b345; margin-bottom:0px;">Gestor:</h4></td>
-				   <td><a href="{{ route('cadastroGestor') }}" class="btn-info btn">Cadastro</a></td>
-				 </tr>
+                <td>
+                        <div class="dropdown">
+                            <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                CADASTRAR
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
+                                <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
+                               
+                            </div>
+                        </div>
+                    </td>
+                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
+				    <td><a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a></td>
+
+				 
 				</table>
             </div>
         </div>

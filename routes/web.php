@@ -64,6 +64,11 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/excluir/mp','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
 		Route::get('/home/excluir/mp/{id}','MPController@excluirMP')->name('excluirMP');
 		Route::post('/home/excluir/mp/{id}','MPController@deleteMP')->name('deleteMP');
+		//
+		Route::get('/homeVaga/excluir/vaga','VagaController@excluirVagas')->name('excluirVagas');
+		Route::post('/homeVaga/excluir/vaga','VagaController@pesquisaVagasExclusao')->name('pesquisaVagasExclusao');
+		Route::get('/homeVaga/excluir/vaga/{id}','VagaController@excluirVaga')->name('excluirVaga');
+		Route::post('/homeVaga/excluir/vaga/{id}','VagaController@deleteVaga')->name('deleteVaga');
 		////
 		
 		//Vaga
@@ -71,7 +76,6 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeVaga/unidade','VagaController@indexVaga2')->name('indexVaga2');
 		Route::get('/homeVaga/unidade/escolha/{id}/vaga','VagaController@escolha_vaga')->name('escolha_vaga');
 		Route::get('/homeVaga/validar', 'VagaController@indexValidaVaga')->name('indexValidaVaga');
-		Route::post('/homeVaga/validar', 'VagaController@storeValidaVaga')->name('storeValidaVaga');
 		Route::get('/homeVaga/validar/{id}', 'VagaController@validarVaga')->name('validarVaga');
 		Route::post('/homeVaga/validar/{id}', 'VagaController@salvarVaga')->name('salvarVaga');
 		Route::get('/homeVaga/validar/{id}/salvarVaga/{idG}', 'VagaController@salvarVaga')->name('salvarVaga');
@@ -94,36 +98,6 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeVaga/validar/{id}/autorizarVaga/store', 'VagaController@storeAutVaga')->name('storeAutVaga');
 		Route::get('/homeVaga/validar/{id}/n_autorizarVaga', 'VagaController@n_autorizarVaga')->name('n_autorizarVaga');
 		Route::post('/homeVaga/validar/{id}/n_autorizarVaga/', 'VagaController@storeNAutVaga')->name('storeNAutVaga');
-		////
-		
-		//Unidade
-		Route::get('cadastroUnidade', 'UnidadeController@cadastroUnidade')->name('cadastroUnidade');
-		Route::get('cadastroUnidade/unidadeNovo', 'UnidadeController@unidadeNovo')->name('unidadeNovo');
-		Route::post('cadastroUnidade/unidadeNovo/', 'UnidadeController@storeUnidade')->name('storeUnidade');
-		Route::get('cadastroUnidade/unidadeAlterar/{id}', 'UnidadeController@unidadeAlterar')->name('unidadeAlterar');
-		Route::post('cadastroUnidade/unidadeAlterar/{id}/', 'UnidadeController@updateUnidade')->name('updateUnidade');
-		Route::get('cadastroUnidade/unidadeExcluir/{id}', 'UnidadeController@unidadeExcluir')->name('unidadeExcluir');
-		Route::post('cadastroUnidade/unidadeExcluir/{id}/', 'UnidadeController@destroyUnidade')->name('destroyUnidade');
-		////
-		
-		//Gestor
-		Route::get('cadastroGestor','GestorController@cadastroGestor')->name('cadastroGestor');
-		Route::get('cadastroGestor/gestorNovo','GestorController@gestorNovo')->name('gestorNovo');
-		Route::post('cadastroGestor/gestorNovo','GestorController@storeGestor')->name('storeGestor');
-		Route::get('cadastroGestor/gestorAlterar/{id}','GestorController@gestorAlterar')->name('gestorAlterar');
-		Route::post('cadastroGestor/gestorAlterar/{id}','GestorController@updateGestor')->name('updateGestor');
-		Route::get('cadastroGestor/gestorExcluir/{id}','GestorController@gestorExcluir')->name('gestorExcluir');
-		Route::post('cadastroGestor/gestorExcluir/{id}','GestorController@destroyGestor')->name('destroyGestor');
-		Route::post('cadastroGestor/pesquisarGestor','GestorController@pesquisarGestor')->name('pesquisarGestor');
-		////
-		
-		//Vaga
-		Route::get('/escolha/{id}','HomeController@escolha')->name('escolha');
-		Route::get('/escolha/{id}/vaga','VagaController@vaga')->name('vaga');
-		Route::get('/escolha/{id}/{i}/vaga','VagaController@cadastrarVaga')->name('cadastrarVaga');
-		Route::post('/escolha/{id}/{i}/vaga', 'VagaController@storeVaga')->name('storeVaga');
-		Route::get('/home/email/vaga/{i}', 'VagaController@homeVaga')->name('homeVaga');
-		Route::get('/pdf/vaga/{idG}/{idVaga}','VagaController@vagaPDF')->name('vagaPDF');
 		////
 		
 		//ProgramaDegrau
@@ -156,7 +130,57 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@autorizarPD')->name('autorizarPD');
 		Route::post('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@storeAutPD')->name('storeAutPD');
 		////
+		
+		//Unidade
+		Route::get('cadastroUnidade', 'UnidadeController@cadastroUnidade')->name('cadastroUnidade');
+		Route::get('cadastroUnidade/unidadeNovo', 'UnidadeController@unidadeNovo')->name('unidadeNovo');
+		Route::post('cadastroUnidade/unidadeNovo/', 'UnidadeController@storeUnidade')->name('storeUnidade');
+		Route::get('cadastroUnidade/unidadeAlterar/{id}', 'UnidadeController@unidadeAlterar')->name('unidadeAlterar');
+		Route::post('cadastroUnidade/unidadeAlterar/{id}/', 'UnidadeController@updateUnidade')->name('updateUnidade');
+		Route::get('cadastroUnidade/unidadeExcluir/{id}', 'UnidadeController@unidadeExcluir')->name('unidadeExcluir');
+		Route::post('cadastroUnidade/unidadeExcluir/{id}/', 'UnidadeController@destroyUnidade')->name('destroyUnidade');
+		////
 
+		//Cargos
+		Route::get('cadastroCargo', 'CargosController@cadastroCargo')->name('cadastroCargo');
+		Route::get('cadastroCargo/cargoNovo', 'CargosController@cargoNovo')->name('cargoNovo');
+		Route::post('cadastroCargo/cargoNovo/', 'CargosController@storeCargo')->name('storeCargo');
+		Route::get('cadastroCargo/cargoAlterar/{id}', 'CargosController@cargoAlterar')->name('cargoAlterar');
+		Route::post('cadastroCargo/cargoAlterar/{id}/', 'CargosController@updateCargo')->name('updateCargo');
+		Route::get('cadastroCargo/cargoExcluir/{id}', 'CargosController@cargoExcluir')->name('cargoExcluir');
+		Route::post('cadastroCargo/cargoExcluir/{id}/', 'CargosController@destroyCargo')->name('destroyCargo');
+		////
+
+		//Centro de custo
+		Route::get	('cadastroCentrocusto', 'CentroCustoController@cadastroCentrocusto')->name('cadastroCentrocusto');
+		Route::get	('cadastroCentrocusto/centrocustoNovo', 'CentroCustoController@centrocustoNovo')->name('centrocustoNovo');
+		Route::post	('cadastroCentrocusto/centrocustoNovo/', 'CentroCustoController@storeCentrocusto')->name('storeCentrocusto');
+		Route::get	('cadastroCentrocusto/centrocustoAlterar/{id}', 'CentroCustoController@centrocustoAlterar')->name('centrocustoAlterar');
+		Route::post	('cadastroCentrocusto/centrocustoAlterar/{id}/', 'CentroCustoController@updateCentrocusto')->name('updateCentrocusto');
+		Route::get	('cadastroCentrocusto/centrocustoExcluir/{id}', 'CentroCustoController@centrocustoExcluir')->name('centrocustoExcluir');
+		Route::post	('cadastroCentrocusto/centrocustoExcluir/{id}/', 'CentroCustoController@destroyCentrocusto')->name('destroyCentrocusto');
+		////
+		
+		//Gestor
+		Route::get('cadastroGestor','GestorController@cadastroGestor')->name('cadastroGestor');
+		Route::get('cadastroGestor/gestorNovo','GestorController@gestorNovo')->name('gestorNovo');
+		Route::post('cadastroGestor/gestorNovo','GestorController@storeGestor')->name('storeGestor');
+		Route::get('cadastroGestor/gestorAlterar/{id}','GestorController@gestorAlterar')->name('gestorAlterar');
+		Route::post('cadastroGestor/gestorAlterar/{id}','GestorController@updateGestor')->name('updateGestor');
+		Route::get('cadastroGestor/gestorExcluir/{id}','GestorController@gestorExcluir')->name('gestorExcluir');
+		Route::post('cadastroGestor/gestorExcluir/{id}','GestorController@destroyGestor')->name('destroyGestor');
+		Route::post('cadastroGestor/pesquisarGestor','GestorController@pesquisarGestor')->name('pesquisarGestor');
+		////
+		
+		//Vaga
+		Route::get('/escolha/{id}','HomeController@escolha')->name('escolha');
+		Route::get('/escolha/{id}/vaga','VagaController@vaga')->name('vaga');
+		Route::get('/escolha/{id}/{i}/vaga','VagaController@cadastrarVaga')->name('cadastrarVaga');
+		Route::post('/escolha/{id}/{i}/vaga', 'VagaController@storeVaga')->name('storeVaga');
+		Route::get('/home/email/vaga/{i}', 'VagaController@homeVaga')->name('homeVaga');
+		Route::get('/pdf/vaga/{idG}/{idVaga}','VagaController@vagaPDF')->name('vagaPDF');
+		////
+		
 		Route::get('/home/graphicsIndex','HomeController@graphicsIndex')->name('graphicsIndex');
 		Route::get('/home/graphics','HomeController@graphics')->name('graphics');
 		Route::post('/home/graphics','HomeController@graphics')->name('graphics');
@@ -191,6 +215,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeVaga/graphicsVaga3','VagaController@graphicsVaga3')->name('graphicsVaga3');
 		Route::post('/homeVaga/graphicsVaga3','VagaController@graphicsVaga3')->name('graphicsVaga3');
 		Route::post('/homeVaga/graphicsVaga3/','VagaController@pesquisarGrafico10')->name('pesquisarGrafico10');
+		
 });
 
 ?>

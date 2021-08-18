@@ -216,6 +216,17 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeVaga/graphicsVaga3','VagaController@graphicsVaga3')->name('graphicsVaga3');
 		Route::post('/homeVaga/graphicsVaga3/','VagaController@pesquisarGrafico10')->name('pesquisarGrafico10');
 		
+		//Usuário
+		Route::get('/homeMP/cadastro_usuario','UserController@cadastroUsuario')->name('cadastroUsuario');
+		Route::get('/homeMP/cadastro_usuario/novo','UserController@cadastroUsuarioNovo')->name('cadastroUsuarioNovo');
+		Route::post('/homeMP/cadastro_usuario/novo','UserController@store')->name('store');
+		Route::get('/homeMP/cadastro_usuario/alterar/{id}','UserController@cadastroUsuarioAlterar')->name('cadastroUsuarioAlterar');
+		Route::post('/homeMP/cadastro_usuario/alterar/{id}','UserController@alterarUsuario')->name('alterarUsuario');
+		Route::get('/homeMP/cadastro_usuario/alterar_senha/{id}','UserController@alterarSenhaUsuario')->name('alterarSenhaUsuario');
+		Route::post('/homeMP/cadastro_usuario/alterar_senha/{id}','UserController@updateSenha')->name('updateSenha');
+		Route::get('/homeMP/cadastro_usuario/excluir/{id}','UserController@cadastroUsuarioExcluir')->name('cadastroUsuarioExcluir');
+		Route::post('/homeMP/cadastro_usuario/excluir/{id}','UserController@deleteUsuario')->name('deleteUsuario');	
+		////
 });
 
 ?>

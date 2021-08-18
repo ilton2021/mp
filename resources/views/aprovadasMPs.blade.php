@@ -151,8 +151,6 @@
 			 </thead>
 			 <?php $b = 0; ?>
 			 @foreach($mps as $mp)
-			 @if(($mp->solicitante == Auth::user()->name && Auth::user()->funcao != "RH") && ($mp->concluida == 1 && $mp->aprovada == 1))
-			 <?php $b = 1; ?>
 			 <tbody>
 			  <tr>  
 			   <td><center>{{ $mp->numeroMP }}</center></td>
@@ -180,12 +178,8 @@
 							      <p align="justify">{{ 'Validação Final: ' }}<b>{{ $g->nome }}</b></a>
 							    @endif
 							   @endforeach	
-							   @if($mp->aprovada == 1)
-								 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
-							   @else
-								 <p align="justify">{{ 'Situação:' }}<b><font color="red">{{ ' REPROVADO' }}</font></b></a>		 
-							   @endif
-								<p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
+							 	 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
+							  	 <p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
 							 </div>
 							</div>
 						  </div>
@@ -201,117 +195,6 @@
 			   <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
 			  </tr>
 			 </tbody>
-			 @elseif((Auth::user()->id == 30 || Auth::user()->id == 72 || Auth::user()->id == 32 || Auth::user()->id == 23 || Auth::user()->id == 74 || Auth::user()->id == 62) && ($mp->concluida == 1 && $mp->aprovada == 1))
-			 <?php $b = 1; ?>
-			 <tbody>
-			  <tr>  
-			   <td><center>{{ $mp->numeroMP }}</center></td>
-			   <td><center>{{ $mp->solicitante }}</center></td>   
-			   <td>
-			   <?php $qtd = sizeof($aprovacao); ?>
-			   <?php for($i = 0; $i < $qtd; $i++) { ?>
-			   <?php  if($aprovacao[$i]->mp_id == $mp->id && $aprovacao[$i]->ativo == 1) { ?>
-			     <center><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<?php echo $aprovacao[$i]->id; ?>" > 
-			     Status
-				 </button>
-				 <div class="modal fade" id='exampleModal<?php echo $aprovacao[$i]->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class='modal-content'>
-						  <div class='modal-header'>
-							<h5 class='modal-title' align="left"><b><center>Status:</center></b></h5>
-							<button type='button' class='close' data-dismiss='modal'>&times;</button>
-						  </div>
-						  <div class='modal-body'>
-							<div class='panel panel-default'>
-							 <div class='panel-heading'> </div>
-							 <div class='panel-body'>
-							   @foreach($gestores as $g)
-							    @if($g->id == $aprovacao[$i]->gestor_anterior)
-							      <p align="justify">{{ 'Validação Final: ' }}<b>{{ $g->nome }}</b></a>
-							    @endif
-							   @endforeach	
-							   @if($mp->aprovada == 1)
-								 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
-							   @else
-								 <p align="justify">{{ 'Situação:' }}<b><font color="red">{{ ' REPROVADO' }}</font></b></a>		 
-							   @endif
-								<p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
-							 </div>
-							</div>
-						  </div>
-						  <div class='modal-footer'>
-							<span class='codigo'></span>
-						  </div>
-					   </div>
-					 </div>
-				 </div></center>
-			   <?php  } ?>
-			   <?php } ?>
-			   </td>
-			   <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			  </tr>
-			 </tbody>
-			 @elseif((($mp->unidade_id == 3 && Auth::user()->id == 95)  || ($mp->unidade_id == 7 && Auth::user()->id == 40) || 
-					  ($mp->unidade_id == 6 && Auth::user()->id == 87)  || ($mp->unidade_id == 4 && Auth::user()->id == 86) || 
-					  ($mp->unidade_id == 6 && Auth::user()->id == 133) || ($mp->unidade_id == 3 && Auth::user()->id == 5)  ||
-					  ($mp->unidade_id == 4 && Auth::user()->id == 1)   || ($mp->unidade_id == 5 && Auth::user()->id == 34) ||
-					  ($mp->unidade_id == 6 && Auth::user()->id == 48)  || ($mp->unidade_id == 2 && Auth::user()->id == 59) ||
-					  ($mp->unidade_id == 2 && Auth::user()->id == 65)  || ($mp->unidade_id == 7 && Auth::user()->id == 60) ||
-					  ($mp->unidade_id == 8 && Auth::user()->id == 61)  ||
-					  ($mp->unidade_id == 8 && Auth::user()->id == 73)) && ($mp->concluida == 1 && $mp->aprovada == 1))
-			 <?php $b = 1; ?>
-			 <tbody>
-			  <tr>  
-			   <td><center>{{ $mp->numeroMP }}</center></td>
-			   <td><center>{{ $mp->solicitante }}</center></td>   
-			   <td>
-			   <?php $qtd = sizeof($aprovacao); ?>
-			   <?php for($i = 0; $i < $qtd; $i++) { ?>
-			   <?php  if($aprovacao[$i]->mp_id == $mp->id && $aprovacao[$i]->ativo == 1) { ?>
-			     <center><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<?php echo $aprovacao[$i]->id; ?>" > 
-			     Status
-				 </button>
-				 <div class="modal fade" id='exampleModal<?php echo $aprovacao[$i]->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class='modal-content'>
-						  <div class='modal-header'>
-							<h5 class='modal-title' align="left"><b><center>Status:</center></b></h5>
-							<button type='button' class='close' data-dismiss='modal'>&times;</button>
-						  </div>
-						  <div class='modal-body'>
-							<div class='panel panel-default'>
-							 <div class='panel-heading'> </div>
-							 <div class='panel-body'>
-							   @foreach($gestores as $g)
-							    @if($g->id == $aprovacao[$i]->gestor_anterior)
-							      <p align="justify">{{ 'Validação Final: ' }}<b>{{ $g->nome }}</b></a>
-							    @endif
-							   @endforeach	
-							   @if($mp->aprovada == 1)
-								 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
-							   @else
-								 <p align="justify">{{ 'Situação:' }}<b><font color="red">{{ ' REPROVADO' }}</font></b></a>		 
-							   @endif
-								<p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
-							 </div>
-							</div>
-						  </div>
-						  <div class='modal-footer'>
-							<span class='codigo'></span>
-						  </div>
-					   </div>
-					 </div>
-				 </div></center>
-			   <?php  } ?>
-			   <?php } ?>
-			   </td>
-			   <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			  </tr>
-			  <tr>
-				<td colspan="4"> {{ $mps->appends(['pesq' => isset($pesq) ? $pesq : ''])->render("pagination::bootstrap-4") }} </td>
-			  </tr>
-			 </tbody>
-			 @endif
 			 @endforeach
 		  </td>
 		 </tr>

@@ -122,11 +122,7 @@
 		       <td><center>VISUALIZAR</center></td>
 			  </tr>
 			 </thead>
-			 <?php $a = 0; ?>
 			 @foreach($mps as $mp)
-			 @if(($mp->solicitante == Auth::user()->name || Auth::user()->funcao == "RH") && ($mp->concluida == 0))
-			  @if(($mp->unidade_id == 3 && Auth::user()->id == 95) || ($mp->unidade_id == 7 && Auth::user()->id == 40) || ($mp->unidade_id == 6 && Auth::user()->id == 87) || ($mp->unidade_id == 4 && Auth::user()->id == 86) || ($mp->unidade_id == 8 && Auth::user()->id == 73))
-			  <?php $a = 1; ?>
 			  <tbody>
 			   <tr>
 			    <td><center>{{ $mp->numeroMP }}</center></td>
@@ -134,35 +130,6 @@
 			    <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
 			   </tr>
 			  </tbody>
-			  @endif
-			  
-			  @if(Auth::user()->id != 95 && Auth::user()->id != 40 && Auth::user()->id != 87 && Auth::user()->id != 86 && Auth::user()->id != 73)
-			  <?php $a = 1; ?>
-			  <tbody>
-			   <tr>
-			    <td><center>{{ $mp->numeroMP }}</center></td>
-			    <td><center>{{ $mp->solicitante }}</center></td>   
-			    <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			   </tr>
-			  </tbody>
-			 @endif
-			@endif
-			  
-			 @if($mp->concluida == 0 && $a == 0)
-			  @if((Auth::user()->id == 65 && $mp->unidade_id == 2) || (Auth::user()->id == 48 && $mp->unidade_id == 6)
-			   || (Auth::user()->id == 59 && $mp->unidade_id == 2) || (Auth::user()->id == 61 && $mp->unidade_id == 8)
-			   || (Auth::user()->id == 60 && $mp->unidade_id == 7) || (Auth::user()->id == 5  && $mp->unidade_id == 3)
-			   || (Auth::user()->id == 1  && $mp->unidade_id == 4) || (Auth::user()->id == 34 && $mp->unidade_id == 5)
-			   || Auth::user()->id == 23 || Auth::user()->id == 32)
-			    <tbody>
-			     <tr>
-			      <td><center>{{ $mp->numeroMP }}</center></td>
-			      <td><center>{{ $mp->solicitante }}</center></td>   
-			      <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			     </tr>
-			    </tbody>
-			  @endif
-			 @endif
 			 @endforeach
 		  </td>
 		 </tr>

@@ -100,7 +100,7 @@
                                 <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
                                 <a class="dropdown-item" href="{{ route('cadastroCargo') }}">Cargo</a>
                                 <a class="dropdown-item" href="{{ route('cadastroCentrocusto') }}">Centro de Custo</a>
-
+                                <a class="dropdown-item" href="{{ route('cadastroUsuario') }}">Usuário</a>    
                             </div>
                         </div>
                     </td>

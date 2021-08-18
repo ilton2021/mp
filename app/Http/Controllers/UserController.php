@@ -10,6 +10,7 @@ use App\Model\Unidade;
 use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
+use Validator;
 
 
 class UserController extends Controller
@@ -31,7 +32,36 @@ class UserController extends Controller
         $roles = Role::pluck('name','name')->all();
         return view('users.create',compact('roles'));
     }
+
+	public function cadastroUsuario()
+	{
+		$users = User::all();
+		return view('users/users_cadastro', compact('users'));
+	}
+
+	public function cadastroUsuarioNovo()
+	{
+		return view('users/users_cadastro_novo');
+	}
+
+	public function cadastroUsuarioAlterar($id)
+	{
+		$users = User::where('id',$id)->get();
+		return view('users/users_cadastro_alterar', compact('users')); 
+	}
+
+	public function cadastroUsuarioExcluir($id)
+	{
+		$users = User::where('id',$id)->get();
+		return view('users/users_cadastro_excluir', compact('users'));
+	}
 	
+	public function alterarSenhaUsuario($id)
+	{
+		$users = User::where('id',$id)->get();
+		return view('users/users_resetar_senha', compact('users'));
+	}
+
 	public function telaLogin()
 	{
 		$text = false;
@@ -95,26 +125,15 @@ class UserController extends Controller
 	public function resetarSenha(Request $request)
 	{
 		$input = $request->all();		
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'email'    => 'required|email',
             'password' => 'required|same:password_confirmation',
 			'password_confirmation' => 'required'
     	]);		
-		if ($v->fails()) {
-			$failed = $v->failed(); 
-			if ( !empty($failed['email']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Email']) ) {
-				\Session::flash('mensagem', ['msg' => 'Este e-mail é inválido!','class'=>'green white-text']);
-			} else if ( !empty($failed['password']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['password']['Same']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo senha e confirmar senha não são iguais!','class'=>'green white-text']);
-			} else if ( !empty($failed['password_confirmation']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo confirmar senha é obrigatório!','class'=>'green white-text']);
-			}
-			$text = true;
-			return view('auth.passwords/reset', compact('text'));
+		if ($validator->fails()) {
+			return view('auth.passwords/reset')
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));						
 		} else {
 			if(!empty($input['password'])){ 
 				$input['password'] = Hash::make($input['password']);
@@ -128,17 +147,18 @@ class UserController extends Controller
 			if($qtd > 0){
 			    $user = User::find($user[0]->id);
 				$user->update($input);
-				$text = true;
-				\Session::flash('mensagem', ['msg' => 'Senha alterada com sucesso!','class'=>'green white-text']);
-				$unidades = $this->unidade->all();
-				$text = true;
-				return view('auth.login', compact('unidades','user','text')); 								
+				$validator = 'Senha alterada com sucesso!';
+				$unidades  = $this->unidade->all();
+				return view('auth.login', compact('unidades','user'))						
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));								
 			} else {
-				\Session::flash('mensagem', ['msg' => 'Usuário não existe!','class'=>'green white-text']);
-				$unidades = $this->unidade->all();
-				$text = true;
+				$validator = 'Usuário não existe!';
+				$unidades  = Unidade::all();
 				$token = '';
-				return view('auth.passwords.reset', compact('unidades','user','text','token')); 									
+				return view('auth.passwords.reset', compact('unidades','user','token'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));								
 			}
 		}
 	}
@@ -146,43 +166,47 @@ class UserController extends Controller
     public function store(Request $request)
     {
 		$input = $request->all();
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'name'     		   => 'required',
             'email'    		   => 'required|email|unique:users,email',
             'password' 		   => 'required|same:password_confirmation',
 			'password_confirmation' => 'required',
 			'funcao' => 'required'
     	]);			 
-		if ($v->fails()) {
-			$failed = $v->failed(); 
-			if ( !empty($failed['name']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Email']) ) {
-				\Session::flash('mensagem', ['msg' => 'Este e-mail é inválido!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Unique']) ) {
-				\Session::flash('mensagem', ['msg' => 'Este e-mail já foi cadastrado!','class'=>'green white-text']);
-			} else if ( !empty($failed['password']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['password']['Same']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo senha e confirmar senha não são iguais!','class'=>'green white-text']);
-			} else if ( !empty($failed['password_confirmation']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo confirmar senha é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['roles']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo confirmar senha é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['funcao']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo função senha é obrigatório!','class'=>'green white-text']);
-			}
-			$text = true;
-			return view('auth.register', compact('text'));
+		if ($validator->fails()) {
+			return view('users/users_cadastro_novo')
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));						
 		} else {
+			$missing = array();
+			for($a = 1; $a <= 8; $a++){
+				if(!empty($input['unidade_'.$a])){
+					$missing[] = $a;
+				}
+			}
+			if( is_array($missing) && count($missing) > 0 )
+			{
+				$result = '';
+				$total = count($missing) - 1;
+				for($i = 0; $i <= $total; $i++)
+				{ 
+					$result .= $missing[$i];
+
+					if($i < $total)
+						$result .= ", ";
+				}
+			} else {
+				$result = "";
+			}
+			$input['unidade']  = $result;
 			$input['password'] = Hash::make($input['password']);
 			$user = User::create($input);
-			\Session::flash('mensagem', ['msg' => 'Usuário cadastrado com sucesso!','class'=>'green white-text']);
-			$unidades = $this->unidade->all();
-			$text = true;
-			return view('auth.login', compact('unidades','text')); 						
+			$validator = 'Usuário cadastrado com sucesso!';
+			$unidades  = Unidade::all();
+			$users     = User::all();
+			return view('users/users_cadastro', compact('users'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));						
 		}
     }
 
@@ -200,32 +224,81 @@ class UserController extends Controller
         return view('users.edit',compact('user','roles','userRole'));
     }
 
-    public function update(Request $request, $id)
+    public function alterarUsuario(Request $request, $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
-        ]);
         $input = $request->all();
-        if(!empty($input['password'])){ 
-            $input['password'] = Hash::make($input['password']);
-        }else{
-            $input = array_except($input,array('password'));    
-        }
-        $user = User::find($id);
-        $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-        $user->assignRole($request->input('roles'));
-        return redirect()->route('users.index')
-                        ->with('success','User updated successfully');
+		$validator = Validator::make($request->all(), [
+            'name'   => 'required',
+            'email'  => 'required|email',
+			'funcao' => 'required'
+        ]);
+		if($validator->fails()) {
+			$users = User::where('id',$id)->get();
+			return view('users/users_cadastro_alterar', compact('users'))
+			->withErrors($validator)
+			->withInput(session()->flashInput($request->input()));						
+		} else {
+			$missing = array();
+			for($a = 1; $a <= 8; $a++){
+				if(!empty($input['unidade_'.$a])){
+					$missing[] = $a;
+				}
+			}
+			if( is_array($missing) && count($missing) > 0 )
+			{
+				$result = '';
+				$total = count($missing) - 1;
+				for($i = 0; $i <= $total; $i++)
+				{ 
+					$result .= $missing[$i];
+
+					if($i < $total)
+						$result .= ", ";
+				}
+			} else {
+				$result = "";
+			}
+			$input['unidade'] = $result;
+			$user = User::find($id);
+			$user->update($input);
+			$users = User::all();
+			$validator = "Usuário alterado com sucesso!!";
+			return view('users/users_cadastro', compact('users'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));						
+		}
     }
 
-	public function destroy($id)
+	public function updateSenha(Request $request, $id)
+	{
+		$input = $request->all(); 
+		$users = User::where('id',$id)->get();
+		$validator = Validator::make($request->all(), [
+			'password' 		   		=> 'required|same:password_confirmation',
+			'password_confirmation' => 'required'
+    	]);			 
+		if ($validator->fails()) {
+			return view('users/users_resetar_senha', compact('users'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));						
+		} else {
+			$input['password'] = Hash::make($input['password']); 
+			$users = User::find($id);
+			$users->update($input);
+			$users = User::where('id',$id)->get();
+			$validator = "Senha alterada com sucesso!!";
+			return redirect()->route('alterarUsuario',[$id])
+					->withErrors($validator)
+					->with('users','validator');
+		}	
+	}
+
+	public function deleteUsuario($id)
     {
         User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
+		$validator = "Usuário excluído com sucesso!!";
+		$users = User::all();
+        return view('users/users_cadastro', compact('users'))
+					->withErrors($validator);
     }
 }

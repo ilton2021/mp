@@ -779,7 +779,15 @@ class HomeController extends Controller
 	public function criadasMPs()
 	{
 		$unidades  = Unidade::all();
-		$mps 	   = MP::orderBy('unidade_id', 'ASC')->get();
+		$und 	   = Auth::user()->unidade; 
+		$und 	   = explode(" ",$und);
+		$funcao    = Auth::user()->funcao; 
+		if($funcao == "Administrador" || $funcao == "Gestor Imediato"){
+			$mps = MP::where('solicitante',Auth::user()->name)->where('concluida',0)->get();
+		} else {
+			$mps = DB::table('mp')->whereIN('unidade_id', $und)
+			->where('concluida',0)->orderby('mp.unidade_id', 'ASC')->get();
+		} 
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('criadasMPs', compact('unidades','mps','aprovacao','gestores'));
@@ -788,7 +796,17 @@ class HomeController extends Controller
 	public function aprovadasMPs()
 	{
 		$unidades  = Unidade::all();
-		$mps 	   = MP::orderBy('unidade_id', 'ASC')->where('concluida',1)->where('aprovada',1)->paginate(10);
+		$und 	   = Auth::user()->unidade; 
+		$und 	   = explode(" ",$und);
+		$funcao    = Auth::user()->funcao; 
+		$nome      = Auth::user()->name;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
+			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)
+					 ->where('aprovada',1)->get();
+		} else {
+			$mps = DB::table('mp')->whereIN('unidade_id', $und)->where('aprovada',1)
+			->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
+		} 
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('aprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
@@ -797,7 +815,17 @@ class HomeController extends Controller
 	public function reprovadasMPs()
 	{
 		$unidades  = Unidade::all();
-		$mps 	   = MP::orderBy('unidade_id', 'ASC')->where('concluida',1)->where('aprovada',0)->paginate(10);
+		$und 	   = Auth::user()->unidade; 
+		$und 	   = explode(" ",$und);
+		$funcao    = Auth::user()->funcao; 
+		$nome      = Auth::user()->name;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
+			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)
+					 ->where('aprovada',0)->get();
+		} else {
+			$mps = DB::table('mp')->whereIN('unidade_id', $und)->where('aprovada',0)
+			->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
+		} 		
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('reprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
@@ -816,13 +844,24 @@ class HomeController extends Controller
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2']; 
+		$und 	   = Auth::user()->unidade; 
+		$und 	   = explode(" ",$und);
+		$funcao    = Auth::user()->funcao; 
+		$nome      = Auth::user()->name;
 		if($pesq2 == "numero") {
 			if($unidade_id == "0") {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('concluida', 0)->get();
+				if($funcao == "Administrador" || $funcao == "Gestor Imediato"){
+					$mps = MP::where('solicitante',$nome)->where('mp.numeroMP','like','%'.$pesq.'%')
+					->orderBy('unidade_id', 'ASC')->where('concluida',0)->get();
+				} else {
+					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')
+					->whereIN('unidade_id', $und)->where('concluida',0)
+					->orderby('mp.unidade_id', 'ASC')->paginate(20);
+				}
 			} else {
 				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade_id)->where('concluida', 0)->get();
+				 ->whereIN('unidade_id', $und)->where('concluida',0)
+			     ->orderby('mp.unidade_id', 'ASC')->paginate(20);
 			}
 		} else if($pesq2 == "solicitante") {
 			$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
@@ -849,7 +888,7 @@ class HomeController extends Controller
 		} else if($pesq2 == "admissao") {
 			$admissao = Admissao::all();
 			$qtd = sizeof($admissao); 
-			for($a = 0; $a < $qtd; $a++){
+			for($a = 0; $a < $qtd; $a++){ 
 				$ids[] = $admissao[$a]->mp_id;
 			} 
 			if($unidade_id == "0" && $pesq == ""){
@@ -898,6 +937,7 @@ class HomeController extends Controller
 			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
 				->where('concluida', 0)->get();
 		} 
+		
 		return view('criadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}
 	

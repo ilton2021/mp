@@ -106,9 +106,6 @@
                     </td>
                     <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
 				    <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MP'S</a></td>
-
-
-
 				 </tr>
 				</table>
             </div>

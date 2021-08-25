@@ -102,30 +102,42 @@
 						     @if($users[0]->funcao == "Gestor" || $users[0]->funcao == "Gestor Imediato")
 						   	  <option id="funcao" name="funcao" value="Gestor" selected>Gestor</option>
 							  <option id="funcao" name="funcao" value="RH">RH</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
 							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
 							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
 						     @elseif($users[0]->funcao == "RH")
 							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
 							  <option id="funcao" name="funcao" value="RH" selected>RH</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
+							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
+							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
+							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
+							  @elseif($users[0]->funcao == "DP")
+							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
+							  <option id="funcao" name="funcao" value="RH">RH</option>
+							  <option id="funcao" name="funcao" value="DP" selected>DP</option>
 							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
 							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
 							 @elseif($users[0]->funcao == "Diretoria Técnica") 
 							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
 							  <option id="funcao" name="funcao" value="RH">RH</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
 							  <option id="funcao" name="funcao" value="Diretoria Técnica" selected>Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
 							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
 							 @elseif($users[0]->funcao == "Diretoria") 
 							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
 							  <option id="funcao" name="funcao" value="RH">RH</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
 							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria" selected>Diretoria</option>
 							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
 							 @elseif($users[0]->funcao == "Superintendencia")
 							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
 							  <option id="funcao" name="funcao" value="RH">RH</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
 							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
 							  <option id="funcao" name="funcao" value="Superintendencia" selected>Superintendência</option>
@@ -138,7 +150,7 @@
 					  <td> <a class="btn btn-sm btn-info" href="{{ route('alterarSenhaUsuario', $users[0]->id) }}">Alterar Senha</a> </td>
 					</tr>
 					<tr>
-					  <td>Unidades de visualização:</td>
+					  <td>Unidades de Visualização:</td>
 					  <td>
 					   <?php $q1 = $users[0]->unidade; $r1 = "1"; $s1 = str_contains($q1, $r1); ?>
                        <?php $q2 = $users[0]->unidade; $r2 = "2"; $s2 = str_contains($q2, $r2); ?>
@@ -187,6 +199,59 @@
 					   <input type='checkbox' id="unidade_8" name="unidade_8" checked /> HCA
 					   @else
 					   <input type='checkbox' id="unidade_8" name="unidade_8" /> HCA
+					   @endif
+					  </td>
+					</tr>
+					<tr>
+					  <td>Unidades de Cadastro:</td>
+					  <td>
+					   <?php $q1 = $users[0]->unidade_abertura; $r1 = "1"; $s1 = str_contains($q1, $r1); ?>
+                       <?php $q2 = $users[0]->unidade_abertura; $r2 = "2"; $s2 = str_contains($q2, $r2); ?>
+                       <?php $q3 = $users[0]->unidade_abertura; $r3 = "3"; $s3 = str_contains($q3, $r3); ?>
+                       <?php $q4 = $users[0]->unidade_abertura; $r4 = "4"; $s4 = str_contains($q4, $r4); ?>
+                       <?php $q5 = $users[0]->unidade_abertura; $r5 = "5"; $s5 = str_contains($q5, $r5); ?>
+                       <?php $q6 = $users[0]->unidade_abertura; $r6 = "6"; $s6 = str_contains($q6, $r6); ?>
+                       <?php $q7 = $users[0]->unidade_abertura; $r7 = "7"; $s7 = str_contains($q7, $r7); ?>
+                       <?php $q8 = $users[0]->unidade_abertura; $r8 = "8"; $s8 = str_contains($q8, $r8); ?>  
+					   @if($s1 == true)
+					   <input type='checkbox' id="unidade_abertura_1" name="unidade_abertura_1" checked /> HCPGESTÃO &nbsp;&nbsp;&nbsp;
+					   @else
+					   <input type='checkbox' id="unidade_abertura_1" name="unidade_abertura_1" /> HCPGESTÃO &nbsp;&nbsp;&nbsp;
+					   @endif
+					   @if($s2 == true)
+					   <input type='checkbox' id="unidade_abertura_2" name="unidade_abertura_2" checked /> HMR &nbsp;&nbsp;
+					   @else
+					   <input type='checkbox' id="unidade_abertura_2" name="unidade_abertura_2" /> HMR &nbsp;&nbsp;	
+					   @endif
+					   @if($s3 == true)
+					   <input type='checkbox' id="unidade_abertura_3" name="unidade_abertura_3" checked /> UPAE BELO JARDIM &nbsp;
+					   @else
+					   <input type='checkbox' id="unidade_abertura_3" name="unidade_abertura_3" /> UPAE BELO JARDIM &nbsp;
+					   @endif
+					   @if($s4 == true)
+					   <input type='checkbox' id="unidade_abertura_4" name="unidade_abertura_4" checked /> UPAE ARCOVERDE <BR>
+					   @else
+					   <input type='checkbox' id="unidade_abertura_4" name="unidade_abertura_4" /> UPAE ARCOVERDE <BR>
+					   @endif
+					   @if($s5 == true)
+					   <input type='checkbox' id="unidade_abertura_5" name="unidade_abertura_5" checked /> UPAE ARRUDA &nbsp;&nbsp;
+					   @else
+					   <input type='checkbox' id="unidade_abertura_5" name="unidade_abertura_5" /> UPAE ARRUDA &nbsp;&nbsp;
+					   @endif
+					   @if($s6 == true)
+					   <input type='checkbox' id="unidade_abertura_6" name="unidade_abertura_6" checked /> UPAE CARUARU &nbsp;&nbsp;&nbsp;
+					   @else
+					   <input type='checkbox' id="unidade_abertura_6" name="unidade_abertura_6" /> UPAE CARUARU &nbsp;&nbsp;&nbsp;
+					   @endif
+					   @if($s7 == true)
+					   <input type='checkbox' id="unidade_abertura_7" name="unidade_abertura_7" checked /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					   @else
+					   <input type='checkbox' id="unidade_abertura_7" name="unidade_abertura_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					   @endif
+					   @if($s8 == true)
+					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" checked /> HCA
+					   @else
+					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" /> HCA
 					   @endif
 					  </td>
 					</tr>

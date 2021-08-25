@@ -15,21 +15,25 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
 		<script type="text/javascript">
-			function data(value) {
-				var a = document.getElementById('pesq2').value;
-
-				if(a == "data") {
+			function data(valor) {
+				var x = document.getElementById('pesq2'); 
+				var y = x.options[x.selectedIndex].text; 
+				if(y == "Selecione...") {
+					document.getElementById('pesq').disabled = true;
+				} else if(y == "DATA") {
 					document.getElementById('linha').hidden       = false;
 					document.getElementById('data_inicio').hidden = false;
 					document.getElementById('data_fim').hidden    = false;
 					document.getElementById('txtInicio').hidden   = false;
 					document.getElementById('txtFim').hidden 	  = false;
+					document.getElementById('pesq').disabled = true;
 				} else {
 					document.getElementById('linha').hidden		  = true;
 					document.getElementById('data_inicio').hidden = true;
 					document.getElementById('data_fim').hidden    = true;
 					document.getElementById('txtInicio').hidden   = true;
 					document.getElementById('txtFim').hidden      = true;
+					document.getElementById('pesq').disabled = false;
 				}
 			}
 		</script>
@@ -118,14 +122,14 @@
 			  <option id="pesq2" name="pesq2" value="admissao">ADMISSÃO</option>
 			  <option id="pesq2" name="pesq2" value="alteracao">ALTERAÇÃO FUNCIONAL</option>
 			  <option id="pesq2" name="pesq2" value="demissao">DEMISSÃO</option>
-			  <option id="pesq2" name="pesq2" value="funcionario">FUNCIONÁRIO</option>
-			  <option id="pesq2" name="pesq2" value="numero">NÚMERO MP</option>	
+			  <option id="pesq2" name="pesq2" value="nome">FUNCIONÁRIO</option>
+			  <option id="pesq2" name="pesq2" value="numeroMP">NÚMERO MP</option>	
 			  <option id="pesq2" name="pesq2" value="rpa">RPA</option>
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
 			  <option id="pesq2" name="pesq2" value="data">DATA</option>
 			</select>	
 		</td> 
-		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
+		<td> <input class="form-control" type="text" id="pesq" name="pesq" disabled="true"> </td>
 		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
 	 </tr>
 	 <tr hidden id="linha">

@@ -35,7 +35,10 @@ class HomeController extends Controller
 		$unidades   = Unidade::all();
 		$usuario_id = Auth::user()->id;
 		$gestor 	= Gestor::where('id',$usuario_id)->get();	
-        return view('welcome_', compact('unidades','gestor'));
+		$und = Auth::user()->unidade_abertura;
+		$und = explode(" ",$und);
+		$unidades2 = Unidade::whereIn('id',$und)->get(); 
+        return view('welcome_', compact('unidades','unidades2','gestor'));
     }
 	
 	public function mp($id_un)
@@ -779,13 +782,13 @@ class HomeController extends Controller
 	public function criadasMPs()
 	{
 		$unidades  = Unidade::all();
-		$und 	   = Auth::user()->unidade; 
-		$und 	   = explode(" ",$und);
-		$funcao    = Auth::user()->funcao; 
-		if($funcao == "Administrador" || $funcao == "Gestor Imediato"){
+		$und 	   = Auth::user()->unidade;
+		$und = explode(",",$und); 
+		$funcao    = Auth::user()->funcao;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador"){
 			$mps = MP::where('solicitante',Auth::user()->name)->where('concluida',0)->get();
 		} else {
-			$mps = DB::table('mp')->whereIN('unidade_id', $und)
+			$mps = DB::table('mp')->whereIn('unidade_id',$und)
 			->where('concluida',0)->orderby('mp.unidade_id', 'ASC')->get();
 		} 
 		$aprovacao = Aprovacao::all();
@@ -797,14 +800,14 @@ class HomeController extends Controller
 	{
 		$unidades  = Unidade::all();
 		$und 	   = Auth::user()->unidade; 
-		$und 	   = explode(" ",$und);
+		$und 	   = explode(",",$und);
 		$funcao    = Auth::user()->funcao; 
 		$nome      = Auth::user()->name;
-		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador"){
 			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)
 					 ->where('aprovada',1)->get();
 		} else {
-			$mps = DB::table('mp')->whereIN('unidade_id', $und)->where('aprovada',1)
+			$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',1)
 			->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
 		} 
 		$aprovacao = Aprovacao::all();
@@ -816,14 +819,14 @@ class HomeController extends Controller
 	{
 		$unidades  = Unidade::all();
 		$und 	   = Auth::user()->unidade; 
-		$und 	   = explode(" ",$und);
+		$und 	   = explode(",",$und);
 		$funcao    = Auth::user()->funcao; 
 		$nome      = Auth::user()->name;
 		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
 			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)
 					 ->where('aprovada',0)->get();
 		} else {
-			$mps = DB::table('mp')->whereIN('unidade_id', $und)->where('aprovada',0)
+			$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',0)
 			->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
 		} 		
 		$aprovacao = Aprovacao::all();
@@ -834,7 +837,6 @@ class HomeController extends Controller
 	public function pesquisaMPs(Request $request)
 	{
 		$unidades   = Unidade::all();
-		$mps 	    = MP::all();
 		$aprovacao  = Aprovacao::all();
 		$gestores   = Gestor::all();
 		$input 	    = $request->all();
@@ -845,105 +847,114 @@ class HomeController extends Controller
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2']; 
 		$und 	   = Auth::user()->unidade; 
-		$und 	   = explode(" ",$und);
+		$und 	   = explode(",",$und);
 		$funcao    = Auth::user()->funcao; 
-		$nome      = Auth::user()->name;
-		if($pesq2 == "numero") {
-			if($unidade_id == "0") {
-				if($funcao == "Administrador" || $funcao == "Gestor Imediato"){
-					$mps = MP::where('solicitante',$nome)->where('mp.numeroMP','like','%'.$pesq.'%')
-					->orderBy('unidade_id', 'ASC')->where('concluida',0)->get();
-				} else {
-					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')
-					->whereIN('unidade_id', $und)->where('concluida',0)
-					->orderby('mp.unidade_id', 'ASC')->paginate(20);
+		$nome      = Auth::user()->name;	
+		if($pesq2 == "demissao"){
+			$pesquisa = Demissao::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "alteracao") {
+			$pesquisa = Alteracao_Funcional::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "admissao") {
+			$pesquisa = Admissao::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "rpa"){
+			$pesquisa = Admissao::where('tipo','rpa')->get();
+			$qtd = sizeof($pesquisa); 
+		} else { $qtd = 0; } 
+		
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato") {	
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $pesquisa[$a]->mp_id; 
+				} 
+				if($unidade_id != 0){
+					if($pesq2 != "") {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('solicitante',Auth::user()->name)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)->get();	  
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)
+						->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();	  
+					}
+				} else { 
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)
+						 ->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)
+						->where('solicitante',Auth::user()->name)->get();
+					}
 				}
 			} else {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				 ->whereIN('unidade_id', $und)->where('concluida',0)
-			     ->orderby('mp.unidade_id', 'ASC')->paginate(20);
+				if($unidade_id != 0){
+					if($pesq != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida', 0)
+						->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					}
+				} else {
+					if($pesq != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida', 0)->where('unidade_id',$und)
+						->where('solicitante',Auth::user()->name)->get();
+					}
+				}
 			}
-		} else if($pesq2 == "solicitante") {
-			$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
-				->where('concluida', 0)->get();
-		} else if($pesq2 == "funcionario"){
-			$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
-				->where('concluida', 0)->get();
-		} else if($pesq2 == "rpa") {
-			$adms = DB::table('admissao')->where('tipo','rpa')->get();  
-			$qtd  = sizeof($adms); 
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $adms[$a]->mp_id;
-			} 
-			if($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->get();
-			} else if($unidade_id == "0" && $pesq != ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)->get();
-			} else if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$unidade_id)->get();
-			} else {
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)
-				->where('unidade_id',$unidade_id)->get();
+		} else {
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $pesquisa[$a]->mp_id; 
+				} 
+				if($unidade_id != 0){
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
+						->where('unidade_id',$unidade_id)->get();	  
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->get();	  
+					}
+				} else {
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$und)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					}
+				}
+			} else { 
+				if($unidade_id != 0){
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida', 0)
+						->where('unidade_id',$unidade_id)->get();
+					}
+				} else {
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida', 0)->whereIn('unidade_id',$und)
+						->orderBy('unidade_id','ASC')->get();
+					}
+				}
 			}
-		} else if($pesq2 == "admissao") {
-			$admissao = Admissao::all();
-			$qtd = sizeof($admissao); 
-			for($a = 0; $a < $qtd; $a++){ 
-				$ids[] = $admissao[$a]->mp_id;
-			} 
-			if($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->get(); 
-			} else if($unidade_id == "0" && $pesq != ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)->get();
-			} else if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$unidade_id)->get();
-			} else {
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)
-				->where('unidade_id',$unidade_id)->get();
-			}
-		} else if($pesq2 == "demissao") {
-			$demissao = Demissao::all();
-			$qtd = sizeof($demissao); 
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $demissao[$a]->mp_id;
-			} 
-			if($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->get(); 
-			} else if($unidade_id == "0" && $pesq != ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)->get();
-			} else if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$unidade_id)->get();
-			} else {
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)
-				->where('unidade_id',$unidade_id)->get();
-			}
-		} else if($pesq2 == "alteracao"){
-			$alteracaoF = Alteracao_Funcional::all();
-			$qtd = sizeof($alteracaoF); 
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $alteracaoF[$a]->mp_id;
-			}  
-			if($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->get(); 
-			} else if($unidade_id == "0" && $pesq != ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)->get();
-			} else if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$unidade_id)->get();
-			} else {
-				$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('numeroMP',$pesq)
-				->where('unidade_id',$unidade_id)->get();
-			}
-		} else if($unidade_id != "0") {
-			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
-				->where('concluida', 0)->get();
-		} 
-		
+		}
 		return view('criadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}
 	
 	public function pesquisaMPsAp(Request $request)
 	{
 		$unidades   = Unidade::all();
+		$aprovacao  = Aprovacao::all();
 		$gestores   = Gestor::all();
 		$input 	    = $request->all();
 		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
@@ -951,213 +962,140 @@ class HomeController extends Controller
 		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
-		$pesq2      = $input['pesq2'];
-		if($pesq2 == "numero") {
-			if($unidade_id == "0") {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('aprovada',1)->where('concluida', 1)->get();
-			} else {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade_id)->where('aprovada',1)->where('concluida', 1)->get();
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "solicitante") {
-			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->get();
-			} else {
-				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "funcionario"){
-			$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->get();
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "rpa") { 
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('admissao.tipo','rpa')
-				->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('admissao.tipo','rpa')
-				->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')->where('admissao.tipo','rpa')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('admissao.tipo','rpa')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
+		$pesq2      = $input['pesq2']; 
+		$und 	   = Auth::user()->unidade; 
+		$und 	   = explode(",",$und);
+		$funcao    = Auth::user()->funcao; 
+		$nome      = Auth::user()->name;	
+		if($pesq2 == "demissao"){
+			$pesquisa = Demissao::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "alteracao") {
+			$pesquisa = Alteracao_Funcional::all();
+			$qtd = sizeof($pesquisa); 
 		} else if($pesq2 == "admissao") {
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.aprovada',1)->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.aprovada',1)->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			}
-			$qtd  = sizeof($mps); 
+			$pesquisa = Admissao::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "rpa"){
+			$pesquisa = Admissao::where('tipo','rpa')->get();
+			$qtd = sizeof($pesquisa); 
+		} else { $qtd = 0; } 
+		
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador") {	
 			if($qtd > 0) {
 				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
+					$ids[] = $pesquisa[$a]->mp_id; 
+				} 
+				if($unidade_id != 0){
+					if($pesq2 != "") {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('solicitante',Auth::user()->name)
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
+						->where('unidade_id',$unidade_id)->get();	  
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();	  
+					}
+				} else { 
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->get();
+					}
 				}
 			} else {
-				$ids[] = 0;
+				if($pesq2 == "data"){ 
+					$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+					$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
+					if($unidade_id != "0"){
+						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
+								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
+								->where('mp.unidade_id',$unidade_id)
+								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+					}else {
+						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
+								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+								->where('mp.solicitante',Auth::user()->name)
+								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
+								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+					}
+				} else if($unidade_id != 0){
+					if($pesq != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)->where('unidade_id',$unidade_id)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$unidade_id)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					}
+				} else {
+					if($pesq != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$und)
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->get();
+					}
+				}
 			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "demissao") {
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.aprovada',1)->where('mp.concluida',1)
-				->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.aprovada',1)->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->where('mp.aprovada',1)->select('mp.*')->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			}
-			$qtd  = sizeof($mps); 
+		} else {
 			if($qtd > 0) {
 				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
+					$ids[] = $pesquisa[$a]->mp_id; 
+				} 
+				if($unidade_id != 0){
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
+						->where('aprovada',1)->where('unidade_id',$unidade_id)->get();	  
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->get();	  
+					}
+				} else {
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('unidade_id',$und)
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					}
 				}
-			} else {
-				$ids[] = 0;
-			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "alteracao"){
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.aprovada',1)
-				->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.aprovada',1)
-				->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->where('mp.aprovada',1)->select('mp.*')->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.aprovada',1)->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
+			} else { 
+				if($pesq2 == "data"){ 
+					$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+					$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
+					if($unidade_id != "0"){
+						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
+								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
+								->where('mp.unidade_id',$unidade_id)
+								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+					}else {
+						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
+								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
+								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+					}
+				} else if($unidade_id != 0){
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
+						->where('aprovada',1)->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida',1)
+						->where('aprovada',1)->where('unidade_id',$unidade_id)->get();
+					}
+				} else {
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
+						->where('aprovada',1)->whereIn('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',1)->orderBy('unidade_id','ASC')->get();
+					}
 				}
-			} else {
-				$ids[] = 0;
 			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "data"){
-			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
-			$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
-			if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
-				$data_f = date('Y-m-d', strtotime('now')); 
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();
-			}else if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();  
-			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();
-			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
-				$data_f = date('Y-m-d', strtotime('now')); 
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($unidade_id != "0") {
-			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
-				->where('concluida', 1)->get();
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if(($unidade_id == "0" && $pesq2 == "") && ($pesq == "" || $pesq != "")){
-			$mps = MP::where('aprovada',1)->where('concluida',1)->paginate(10);
-			$aprovacao = Aprovacao::all();
 		}
 		return view('aprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}
@@ -1165,6 +1103,7 @@ class HomeController extends Controller
 	public function pesquisaMPsRe(Request $request)
 	{
 		$unidades   = Unidade::all();
+		$aprovacao  = Aprovacao::all();
 		$gestores   = Gestor::all();
 		$input 	    = $request->all();
 		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
@@ -1172,209 +1111,124 @@ class HomeController extends Controller
 		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
-		$pesq2      = $input['pesq2'];
-		if($pesq2 == "numero") {
-			if($unidade_id == "0") {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->get();
-			} else {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "solicitante") {
-			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->get();
-			} else {
-				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade_id)->where('concluida', 1)->get();
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "funcionario"){
-			$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->get();
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "rpa") { 
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('admissao.tipo','rpa')
-				->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('admissao.tipo','rpa')
-				->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')->where('admissao.tipo','rpa')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('admissao.tipo','rpa')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
+		$pesq2      = $input['pesq2']; 
+		$und 	   = Auth::user()->unidade; 
+		$und 	   = explode(",",$und);
+		$funcao    = Auth::user()->funcao; 
+		$nome      = Auth::user()->name;	
+		if($pesq2 == "demissao"){
+			$pesquisa = Demissao::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "alteracao") {
+			$pesquisa = Alteracao_Funcional::all();
+			$qtd = sizeof($pesquisa); 
 		} else if($pesq2 == "admissao") {
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
+			$pesquisa = Admissao::all();
+			$qtd = sizeof($pesquisa); 
+		} else if($pesq2 == "rpa"){
+			$pesquisa = Admissao::where('tipo','rpa')->get();
+			$qtd = sizeof($pesquisa); 
+		} else { $qtd = 0; } 
+		
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador") {	
+			if($qtd > 0) {
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $pesquisa[$a]->mp_id; 
+				} 
+				if($unidade_id != 0){
+					if($pesq2 != "") {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('solicitante',Auth::user()->name)
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
+						->where('unidade_id',$unidade_id)->get();	  
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();	  
+					}
+				} else { 
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->get();
+					}
+				}
 			} else {
-				$mps = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+				if($unidade_id != 0){
+					if($pesq != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)->where('unidade_id',$unidade_id)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$unidade_id)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					}
+				} else {
+					if($pesq != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$und)
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->get();
+					}
+				}
 			}
-			$qtd  = sizeof($mps); 
+		} else {
 			if($qtd > 0) {
 				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
+					$ids[] = $pesquisa[$a]->mp_id; 
+				} 
+				if($unidade_id != 0){
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
+						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
+						->where('aprovada',0)->where('unidade_id',$unidade_id)->get();	  
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->get();	  
+					}
+				} else {
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('unidade_id',$und)
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+					}
 				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "demissao") {
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
+			} else { 
+				if($pesq2 == "data"){ 
+					$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+					$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
+					if($unidade_id != "0"){
+						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
+								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
+								->where('mp.unidade_id',$unidade_id)
+								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->get();
+					}else {
+						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
+								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
+								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
+								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->get();
+					}
+				} else if($unidade_id != 0){
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
+						->where('aprovada',0)->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->get();
+					} else {
+						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida',1)
+						->where('aprovada',0)->where('unidade_id',$unidade_id)->get();
+					}
+				} else {
+					if($pesq2 != ""){
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
+						->where('aprovada',0)->whereIn('unidade_id',$und)->get();
+					} else {
+						$mps = DB::table('mp')->where('concluida',1)->whereIn('unidade_id',$und)
+						->where('aprovada',0)->orderBy('unidade_id','ASC')->get();
+					}
+				}
 			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "alteracao"){
-			if($unidade_id != "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			} else if($unidade_id == "0" && $pesq != "") {
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')->where('mp.concluida',1)->get(); 
-			} else if ($unidade_id == "0" && $pesq == ""){
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.concluida',1)->get(); 
-			} else {
-				$mps = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-				->select('mp.*')->where('mp.numeroMP', 'like', '%' .$pesq. '%')
-				->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)->get(); 
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($pesq2 == "data"){
-			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
-			$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
-			if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
-				$data_f = date('Y-m-d', strtotime('now')); 
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();
-			}else if($unidade_id != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)->where('mp.unidade_id',$unidade_id)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();  
-			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();
-			}else if($unidade_id == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
-				$data_f = date('Y-m-d', strtotime('now')); 
-				$mps = DB::table('mp')
-							->join('aprovacao','mp.id','=','aprovacao.mp_id')
-							->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
-							->where('mp.concluida',1)
-							->where('aprovacao.resposta',3)
-							->select('mp.*')->orderBy('mp.id')->get();
-			}
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if($unidade_id != "0") {
-			$mps = DB::table('mp')->where('mp.unidade_id', $unidade_id)
-				->where('concluida', 1)->get();
-			$qtd  = sizeof($mps); 
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $mps[$a]->id;
-				}
-			} else {
-				$ids[] = 0;
-			}	
-			$aprovacao = Aprovacao::whereIn('mp_id',$ids)->get();
-		} else if(($unidade_id == "0" && $pesq2 == "") && ($pesq == "" || $pesq != "")){
-			$mps = MP::where('aprovada',0)->where('concluida',1)->paginate(10);
-			$aprovacao = Aprovacao::all();
 		}
 		return view('reprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}
@@ -1843,19 +1697,82 @@ class HomeController extends Controller
 			$solicitante = $mp[0]->solicitante;
 			$sol = Gestor::where('nome', $solicitante)->get();
 			$email2 = $sol[0]->email;
-			$email3 = '';
-			$email4 = '';
-			$motivo   = $input['motivo'];
+			$email3 = 'janaina.lima@hcpgestao.org.br';
+			$email4 = 'rogerio.reis@hcpgestao.org.br';
+			$motivo  = $input['motivo'];
+			$tipo = "";
+			$admissao  = DB::table('admissao')->where('mp_id',$mp[0]->id)->get();
+			$qtdAD 	   = sizeof($admissao);
+			$demissao  = DB::table('demissao')->where('mp_id',$mp[0]->id)->get();
+			$qtdDE 	   = sizeof($demissao);
+			$alteracao = DB::table('alteracao_funcional')->where('mp_id',$mp[0]->id)->get();
+			$qtdAL 	   = sizeof($alteracao); $email7 = '';
+			if($qtdAD > 0) {
+				if($admissao[0]->tipo == "rpa"){
+					$tipo = 'RPA';
+				} else {
+					$tipo = 'CLT';
+				}
+			}
+			if($qtdDE > 0) {
+				$tipo = 'CLT';
+			}
+			if($qtdAL > 0) {
+				if($alteracao[0]->motivo == "mudanca_horaria"){
+					$tipo = 'PONTO';
+				} else {
+					$tipo = 'CLT';
+				}
+			}
+			if($mp[0]->unidade_id == 2) {
+				if($tipo == 'RPA'){
+					$email5 = 'angela.hermida@hcpgestao.org.br';
+					$email6 = 'ana.soares@hcpgestao.org.br';
+				} else if($tipo == 'PONTO') {
+					$email5 = 'tatiana.silva@hcpgestao.org.br';
+					$email6 = 'mylena.silva@hcpgestao.org.br';
+					$email7 = 'erica.santos@hcpgestao.org.br';  
+				} else if($tipo == 'CLT'){
+					if($qtdAD > 0){
+						$email5 = 'ana.soares@hcpgestao.org.br';
+						$email6 = 'laura.lopes@hcpgestao.org.br';
+						$email7 = 'mylena.silva@hcpgestao.org.br'; 
+					} else if($qtdDE > 0){
+						$email5 = 'ana.soares@hcpgestao.org.br';
+						$email6 = 'laura.lopes@hcpgestao.org.br';
+					} else if($qtdAL > 0){
+						$email5 = 'ana.soares@hcpgestao.org.br';
+						$email6 = 'laura.lopes@hcpgestao.org.br';
+					}
+				}
+			} else if($mp[0]->unidade_id == 3) {
+				$email5 = 'alexandre.siqueira@hcpgestao.org.br';
+				$email6 = 'dp@upaebelojardim.org.br'; 
+			} else if($mp[0]->unidade_id == 4) {
+				$email5 = 'angela.hermida@hcpgestao.org.br';
+				$email6 = 'mayara.silva@hcpgestao.org.br';
+			} else if($mp[0]->unidade_id == 5) {
+				$email5 = 'joao.alves@hcpgestao.org.br';
+				$email6 = 'tatiana.silva@hcpgestao.org.br';
+			} else if($mp[0]->unidade_id == 6) {
+				$email5 = 'laura.lopes@hcpgestao.org.br';
+				$email6 = 'antonio.edison@upaecaruaru.org.br';
+			} else if($mp[0]->unidade_id == 7) {
+				$email5 = 'ana.soares@hcpgestao.org.br';
+				$email6 = 'dh@hss.org.br';
+			} else if($mp[0]->unidade_id == 8) {
+				$email5 = 'fabio.souza@hcpgesao.org.br';
+				$email6 = 'rayonara.bento@hcpgestao.org.br';
+			}
 			$numeroMP = $mp[0]->numeroMP;
-			/*if(Auth::user()->funcao == "Superintendencia"){
-				Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$numeroMP) {
+			if(Auth::user()->funcao == "Superintendencia"){
+				Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-					$m->subject('MP - '.$numeroMP.' foi Assinada e está Concluída!!');
+					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-					$m->cc($email2);
-					$m->cc($email3);
-					$m->cc($email4);
+					$m->cc($email2); $m->cc($email3); $m->cc($email4);  
+					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
 				});
 			} else {
 				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
@@ -1864,7 +1781,7 @@ class HomeController extends Controller
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
 				});
-			}*/
+			}
 		}
 	}
 	
@@ -1915,9 +1832,9 @@ class HomeController extends Controller
 			return view('home_autorizado', compact('unidade','mp','gestores','text','gestoresUnd'));
 		} else {
 			if(Auth::user()->funcao == "Superintendencia") {
-			$input['resposta'] = 3;
-			DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
-			DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
+				$input['resposta'] = 3;
+				DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
+				DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
 			} else {
 				$input['resposta'] = 1;	
 			}
@@ -1934,17 +1851,81 @@ class HomeController extends Controller
 			$email2 = $sol[0]->email;
 			$email3 = 'janaina.lima@hcpgestao.org.br';
 			$email4 = 'rogerio.reis@hcpgestao.org.br';
+			$email7 = '';
+			$tipo = "";
+			$admissao  = DB::table('admissao')->where('mp_id',$mp[0]->id)->get();
+			$qtdAD 	   = sizeof($admissao);
+			$demissao  = DB::table('demissao')->where('mp_id',$mp[0]->id)->get();
+			$qtdDE 	   = sizeof($demissao);
+			$alteracao = DB::table('alteracao_funcional')->where('mp_id',$mp[0]->id)->get();
+			$qtdAL 	   = sizeof($alteracao); $email7 = '';
+			if($qtdAD > 0) {
+				if($admissao[0]->tipo == "rpa"){
+					$tipo = 'RPA';
+				} else {
+					$tipo = 'CLT';
+				}
+			}
+			if($qtdDE > 0) {
+				$tipo = 'CLT';
+			}
+			if($qtdAL > 0) {
+				if($alteracao[0]->motivo == "mudanca_horaria"){
+					$tipo = 'PONTO';
+				} else {
+					$tipo = 'CLT';
+				}
+			}
+			if($mp[0]->unidade_id == 2) {
+				if($tipo == 'RPA'){
+					$email5 = 'angela.hermida@hcpgestao.org.br';
+					$email6 = 'ana.soares@hcpgestao.org.br';
+				} else if($tipo == 'PONTO') {
+					$email5 = 'tatiana.silva@hcpgestao.org.br';
+					$email6 = 'mylena.silva@hcpgestao.org.br';
+					$email7 = 'erica.santos@hcpgestao.org.br';  
+				} else if($tipo == 'CLT'){
+					if($qtdAD > 0){
+						$email5 = 'ana.soares@hcpgestao.org.br';
+						$email6 = 'laura.lopes@hcpgestao.org.br';
+						$email7 = 'mylena.silva@hcpgestao.org.br'; 
+					} else if($qtdDE > 0){
+						$email5 = 'ana.soares@hcpgestao.org.br';
+						$email6 = 'laura.lopes@hcpgestao.org.br';
+					} else if($qtdAL > 0){
+						$email5 = 'ana.soares@hcpgestao.org.br';
+						$email6 = 'laura.lopes@hcpgestao.org.br';
+					}
+				}
+			} else if($mp[0]->unidade_id == 3) {
+				$email5 = 'alexandre.siqueira@hcpgestao.org.br';
+				$email6 = 'dp@upaebelojardim.org.br'; 
+			} else if($mp[0]->unidade_id == 4) {
+				$email5 = 'angela.hermida@hcpgestao.org.br';
+				$email6 = 'mayara.silva@hcpgestao.org.br';
+			} else if($mp[0]->unidade_id == 5) {
+				$email5 = 'joao.alves@hcpgestao.org.br';
+				$email6 = 'tatiana.silva@hcpgestao.org.br';
+			} else if($mp[0]->unidade_id == 6) {
+				$email5 = 'laura.lopes@hcpgestao.org.br';
+				$email6 = 'antonio.edison@upaecaruaru.org.br';
+			} else if($mp[0]->unidade_id == 7) {
+				$email5 = 'ana.soares@hcpgestao.org.br';
+				$email6 = 'dh@hss.org.br';
+			} else if($mp[0]->unidade_id == 8) {
+				$email5 = 'fabio.souza@hcpgesao.org.br';
+				$email6 = 'rayonara.bento@hcpgestao.org.br';
+			}
 			$motivo   = $input['motivo'];
 			$numeroMP = $mp[0]->numeroMP;
 			if(Auth::user()->funcao == "Superintendencia"){
 				Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-					$m->subject('MP - '.$numeroMP.' foi Assinada e está Concluída!!');
+					$m->subject('MP - '.$numeroMP.' Tipo: '.$tipo.' foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-					$m->cc($email2);
-					$m->cc($email3);
-					$m->cc($email4);
+					$m->cc($email2); $m->cc($email3); $m->cc($email4);
+					$m->cc($email5); $m->cc($email6); $m->cc($email7);
 				});
 			} else {
 				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {

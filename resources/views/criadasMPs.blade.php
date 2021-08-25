@@ -19,6 +19,17 @@
 			width: 300px;
 		}
         </style>
+		<script type="text/javascript">
+			function ativarDesc(valor){
+				var x = document.getElementById('pesq2'); 
+				var y = x.options[x.selectedIndex].text;
+				if(y != "Selecione..."){
+					document.getElementById('pesq').disabled = false;
+				} else {
+					document.getElementById('pesq').disabled = true;
+				}
+			}
+		</script>
     </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
@@ -37,7 +48,7 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
+                               	    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
                                 </li>
                             @endif
                         @else
@@ -82,7 +93,7 @@
 		<td align="right"> <p style="margin-top: 10px;"> Unidade: </p> </td>
 		<td> 
 		 <select class="form-control" id="unidade_id" name="unidade_id">
-		     <option id="unidade_id" name="unidade_id" value="0">Selecione...</option>
+		     <option id="unidade_id" name="unidade_id" value="">Selecione...</option>
 			 <option id="unidade_id" name="unidade_id" value="1">HCP GESTÃO</option>
 			 <option id="unidade_id" name="unidade_id" value="2">HMR</option>
 			 <option id="unidade_id" name="unidade_id" value="3">UPAE BELO JARDIM</option>
@@ -94,18 +105,18 @@
 		 </select>
 		</td>
 		<td align="right"> 
-			<select class="form-control" id="pesq2" name="pesq2">
+			<select class="form-control" id="pesq2" name="pesq2" onchange="ativarDesc('sim')">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
 			  <option id="pesq2" name="pesq2" value="admissao">ADMISSÃO</option>
 			  <option id="pesq2" name="pesq2" value="alteracao">ALTERAÇÃO FUNCIONAL</option>
 			  <option id="pesq2" name="pesq2" value="demissao">DEMISSÃO</option>
-			  <option id="pesq2" name="pesq2" value="funcionario">FUNCIONÁRIO</option>
-			  <option id="pesq2" name="pesq2" value="numero">NÚMERO MP</option>	
+			  <option id="pesq2" name="pesq2" value="nome">FUNCIONÁRIO</option>
+			  <option id="pesq2" name="pesq2" value="numeroMP">NÚMERO MP</option>	
 			  <option id="pesq2" name="pesq2" value="rpa">RPA</option>
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
 			</select>	
 		</td> 
-		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
+		<td> <input class="form-control" type="text" id="pesq" name="pesq" disabled="true"> </td>
 		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
 	 </tr>
 	</table>
@@ -114,7 +125,7 @@
 		 <tr>
 		    <thead>
 			  <tr>
-			   <td colspan="3"><center><font color="blue"><b>MP'S CRIADAS:</b></font><center></td>
+			   <td colspan="4"><center><font color="blue"><b>MP'S CRIADAS:</b></font><center></td>
 			  </tr>
 			  <tr>
 			   <td><center>NOME DA MP</center></td>

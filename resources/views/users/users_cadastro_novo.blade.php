@@ -100,6 +100,7 @@
 						<td> 
 						   <select id="funcao" name="funcao" class="form-control"> 
 						   	  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
 							  <option id="funcao" name="funcao" value="RH">RH</option>
 							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
@@ -116,7 +117,7 @@
 					  <td> <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" value="{{ old('password') }}" /> </td>	
 					</tr>
 					<tr>
-					  <td>Unidades de visualização:</td>
+					  <td>Unidades de Visualização:</td>
 					  <td>  
 					   <input type='checkbox' id="unidade_1" name="unidade_1" /> HCPGESTÃO &nbsp;&nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_2" name="unidade_2" /> HMR &nbsp;&nbsp;
@@ -126,6 +127,19 @@
 					   <input type='checkbox' id="unidade_6" name="unidade_6" /> UPAE CARUARU &nbsp;&nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_7" name="unidade_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_8" name="unidade_8" /> HCA
+					  </td>
+					</tr>
+					<tr>
+					  <td>Unidades de Cadastro:</td>
+					  <td>  
+					   <input type='checkbox' id="unidade_abertura_1" name="unidade_abertura_1" /> HCPGESTÃO &nbsp;&nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_abertura_2" name="unidade_abertura_2" /> HMR &nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_abertura_3" name="unidade_abertura_3" /> UPAE BELO JARDIM &nbsp;
+					   <input type='checkbox' id="unidade_abertura_4" name="unidade_abertura_4" /> UPAE ARCOVERDE <BR>
+					   <input type='checkbox' id="unidade_abertura_5" name="unidade_abertura_5" /> UPAE ARRUDA &nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_abertura_6" name="unidade_abertura_6" /> UPAE CARUARU &nbsp;&nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_abertura_7" name="unidade_abertura_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" /> HCA
 					  </td>
 					</tr>
 					<tr>

@@ -170,9 +170,11 @@
 		function desabilitarRPA(valor) {
 		  var status = document.getElementById('periodo_contrato').disabled;
 		  if (status == true) {
-			document.getElementById('periodo_contrato').disabled = false;
+			document.getElementById('periodo_contrato').disabled 	= false;
+			document.getElementById('table_remuneracao').style.display 	= 'block';
 		  }else {
 			document.getElementById('periodo_contrato').disabled = true;  
+			document.getElementById('table_remuneracao').style.display 	= 'none';
 		  }
 		}
 		
@@ -318,6 +320,14 @@
 			 Outras Verbas
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" />	 
 			 @endif
+			 <table class="table-sm" style="display: none;" id="table_remuneracao">
+			  <tr> <td> <input type="checkbox" id="g_1" name="g_1" value="1" /> Gratificação </td> </tr>
+			  <tr> <td> <input type="checkbox" id="g_2" name="g_2" value="2" /> Insalubridade </td> </tr>
+			  <tr> <td> <input type="checkbox" id="g_3" name="g_3" value="3" /> Periculosidade </td> </tr>
+			  <tr> <td> <input type="checkbox" id="g_4" name="g_4" value="4" /> VA </td> </tr>
+			  <tr> <td> <input type="checkbox" id="g_5" name="g_5" value="5" /> VT </td> </tr>
+			  <tr> <td> <input type="checkbox" id="g_6" name="g_6" value="6" /> Nenhuma das Respostas </td> </tr>
+			 </table>
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
 				  @if(old('tipo_mov1') == "on")

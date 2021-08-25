@@ -179,26 +179,39 @@ class UserController extends Controller
                       ->withInput(session()->flashInput($request->input()));						
 		} else {
 			$missing = array();
+			$missing2 = array();
 			for($a = 1; $a <= 8; $a++){
 				if(!empty($input['unidade_'.$a])){
 					$missing[] = $a;
 				}
+				if(!empty($input['unidade_abertura_'.$a])){
+					$missing2[] = $a;
+				}
 			}
-			if( is_array($missing) && count($missing) > 0 )
-			{
+			if( is_array($missing) && count($missing) > 0 ) {
 				$result = '';
 				$total = count($missing) - 1;
-				for($i = 0; $i <= $total; $i++)
-				{ 
+				for($i = 0; $i <= $total; $i++){ 
 					$result .= $missing[$i];
-
 					if($i < $total)
 						$result .= ", ";
 				}
 			} else {
 				$result = "";
 			}
-			$input['unidade']  = $result;
+			if( is_array($missing2) && count($missing2) > 0 ) {
+				$result2 = '';
+				$total2 = count($missing2) - 1;
+				for($i = 0; $i <= $total2; $i++){ 
+					$result2 .= $missing2[$i];
+					if($i < $total2)
+						$result2 .= ", ";
+				}
+			} else {
+				$result2 = "";
+			}
+			$input['unidade']  		   = $result;
+			$input['unidade_abertura'] = $result2; 
 			$input['password'] = Hash::make($input['password']);
 			$user = User::create($input);
 			$validator = 'Usuário cadastrado com sucesso!';
@@ -239,26 +252,39 @@ class UserController extends Controller
 			->withInput(session()->flashInput($request->input()));						
 		} else {
 			$missing = array();
+			$missing2 = array();
 			for($a = 1; $a <= 8; $a++){
 				if(!empty($input['unidade_'.$a])){
 					$missing[] = $a;
 				}
+				if(!empty($input['unidade_abertura_'.$a])){
+					$missing2[] = $a;
+				}
 			}
-			if( is_array($missing) && count($missing) > 0 )
-			{
+			if( is_array($missing) && count($missing) > 0 ) {
 				$result = '';
 				$total = count($missing) - 1;
-				for($i = 0; $i <= $total; $i++)
-				{ 
+				for($i = 0; $i <= $total; $i++){ 
 					$result .= $missing[$i];
-
 					if($i < $total)
 						$result .= ", ";
 				}
 			} else {
 				$result = "";
 			}
-			$input['unidade'] = $result;
+			if( is_array($missing2) && count($missing2) > 0 ) {
+				$result2 = '';
+				$total2 = count($missing2) - 1;
+				for($i = 0; $i <= $total2; $i++){ 
+					$result2 .= $missing2[$i];
+					if($i < $total2)
+						$result2 .= ", ";
+				}
+			} else {
+				$result2 = "";
+			}
+			$input['unidade']  		   = $result;
+			$input['unidade_abertura'] = $result2; 
 			$user = User::find($id);
 			$user->update($input);
 			$users = User::all();

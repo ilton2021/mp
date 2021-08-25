@@ -23,6 +23,8 @@ class MP extends Model
 		'data_prevista',
 		'concluida',
 		'aprovada',
+		'acessorh3',
+		'usuario_acessorh3',
 		'created_at',
 		'updated_at'
 	];

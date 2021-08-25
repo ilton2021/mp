@@ -223,9 +223,28 @@ class MPController extends Controller
 					    ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
 					} else {
-
+						$input['tipo'] = 'rpa';
 					}
-					$input['tipo'] = $input['periodo_contrato'];
+					$missing = array();
+					for($a = 1; $a <= 6; $a++){
+						if(!empty($input['g_'.$a])){
+							$missing[] = $a;
+						}
+					}
+					if( is_array($missing) && count($missing) > 0 ) {
+						$result = '';
+						$total = count($missing) - 1;
+						for($i = 0; $i <= $total; $i++){ 
+							$result .= $missing[$i];
+							if($i < $total)
+								$result .= ", ";
+						}
+					} else {
+						$result = "";
+					}
+					$input['gratificacoes'] = $result;
+				} else {
+					$input['gratificacoes'] = 0;
 				}
 				if($input['descricao'] != "") {
 					$input['unidade_id']   = $id_unidade;
@@ -262,6 +281,8 @@ class MPController extends Controller
 					} else {
 					    $input['gestor_id'] = $input['gestor_id'];
 					}
+					$input['acesssorh3'] = 0;
+					$input['usuario_acessorh3'] = '';
 					$mp 			= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -362,6 +383,8 @@ class MPController extends Controller
 					} else {
 					    $input['gestor_id'] = $input['gestor_id'];
 					}
+					$input['acesssorh3'] = 0;
+					$input['usuario_acessorh3'] = '';
 					$mp 			= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -462,6 +485,8 @@ class MPController extends Controller
 					} else {
 					    $input['gestor_id'] = $input['gestor_id'];
 					}
+					$input['acesssorh3'] = 0;
+					$input['usuario_acessorh3'] = '';
 					$mp 		 	= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -654,6 +679,8 @@ class MPController extends Controller
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else {
+			$input['acesssorh3'] = 0;
+			$input['usuario_acessorh3'] = '';
 			$alteracaoF    = Alteracao_Funcional::find($id_alt);
 			$alteracaoF->update($input);
 			$mp 		   = MP::find($id);
@@ -698,7 +725,8 @@ class MPController extends Controller
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
 		});
-		return view('home', compact('unidade','idMP','idG'));
+		$a = 0;
+		return view('home', compact('unidade','idMP','idG','a'));
 	}
 	
 	// Alterar MP de Demissão //
@@ -747,6 +775,8 @@ class MPController extends Controller
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else {
+			$input['acesssorh3'] = 0;
+			$input['usuario_acessorh3'] = '';
 			$demissao 	   = Demissao::find($id_dem);
 			$demissao->update($input);
 			$mp			   = MP::find($id);
@@ -791,7 +821,8 @@ class MPController extends Controller
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
 		});
-		return view('home', compact('unidade','idMP','idG'));
+		$a = 0;
+		return view('home', compact('unidade','idMP','idG','a'));
 	}
 	
 	// Alterar MP de Admissão //
@@ -860,10 +891,32 @@ class MPController extends Controller
 				{
 					$input['motivo2'] = NULL;
 				}
-				if($input['tipo'] == "RPA")
+				if($input['tipo'] == "rpa")
 				{
-					$input['tipo'] = $input['periodo_contrato'];
+					$input['tipo'] = 'rpa';
+					$missing = array();
+					for($a = 1; $a <= 6; $a++){
+						if(!empty($input['g_'.$a])){
+							$missing[] = $a;
+						}
+					}
+					if( is_array($missing) && count($missing) > 0 ) {
+						$result = '';
+						$total = count($missing) - 1;
+						for($i = 0; $i <= $total; $i++){ 
+							$result .= $missing[$i];
+							if($i < $total)
+								$result .= ", ";
+						}
+					} else {
+						$result = "";
+					}
+					$input['gratificacoes'] = $result;
+				} else {
+					$input['gratificacoes'] = 0;
 				}
+			$input['acesssorh3'] = 0;
+			$input['usuario_acessorh3'] = '';	
 			$admissao 	   = Admissao::find($id_adm);
 			$admissao->update($input);
 			$mp 		   = MP::find($id);
@@ -910,7 +963,8 @@ class MPController extends Controller
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
 		});
-		return view('home', compact('unidade','idMP','idG'));
+		$a = 0;
+		return view('home', compact('unidade','idMP','idG','a'));
 	}
 
 	public function excluirMPs()

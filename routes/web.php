@@ -227,6 +227,11 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeMP/cadastro_usuario/excluir/{id}','UserController@cadastroUsuarioExcluir')->name('cadastroUsuarioExcluir');
 		Route::post('/homeMP/cadastro_usuario/excluir/{id}','UserController@deleteUsuario')->name('deleteUsuario');	
 		////
+
+		//RH3
+		Route::get('/home/visualizarMPS/aprovadasMPs/acessoRH3/{id}','AcessoRH3Controller@acessoRH3')->name('acessoRH3');
+
+		///
 });
 
 ?>

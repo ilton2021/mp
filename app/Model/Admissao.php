@@ -12,6 +12,7 @@ class Admissao extends Model
 		'cargo',
 		'salario',
 		'outras_verbas',
+		'gratificacoes',
 		'horario_trabalho',
 		'escala_trabalho',
 		'centro_custo',

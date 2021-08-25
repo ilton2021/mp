@@ -8,8 +8,22 @@
   <meta name="author" content="">
   <title>Movimentação de Pessoal - Alterar</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script   src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script type="text/javascript">	
+
+    function desabilitarRPA(valor) {
+		  var status = document.getElementById('periodo_contrato').disabled;
+		  if (status == true) {
+			document.getElementById('periodo_contrato').disabled = false;
+			document.getElementById('table_gratificacao').style.display = 'block';
+		  }else {
+			document.getElementById('periodo_contrato').disabled = true;  
+			document.getElementById('table_gratificacao').style.display = 'none';
+		  }
+	}
+  </script>
+
 <body>
 	  @if ($errors->any())
       <div class="alert alert-danger">
@@ -92,7 +106,47 @@
 			 Salário: 
 			 <input required class="form-control" placeholder="ex: 2500 ou 2580,21" title="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario" name="salario" value="<?php echo $adm->salario; ?>" />
 			 Outras Verbas: 
-			 <input required class="form-control" placeholder="ex: 2500 ou 2580,21" title="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="<?php echo $adm->outras_verbas; ?>" />
+			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" title="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="<?php echo $adm->outras_verbas; ?>" />
+			 @if($adm->tipo == 'rpa')
+			 <?php $q1 = $adm->gratificacoes; $r1 = "1"; $s1 = str_contains($q1, $r1); ?>
+             <?php $r2 = "2"; $s2 = str_contains($q1, $r2); ?> <?php $r3 = "3"; $s3 = str_contains($q1, $r3); ?>
+             <?php $r4 = "4"; $s4 = str_contains($q1, $r4); ?> <?php $r5 = "5"; $s5 = str_contains($q1, $r5); ?>
+			 <?php $r6 = "6"; $s6 = str_contains($q1, $r6); ?>
+             <table class="table-sm" id="table_gratificacao" class="style.display = 'none'">
+			 <tr><td>
+			 @if($s1 == true)
+			  <input type='checkbox' id="g_1" name="g_1" checked value="1" /> GRATIFICAÇÃO <br>
+			 @else
+			  <input type='checkbox' id="g_1" name="g_1" value="1" /> GRATIFICAÇÃO <br>
+			 @endif
+			 @if($s2 == true)
+			  <input type='checkbox' id="g_2" name="g_2" checked value="2" /> INSALUBRIDADE <br>
+			 @else
+			  <input type='checkbox' id="g_2" name="g_2" value="2" /> INSALUBRIDADE <br>
+			 @endif
+			 @if($s3 == true)
+			  <input type='checkbox' id="g_3" name="g_3" checked value="3" /> PERICULOSIDADE <br>
+			 @else
+			  <input type='checkbox' id="g_3" name="g_3" value="3" /> PERICULOSIDADE <br>
+			 @endif
+			 @if($s4 == true)
+			  <input type='checkbox' id="g_4" name="g_4" checked value="4" /> VA <br>
+			 @else
+			  <input type='checkbox' id="g_4" name="g_4" value="4" /> VA <br>
+			 @endif
+			 @if($s5 == true)
+			  <input type='checkbox' id="g_5" name="g_5" checked value="5" /> VT <br>
+			 @else
+			  <input type='checkbox' id="g_5" name="g_5" value="5" /> VT <br>
+			 @endif
+			 @if($s6 == true)
+			  <input type='checkbox' id="g_6" name="g_6" checked value="6" title="NENHUMA DAS RESPOSTAS" /> N. D. R
+			 @else
+			  <input type='checkbox' id="g_6" name="g_6" value="6" title="NENHUMA DAS RESPOSTAS" /> Nenhuma Das Respostas
+			 @endif
+			 </td></tr>
+			 </table>
+			 @endif
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
 			  <input class="form-control" readonly="true" type="text" id="horario_trabalho" name="horario_trabalho" value="<?php echo $adm->horario_trabalho; ?>" />
@@ -237,7 +291,7 @@
 			 <input type="checkbox" id="tipo" name="tipo" value="estagiario"  /> Estagiário 
 			 <input type="checkbox" id="tipo" name="tipo" value="temporario"  /> Temporário  
 			 <input type="checkbox" id="tipo" name="tipo" value="aprendiz"  /> Aprendiz 
-			 <input type="checkbox" checked id="tipo" name="tipo" value="rpa"  /> RPA - (Período do Contrato RPA): 
+			 <input type="checkbox" checked id="tipo" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" /> RPA - (Período do Contrato RPA): 
 			 <input type="text" id="periodo_contrato" name="periodo_contrato" value="<?php echo $adm->periodo_contrato; ?>" /></td>
 		     @endif
 			</tr>

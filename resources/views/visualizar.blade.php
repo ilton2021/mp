@@ -115,6 +115,30 @@
 			 <input class="form-control" type="text" id="salario" name="salario" value="<?php echo "R$ ".number_format($adm->salario, 2,',','.'); ?>" readonly="true" />
 			 Outras Verbas:
 			 <input class="form-control" type="text" id="outras_verbas" name="outras_verbas" value="<?php echo "R$ ".number_format($adm->outras_verbas, 2,',','.'); ?>" readonly="true" />
+			 @if(!empty($adm))
+			 <?php $q1 = $adm->gratificacoes; $r1 = "1"; $s1 = str_contains($q1, $r1); ?>
+             <?php $r2 = "2"; $s2 = str_contains($q1, $r2); ?> <?php $r3 = "3"; $s3 = str_contains($q1, $r3); ?>
+             <?php $r4 = "4"; $s4 = str_contains($q1, $r4); ?> <?php $r5 = "5"; $s5 = str_contains($q1, $r5); ?>
+			 <?php $r6 = "0"; $s6 = str_contains($q1, $r6); ?>
+             @if($s1 == true)
+			  <input type='checkbox' id="g_1" name="g_1" disabled="true" checked /> GRATIFICAÇÃO <br>
+			 @endif
+			 @if($s2 == true)
+			  <input type='checkbox' id="g_2" name="g_2" disabled="true" checked /> INSALUBRIDADE <br>
+			 @endif
+			 @if($s3 == true)
+			  <input type='checkbox' id="g_3" name="g_3" disabled="true" checked /> PERICULOSIDADE <br>
+			 @endif
+			 @if($s4 == true)
+			  <input type='checkbox' id="g_4" name="g_4" disabled="true" checked /> VA <br>
+			 @endif
+			 @if($s5 == true)
+			  <input type='checkbox' id="g_5" name="g_5" disabled="true" checked /> VT <br>
+			 @endif
+			 @if($s6 == true)
+			  <input type='checkbox' id="g_6" name="g_6" disabled="true" checked /> NENHUMA DAS RESPOSTAS
+			 @endif
+			 @endif
 			 </td>
 			 <td width="200">Horário de Trabalho: <br><input class="form-control" type="text" id="horario_trabalho" name="horario_trabalho" value="<?php echo $adm->horario_trabalho; ?>" readonly="true" /></td>
 			</tr>

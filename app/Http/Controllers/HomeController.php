@@ -1540,8 +1540,8 @@ class HomeController extends Controller
 	public function validarMPs(Request $request)
 	{
 		$input = $request->all();
-		$mps   = MP::all();
-		$idG   = Auth::user()->id;
+		$idG = Auth::user()->id;
+		$mps 	   = MP::all();
 		$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
 		->join('justificativa','justificativa.mp_id','=','mp.id')
 		->select('mp.*','justificativa.descricao as just','admissao.*')
@@ -1555,8 +1555,28 @@ class HomeController extends Controller
 		$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
 		->join('justificativa','justificativa.mp_id','=','mp.id')
 		->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
 		$qtdAlt = sizeof($alteracF);
+		if($qtdAdm > 0){
+			for($a = 0; $a < $qtdAdm; $a++){
+				$ids[] = $admissao[$a]->mp_id; 
+			} 
+			$aprovacaoAd = Aprovacao::whereIn('mp_id',$ids)->get();
+		}
+		if($qtdDem > 0){
+			for($a = 0; $a < $qtdDem; $a++){
+				$ids[] = $demissao[$a]->mp_id; 
+			} 
+			$aprovacaoDe = Aprovacao::whereIn('mp_id',$ids)->get();
+		}
+		if($qtdAlt > 0){
+			for($a = 0; $a < $qtdAlt; $a++){
+				$ids[] = $alteracF[$a]->mp_id; 
+			} 
+			$aprovacaoAl = Aprovacao::whereIn('mp_id',$ids)->get();
+		}
+		$gestores  = Gestor::all();
+		
 		$ap = 0;
 		for($a = 1; $a <= $qtdAdm; $a++){
 			if(!empty($input['check_'.$a])){
@@ -1605,16 +1625,15 @@ class HomeController extends Controller
 				}
 			}
 		}
-		$aprovacao = Aprovacao::all();
-		$text 	   = true;
-		$gestores  = Gestor::all();
 		if($ap == 0){
 			$idG = Auth::user()->id;
-			$text = 'nao';
-			\Session::flash('mensagem', ['msg' => 'Selecione uma MP!','class'=>'green white-text']);
-			return view('validar', compact('text','mps','aprovacao','gestores','admissao','demissao','alteracF'));
+			$validator = 'Selecione uma MP!';
+			return view('validar', compact('mps','aprovacaoAd','aprovacaoAl','aprovacaoDe','gestores','admissao','demissao','alteracF','qtdAlt','qtdAdm','qtdDem'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input())); 
 		} else {
 			$idG = Auth::user()->id;
+			$mps 	   = MP::all();
 			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
 			->join('justificativa','justificativa.mp_id','=','mp.id')
 			->select('mp.*','justificativa.descricao as just','admissao.*')
@@ -1628,11 +1647,30 @@ class HomeController extends Controller
 			$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
 			->join('justificativa','justificativa.mp_id','=','mp.id')
 			->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
-			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
 			$qtdAlt = sizeof($alteracF);
-			$text = 'sim';
-			\Session::flash('mensagem', ['msg' => 'Aprovação Realizada com Sucesso!','class'=>'green white-text']);
-			return view('validar', compact('text','mps','aprovacao','gestores','admissao','demissao','alteracF'));
+			if($qtdAdm > 0){
+				for($a = 0; $a < $qtdAdm; $a++){
+					$ids[] = $admissao[$a]->mp_id; 
+				} 
+				$aprovacaoAd = Aprovacao::whereIn('mp_id',$ids)->get();
+			}
+			if($qtdDem > 0){
+				for($a = 0; $a < $qtdDem; $a++){
+					$ids[] = $demissao[$a]->mp_id; 
+				} 
+				$aprovacaoDe = Aprovacao::whereIn('mp_id',$ids)->get();
+			}
+			if($qtdAlt > 0){
+				for($a = 0; $a < $qtdAlt; $a++){
+					$ids[] = $alteracF[$a]->mp_id; 
+				} 
+				$aprovacaoAl = Aprovacao::whereIn('mp_id',$ids)->get();
+			}
+			$validator = 'Aprovação Realizada com Sucesso!';
+			return view('validar', compact('mps','aprovacaoAd','aprovacaoAl','aprovacaoDe','gestores','admissao','demissao','alteracF','qtdAlt','qtdAdm','qtdDem'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input())); 
 		}
 	}
 
@@ -1804,12 +1842,12 @@ class HomeController extends Controller
 					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
 				});
 			} else {
-				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('MP - '.$numeroMP.' Autorizada!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});
+				});*/
 			}
 		}
 	}

@@ -64,14 +64,12 @@ class UserController extends Controller
 
 	public function telaLogin()
 	{
-		$text = false;
-		return view('auth.login', compact('text'));
+		return view('auth.login');
 	}
 
 	public function telaRegistro()
 	{
-		$text = false;
-		return view('auth.register', compact('text'));
+		return view('auth.register');
 	}
 	
 	public function telaEmail()
@@ -82,42 +80,36 @@ class UserController extends Controller
 	public function telaReset()
 	{
 		$token = '';
-		$text = false;
-		return view('auth.passwords.reset', compact('token','text'));
+		return view('auth.passwords.reset', compact('token'));
 	}
 	
 	public function Login(Request $request)
 	{
 		$input = $request->all(); 		
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'email'    => 'required|email',
             'password' => 'required'
 		]);		
-		if ($v->fails()) {
-			$failed = $v->failed(); 
-			if ( !empty($failed['email']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Email']) ) {
-				\Session::flash('mensagem', ['msg' => 'Este e-mail é inválido!','class'=>'green white-text']);
-			} else if ( !empty($failed['password']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-			}
-			$text = false;
-			return view('auth.login', compact('text')); 
+		if ($validator->fails()) {
+			return view('auth.login')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input())); 
 		} else {
 			$email = $input['email'];
 			$senha = $input['password'];		
 			$user = User::where('email', $email)->get();
 			$qtd = sizeof($user); 			
 			if ( empty($qtd) ) {
-				\Session::flash('mensagem', ['msg' => 'Login Inválido!','class'=>'green white-text']);
-				$text = true;
-				return view('auth.login', compact('text')); 	
+				$validator = 'Login Inválido!';
+				return view('auth.login')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input())); 	
 			} else {
-				$text = true;
 				$unidades = $this->unidade->all();
 				Auth::login($user);
-				return view('home', compact('unidades','user')); 						
+				return view('home', compact('unidades','user'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input())); 							
 			}
 		}
 	}

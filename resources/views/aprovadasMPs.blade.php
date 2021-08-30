@@ -95,7 +95,15 @@
                     </ul>
                 </div>
     </nav>
-	
+	@if ($errors->any())
+		<div class="alert alert-danger">
+		  <ul>
+		    @foreach ($errors->all() as $error)
+		      <li>{{ $error }}</li>
+			@endforeach
+		  </ul>
+		</div>
+	@endif
 	<p style="margin-left: 1170px"> <a href="{{url('home/visualizarMPS')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
 	<center>
 	<form action="{{ route('pesquisaMPsAp') }}" method="POST">
@@ -203,9 +211,9 @@
 			   @if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH")
 			   <td> 
 			    @if($mp->acessorh3 == 0)
-				  <center><a href="{{ route('acessoRH3', $mp->id) }}" class="btn-dark btn">RH3</a></center>
+				  <center><a href="{{ route('acessoRH3', $mp->id) }}" class="btn-dark btn" title="Esta MP já foi cadastrada no RH3?">RH3</a></center>
 				@else
-				  <center>{{ $mp->usuario_acessorh3 }}</center>
+				  <center><a href="{{ route('acessoRH3Desabilita', $mp->id) }}" title="<?php echo $mp->usuario_acessorh3; ?> Já cadastrou esta MP no RH3!" class="btn-warning btn">{{ $mp->usuario_acessorh3 }}</a></center>
 				@endif
 			   </td>
 			   @endif

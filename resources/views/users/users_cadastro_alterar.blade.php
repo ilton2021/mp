@@ -21,52 +21,8 @@
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
 				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-
-                    <ul class="navbar-nav ml-auto">
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('telaReset') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form1').submit();">
-                                        {{ __('Trocar Senha') }}
-                                    </a>
-
-                                    <form id="logout-form1" action="{{ route('telaReset') }}" method="GET" style="display: none;">
-                                        
-                                    </form>
-									
-									<a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form2').submit();">
-                                        {{ __('Sair') }}
-                                    </a>
-
-                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-    </nav>
+		
+</nav>
 <div class="container-fluid">
 	<div class="row" style="margin-bottom: 25px; margin-top: 25px;">
 		<div class="col-md-12 text-center">

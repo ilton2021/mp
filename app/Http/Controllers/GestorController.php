@@ -11,10 +11,9 @@ class GestorController extends Controller
 {
     public function cadastroGestor()
 	{
-		$text = false;
 		$gestores = Gestor::all();
 		$unidades = Unidade::all();
-		return view('gestor.gestor_cadastro', compact('text','gestores','unidades'));
+		return view('gestor.gestor_cadastro', compact('gestores','unidades'));
 	}
 	
 	public function pesquisarGestor(Request $request)
@@ -33,52 +32,27 @@ class GestorController extends Controller
 		    $gestores = DB::table('gestor')->join('unidade','unidade.id','=','gestor.unidade_id')
 			->where('unidade.nome', 'like', '%' . $pesq . '%')->get();
 		}
-		$text = false;
 		$unidades = Unidade::all();
-		return view('gestor.gestor_cadastro', compact('text','unidades','gestores'));
+		return view('gestor.gestor_cadastro', compact('unidades','gestores'));
 	}
 	
 	public function gestorNovo()
 	{
-		$text = false;
 		$unidades = Unidade::all();
-		return view('gestor.gestor_novo', compact('text','unidades'));
+		return view('gestor.gestor_novo', compact('unidades'));
 	}
 	
 	public function storeGestor(Request $request)
 	{
 		$input = $request->all();
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'nome'   => 'required|max:255',
 			'email'  => 'required|email|max:255',
 			'cpf'    => 'required|max:11',
 			'cargo'  => 'required|max:255',
 			'funcao' => 'required'
 		]);
-		if ($v->fails()) {
-			$failed = $v->failed();
-			if ( !empty($failed['nome']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['nome']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome possui no máximo 255 caracteres!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Email']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail tem que ser válido!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail possui no máximo 255 caracteres!','class'=>'green white-text']);
-			} else if ( !empty($failed['funcao']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo função é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['cpf']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cpf é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['cpf']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cpf possui no máximo 11 caracteres!','class'=>'green white-text']);
-			} else if ( !empty($failed['cargo']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cargo é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['cargo']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cargo possui no máximo 255 caracteres!','class'=>'green white-text']);
-			}
-			$text = true;
+		if ($validator->fails()) {
 			return view('gestor.gestor_novo', compact('text'));
 		}else {
 			$gestor   = Gestor::create($input);
@@ -94,59 +68,40 @@ class GestorController extends Controller
 	{
 		$text = false;
 		$gestor = Gestor::where('id',$id)->get();
-		return view('gestor.gestor_alterar', compact('text','gestor'));
+		return view('gestor.gestor_alterar', compact('gestor'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
 	}
 	
 	public function updateGestor($id, Request $request)
 	{
 		$input = $request->all();
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'nome'   => 'required|max:255',
 			'email'  => 'required|email|max:255',
 			'cpf'    => 'required|max:11',
 			'cargo'  => 'required|max:255',
 			'funcao' => 'required'
 		]);
-		if ($v->fails()) {
-			$failed = $v->failed();
-			if ( !empty($failed['nome']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['nome']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo nome possui no máximo 255 caracteres!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Email']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail tem que ser válido!','class'=>'green white-text']);
-			} else if ( !empty($failed['email']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo e-mail possui no máximo 255 caracteres!','class'=>'green white-text']);
-			} else if ( !empty($failed['funcao']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo função é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['cpf']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cpf é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['cpf']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cpf possui no máximo 11 caracteres!','class'=>'green white-text']);
-			} else if ( !empty($failed['cargo']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cargo é obrigatório!','class'=>'green white-text']);
-			} else if ( !empty($failed['cargo']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo cargo possui no máximo 255 caracteres!','class'=>'green white-text']);
-			}
-			$text = true;
-			return view('gestor.gestor_alterar', compact('text'));
+		if ($validator->fails()) {
+			return view('gestor.gestor_alterar')
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
 		}else {
 			$gestor = Gestor::find($id);
 			$gestor->update($input);
 			$gestores = Gestor::all();
-			$text = true;
-			\Session::flash('mensagem', ['msg' => 'Gestor Alterado com Sucesso!','class'=>'green white-text']);
-			return view('gestor.gestor_cadastro', compact('text','gestores'));
+			$validator = 'Gestor Alterado com Sucesso!';
+			return view('gestor.gestor_cadastro', compact('gestores'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
 		}
 	}
 	
 	public function gestorExcluir($id)
 	{
-		$text = false;
 		$gestor = Gestor::where('id',$id)->get();
-		return view('gestor.gestor_excluir', compact('text','gestor'));
+		return view('gestor.gestor_excluir', compact('gestor'));
 	}
 	
 	public function destroyGestor($id, Request $request)
@@ -154,8 +109,9 @@ class GestorController extends Controller
 		Gestor::find($id)->delete();
 		$input = $request->all();
 		$gestores = Gestor::all();
-        \Session::flash('mensagem', ['msg' => 'Gestor excluído com sucesso!','class'=>'green white-text']);
-		$text = true;
-		return view('gestor.gestor_cadastro', compact('gestores','text'));
+        $validator = 'Gestor excluído com sucesso!';
+		return view('gestor.gestor_cadastro', compact('gestores'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
 	}
 }

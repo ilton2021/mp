@@ -229,7 +229,8 @@ Route::middleware(['auth'])->group( function() {
 		////
 
 		//RH3
-		Route::get('/home/visualizarMPS/aprovadasMPs/acessoRH3/{id}','AcessoRH3Controller@acessoRH3')->name('acessoRH3');
+		Route::get('/home/visualizarMPS/aprovadasMPs/acessoRH3/{id}/acesso','AcessoRH3Controller@acessoRH3')->name('acessoRH3');
+		Route::get('/home/visualizarMPS/aprovadasMPs/acessoRH3/{id}/desabilita','AcessoRH3Controller@acessoRH3Desabilita')->name('acessoRH3Desabilita');
 		///
 });
 

@@ -5,20 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Unidade;
 use Illuminate\Support\Facades\Storage;
+use Validator;
 
 class UnidadeController extends Controller
 {
 	public function cadastroUnidade()
 	{
-		$text = false;
 		$unidades = Unidade::all();
-		return view('unidade.unidade_cadastro', compact('text','unidades'));
+		return view('unidade.unidade_cadastro', compact('unidades'));
 	}
 	
 	public function unidadeNovo()
 	{
-		$text = false;
-		return view('unidade.unidade_novo', compact('text'));
+		return view('unidade.unidade_novo');
 	}
 	
 	public function storeUnidade(Request $request){
@@ -26,42 +25,36 @@ class UnidadeController extends Controller
 		$nome = $_FILES['imagem']['name'];
 		$extensao = pathinfo($nome, PATHINFO_EXTENSION);
 		if($request->file('imagem') === NULL) {	
-			\Session::flash('mensagem', ['msg' => 'Selecione a imagem da Unidade!','class'=>'green white-text']);		
-			$text = true;
-			return view('unidade.unidade_novo', compact('text'));
+			$validator = 'Selecione a imagem da Unidade!';
+			return view('unidade.unidade_novo')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 		} else {
 			if($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
-				$v = \Validator::make($request->all(), [
+				$validator = Validator::make($request->all(), [
 					'nome'  => 'required|max:255',
 					'sigla' => 'required|max:10'
 				]);
-				if ($v->fails()) {
-					$failed = $v->failed();
-					if ( !empty($failed['nome']['Required']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-					} else if ( !empty($failed['nome']['Max']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo nome possui no máximo 255 caracteres!','class'=>'green white-text']);
-					} else if ( !empty($failed['sigla']['Required']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo sigla é obrigatório!','class'=>'green white-text']);
-					} else if ( !empty($failed['sigla']['Max']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo sigla possui no máximo 10 caracteres!','class'=>'green white-text']);
-					}
-					$text = true;
-					return view('unidade.unidade_novo', compact('text'));
+				if ($validator->fails()) {
+					return view('unidade.unidade_novo', compact('text'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 				}else {
 					$request->file('imagem')->move('../public/storage/unidade/', $nome);
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'unidade/'.$nome; 
 					$unidade = Unidade::create($input);
 					$unidades = Unidade::all();
-					$text = true;
-					\Session::flash('mensagem', ['msg' => 'Unidade Cadastrada com Sucesso!','class'=>'green white-text']);
-					return view('unidade.unidade_cadastro', compact('text','unidades'));
+					$validator = 'Unidade Cadastrada com Sucesso!';
+					return view('unidade.unidade_cadastro', compact('unidades'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 				}
 			} else {
-				\Session::flash('mensagem', ['msg' => 'Só é permitido imagens: .jpg, .jpeg ou .png!','class'=>'green white-text']);		
-				$text = true;
-				return view('unidade.unidade_novo', compact('text'));
+				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';		
+				return view('unidade.unidade_novo')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 			}
 		}
 	}
@@ -69,17 +62,17 @@ class UnidadeController extends Controller
 	public function unidadeAlterar($id)
 	{
 		$unidade = Unidade::where('id',$id)->get();
-		$text = false;
-		return view('unidade.unidade_alterar', compact('text','unidade'));
+		return view('unidade.unidade_alterar', compact('unidade'));
 	}
 	
 	public function updateUnidade($id, Request $request) {
 		$input = $request->all();
 		$nome1 = "";
 		if($request->file('imagem') === NULL && $input['imagem_'] == "") {	
-			\Session::flash('mensagem', ['msg' => 'Selecione a imagem da Unidade!!','class'=>'green white-text']);		
-			$text = true;
-			return view('unidade.unidade_novo', compact('text'));
+			$validator = 'Selecione a imagem da Unidade!!';		
+			return view('unidade.unidade_novo')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 		} else {
 			if($request->file('imagem') !== null) {
 			   $nome1 = $_FILES['imagem']['name'];
@@ -89,23 +82,14 @@ class UnidadeController extends Controller
 			   $extensao = pathinfo($nome2, PATHINFO_EXTENSION);
 			}			
 			if($extensao == 'jpg' || $extensao == 'png' || $extensao == 'jpeg') {
-				$v = \Validator::make($request->all(), [
+				$validator = Validator::make($request->all(), [
 					'nome'  => 'required|max:255',
 					'sigla' => 'required|max:10'
 				]);
-				if ($v->fails()) {
-					$failed = $v->failed();
-					if ( !empty($failed['nome']['Required']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo nome é obrigatório!','class'=>'green white-text']);
-					} else if ( !empty($failed['nome']['Max']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo nome possui no máximo 255 caracteres!','class'=>'green white-text']);
-					} else if ( !empty($failed['sigla']['Required']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo sigla é obrigatório!','class'=>'green white-text']);
-					} else if ( !empty($failed['sigla']['Max']) ) {
-						\Session::flash('mensagem', ['msg' => 'O campo sigla possui no máximo 10 caracteres!','class'=>'green white-text']);
-					}
-					$text = true;
-					return view('unidade.unidade_novo', compact('text'));
+				if ($validator->fails()) {
+					return view('unidade.unidade_novo')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 				}else {
 					if($nome1 != "") {
 					  $request->file('imagem')->move('../public/storage/unidade/', $nome1);
@@ -115,14 +99,16 @@ class UnidadeController extends Controller
 					$unidade = Unidade::find($id); 
 					$unidade->update($input);
 					$unidades = Unidade::all();
-					$text = true;
-					\Session::flash('mensagem', ['msg' => 'Unidade Alterada com Sucesso!','class'=>'green white-text']);
-					return view('unidade.unidade_cadastro', compact('text','unidades'));
+					$validator ='Unidade Alterada com Sucesso!';
+					return view('unidade.unidade_cadastro', compact('unidades'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 				}
 			} else {
-				\Session::flash('mensagem', ['msg' => 'Só é permitido imagens: .jpg, .jpeg ou .png!','class'=>'green white-text']);		
-				$text = true;
-				return view('unidade.unidade_novo', compact('text'));
+				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
+				return view('unidade.unidade_novo')
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 			}
 		}
 	}
@@ -130,8 +116,7 @@ class UnidadeController extends Controller
 	public function unidadeExcluir($id)
 	{
 		$unidade = Unidade::where('id',$id)->get();
-		$text = false;
-		return view('unidade.unidade_excluir', compact('text','unidade'));
+		return view('unidade.unidade_excluir', compact('unidade'));
 	}
 	
 	public function destroyUnidade($id, Request $request){
@@ -141,8 +126,9 @@ class UnidadeController extends Controller
 		$pasta = 'public/storage/unidade/'.$nome; 
 		Storage::delete($pasta);
 		$unidades = Unidade::all();
-        \Session::flash('mensagem', ['msg' => 'Unidade excluída com sucesso!','class'=>'green white-text']);
-		$text = true;
-		return view('unidade.unidade_cadastro', compact('unidades','text'));
+        $validator = 'Unidade excluída com sucesso!';
+		return view('unidade.unidade_cadastro', compact('unidades'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 	}
 }

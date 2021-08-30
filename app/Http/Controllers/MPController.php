@@ -72,8 +72,7 @@ class MPController extends Controller
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
-		$text = false;
-		return view('index', compact('unidade','gestores','tipo_mp','text','unidades','email','cargos','centro_custos','setores','centro_custo_nv'));
+		return view('index', compact('unidade','gestores','tipo_mp','unidades','email','cargos','centro_custos','setores','centro_custo_nv'));
 	}
 	
 	//Salvar MP//
@@ -124,15 +123,13 @@ class MPController extends Controller
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
 		
 		if(strtotime($dataEmissao) == strtotime($dataPrevista)){
-			$text 	   = true;
 			$validator = "Data Prevista não pode ser Igual a Data de Emissão!";
-			return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else if(strtotime($dataPrevista) < strtotime($dataEmissao)) {
-			$text 	   = true;
 			$validator = "Data Prevista não pode ser Menor que a Data de Emissão!";
-			return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -148,8 +145,7 @@ class MPController extends Controller
 			
 		]);
 		if ($validator->fails()) {
-			$text = true;
-			return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
         }
@@ -169,17 +165,15 @@ class MPController extends Controller
 				'necessidade_email' 		=> 'required|max:255'
 			]);
 			if ($validator->fails()) {
-				$text = true;
-				return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 			} else {
 				if($input['horario_trabalho'] == "0")
 				{
 					if($input['horario_trabalho2'] == ""){
-						$text = true;
 						$validator = "Informe qual é o Horário de Trabalho!";
-					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					    ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
 					} else {
@@ -189,9 +183,8 @@ class MPController extends Controller
 				if($input['escala_trabalho'] == "outra")
 				{
 					if($input['escala_trabalho6'] == ""){
-						$text = true;
 						$validator = "Informe qual é a Escala de Trabalho!";
-					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					    ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
 					} else {
@@ -205,9 +198,8 @@ class MPController extends Controller
 				if($input['motivo'] == "substituicao_definitiva")
 				{
 					if($input['motivo6'] == ""){
-						$text = true;
 						$validator = "Informe qual é o Funcionário que vai ser substituído!";
-					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					    ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
 					} else {
@@ -217,9 +209,8 @@ class MPController extends Controller
 				if($input['tipo'] == "rpa")
 				{
 					if($input['periodo_contrato'] == ""){
-						$text = true;
 						$validator = "Informe qual é o Período do Contrato do RPA!";
-					    return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					    return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					    ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
 					} else {
@@ -313,9 +304,8 @@ class MPController extends Controller
 						$m->to($email);
 					});*/
 				} else {
-					$text 	   = true;
 					$validator = "Informe a Justificativa!";
-					return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 				}
@@ -343,8 +333,7 @@ class MPController extends Controller
 				'custo_recisao' 	=> 'required|max:255'
 			]);
 			if ($validator->fails()) {    
-				$text 	   = true;
-				return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 			} else {
@@ -415,9 +404,8 @@ class MPController extends Controller
 						$m->to($email);
 					}); */
 				} else {
-					$text 	   = true;
 					$validator = "Informe a Justificativa!";
-					return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 				}
@@ -440,10 +428,8 @@ class MPController extends Controller
 				'salario_atual' 	=> 'required',
 				'motivo' 			=> 'required|max:255'
 			]);
-			$text = true;
 			if ($validator->fails()) {
-				$text 	   = true;
-				return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 			} else {
@@ -517,9 +503,8 @@ class MPController extends Controller
 						$m->to($email);
 					}); */
 				} else {
-					$text 	   = true;
 					$validator = "Informe a Justificativa!";
-					return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 			
@@ -536,9 +521,8 @@ class MPController extends Controller
 				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao','a'));
 			}
 		}else {
-			$text 	   = true;
 			$validator = "Escolha um Tipo de Movimentação!";
-			return view('index', compact('unidade','gestores','tipo_mp','text','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -556,7 +540,6 @@ class MPController extends Controller
 		$gestor  = Gestor::where('nome', $gestor)->get();
 		$unidade = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$unidade)->get();
-		$text = false;
 		$alteracaoF = Alteracao_Funcional::where('mp_id',$mps[0]->id)->get();
 		$idA = $id_alt;
 		$idMP = $id;
@@ -564,7 +547,7 @@ class MPController extends Controller
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
-		return view('alterarMPAlteracao', compact('unidade','text','gestores','unidades','mps','alteracaoF','idA','idMP','centro_custos','setores','centro_custo_nv','cargos','justificativa','gestor'));
+		return view('alterarMPAlteracao', compact('unidade','gestores','unidades','mps','alteracaoF','idA','idMP','centro_custos','setores','centro_custo_nv','cargos','justificativa','gestor'));
 	}
 	
 	public function mpPDF($idG, $idMP)
@@ -596,11 +579,10 @@ class MPController extends Controller
 		$gestor  = Gestor::where('nome', $gestor)->get();
 		$unidade = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$unidade)->get();
-		$text = false;
 		$demissao = Demissao::where('mp_id',$mps[0]->id)->get();
 		$idA = $id_dem;
 		$idMP = $id;
-		return view('alterarMPDemissao', compact('unidade','text','gestores','unidades','mps','demissao','idA','idMP','justificativa','gestor'));
+		return view('alterarMPDemissao', compact('unidade','gestores','unidades','mps','demissao','idA','idMP','justificativa','gestor'));
 	}
 	
 	// Tela para Alterar MP de Admissão //
@@ -615,13 +597,12 @@ class MPController extends Controller
 		$gestor  = Gestor::where('nome', $gestor)->get();
 		$unidade = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$unidade)->get();
-		$text = false;
 		$admissao = Admissao::where('mp_id',$mps[0]->id)->get();
 		$idA = $id_adm;
 		$idMP = $id;
 		$cargos = Cargos::all();
-		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
-		return view('alterarMPAdmissao', compact('unidade','text','gestores','unidades','mps','admissao','idA','idMP','cargos','centro_custos','justificativa','gestor'));
+		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
+		return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','cargos','centro_custos','justificativa','gestor'));
 	}
 	
 	// Alterar MP de Alteração //
@@ -638,7 +619,6 @@ class MPController extends Controller
 		$dataP = $input['data_prevista'];
 		$dataEmissao  = date('d-m-Y', strtotime($dataE));
 		$dataPrevista = date('d-m-Y', strtotime($dataP));
-		
 		$gestores 	   = Gestor::all();
 		$unidades 	   = Unidade::all();
 		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
@@ -650,11 +630,9 @@ class MPController extends Controller
 		$idA 		   = $id_alt;
 		$idMP		   = $id;
 		$aprovacao     = Aprovacao::where('mp_id',$id)->get();
-				
 		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
 			$validator 	   = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
-			$text 		   = true;
-			return view('alterarMPAlteracao', compact('unidade','text','gestores','unidades','mps','alteracaoF','idA','idMP','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('alterarMPAlteracao', compact('unidade','gestores','unidades','mps','alteracaoF','idA','idMP','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} 
@@ -670,12 +648,11 @@ class MPController extends Controller
 				'departamento'      => 'required|max:255',
 				'data_prevista'     => 'required'
 		]);
-		$text = true;
 		if ($validator->fails()) {
 			$mps = MP::where('id',$id)->get();
 			$unidade = $mps[0]->unidade_id;
 			$unidade = Unidade::where('id',$unidade)->get();
-			return view('alterarMPAlteracao', compact('unidade','text','gestores','unidades','mps','alteracaoF','idA','idMP','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','setores','centro_custo_nv'))
+			return view('alterarMPAlteracao', compact('unidade','gestores','unidades','mps','alteracaoF','idA','idMP','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else {
@@ -750,9 +727,7 @@ class MPController extends Controller
 		$idA 		   = $id_dem;
 		$idMP 		   = $id;
 		$aprovacao     = Aprovacao::where('mp_id',$id)->get();
-				
 		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
-			$text 	   = true;
 			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
 			return view('alterarMPDemissao', compact('unidade','text','gestores','unidades','mps','demissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
 					  ->withErrors($validator)
@@ -770,8 +745,7 @@ class MPController extends Controller
 				'descricao'     	=> 'required|max:255'
 		]);
 		if ($validator->fails()) {
-			$text = true;
-			return view('alterarMPDemissao', compact('unidade','text','gestores','unidades','mps','demissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+			return view('alterarMPDemissao', compact('unidade','gestores','unidades','mps','demissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else {
@@ -798,7 +772,7 @@ class MPController extends Controller
 			$justificativa = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
 			$validator 	   = "Demissão Alterada com sucesso!";
-			return view('index_', compact('mps','gestores','unidades','unidade','demissao','justificativa','text','aprovacao','gestor'))
+			return view('index_', compact('mps','gestores','unidades','unidade','demissao','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -848,11 +822,9 @@ class MPController extends Controller
 		$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
 		$cargos 	   = Cargos::all();
 		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
-		
 		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
-			$text 	   = true;
 			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
-			return view('alterarMPAdmissao', compact('unidade','text','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+			return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -874,8 +846,7 @@ class MPController extends Controller
 				'data_prevista'				=> 'required'
 		]);
 		if ($validator->fails()) {
-			$text = true;
-			return view('alterarMPAdmissao', compact('unidade','text','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+			return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else {
@@ -939,8 +910,7 @@ class MPController extends Controller
 			$justificativa = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
 			$validator 	   = "Admissão Alterada com sucesso!";
-			$text          = true;
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','justificativa','text','aprovacao','gestor'))
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}

@@ -36,7 +36,7 @@ class HomeController extends Controller
 		$usuario_id = Auth::user()->id;
 		$gestor 	= Gestor::where('id',$usuario_id)->get();	
 		$und = Auth::user()->unidade_abertura;
-		$und = explode(" ",$und);
+		$und = explode(",",$und);
 		$unidades2 = Unidade::whereIn('id',$und)->get(); 
         return view('welcome_', compact('unidades','unidades2','gestor'));
     }
@@ -1677,6 +1677,16 @@ class HomeController extends Controller
 						}
 					} else if($idG == 19 || $idG == 39 || $idG == 99){
 						$idG = 30;
+					} else if($idG == 174) {
+					    $idG = 61;
+					} else if($idG == 173) {
+					    if($idA == 30) {
+					        $idG = 61;    
+					    } else {
+					        $idG = 30;
+					    }
+					} else {
+					    $idG = 30;
 					}
 				} else {
 					$idG = 30;

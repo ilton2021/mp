@@ -38,7 +38,7 @@ class VagaController extends Controller
 		$usuario_id = Auth::user()->id;
 		$gestor     = Gestor::where('id',$usuario_id)->get();	
 		$und 		= Auth::user()->unidade_abertura;
-		$und 		= explode(" ",$und);
+		$und 		= explode(",",$und);
 		$unidades2  = Unidade::whereIn('id',$und)->get(); 
         return view('welcome_v', compact('unidades','unidades2','gestor'));
     }

@@ -1241,18 +1241,37 @@ class HomeController extends Controller
 		->join('justificativa','justificativa.mp_id','=','mp.id')
 		->select('mp.*','justificativa.descricao as just','admissao.*')
 		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+		$qtdAd = sizeof($admissao);
 		$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
 		->join('justificativa','justificativa.mp_id','=','mp.id')
 		->select('mp.*','justificativa.descricao as just','demissao.*')
 		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+		$qtdDe = sizeof($demissao);
 		$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
 		->join('justificativa','justificativa.mp_id','=','mp.id')
 		->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
 		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
-		$aprovacao = Aprovacao::all();
-		$text 	   = false;
+		$qtdAl = sizeof($alteracF);
+		if($qtdAd > 0){
+			for($a = 0; $a < $qtdAd; $a++){
+				$ids[] = $admissao[$a]->mp_id; 
+			} 
+			$aprovacaoAd = Aprovacao::whereIn('mp_id',$ids)->get();
+		}
+		if($qtdDe > 0){
+			for($a = 0; $a < $qtdDe; $a++){
+				$ids[] = $demissao[$a]->mp_id; 
+			} 
+			$aprovacaoDe = Aprovacao::whereIn('mp_id',$ids)->get();
+		}
+		if($qtdAl > 0){
+			for($a = 0; $a < $qtdAl; $a++){
+				$ids[] = $alteracF[$a]->mp_id; 
+			} 
+			$aprovacaoAl = Aprovacao::whereIn('mp_id',$ids)->get();
+		}
 		$gestores  = Gestor::all();
-		return view('validar', compact('text','mps','aprovacao','gestores','admissao','demissao','alteracF'));
+		return view('validar', compact('mps','aprovacaoAd','aprovacaoDe','aprovacaoAl','gestores','admissao','demissao','alteracF'));	
 	}
 	
 	public function validarMP($id)

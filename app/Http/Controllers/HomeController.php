@@ -1008,18 +1008,18 @@ class HomeController extends Controller
 				if($pesq2 == "data"){ 
 					$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 					$data_f = date('Y-m-d', strtotime($input['data_fim'])); 
-					if($unidade_id != "0"){
+					if($unidade_id != "0"){ 
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
 								->where('mp.unidade_id',$unidade_id)
-								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
-					}else {
+								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->get();
+					}else { 
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.solicitante',Auth::user()->name)
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
-								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+								->where('mp.aprovada',1)->select('mp.*')->groupby('mp.id')->orderby('mp.id')->get();
 					}
 				} else if($unidade_id != 0){
 					if($pesq != ""){
@@ -1071,12 +1071,12 @@ class HomeController extends Controller
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
 								->where('mp.unidade_id',$unidade_id)
-								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->get();
 					}else {
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
-								->where('mp.aprovada',1)->select('mp.*')->orderBy('mp.id')->get();
+								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->get();
 					}
 				} else if($unidade_id != 0){
 					if($pesq2 != ""){
@@ -1204,12 +1204,12 @@ class HomeController extends Controller
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
 								->where('mp.unidade_id',$unidade_id)
-								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->get();
+								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->distinct()->get();
 					}else {
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
-								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->get();
+								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->distinct()->get();
 					}
 				} else if($unidade_id != 0){
 					if($pesq2 != ""){
@@ -1885,7 +1885,7 @@ class HomeController extends Controller
 		$idMP = $id;
 		$unidade = Unidade::where('id',$idU)->get();
 		$gestores = Gestor::all();
-		$gestoresUnd = Gestor::where('unidade_id', $idU)->get();
+		$gestoresUnd = Gestor::where('unidade_id', $idU)->orderby('nome','ASC')->get();
 		$input = $request->all();
 		$v = \Validator::make($request->all(), [
 			'motivo' => 'required|max:1000'
@@ -1896,7 +1896,8 @@ class HomeController extends Controller
 				\Session::flash('mensagem', ['msg' => 'O campo justificativa é obrigatório!','class'=>'green white-text']);
 			}
 			$text = true;
-			return view('home_autorizado', compact('unidade','mp','gestores','text','gestoresUnd'));
+			$aprovacao = Aprovacao::all();
+			return view('home_autorizado', compact('unidade','mp','gestores','text','gestoresUnd','aprovacao'));
 		} else {
 			if(Auth::user()->funcao == "Superintendencia") {
 				$input['resposta'] = 3;

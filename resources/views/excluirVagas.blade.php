@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>MP RH</title>
+        <title>Solicitação de Vagas - RH</title>
 		<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
@@ -24,55 +24,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
   	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
+				<h4 class="d-none d-sm-block">Solicitação de Vagas - RH</h4>
 			</span>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-
-                    <ul class="navbar-nav ml-auto">
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('telaReset') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form1').submit();">
-                                        {{ __('Trocar Senha') }}
-                                    </a>
-
-                                    <form id="logout-form1" action="{{ route('telaReset') }}" method="GET" style="display: none;">
-                                        
-                                    </form>
-									
-									<a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form2').submit();">
-                                        {{ __('Sair') }}
-                                    </a>
-
-                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-    </nav>
+</nav>
 	@if($errors->any())
       <div class="alert alert-success">
         <ul>
@@ -82,9 +36,9 @@
         </ul>
       </div>
 	@endif 
-	<p style="margin-left: 1170px"> <a href="{{url('homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
+	<p style="margin-left: 1170px"> <a href="{{url('homeVaga')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
 	<center>
-	<form action="{{ route('pesquisaMPsExclusao') }}" method="POST">
+	<form action="{{ route('pesquisaVagasExclusao') }}" method="POST">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid;"> 
 	 <tr>
@@ -105,8 +59,7 @@
 		<td align="right"> 
 			<select class="form-control" id="pesq2" name="pesq2">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
-			  <option id="pesq2" name="pesq2" value="funcionario">FUNCIONÁRIO</option>
-			  <option id="pesq2" name="pesq2" value="numero">NÚMERO MP</option>	
+			  <option id="pesq2" name="pesq2" value="vaga">NOME DA VAGA</option>	
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
 			</select>	
 		</td> 
@@ -119,22 +72,22 @@
 		 <tr>
 		    <thead>
 			  <tr>
-			   <td colspan="4"><center><font color="red"><b>MP'S:</b></font><center></td>
+			   <td colspan="4"><center><font color="red"><b>VAGAS:</b></font><center></td>
 			  </tr>
 			  <tr>
-			   <td><center>NOME DA MP</center></td>
+			   <td><center>NOME DA VAGA</center></td>
 			   <td><center>SOLICITANTE</center></td>
 			   <td><center>EXCLUIR</center></td>
 			  </tr>
 			 </thead>
-			 <?php $qtd = sizeof($mps); ?>
+			 <?php $qtd = sizeof($vagas); ?>
 			 @if($qtd > 0)
-			 @foreach($mps as $mp)
+			 @foreach($vagas as $vaga)
 			 <tbody>
 			  <tr>  
-			   <td><center>{{ $mp->numeroMP }}</center></td>
-			   <td><center>{{ $mp->solicitante }}</center></td>   
-			   <td><center><a href="{{ route('excluirMP', $mp->id) }}" class="btn-danger btn">EXCLUIR</center></a></td>
+			   <td><center>{{ $vaga->vaga }}</center></td>
+			   <td><center>{{ $vaga->solicitante }}</center></td>   
+			   <td><center><a href="{{ route('excluirVaga', $vaga->id) }}" class="btn-danger btn">EXCLUIR</center></a></td>
 			  </tr>
 			 </tbody>
 			 @endforeach

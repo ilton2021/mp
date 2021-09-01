@@ -102,9 +102,7 @@
                         </div>
                     </td>
                     <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
-				    <td><a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a></td>
-
-				 
+				    <td><a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a></td>		 
 				</table>
             </div>
         </div>

@@ -1453,4 +1453,86 @@ class VagaController extends Controller
 	   $unidades = Unidade::all();
 	   return view('graphics/graphics_vaga3', compact('row5','qtd','totalSA','unidades'));
    }
+
+   public function excluirVagas()
+   {
+	   $vagas = Vaga::all();
+	   return view ('excluirVagas', compact('vagas'));
+   }
+
+   public function pesquisaVagasExclusao(Request $request)
+   {
+		$input = $request->all();
+		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$unidade_id = $input['unidade_id'];
+		$pesq 	    = $input['pesq'];
+		$pesq2      = $input['pesq2'];
+		if($pesq2 == "vaga") {
+			if($unidade_id == "0"){
+				$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->get();
+			} else {
+				$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')
+					->where('vaga.unidade_id',$unidade_id)->get();
+			}
+		} else if($pesq2 == "solicitante"){
+			if($unidade_id == "0"){
+				$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')->get();
+			} else {
+				$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')
+					->where('mp.unidade_id',$unidade_id)->get();
+			}
+		} else if($pesq2 == ""){
+			if($unidade_id == "0"){
+				$vagas = Vaga::where('id',0)->get();
+			} else {
+				$vagas = Vaga::where('unidade_id',$unidade_id)->get();
+			}
+		}
+		return view('excluirVagas', compact('vagas'));
+   }
+
+   public function excluirVaga($id)
+   {
+	   $vagas   = Vaga::where('id',$id)->get();		
+	   $unidade_id = $vagas[0]->unidade_id;
+	   $gestor_id  = $vagas[0]->gestor_id;
+	   $unidade = Unidade::where('id',$unidade_id)->get();
+	   $gestor  = Gestor::where('id',$gestor_id)->get();
+	   return view('excluirVaga', compact('vagas','unidade','gestor'));
+   }
+
+   public function deleteVaga($id, Request $request)
+   {
+		$input = $request->all();
+		$vaga    = Vaga::where('id',$id)->get();
+		$idVaga  = $vaga[0]->id;
+		$aprovacao = AprovacaoVaga::where('vaga_id',$idVaga)->get();
+		$qtd 	   = sizeof($aprovacao);
+		if($qtd > 0){
+			DB::statement('delete from aprovacao_vaga where vaga_id = '.$idVaga);
+		}
+		$justificativa = JustificativaVaga::where('vaga_id',$idVaga)->get();
+		$qtdJust   	   = sizeof($justificativa);
+		if($qtdJust > 0){
+			DB::statement('delete from justificativa_vaga where vaga_id = '.$idVaga);
+		}
+		$perfil_comportamental = Comportamental::where('vaga_id',$idVaga)->get();
+		$qtdPerfil 			   = sizeof($perfil_comportamental);
+		if($qtdPerfil > 0){
+			DB::statement('delete from perfil_comportamental where vaga_id = '.$idVaga);
+		}
+		$competencias 	 = Competencias::where('vaga_id',$idVaga)->get();
+		$qtdCompetencias = sizeof($competencias);
+		if($qtdCompetencias > 0){
+			DB::statement('delete from competencias where vaga_id = '.$idVaga);
+		}
+		DB::statement('delete from vaga where id = '.$idVaga);
+		$vagas 	   = Vaga::where('id',0)->get();
+		$validator = "Vaga Excluída com sucesso!";
+		return view('excluirVagas', compact('vagas'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
+   }
 }

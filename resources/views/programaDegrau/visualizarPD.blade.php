@@ -143,7 +143,7 @@
 			 </thead>
 			 <?php $b = 0; ?>
 			 @foreach($pd as $pd)
-			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 73 || Auth::user()->id == 30))
+			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 73 || Auth::user()->id == 72 || Auth::user()->id == 30))
 			 <?php $b = 1; ?>
 			 <tbody>
 			  <tr>  

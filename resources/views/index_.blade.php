@@ -78,7 +78,7 @@
 					@endif
 				   @endforeach
 				  @else
-				  <option id="gestor_id" name="gestor_id" value="2">{{ 'RAFAELA GONÇALVES CARAZZAI' }}</option>
+				  <option id="gestor_id" name="gestor_id" value="2">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 				  <?php $gId = 0; ?>
 				  @endif
 			   @endif
@@ -491,7 +491,13 @@
 		   <tr>
 		   @if(!empty($data_rec_humanos))
 			<td>Rec. Humanos</td>
-			<td><?php if($rh == ""){ echo ""; } else { echo $rh[0]->nome; } ?></td>
+			<?php $dataI = date('d-m-Y', strtotime($data_rec_humanos)); ?> 
+			<?php $dataF = date('d-m-Y', strtotime('02-09-2021')); ?>
+			<?php if(strtotime($dataI) < strtotime($dataF)){  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'RAFAELA CARAZZAI'; } ?></td>	
+			<?php } else {  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'JANAINA GLAYCE PEREIRA LIMA'; } ?></td>	
+			<?php } ?>
 			<td><input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_rec_humanos))); ?>" /></td>
 			<td> 
 			@foreach($aprovacao as $ap) 

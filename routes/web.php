@@ -13,13 +13,21 @@ Route::get('/','UserController@telaLogin')->name('telaLogin');
 Route::get('auth/register', 'UserController@telaRegistro')->name('telaRegistro');
 Route::post('auth/register', 'UserController@store')->name('store');
 Route::get('auth/passwords/email', 'UserController@telaEmail')->name('telaEmail');
+Route::post('auth/passwords/email', 'UserController@emailReset')->name('emailReset');
 Route::get('auth/passwords/reset', 'UserController@telaReset')->name('telaReset');
-Route::post('auth/passwords/reset','UserController@resetarSenha')->name('resetarSenha');
+Route::post('auth/passwords/reset', 'UserController@resetarSenha')->name('resetarSenha');
 Route::post('auth/login', 'UserController@Login')->name('Login');
 
 Route::middleware(['auth'])->group( function() {
 		Route::get('/home', function(){
-			return view('escolha');
+			$dataI = date('d-m-Y', strtotime(Auth::user()->updated_at));
+			$dataF = date('d-m-Y', strtotime('03-09-2021'));
+			if(strtotime($dataI) < strtotime($dataF)){
+				return view('auth/passwords/email');
+			} else {
+				$unidade = Unidade::all();
+				return view('escolha');
+			}
 		});
 		
 		//MP

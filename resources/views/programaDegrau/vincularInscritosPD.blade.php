@@ -15,7 +15,11 @@
 </head>
 <body>
 	  <br>
-	  	  <form action="{{route('storeVincularInscricao', $inscricao[0]->vaga_interna_id)}}" method="post">
+	      @if(!empty($inscricao))
+	  	  <form action="{{route('storeVincularInscricao', $vaga[0]->id)}}" method="post">
+		  @else
+		  <form action="{{route('storeVincularInscricao', $inscricao[0]->vaga_interna_id)}}" method="post">
+		  @endif	
 		  <input type="hidden" name="_token" value="{{ csrf_token() }}">
 		  <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0"> 
@@ -30,18 +34,25 @@
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0"> 
 			<tr>
 			  <td> Vaga: </td>
+			  @if(!empty($inscricao))
+			  <td><input readonly="true" type="text" id="vaga_interna" name="vaga_interna" value="<?php echo $vaga[0]->vaga; ?>" class="form-control" /></td>
+			  @else
 			  <td><input readonly="true" type="text" id="vaga_interna" name="vaga_interna" value="<?php echo $inscricao[0]->vaga; ?>" class="form-control" /></td>
+			  @endif
 			</tr>
 			<tr> <td> &nbsp; </td> </tr>
 			<tr>
 			  <td> Funcionário / Solicitante: </td>
 			  <td>
 			   <select class="form-control" id="nome_funcionario" name="nome_funcionario">
+				@if(!empty($inscricao))
 				@foreach($inscricao as $ins)
 					@if($ins->concluida == 1 && $ins->aprovada == 1)
 						<option id="nome_funcionario" name="nome_funcionario" value="<?php echo $ins->nome_funcionario; ?>">{{ $ins->nome_funcionario.' / '.$ins->Nome }}</option>
 					@endif
 				@endforeach
+				@endif
+				<option id="nome_funcionario" name="nome_funcionario" value="SEM APROVADOS">{{ 'SEM APROVADOS' }}</option>
 			   </select>
 			</tr>
 			</table>

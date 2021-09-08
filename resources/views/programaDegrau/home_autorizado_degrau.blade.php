@@ -50,11 +50,11 @@
 			<td>
 			   @if(Auth::user()->name == "CAMILA FERNANDES")
 			     <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'RAFAELA GONCALVES CARAZZAI' }}</option>   
+			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
 				 </select>
 			   @endif
 			   
-			   @if(Auth::user()->name == "RAFAELA GONCALVES CARAZZAI")
+			   @if(Auth::user()->name == "JANAINA GLAYCE PEREIRA LIMA")
 			   	 @if($pd[0]->unidade_id == 2)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
 					   <option id="gestor_id" name="gestor_id" value="59">ISABELA CRISTINA COUTINHO DE ALBUQUERQUE NEIVA COELHO</option>
@@ -88,7 +88,7 @@
 
 			   @if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) 
 				 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'RAFAELA GONCALVES CARAZZAI' }}</option>   
+			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
 				 </select>
 			   @endif
     			

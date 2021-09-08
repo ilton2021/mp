@@ -12,6 +12,7 @@ use App\Model\AprovacaoVagaInterna;
 use App\Model\PerfilComportamentalVagaInterna;
 use App\Model\CompetenciasVagaInterna;
 use App\Model\InscricaoVagaInterna;
+use App\Model\Vaga;
 use \PDF;
 use Barryvdh\DomPDF\Facade;
 use App\Model\Cargos;
@@ -394,20 +395,8 @@ class ProgramaDegrauController extends Controller
 					 ->join('gestor','gestor.id','=','inscricao_vaga_interna.solicitante')
 					 ->select('inscricao_vaga_interna.*','vaga_interna.vaga as vaga','gestor.nome as Nome','unidade.nome as nomeUnidade')
 					 ->where('inscricao_vaga_interna.vaga_interna_id',$id)->where('inscricao_vaga_interna.concluida',1)->get();
-		$qtd = sizeof($inscricao);
-		if($qtd == 0){
-			$unidades  = Unidade::all();
-			$id 	   = Auth::user()->id;
-			$vagas 	   = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
-			$gestores  = Gestor::all();
-			$text 	   = true;
-			$validator = "Nenhum Candidato Aprovado para esta Vaga!!";
-			return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
-				->withErrors($validator)
-				->withInput(session()->flashInput($request->input()));
-		} else {
-			return view('programaDegrau/vincularInscritosPD', compact('inscricao'));
-		}
+		$vaga = VagaInterna::where('id',$id)->get(); 
+		return view('programaDegrau/vincularInscritosPD', compact('inscricao','vaga'));
 	}
 
 	public function storeVincularInscricao($id, Request $request)
@@ -420,10 +409,9 @@ class ProgramaDegrauController extends Controller
 		$id 	  = Auth::user()->id;
 		$vagas 	  = DB::table('vaga_interna')->where('aprovada',1)->where('concluida',1)->get();
 		$gestores = Gestor::all();
-		$text 	  = true;
 		$validator = "Vínculo realizado com sucesso!!";
 		$inscricao = InscricaoVagaInterna::all();
-		return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','text','inscricao'))
+		return view('programaDegrau/inscricaoPD', compact('unidades','vagas','gestores','inscricao'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 	}
@@ -492,7 +480,7 @@ class ProgramaDegrauController extends Controller
 			$input['data_aprovacao']  = NULL;
 			$input['vaga_interna_id'] = $id;
 			$inscricao = InscricaoVagaInterna::create($input);
-			$email = 'ilton.albuquerque@hcpgestao.org.br';
+			$email = 'camila.fernandes@hcpgestao.org.br';
 			$vaga = $input['vaga'];
 			Mail::send('email.emailInscricaoPD', array($email), function($m) use ($email,$vaga) {
 				$m->from('portal@hcpgestao.org.br', 'Program Degrau');
@@ -682,14 +670,14 @@ class ProgramaDegrauController extends Controller
 			$idGI   = 73;
 			$input['gestor_id'] = 73;
 			$input['resposta'] = 1;
-			$email = 'camila.fernandes@hcpgestao.org.br';
+			$email = 'ilton.albuquerque@hcpgestao.org.br';
 			DB::statement('UPDATE vaga_interna SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
 			DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 		} else {
 			if($idU == 73){
 				$input['resposta']  = 1; 
 				$input['gestor_id'] = 30;
-				$email = 'rafaela.carazzai@hcpgestao.org.br';
+				$email = 'janaina.lima@hcpgestao.org.br';
 				DB::statement('UPDATE vaga_interna SET gestor_id = 30 WHERE id = '.$id.';');
 				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 			} else if($idU == 30) {

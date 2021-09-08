@@ -64,7 +64,7 @@
 			   	 @if(!empty($aprovacao)) <?php $qtdAp = sizeof($aprovacao); ?>
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - RAFAELA GONCALVES CARAZZAI</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
@@ -76,7 +76,7 @@
     			
 			   @if(Auth::user()->funcao == "Diretoria Tecnica")
 			     <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			      <option id="gestor_id" name="gestor_id" value="30">RH - RAFAELA GONCALVES CARAZZAI</option> 
+			      <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option> 
 			      <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
 			      <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option> 
 			      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>

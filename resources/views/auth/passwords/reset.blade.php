@@ -3,15 +3,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-			@if (Session::has('mensagem'))
-				 @if ($text == true)
-				   <div class="container">
-					 <div class="alert alert-danger {{ Session::get ('mensagem')['class'] }} ">
-						  {{ Session::get ('mensagem')['msg'] }}
-					 </div>
-				   </div>
-				  @endif
-			@endif
+        @if ($errors->any())
+			<div class="alert alert-success">
+				<ul>
+					@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+	    @endif
             <div class="card">
                 <div class="card-header">{{ __('Alterar Senha:') }}</div>
 

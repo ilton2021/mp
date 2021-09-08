@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
 use Validator;
-
+use Mail;
 
 class UserController extends Controller
 {
@@ -111,6 +111,36 @@ class UserController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input())); 							
 			}
+		}
+	}
+
+	public function emailReset(Request $request)
+	{  
+		$input = $request->all(); 
+		$email = $input['email'];
+		$usuarios = User::where('email',$email)->get();
+		$qtd = sizeof($usuarios);
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|email',
+		]);	
+		$email2 = 'ilton.albuquerque@hcpgestao.org.br';
+		if($qtd > 0){
+			Mail::send('email.emailReset', [], function($m) use ($email,$email2) {
+				$m->from('portal@hcpgestao.org.br', 'PORTAL DA MP');
+				$m->subject('Solicitação de Alteração de Senha');
+				$m->to($email);
+				$m->cc($email2);
+			});		
+
+			$validator = 'E-mail enviado com sucesso! Verifique sua caixa de mensagens';
+			return view('auth.passwords.email', compact('email','usuarios'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
+		}else{ 
+			$validator = 'Este E-mail não foi cadastrado no Portal da MP.';
+			return view('auth.passwords.email', compact('email','usuarios'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		}
 	}
 	

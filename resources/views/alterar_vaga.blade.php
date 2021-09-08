@@ -121,7 +121,7 @@
 					@endif
 				   @endforeach
 				  @else
-				  <option id="gestor_id" name="gestor_id" value="2">{{ 'RAFAELA GONÇALVES CARAZZAI' }}</option>
+				  <option id="gestor_id" name="gestor_id" value="2">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 				  <?php $gId = 0; ?>
 				  @endif
 			   @endif

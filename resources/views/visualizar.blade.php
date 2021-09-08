@@ -69,10 +69,21 @@
 			  <td>Matrícula: <input class="form-control" type="text" id="matricula" name="matricula" value="<?php echo $mp->matricula; ?>" title="{{ $mp->numeroMP }}" required readonly="true" /></td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" readonly="true" disabled="true">
+			  <?php $dataI = date('d-m-Y', strtotime($data_rec_humanos)); ?> 
+			  <?php $dataF = date('d-m-Y', strtotime('02-09-2021')); ?>
+			  
 			  @if(!empty($gestores))
 			   @foreach($gestores as $gestor)
 		        @if($mp->gestor_id == $gestor->id)
+			 	 @if($gestor->id == 30)
+				  <?php if(strtotime($dataI) < strtotime($dataF)){  ?>
+					<option id="gestor_id" name="gesto-r_id" value="<?php echo $gestor->id ?>" title="{{ $gestor->nome }}">{{'RAFAELA CARAZZAI' }}</option>
+				  <?php } else {  ?>
+					<option id="gestor_id" name="gesto-r_id" value="<?php echo $gestor->id ?>" title="{{ $gestor->nome }}">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>	
+				  <?php } ?>
+				 @else
 			      <option id="gestor_id" name="gesto-r_id" value="<?php echo $gestor->id ?>" title="{{ $gestor->nome }}">{{ $gestor->nome }}</option>
+				 @endif
 			    @endif
 			   @endforeach
 			  @endif
@@ -397,7 +408,13 @@
 		   <tr>
 		   @if(!empty($data_rec_humanos))
 			<td>Rec. Humanos</td>
-			<td><?php if($rh == ""){ echo ""; } else { echo $rh[0]->nome; } ?></td>
+			<?php $dataI = date('d-m-Y', strtotime($data_rec_humanos)); ?> 
+			<?php $dataF = date('d-m-Y', strtotime('02-09-2021')); ?>
+			<?php if(strtotime($dataI) < strtotime($dataF)){  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'RAFAELA CARAZZAI'; } ?></td>	
+			<?php } else {  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'JANAINA GLAYCE PEREIRA LIMA'; } ?></td>	
+			<?php } ?>
 			<td><input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_rec_humanos))); ?>" /></td>
 			<td> 
 			@foreach($aprovacao as $ap) 

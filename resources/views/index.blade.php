@@ -247,7 +247,7 @@
 			   @endforeach
 			  @endif
 			  <?php } else { ?>
-			    <option id="gestor_id" name="gestor_id" value="30">{{ 'RAFAELA GONÇALVES CARAZZAI' }}</option>
+			    <option id="gestor_id" name="gestor_id" value="30">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 			  <?php } ?>
 			  </select>
 			  <td hidden><input id="tipo_mp" name="tipo_mp" value="{{ $tipo_mp }}" /></td>

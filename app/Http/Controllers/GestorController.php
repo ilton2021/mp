@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Model\Gestor;
 use App\Model\Unidade;
 use DB;
+use Validator;
 
 class GestorController extends Controller
 {
@@ -45,32 +46,33 @@ class GestorController extends Controller
 	public function storeGestor(Request $request)
 	{
 		$input = $request->all();
+		$unidades = Unidade::all();
 		$validator = Validator::make($request->all(), [
 			'nome'   => 'required|max:255',
-			'email'  => 'required|email|max:255',
+			'email'  => 'required|email|max:255|unique:gestor,email',
 			'cpf'    => 'required|max:11',
 			'cargo'  => 'required|max:255',
 			'funcao' => 'required'
 		]);
 		if ($validator->fails()) {
-			return view('gestor.gestor_novo', compact('text'));
+			return view('gestor.gestor_novo', compact('unidades'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		}else {
 			$gestor   = Gestor::create($input);
 			$gestores = Gestor::all();
 			$unidades = Unidade::all();
-			$text = true;
-			\Session::flash('mensagem', ['msg' => 'Gestor Cadastrado com Sucesso!','class'=>'green white-text']);
-			return view('gestor.gestor_cadastro', compact('text','gestores','unidades'));
+			$validator = 'Gestor Cadastrado com Sucesso!';
+			return view('gestor.gestor_cadastro', compact('gestores','unidades'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		}
 	}
 	
 	public function gestorAlterar($id)
 	{
-		$text = false;
 		$gestor = Gestor::where('id',$id)->get();
-		return view('gestor.gestor_alterar', compact('gestor'))
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
+		return view('gestor.gestor_alterar', compact('gestor'));
 	}
 	
 	public function updateGestor($id, Request $request)
@@ -92,7 +94,8 @@ class GestorController extends Controller
 			$gestor->update($input);
 			$gestores = Gestor::all();
 			$validator = 'Gestor Alterado com Sucesso!';
-			return view('gestor.gestor_cadastro', compact('gestores'))
+			$unidades = Unidade::all();
+			return view('gestor.gestor_cadastro', compact('gestores','unidades'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		}
@@ -110,7 +113,8 @@ class GestorController extends Controller
 		$input = $request->all();
 		$gestores = Gestor::all();
         $validator = 'Gestor excluído com sucesso!';
-		return view('gestor.gestor_cadastro', compact('gestores'))
+		$unidades = Unidade::all();
+		return view('gestor.gestor_cadastro', compact('gestores','unidades'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 	}

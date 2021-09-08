@@ -1257,19 +1257,19 @@ class HomeController extends Controller
 				$ids[] = $admissao[$a]->mp_id; 
 			} 
 			$aprovacaoAd = Aprovacao::whereIn('mp_id',$ids)->get();
-		}
+		} else { $aprovacaoAd = NULL; }
 		if($qtdDe > 0){
 			for($a = 0; $a < $qtdDe; $a++){
 				$ids[] = $demissao[$a]->mp_id; 
 			} 
 			$aprovacaoDe = Aprovacao::whereIn('mp_id',$ids)->get();
-		}
+		} else { $aprovacaoDe = NULL; }
 		if($qtdAl > 0){
 			for($a = 0; $a < $qtdAl; $a++){
 				$ids[] = $alteracF[$a]->mp_id; 
 			} 
 			$aprovacaoAl = Aprovacao::whereIn('mp_id',$ids)->get();
-		}
+		} else { $aprovacaoAl = NULL; }
 		$gestores  = Gestor::all();
 		return view('validar', compact('mps','aprovacaoAd','aprovacaoDe','aprovacaoAl','gestores','admissao','demissao','alteracF'));	
 	}
@@ -1654,19 +1654,19 @@ class HomeController extends Controller
 					$ids[] = $admissao[$a]->mp_id; 
 				} 
 				$aprovacaoAd = Aprovacao::whereIn('mp_id',$ids)->get();
-			}
+			} else { $aprovacaoAd = NULL; }
 			if($qtdDem > 0){
 				for($a = 0; $a < $qtdDem; $a++){
 					$ids[] = $demissao[$a]->mp_id; 
 				} 
 				$aprovacaoDe = Aprovacao::whereIn('mp_id',$ids)->get();
-			}
+			} else { $aprovacaoDe = NULL; }
 			if($qtdAlt > 0){
 				for($a = 0; $a < $qtdAlt; $a++){
 					$ids[] = $alteracF[$a]->mp_id; 
 				} 
 				$aprovacaoAl = Aprovacao::whereIn('mp_id',$ids)->get();
-			}
+			} else { $aprovacaoAl = NULL; }
 			$validator = 'Aprovação Realizada com Sucesso!';
 			return view('validar', compact('mps','aprovacaoAd','aprovacaoAl','aprovacaoDe','gestores','admissao','demissao','alteracF','qtdAlt','qtdAdm','qtdDem'))
 						->withErrors($validator)
@@ -1833,14 +1833,14 @@ class HomeController extends Controller
 			}
 			$numeroMP = $mp[0]->numeroMP;
 			if(Auth::user()->funcao == "Superintendencia"){
-				Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
+				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
 					$m->cc($email2); $m->cc($email3); $m->cc($email4);  
 					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
-				});
+				});*/
 			} else {
 				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');

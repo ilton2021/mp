@@ -101,7 +101,7 @@
          <div class="row"> 
          <form action="{{ \Request::route('validarPDs') }}" method="post">
 	     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-         @if(Auth::user()->id == 73)
+         @if(Auth::user()->id == 73 || Auth::user()->id == 72)
           <table class="table table-sm table-bordered" style="font-size: 12px;">
             <?php $qtdVagas = sizeof($vagas); ?>
               @if($qtdVagas > 0) 

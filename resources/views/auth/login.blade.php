@@ -50,8 +50,8 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                @if (Route::has('telaReset'))
-                                    <a class="btn btn-link" style="margin-left: 70px" href="{{ route('telaReset') }}">
+                                @if (Route::has('emailReset'))
+                                    <a class="btn btn-link" style="margin-left: 70px" href="{{ route('emailReset') }}">
                                         {{ __('Esqueceu sua senha?') }}
                                     </a>
                                 @endif

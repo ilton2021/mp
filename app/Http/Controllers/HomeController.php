@@ -1374,14 +1374,13 @@ class HomeController extends Controller
     			}    
 			}
 		} 
-		$text = false; 
 		$justNA = JustificativaN_Autorizada::where('mp_id',$id)->get();
 		if($qtdAdm > 0){
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','text','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
 		} else if($qtdDem > 0) {
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','text','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
 		} else if($qtdAlt > 0) {
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','text','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
 		}	
 	}
 	
@@ -1874,8 +1873,7 @@ class HomeController extends Controller
 		$gestorImediato = $gestores[0]->gestor_imediato;
 		$gestores 	    = Gestor::where('nome',$gestorImediato)->get();
 		$gestoresUnd    = DB::select("SELECT * FROM gestor WHERE (unidade_id = ".$idU.") AND id <> 60 AND id <> 59 AND id <> 61 AND id <> 15 AND id <> 65 ORDER BY nome");
-		$text 			= false;
-		return view('home_autorizado', compact('unidade','mp','gestores','text','admissao','alteracaoF','gestorImediato','gestoresUnd','aprovacao'));
+		return view('home_autorizado', compact('unidade','mp','gestores','admissao','alteracaoF','gestorImediato','gestoresUnd','aprovacao'));
 	}
 	
 	public function storeAutMP($id, Request $request)
@@ -1887,17 +1885,14 @@ class HomeController extends Controller
 		$gestores = Gestor::all();
 		$gestoresUnd = Gestor::where('unidade_id', $idU)->orderby('nome','ASC')->get();
 		$input = $request->all();
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'motivo' => 'required|max:1000'
 		]);
-		if ($v->fails()) {
-			$failed = $v->failed();
-			if ( empty($failed['motivo']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo justificativa é obrigatório!','class'=>'green white-text']);
-			}
-			$text = true;
+		if ($validator->fails()) {
 			$aprovacao = Aprovacao::all();
-			return view('home_autorizado', compact('unidade','mp','gestores','text','gestoresUnd','aprovacao'));
+			return view('home_autorizado', compact('unidade','mp','gestores','gestoresUnd','aprovacao'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} else {
 			if(Auth::user()->funcao == "Superintendencia") {
 				$input['resposta'] = 3;
@@ -1987,14 +1982,14 @@ class HomeController extends Controller
 			$motivo   = $input['motivo'];
 			$numeroMP = $mp[0]->numeroMP;
 			if(Auth::user()->funcao == "Superintendencia"){
-				Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$numeroMP) {
+				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('MP - '.$numeroMP.' Tipo: '.$tipo.' foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
 					$m->cc($email2); $m->cc($email3); $m->cc($email4);
 					$m->cc($email5); $m->cc($email6); $m->cc($email7);
-				});
+				});*/
 			} else {
 				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
@@ -2017,18 +2012,13 @@ class HomeController extends Controller
 		$unidade = Unidade::where('id',$idU)->get();
 		$input['unidade_id'] = $unidade[0]->id;
 		$idG   = $input['gestor_anterior'];
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'motivo' => 'required|max:1000'
 		]);
-		if ($v->fails()) {
-			$failed = $v->failed();
-			if ( empty($failed['motivo']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo justificativa é obrigatório!','class'=>'green white-text']);
-			} else if ( empty($failed['motivo']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo justificativa possui no máximo 1000 caracteres!','class'=>'green white-text']);
-			}
-			$text = true;
-			return view('home_autorizado', compact('unidade','mp','gestores','text'));
+		if ($validator->fails()) {
+			return view('home_autorizado', compact('unidade','mp','gestores'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} else {
 			if(!empty($input['voltarMP'])){
 				$check = $input['voltarMP'];
@@ -2059,12 +2049,12 @@ class HomeController extends Controller
 				$email    = $gestor[0]->email;
 				$motivo   = $input['motivo'];
 				$numeroMP = $mp[0]->numeroMP;
-				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP,$nome) {
+				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP,$nome) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('O Gestor: '.$nome.' solicitou uma mudança na sua MP - '.$numeroMP.'!!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});
+				});*/
 			} else {
 				$input['resposta'] = 3;
 				DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
@@ -2079,12 +2069,12 @@ class HomeController extends Controller
 				$email = $gestor[0]->email;
 				$motivo = $input['motivo'];
 				$numeroMP = $mp[0]->numeroMP;
-				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('Sua MP - '.$numeroMP. 'Não foi Autorizada! Acesse: http:/www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->setBody($motivo);
 					$m->to($email);
-				});
+				});*/
 			}
 			$a = 0;
 			return view('home', compact('unidade', 'idG', 'idMP','a'));
@@ -2100,7 +2090,6 @@ class HomeController extends Controller
 		$qtdAp 	   = sizeof($aprovacao);
  		$idG 	   = $mp[0]->solicitante;
 		$gestores  = Gestor::where('nome',$idG)->get();
-		$text 	   = false;
-		return view('home_nao_autorizado', compact('unidade','mp','gestores','text'));
+		return view('home_nao_autorizado', compact('unidade','mp','gestores'));
 	}
 }

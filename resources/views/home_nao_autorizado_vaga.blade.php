@@ -14,6 +14,15 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
+	  @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+      </div>
+	  @endif
 	  <br>
 		  <form method="POST" action="{{ route('storeNAutVaga', $vaga[0]->id) }}">
 		  <input type="hidden" name="_token" value="{{ csrf_token() }}">

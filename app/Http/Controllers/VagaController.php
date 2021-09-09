@@ -221,9 +221,8 @@ class VagaController extends Controller
 			->select('vaga.*','justificativa_vaga.descricao as just')
 			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
 		$aprovacao = AprovacaoVaga::all();
-		$text 	   = false;
 		$gestores  = Gestor::all();
-		return view('validar_vaga', compact('text','vagas','aprovacao','gestores'));
+		return view('validar_vaga', compact('vagas','aprovacao','gestores'));
 	}
 
 	public function storeValidaVaga(Request $request)
@@ -262,10 +261,11 @@ class VagaController extends Controller
 			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
 			$qtdVagas = sizeof($vagas);
 			$aprovacao = AprovacaoVaga::all();
-			$text 	   = 'sim';
 			$gestores  = Gestor::all();
-			\Session::flash('mensagem', ['msg' => 'Aprovação Realizada com Sucesso!','class'=>'green white-text']);
-			return view('validar_vaga', compact('text','vagas','aprovacao','gestores'));
+			$validator = 'Aprovação Realizada com Sucesso!';
+			return view('validar_vaga', compact('vagas','aprovacao','gestores'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} else {
 			$vagas  = DB::table('vaga')
 			->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
@@ -273,11 +273,12 @@ class VagaController extends Controller
 			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
 			$qtdVagas = sizeof($vagas);
 			$aprovacao = AprovacaoVaga::all();
-			$text 	   = 'nao';
 			$gestores  = Gestor::all();
 			$idG       = Auth::user()->id;
-			\Session::flash('mensagem', ['msg' => 'Selecione uma Vaga!','class'=>'green white-text']);
-			return view('validar_vaga', compact('text','vagas','aprovacao','gestores','idG'));
+			$validator = 'Selecione uma Vaga!';
+			return view('validar_vaga', compact('vagas','aprovacao','gestores','idG'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));	 
 		}
 	}
 
@@ -470,10 +471,9 @@ class VagaController extends Controller
     			}    
 			}
 		}
-		$text = false;
 		$comportamental = Comportamental::where('vaga_id', $id)->get();
 		$competencias   = Competencias::where('vaga_id', $id)->get();
-		return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','text','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor','comportamental','competencias'));
+		return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor','comportamental','competencias'));
 	}
 	
 	public function visualizarVaga($id)
@@ -720,8 +720,7 @@ class VagaController extends Controller
 		$gestorImediato = $gestores[0]->gestor_imediato;
 		$gestores	 = Gestor::where('nome',$gestorImediato)->get();
 		$gestoresUnd = DB::select("SELECT * FROM gestor WHERE (unidade_id = ".$idU.") AND id <> 60 AND id <> 59 AND id <> 61 AND id <> 15 AND id <> 65 ORDER BY nome");
-		$text 		 = false;
-		return view('home_autorizado_vaga', compact('unidade','vaga','gestores','text','gestorImediato','gestoresUnd','aprovacao'));
+		return view('home_autorizado_vaga', compact('unidade','vaga','gestores','gestorImediato','gestoresUnd','aprovacao'));
 	}
 	
 	public function storeAutVaga($id, Request $request)
@@ -733,16 +732,13 @@ class VagaController extends Controller
 		$gestores = Gestor::all();
 		$gestoresUnd = Gestor::where('unidade_id', $idU)->get();
 		$input = $request->all();
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'motivo' => 'required|max:1000'
 		]);
-		if ($v->fails()) {
-			$failed = $v->failed();
-			if ( empty($failed['motivo']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo justificativa é obrigatório!','class'=>'green white-text']);
-			}
-			$text = true;
-			return view('home_autorizado_vaga', compact('unidade','vaga','gestores','text','gestoresUnd'));
+		if ($validator->fails()) {
+			return view('home_autorizado_vaga', compact('unidade','vaga','gestores','gestoresUnd'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));	 
 		} else {
 			if(Auth::user()->funcao == "Superintendencia") {
 			$input['resposta'] = 3;
@@ -799,18 +795,13 @@ class VagaController extends Controller
 		$unidade = Unidade::where('id',$idU)->get();
 		$input['unidade_id'] = $unidade[0]->id;
 		$idG = $input['gestor_anterior'];
-		$v = \Validator::make($request->all(), [
+		$validator = Validator::make($request->all(), [
 			'motivo' => 'required|max:1000'
 		]);
-		if ($v->fails()) {
-			$failed = $v->failed();
-			if ( empty($failed['motivo']['Required']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo justificativa é obrigatório!','class'=>'green white-text']);
-			} else if ( empty($failed['motivo']['Max']) ) {
-				\Session::flash('mensagem', ['msg' => 'O campo justificativa possui no máximo 1000 caracteres!','class'=>'green white-text']);
-			}
-			$text = true;
-			return view('home_autorizado_vaga', compact('unidade','vaga','gestores','text'));
+		if ($validator->fails()) {
+			return view('home_autorizado_vaga', compact('unidade','vaga','gestores'))
+				->withErrors($validator)
+                ->withInput(session()->flashInput($request->input()));
 		} else {
 			if(!empty($input['voltarVaga'])){
 				$check = $input['voltarVaga'];
@@ -880,8 +871,7 @@ class VagaController extends Controller
 		$qtdAp 	   = sizeof($aprovacao);
  		$idG 	   = $vaga[0]->solicitante;
 		$gestores  = Gestor::where('nome',$idG)->get();
-		$text 	   = false;
-		return view('home_nao_autorizado_vaga', compact('unidade','vaga','gestores','text'));
+		return view('home_nao_autorizado_vaga', compact('unidade','vaga','gestores'));
 	}
 	
 	public function escolha_vaga($id)
@@ -935,9 +925,7 @@ class VagaController extends Controller
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
-		$text = false;
-		
-		return view('vaga', compact('unidade','gestores','tipo_vaga','text','unidades','email','cargos','centro_custos','setores','centro_custo_nv'));
+		return view('vaga', compact('unidade','gestores','tipo_vaga','unidades','email','cargos','centro_custos','setores','centro_custo_nv'));
 	}
 	
 	public function storeVaga($id_unidade, $i, Request $request){
@@ -969,10 +957,10 @@ class VagaController extends Controller
 		    }
 		} 
 		if(strtotime($data_prevista) <= strtotime($hoje)){
-			$text = true;
-			\Session::flash('mensagem', ['msg' => 'Data Prevista tem que ser maior que a data de Hoje!','class'=>'green white-text']);
-			session()->flashInput($request->input());
-			return view('vaga', compact('unidade','gestores','tipo_vaga','text','unidades','email','cargos','centro_custos','setores','centro_custo_nv'));
+			$validator = 'Data Prevista tem que ser maior que a data de Hoje!';
+			return view('vaga', compact('unidade','gestores','tipo_vaga','unidades','email','cargos','centro_custos','setores','centro_custo_nv'))
+				->withErrors($validator)
+                ->withInput(session()->flashInput($request->input()));
 		}  
 		$validator = Validator::make($request->all(), [
 			'vaga'                      => 'required|max:255',
@@ -998,9 +986,8 @@ class VagaController extends Controller
 			'idiomas'					=> 'required|max:255',
 			'justificativa'				=> 'required|max:1000'
         ]);
-		$text = true;
 		if ($validator->fails()) {
-            return view('vaga', compact('unidade','gestores','tipo_vaga','text','unidades','email','cargos','centro_custos','setores','centro_custo_nv'))
+            return view('vaga', compact('unidade','gestores','tipo_vaga','unidades','email','cargos','centro_custos','setores','centro_custo_nv'))
                         ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
         } else {
@@ -1095,7 +1082,6 @@ class VagaController extends Controller
 			$m->setBody('A Vaga: '. $vaga.' foi alterada e precisa da sua validação! Acesse o portal da Solicitação de Vaga: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
 		});
-		
 		return view('home_vaga', compact('unidade','idVaga','idG'));
 	}
 	
@@ -1110,13 +1096,12 @@ class VagaController extends Controller
 		$gestor   = Gestor::where('nome', $gestor)->get();
 		$unidade  = $vagas[0]->unidade_id;
 		$unidade  = Unidade::where('id',$unidade)->get();
-		$text 	  = false;
 		$idVaga   = $id;
 		$comportamental = Comportamental::where('vaga_id',$vagas[0]->id)->get();
 		$competencias 	= Competencias::where('vaga_id',$vagas[0]->id)->get();
 		$cargos   = Cargos::all();
 		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
-		return view('alterar_vaga', compact('unidade','text','gestores','unidades','vagas','idVaga','cargos','centro_custos','justificativa','gestor','comportamental','competencias'));
+		return view('alterar_vaga', compact('unidade','gestores','unidades','vagas','idVaga','cargos','centro_custos','justificativa','gestor','comportamental','competencias'));
    }
    
    public function updateVaga($id, Request $request){
@@ -1130,7 +1115,6 @@ class VagaController extends Controller
 		$dataPrevista = date('d-m-Y', strtotime($dataP));
 		$hoje 		  = date('d-m-Y', strtotime('now'));
 		if(strtotime($hoje) >= strtotime($dataPrevista)){
-			$text = true;
 			$gestores = Gestor::all();
 			$unidades = Unidade::all();
 			$justificativa = JustificativaVaga::where('vaga_id', $vagas[0]->id)->get();
@@ -1138,15 +1122,14 @@ class VagaController extends Controller
 			$solic   = Gestor::where('nome',$solicitante)->get();
 			$gestor  = $solic[0]->gestor_imediato;
 			$gestor  = Gestor::where('nome', $gestor)->get();
-			$text = true;
 			$idVaga = $id;
 			$aprovacao = AprovacaoVaga::where('vaga_id',$id)->get();
 			$comportamental = Comportamental::where('vaga_id', $id)->get();
-			$competencias   = Competencias::where('vaga_id', $id)->get();
-			session()->flashInput($request->input());
+			$competencias   = Competencias::where('vaga_id', $id)->get();	
 			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Hoje!";
-			return view('alterar_vaga', compact('unidade','text','gestores','unidades','vagas','idVaga','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','comportamental','competencias'))
-					    ->withErrors($validator);
+			return view('alterar_vaga', compact('unidade','gestores','unidades','vagas','idVaga','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','comportamental','competencias'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} 
 		$validator = Validator::make($request->all(), [
 			'vaga'                      => 'required|max:255',
@@ -1171,7 +1154,6 @@ class VagaController extends Controller
 			'idiomas'					=> 'required|max:255',
 			'justificativa'				=> 'required|max:1000'
         ]);
-		$text = true;
 		if ($validator->fails()) {
             $gestores = Gestor::all(); 
 			$unidades = Unidade::all();
@@ -1182,14 +1164,13 @@ class VagaController extends Controller
 			$solic    = Gestor::where('nome',$solicitante)->get();
 			$gestor   = $solic[0]->gestor_imediato;
 			$gestor   = Gestor::where('nome', $gestor)->get();
-			$text 	  = true;
 			$idVaga   = $id;
 			$justificativa = JustificativaVaga::where('vaga_id', $id)->get();
 			$aprovacao     = AprovacaoVaga::where('vaga_id',$id)->get();
 			$tipo_vaga 	   = 0;
 			$comportamental = Comportamental::where('vaga_id', $id)->get();
 			$competencias   = Competencias::where('vaga_id', $id)->get();
-			return view('alterar_vaga', compact('unidade','gestores','tipo_vaga','text','vagas','gestor','unidades','cargos','centro_custos','comportamental','competencias','justificativa','idVaga'))
+			return view('alterar_vaga', compact('unidade','gestores','tipo_vaga','vagas','gestor','unidades','cargos','centro_custos','comportamental','competencias','justificativa','idVaga'))
                         ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
         } else {
@@ -1253,15 +1234,15 @@ class VagaController extends Controller
 			$idU = $vagas[0]->unidade_id;
 			$unidade = Unidade::where('id', $idU)->get();
 			$justificativa = JustificativaVaga::where('vaga_id', $id)->get();
-			$text = true;
 			$idVaga = $id;
 			$aprovacao = AprovacaoVaga::where('vaga_id',$id)->get();
 			$comportamental = Comportamental::where('vaga_id', $id)->get();
 			$competencias   = Competencias::where('vaga_id', $id)->get();
 			$tipo_vaga = 0;
 			$validator = "Vaga Alterada com sucesso!";
-			return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','text','aprovacao','gestor','competencias','comportamental','idVaga'))
-						->withErrors($validator);
+			return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','aprovacao','gestor','competencias','comportamental','idVaga'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		}
    }
    

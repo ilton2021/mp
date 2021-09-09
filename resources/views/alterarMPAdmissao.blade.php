@@ -207,12 +207,12 @@
 			 <input type="checkbox" checked id="escala_trabalho" name="escala_trabalho" value="12x60"  /> 12x60 <br>
 			 <input type="checkbox" id="escala_trabalho" name="escala_trabalho" value="outra"  /> Outra: 
 			 <input type="text" style="width: 108px;" id="escala_trabalho2" name="escala_trabalho2" value="" /> 
-			 @elseif($adm->escala_trabalho == "outra")
+			 @else
 			 <input type="checkbox" id="escala_trabalho" name="escala_trabalho" value="segxsex"  /> Segunda a Sexta <br>
 			 <input type="checkbox" id="escala_trabalho" name="escala_trabalho" value="12x36"  /> 12x36 <br>
 			 <input type="checkbox" id="escala_trabalho" name="escala_trabalho" value="12x60"  /> 12x60 <br>
 			 <input type="checkbox" checked id="escala_trabalho" name="escala_trabalho" value="outra"  /> Outra: 
-			 <input type="text" style="width: 108px;" id="escala_trabalho2" name="escala_trabalho2" value="" /> 
+			 <input type="text" style="width: 108px;" id="escala_trabalho2" name="escala_trabalho2" value="<?php echo $adm->escala_trabalho; ?>" /> 
 			 @endif
 			 </td> 
 			 <td width="370">Centro de Custo: 

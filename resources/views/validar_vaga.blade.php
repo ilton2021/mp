@@ -102,22 +102,15 @@
                 </div>
             </div>
         </div>
-		@if (Session::has('mensagem'))
-		 @if ($text == 'nao')
-		   <div class="container">
-			  <div class="alert alert-danger {{ Session::get ('mensagem')['class'] }} ">
-				 {{ Session::get ('mensagem')['msg'] }}
-			  </div>
-		   </div>
-		 @endif
-         @if ($text == 'sim')
-		   <div class="container">
-			  <div class="alert alert-success {{ Session::get ('mensagem')['class'] }} ">
-				 {{ Session::get ('mensagem')['msg'] }}
-			  </div>
-		   </div>
-		 @endif
-	    @endif 
+		@if ($errors->any())
+		<div class="alert alert-danger">
+			<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	    @endif
         <div class="container d-flex justify-content-between" style="margin-left: -10px;">
          <div class="row"> 
          <form action="{{ \Request::route('validarVagas') }}" method="post">

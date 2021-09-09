@@ -677,10 +677,9 @@ class MPController extends Controller
 			$unidade 	   = Unidade::where('id', $idU)->get();
 			$alteracaoF    = Alteracao_Funcional::where('mp_id',$id)->get();
 			$justificativa = Justificativa::where('mp_id', $id)->get();
-			$text 		   = true;
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
 			$validator 	   = "Alteração Funcional Alterada com sucesso!";
-			return view('index_', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','text','aprovacao','gestor'))
+			return view('index_', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -856,7 +855,7 @@ class MPController extends Controller
 				}
 				if($input['escala_trabalho'] == "outra")
 				{
-					$input['escala_trabalho'] = $input['escala_trabalho6'];
+					$input['escala_trabalho'] = $input['escala_trabalho2'];
 				}
 				if($input['motivo'] != "substituicao_definitiva")
 				{

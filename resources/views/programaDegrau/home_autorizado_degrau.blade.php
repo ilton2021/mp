@@ -14,15 +14,15 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-	  @if (Session::has('mensagem')) 
-		@if ($text == true)
-		   <div class="container">
-			  <div class="alert alert-danger {{ Session::get ('mensagem')['class'] }} ">
-				 {{ Session::get ('mensagem')['msg'] }}
-			  </div>
-		   </div>
-		@endif
-	  @endif 
+	@if ($errors->any())
+		<div class="alert alert-danger">
+			<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
+	@endif
 	  <br><br>
 	      <center>
 		  <form method="POST" action="{{ route('storeAutPD', $pd[0]->id) }}">

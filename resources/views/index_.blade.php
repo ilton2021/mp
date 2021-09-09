@@ -170,9 +170,9 @@
 			 <input type="checkbox" checked id="escala_trabalho" name="escala_trabalho" value="12x36" disabled="true" /> 12x36 <br>
 			 @elseif($adm->escala_trabalho == "12x60")
 			 <input type="checkbox" checked id="escala_trabalho" name="escala_trabalho" value="12x60" disabled="true" /> 12x60 <br>
-			 @elseif($adm->escala_trabalho == "outra")
+			 @else
 			 <input type="checkbox" checked id="escala_trabalho" name="escala_trabalho" value="outra" disabled="true" /> Outra: 
-			 <input type="text" style="width: 108px;" id="escala_trabalho2" name="escala_trabalho2" value="" /> 
+			 <input type="text" style="width: 108px;" id="escala_trabalho2" name="escala_trabalho2" value="<?php echo $adm->escala_trabalho; ?>" disabled="true" /> 
 			 @endif
 			 </td> 
 			 <td width="370">Centro de Custo: <input class="form-control" type="text" id="centro_custo" name="centro_custo" value="<?php echo $adm->centro_custo; ?>" readonly="true" /></td>

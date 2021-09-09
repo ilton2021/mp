@@ -13,15 +13,15 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
 <body>
-	  @if (Session::has('mensagem')) 
-		@if ($text == true)
-		   <div class="container">
-			  <div class="alert alert-danger {{ Session::get ('mensagem')['class'] }} ">
-				 {{ Session::get ('mensagem')['msg'] }}
-			  </div>
-		   </div>
-		@endif
-	  @endif 	 
+	  @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+      </div>
+	  @endif 
 	  <br><br><br>
 	  <center>
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0"> 

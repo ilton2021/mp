@@ -63,17 +63,17 @@
 		  </center> 
 		  <?php $a = 0; ?>
 		  @if(Auth::user()->id != 73 && Auth::user()->id != 30 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
-			  @if(empty($aprovacao))
+			@if(empty($aprovacao))
 			      <a style="margin-left: 180px;" class="btn btn-primary" href="{{ route('alterarPD', $pd[0]->id) }}">Alterar</a></td>
-			  @else 
+			@else 
 			   @foreach($aprovacao as $ap)
 				  <?php if($ap->resposta == 3){ $a = 1; } ?>
 			   @endforeach	
 			   @if($a == 0)
 				  <a style="margin-left: 180px;" class="btn btn-primary" href="{{ route('alterarPD', $pd[0]->id) }}">Alterar</a></td>
 			   @endif
-			  @endif
-			 @endif	
+			@endif
+		  @endif	
 		  <br></p>
 		  <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0">

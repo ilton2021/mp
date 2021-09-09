@@ -132,7 +132,7 @@ class UserController extends Controller
 				$m->cc($email2);
 			});		
 
-			$validator = 'E-mail enviado com sucesso! Verifique sua caixa de mensagens';
+			$validator = 'ABRA SUA CAIXA DE E-MAIL PARA VALIDAR SUA SENHA NOVA';
 			return view('auth.passwords.email', compact('email','usuarios'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));

@@ -101,20 +101,14 @@
                 </div>
             </div>
         </div>
-		@if (Session::has('mensagem'))
-		 @if ($text == 1)
-		   <div class="container">
-			  <div class="alert alert-danger {{ Session::get ('mensagem')['class'] }} ">
-				 {{ Session::get ('mensagem')['msg'] }}
-			  </div>
-		   </div>
-		 @else
-		   <div class="container">
-			  <div class="alert alert-success {{ Session::get ('mensagem')['class'] }} ">
-				 {{ Session::get ('mensagem')['msg'] }}
-			  </div>
-		   </div>
-		 @endif
+		@if ($errors->any())
+		<div class="alert alert-danger">
+			<ul>
+				@foreach ($errors->all() as $error)
+					<li>{{ $error }}</li>
+				@endforeach
+			</ul>
+		</div>
 	    @endif 
         <div class="container d-flex justify-content-between" style="margin-left: -10px;">
          <div class="row"> 

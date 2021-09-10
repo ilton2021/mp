@@ -1309,7 +1309,7 @@ class HomeController extends Controller
 		$data_aprovacao = $mps[0]->created_at; 	
 		for($i = 0; $i < $qtdA; $i++) {
 			$idU = $aprovacao[$i]->gestor_anterior;
-			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 5 || $idU == 34){ 
+			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 34 || $idU == 55){ 
 			    $funcao = "Gestor Imediato"; 
 			} else {
 			    $funcao = User::where('id', $idU)->get(); 
@@ -1338,10 +1338,10 @@ class HomeController extends Controller
     			}    
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Tecnica"){
-				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163){
+				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 173 || $aprovacao[$i]->gestor_anterior == 174 || $aprovacao[$i]->gestor_anterior == 93){
 				    $gestorC = $aprovacao[$i]->gestor_anterior;  
-				}
+				} 
     			if($gestorC != ""){
     			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
 					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
@@ -1351,9 +1351,8 @@ class HomeController extends Controller
 			} 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 
-				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
-				|| $aprovacao[$i]->gestor_anterior == 166){
+				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 42 
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 167){
 				    $gestorD = $aprovacao[$i]->gestor_anterior;  
 				}
 			    if($gestorD != ""){
@@ -1470,7 +1469,7 @@ class HomeController extends Controller
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Tecnica"){
 				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163){
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
 				    $gestorC = $aprovacao[$i]->gestor_anterior;  
 				}
     			if($gestorC != ""){
@@ -1481,7 +1480,7 @@ class HomeController extends Controller
     			}
 			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Tecnica") {
 				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163){
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
 				    $gestorC = $aprovacao[$i]->gestor_anterior;   
 				}
     			if($gestorC != ""){
@@ -1495,7 +1494,7 @@ class HomeController extends Controller
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
 				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
-				|| $aprovacao[$i]->gestor_anterior == 166){
+				|| $aprovacao[$i]->gestor_anterior == 166 || $aprovacao[$i]->gestor_anterior == 42) {
 					$gestorD = $aprovacao[$i]->gestor_anterior;
 				}
 				if($gestorD != ""){
@@ -1505,7 +1504,7 @@ class HomeController extends Controller
 			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria") {
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 
-				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160){
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 42){
 					$gestorD = $aprovacao[$i]->gestor_anterior;
 				}
 				if($gestorD != ""){
@@ -1991,12 +1990,12 @@ class HomeController extends Controller
 					$m->cc($email5); $m->cc($email6); $m->cc($email7);
 				});*/
 			} else {
-				Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('MP - '.$numeroMP.' Autorizada!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});
+				});*/
 			}
 			$a = 0;
 			return view('home', compact('unidade','idG','idMP','a'));

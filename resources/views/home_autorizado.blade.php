@@ -132,7 +132,8 @@
 				  <option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
 				  @endif
 			      <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-			      <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option>   
+			      <!--option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option-->   
+				  <option id="gestor_id" name="gestor_id" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>   
 			      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
 			      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
 				 </select>

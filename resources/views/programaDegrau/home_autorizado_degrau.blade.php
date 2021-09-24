@@ -48,12 +48,6 @@
 		   <tr>
 		    <td>Próxima Etapa: </td> <?php $qtdAp = sizeof($aprovacao); ?>
 			<td>
-			   @if(Auth::user()->name == "CAMILA FERNANDES")
-			     <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
-				 </select>
-			   @endif
-			   
 			   @if(Auth::user()->name == "JANAINA GLAYCE PEREIRA LIMA")
 			   	 @if($pd[0]->unidade_id == 2)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  

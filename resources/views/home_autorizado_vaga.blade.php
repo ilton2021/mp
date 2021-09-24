@@ -22,7 +22,7 @@
             @endforeach
         </ul>
       </div>
-	  @endif
+	  @endif	 
 	  <br><br>
 	      <center>
 		  <form method="POST" action="{{ route('storeAutVaga', $vaga[0]->id) }}">
@@ -50,13 +50,19 @@
 		    </select>
 		   @else
 		   <tr>
-		    <td>Próxima Etapa: </td> 
+		    <td>Próxima Etapa: </td> <?php $qtdAp = sizeof($aprovacao); ?>
 			<td>
 			   @if(Auth::user()->funcao != "Superintendencia" && Auth::user()->funcao != "Diretoria Tecnica" && Auth::user()->funcao != "Diretoria" && Auth::user()->funcao != "RH")
 			    @foreach($gestores as $gestor)
+				 @if(Auth::user()->id == 55 || Auth::user()->id == 117 || Auth::user()->id == 111)
+				  <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
+			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
+				  </select>
+				 @else
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 			      <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id; ?>"> {{ $gestor->nome }}</option>   
 				 </select> 
+				 @endif
 			 	@endforeach
 			   @endif
 			   
@@ -75,13 +81,48 @@
     		   @endif
     			
 			   @if(Auth::user()->funcao == "Diretoria Tecnica")
-			     <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			      <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option> 
-			      <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-			      <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option> 
-			      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
-			     </select>
+			     @if(!empty($aprovacao)) <?php $qtdAp = sizeof($aprovacao); ?>
+			      @if(Auth::user()->id == 65)
+				   @if($qtdAp == 0)
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					 </select>  
+				   @else
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
+					   <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
+    			       <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option> 
+    			       <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
+				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+					 </select>  
+				   @endif
+				  @elseif(Auth::user()->id == 163)
+				   @if($qtdAp == 0)
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					 </select>  
+				   @else
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	     
+				      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
+				      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+					 </select>
+				  @endif
+				 @elseif(Auth::user()->id == 93)
+				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					</select>  
+				 @elseif(Auth::user()->id == 173 || Auth::user()->id == 174)
+				   @if($qtdAp == 0)    
+				     <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					 </select>  
+				   @else
+				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option> 
+					</select>
+				   @endif
+				 @endif
 			   @endif
+			  @endif
 			   
 			   @if(Auth::user()->funcao == "RH")
 				 @if($vaga[0]->tipo_vaga == 0)
@@ -89,10 +130,28 @@
 				  @foreach($gestoresUnd as $gestor)
 				   <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id; ?>"> {{ $gestor->nome }}</option>   
 				  @endforeach
-				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>   
-			      <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-			      <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option>   
-			      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
+				  <option id="gestor_id" name="gestor_id" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
+				  <option id="gestor_id" name="gestor_id" value="173">DIRETORIA TÉCNICA - SORAIA DO CARMO CUNHA XIMENES</option>   
+				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>   
+				  <option id="gestor_id" name="gestor_id" value="12">ANALICE MARIA DE MENDONCA FERNANDES SILVA</option>
+				  @if($vaga[0]->unidade_id == 2)
+				  <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
+				  @elseif($vaga[0]->unidade_id == 3)
+				  <option id="gestor_id" name="gestor_id" value="5">COORDENADOR UNIDADE - ALEXANDRA SILVESTRE AMARAL</option>   
+				  @elseif($vaga[0]->unidade_id == 4)
+				  <option id="gestor_id" name="gestor_id" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
+				  @elseif($vaga[0]->unidade_id == 5)
+				  <option id="gestor_id" name="gestor_id" value="167">COORDENADOR UNIDADE - ADRIANA CAVALCANTI BEZERRA</option>
+				  @elseif($vaga[0]->unidade_id == 6)
+				  <option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+				  @elseif($vaga[0]->unidade_id == 7)
+				  <!--option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option-->   
+				  <option id="gestor_id" name="gestor_id" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>   
+				  @elseif($vaga[0]->unidade_id == 8)
+				  
+				  <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+				  @endif
 			      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
 				 </select>
 				 @else

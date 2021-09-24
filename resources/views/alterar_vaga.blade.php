@@ -129,7 +129,7 @@
 			  </select>
 			</tr>
 			<tr>
-			  <td colspan="2">Área: <input class="form-control" type="text" id="area" name="area" value="<?php echo $vaga->area; ?>" required /></td>
+			  <td>Área: <input class="form-control" type="text" id="area" name="area" value="<?php echo $vaga->area; ?>" required /></td>
 			  <td>Vaga disponível em Edital: <br>  
 			    <select class="form-control" id="edital_disponivel" name="edital_disponivel" required="true">
 				 	@if($vaga->edital_disponivel == 'Sim')
@@ -140,6 +140,10 @@
 					<option id="edital_disponivel" name="edital_disponivel" value="Não" selected> {{ 'Não' }}</option>
 					@endif
 				</select>
+			  </td>
+			  <td>Número da Vaga: <br>
+				<input type="text" readonly="true" class="form-control" id="numeroVaga" name="numeroVaga" value="<?php echo $vaga->numeroVaga; ?>" />	  
+			  </td>
 			</tr>
 		   </table>
 		  </center>
@@ -148,8 +152,9 @@
 		  <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			  <tr>
-			   <td width="800px;" colspan="2"><center><strong><h4>Preenchimento da Área</h4></strong></center></td>
-		 	   <td>Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $vaga->data_prevista; ?>" /></td>
+			   <td width="600px;" colspan="2"><center><strong><h4>Preenchimento da Área</h4></strong></center></td>
+		 	   <td>Data de Emissão: <input class="form-control" type="date" id="data_emissao" name="data_emissao" readonly="true" value="<?php echo $vaga->data_emissao; ?>" /></td> 
+			   <td>Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $vaga->data_prevista; ?>" /></td>
 			  </tr>	
 			</table>
 		  </center>
@@ -507,8 +512,8 @@
 			<input type="checkbox" id="motivoB9" name="motivoB9" value="outros" onclick="desabilitarMotivo('sim')"  /> Outros 
 			<br><input type="checkbox" id="motivoB8" name="motivoB8" value="ferramentas_gestao"  /> Ferramentas de Gestão (PDCA/5S/MÉTODOS ÁGEIS)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</td>
-			<td colspan="1"> Apresentação de Outras Competências: <br><br> 
-			<textarea disabled="true" required type="text" id="outras_competencias" name="outras_competencias" class="form-control" required="true" rows="5" cols="20"><?php if(!empty($competencias)){echo $competencias[0]->outros;}else{echo "";} ?></textarea></td>	
+			<td colspan="1"> Apresentação de Outras Competências: <br><br> <?php $qtdComp = sizeof($competencias); ?>
+			<textarea disabled="true" required type="text" id="outras_competencias" name="outras_competencias" class="form-control" required="true" rows="5" cols="20"><?php if($qtdComp > 0){echo $competencias[0]->outros;}else{echo "";} ?></textarea></td>	
 			</td>
 		   </tr>
 		  </table>

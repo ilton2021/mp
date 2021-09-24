@@ -72,6 +72,9 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/excluir/mp','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
 		Route::get('/home/excluir/mp/{id}','MPController@excluirMP')->name('excluirMP');
 		Route::post('/home/excluir/mp/{id}','MPController@deleteMP')->name('deleteMP');
+		Route::get('/home/visualizarMPS/minhasMPS', 'HomeController@minhasMPS')->name('minhasMPS');
+		Route::get('/home/visualizarMPS/minhasMPS/pesquisa', 'HomeController@pesquisaHistMPs')->name('pesquisaHistMPs');
+		Route::post('/home/visualizarMPS/minhasMPS/pesquisa', 'HomeController@pesquisaHistMPs')->name('pesquisaHistMPs');
 		//
 		Route::get('/homeVaga/excluir/vaga','VagaController@excluirVagas')->name('excluirVagas');
 		Route::post('/homeVaga/excluir/vaga','VagaController@pesquisaVagasExclusao')->name('pesquisaVagasExclusao');
@@ -84,6 +87,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeVaga/unidade','VagaController@indexVaga2')->name('indexVaga2');
 		Route::get('/homeVaga/unidade/escolha/{id}/vaga','VagaController@escolha_vaga')->name('escolha_vaga');
 		Route::get('/homeVaga/validar', 'VagaController@indexValidaVaga')->name('indexValidaVaga');
+		Route::post('/homeVaga/validar', 'VagaController@storeValidaVaga')->name('storeValidaVaga');
 		Route::get('/homeVaga/validar/{id}', 'VagaController@validarVaga')->name('validarVaga');
 		Route::post('/homeVaga/validar/{id}', 'VagaController@salvarVaga')->name('salvarVaga');
 		Route::get('/homeVaga/validar/{id}/salvarVaga/{idG}', 'VagaController@salvarVaga')->name('salvarVaga');
@@ -106,6 +110,9 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeVaga/validar/{id}/autorizarVaga/store', 'VagaController@storeAutVaga')->name('storeAutVaga');
 		Route::get('/homeVaga/validar/{id}/n_autorizarVaga', 'VagaController@n_autorizarVaga')->name('n_autorizarVaga');
 		Route::post('/homeVaga/validar/{id}/n_autorizarVaga/', 'VagaController@storeNAutVaga')->name('storeNAutVaga');
+		Route::get('/homeVaga/visualizarVagas/minhasVagas', 'VagaController@minhasVagas')->name('minhasVagas');
+		Route::get('/homeVaga/visualizarVagas/minhasVagas/pesquisa', 'VagaController@pesquisaHistVagas')->name('pesquisaHistVagas');
+		Route::post('/homeVaga/visualizarVagas/minhasVagas/pesquisa', 'VagaController@pesquisaHistVagas')->name('pesquisaHistVagas');
 		////
 		
 		//ProgramaDegrau

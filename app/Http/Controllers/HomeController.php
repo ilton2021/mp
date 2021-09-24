@@ -1494,7 +1494,7 @@ class HomeController extends Controller
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
 				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
-				|| $aprovacao[$i]->gestor_anterior == 166 || $aprovacao[$i]->gestor_anterior == 42) {
+				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
 					$gestorD = $aprovacao[$i]->gestor_anterior;
 				}
 				if($gestorD != ""){
@@ -2090,5 +2090,167 @@ class HomeController extends Controller
  		$idG 	   = $mp[0]->solicitante;
 		$gestores  = Gestor::where('nome',$idG)->get();
 		return view('home_nao_autorizado', compact('unidade','mp','gestores'));
+	}
+
+	public function minhasMPS(Request $request)
+	{
+		$users 	   = Auth::user()->id;
+		$unidades  = Unidade::all();
+		$gestores  = Gestor::all();
+		$nome      = Auth::user()->name;
+		$input 	   = $request->all();
+		$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+		->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+		->where('mp.solicitante',$nome)
+		->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+		->orderby('mp.unidade_id')->get();
+		$qtdAdm = sizeof($admissao);
+		$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+		->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+		->where('mp.solicitante',$nome)
+		->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+		->orderby('mp.unidade_id')->get();
+		$qtdDem = sizeof($demissao);
+		$alteracao  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+		->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+		->where('mp.solicitante',$nome)
+		->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+		->orderby('mp.unidade_id')->get();
+		$qtdAlt = sizeof($alteracao); 
+		if($qtdDem > 0 || $qtdAdm > 0 || $qtdAlt > 0) { 
+			return view('minhasMPs', compact('unidades','admissao','qtdAdm','demissao','qtdDem','alteracao','qtdAlt'));
+		} else {
+			$validator = 'Você nunca fez nenhuma MP!';
+			return view('minhasMPs', compact('unidades','mps'))
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
+		} 
+	}
+
+	public function pesquisaHistMPs(Request $request)
+	{
+		$input = $request->all();
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq  = $input['pesq']; 
+		$pesq2 = $input['pesq2'];
+		$admissao = NULL; $demissao = NULL; $alteracao = NULL;
+		$qtdAdm = 0; $qtdDem = 0; $qtdAlt = 0;
+		$unidades = Unidade::all();
+		$nome     = Auth::user()->name; $a = 0;
+		if($pesq2 == "numeroMP"){
+			$mp = MP::where('numeroMP','like','%'.$pesq.'%')->get();
+			$a  = 1;
+		} elseif($pesq2 == "nome"){
+			$mp = MP::where('nome','like','%'.$pesq.'%')->get();
+			$a  = 1;
+		} elseif($pesq2 == "admissao"){
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAdm = sizeof($admissao);
+		} elseif($pesq2 == "demissao"){
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdDem = sizeof($demissao);
+		} elseif($pesq2 == "alteracao"){
+			$alteracao  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAlt = sizeof($alteracao);
+		} elseif($pesq2 == "status") {
+			$status = $input['status'];
+			if($status == 0){
+				$concluida = 0;
+				$aprovada  = 0;
+			} else if($status == 1){
+				$concluida = 1;
+				$aprovada  = 1;
+			} else if($status == 2){
+				$concluida = 1;
+				$aprovada  = 0;
+			}
+			$mp = MP::where('concluida',$concluida)->where('aprovada',$aprovada)
+					->where('solicitante',$nome)->get();
+			$qtd = sizeof($mp); 
+			if($qtd > 0){
+				for($a = 0; $a < $qtd; $a++){
+					$ids[] = $mp[$a]->id;
+				}	
+			} else {
+				$ids[] = 0;
+			}
+			$a  = 2;
+		} else {
+			$a = 3;
+		}
+
+		if($a == 1){
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)->where('mp.id',$mp[0]->id)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAdm = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)->where('mp.id',$mp[0]->id)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdDem = sizeof($demissao);
+			$alteracao  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)->where('mp.id',$mp[0]->id)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAlt = sizeof($alteracao);
+		} else if($a == 2){
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)->whereIn('mp.id',$ids)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAdm = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)->whereIn('mp.id',$ids)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdDem = sizeof($demissao);
+			$alteracao  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)->whereIn('mp.id',$ids)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAlt = sizeof($alteracao);
+		} else if($a == 3){
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAdm = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdDem = sizeof($demissao);
+			$alteracao  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->where('mp.solicitante',$nome)
+			->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
+			->orderby('mp.unidade_id')->get();
+			$qtdAlt = sizeof($alteracao); 			
+		}
+
+		return view('minhasMPs', compact('unidades','admissao','qtdAdm','demissao','qtdDem','alteracao','qtdAlt'));
 	}
 }

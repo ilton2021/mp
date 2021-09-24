@@ -95,7 +95,9 @@
 		</td>
 		<td align="right"> 
 			<select class="form-control" id="pesq2" name="pesq2">
-			  <option id="pesq2" name="pesq2" value="vaga">NOME VAGA</option>
+			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
+			  <option id="pesq2" name="pesq2" value="vaga">NOME DA VAGA</option>
+			  <option id="pesq2" name="pesq2" value="numeroVaga">NÚMERO DA VAGA</option>
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
 			</select>	
 		</td> 
@@ -104,7 +106,7 @@
 	 </tr>
 	</table>
 	</form>
-    <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:#0000ff;">
+    <table class="table table-bordeared" style="WIDTH: 1200px; border-style:solid; border-color:#0000ff;">
 		 <tr>
 		    <thead>
 			  <tr>
@@ -112,51 +114,21 @@
 			  </tr>
 			  <tr>
 			   <td><center>NOME DA VAGA</center></td>
+			   <td><center>NÚMERO DA VAGA</center></td>
 			   <td><center>SOLICITANTE</center></td>   
 		       <td><center>VISUALIZAR</center></td>
 			  </tr>
 			 </thead>
 			 <?php $a = 0; ?>
 			 @foreach($vagas as $vaga)
-			 @if(($vaga->solicitante == Auth::user()->name || Auth::user()->funcao == "RH") && ($vaga->concluida == 0))
-			  @if(($vaga->unidade_id == 3 && Auth::user()->id == 95) || ($vaga->unidade_id == 7 && Auth::user()->id == 40) || ($vaga->unidade_id == 6 && Auth::user()->id == 87) || ($vaga->unidade_id == 4 && Auth::user()->id == 86) || ($vaga->unidade_id == 8 && Auth::user()->id == 73))
-			  <?php $a = 1; ?>
-			  <tbody>
-			   <tr>
-			    <td><center>{{ $vaga->vaga }}</center></td>
-			    <td><center>{{ $vaga->solicitante }}</center></td>   
-			    <td><center><a href="{{ route('visualizarVaga', $vaga->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			   </tr>
-			  </tbody>
-			  @endif
-			  
-			  @if(Auth::user()->id != 95 && Auth::user()->id != 40 && Auth::user()->id != 87 && Auth::user()->id != 86 && Auth::user()->id != 73)
-			  <?php $a = 1; ?>
-			  <tbody>
-			   <tr>
-			    <td><center>{{ $vaga->vaga }}</center></td>
-			    <td><center>{{ $vaga->solicitante }}</center></td>   
-			    <td><center><a href="{{ route('visualizarVaga', $vaga->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			   </tr>
-			  </tbody>
-			 @endif
-			@endif
-			  
-			 @if($vaga->concluida == 0 && $a == 0)
-			  @if((Auth::user()->id == 65 && $vaga->unidade_id == 2) || (Auth::user()->id == 48 && $vaga->unidade_id == 6)
-			   || (Auth::user()->id == 59 && $vaga->unidade_id == 2) || (Auth::user()->id == 61 && $vaga->unidade_id == 8)
-			   || (Auth::user()->id == 60 && $vaga->unidade_id == 7) || (Auth::user()->id == 5  && $vaga->unidade_id == 3)
-			   || (Auth::user()->id == 1  && $vaga->unidade_id == 4) || (Auth::user()->id == 34 && $vaga->unidade_id == 5)
-			   || Auth::user()->id == 23 || Auth::user()->id == 32)
 			    <tbody>
 			     <tr>
 			      <td><center>{{ $vaga->vaga }}</center></td>
+				  <td><center>{{ $vaga->numeroVaga }}</center></td>
 			      <td><center>{{ $vaga->solicitante }}</center></td>   
 			      <td><center><a href="{{ route('visualizarVaga', $vaga->id) }}" class="btn-info btn">Visualizar</center></a></td>
 			     </tr>
 			    </tbody>
-			  @endif
-			 @endif
 			 @endforeach
 		  </td>
 		 </tr>

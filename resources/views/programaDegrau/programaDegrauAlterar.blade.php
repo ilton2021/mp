@@ -107,7 +107,7 @@
 			  <td> Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" name="codigo_vaga" value="<?php echo $pd[0]->codigo_vaga; ?>" /> </td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" readonly="true">
-			    <option id="gestor_id" name="gestor_id" value="73">{{ 'CAMILA FERNANDES' }}</option>
+			    <option id="gestor_id" name="gestor_id" value="73">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 			  </select>
 			</tr>
 			<tr>
@@ -548,7 +548,7 @@
 			<td>Coordenador de Seleção</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 73)
+			  @if($ap->gestor_anterior == 30)
 			  <input readonly="true" type="text" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  @endif
 			 @endforeach

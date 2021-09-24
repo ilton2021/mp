@@ -113,7 +113,7 @@
                 <td><center>SALÁRIO</center></td>
                 <td><center>CENTRO DE CUSTO</center></td>
                 <td><center>VISUALIZAR</center></td>
-                @if(Auth::user()->id != 73 && Auth::user()->id != 72)
+                @if(Auth::user()->id != 30 && Auth::user()->id != 72 && Auth::user()->id != 71)
                 <td><center>INSCRIÇÃO</center></td>
                 @else
                 <td><center>INSCRITOS</center></td>
@@ -137,7 +137,7 @@
                  <td> <p><center> {{ "R$ ".number_format($vaga->salario, 2,',','.') }} </center> </p> </td>
                  <td> <br> <center> {{ $vaga->centro_custo }} </center> </td>
                  <td> <p><center> <a href="{{ route('visualizarVagaPD', $vaga->id) }}" class="btn btn-dark btn-sm">VISUALIZAR</a> </center></p></td>
-                 @if(Auth::user()->id != 73 && Auth::user()->id != 72)
+                 @if(Auth::user()->id != 30 && Auth::user()->id != 72 && Auth::user()->id != 71)
                  <td> <p><center> <a href="{{ route('inscricaoPDs', $vaga->id) }}" class="btn btn-success btn-sm">INSCRIÇÃO</a> </center></p></td>
                  @else  
                  <td> <p><center> <a href="{{ route('inscricaoInscritosPD', $vaga->id) }}" class="btn btn-info btn-sm">INSCRITOS</a> </center></p></td>

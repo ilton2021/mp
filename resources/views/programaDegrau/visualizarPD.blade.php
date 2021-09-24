@@ -90,7 +90,6 @@
                     </ul>
                 </div>
     </nav>
-	
 	<p style="margin-left: 1170px"> <a href="{{url('homeProgramaDegrau')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
 	<center>
 	<form action="{{ route('pesquisaPD') }}" method="POST">
@@ -143,7 +142,7 @@
 			 </thead>
 			 <?php $b = 0; ?>
 			 @foreach($pd as $pd)
-			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 73 || Auth::user()->id == 72 || Auth::user()->id == 30))
+			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 30 || Auth::user()->id == 72 || Auth::user()->id == 71))
 			 <?php $b = 1; ?>
 			 <tbody>
 			  <tr>  

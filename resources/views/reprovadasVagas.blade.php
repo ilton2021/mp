@@ -95,7 +95,9 @@
 		</td>
 		<td align="right"> 
 			<select class="form-control" id="pesq2" name="pesq2">
-			  <option id="pesq2" name="pesq2" value="vaga">NOME VAGA</option>
+			  <option id="pesq2" name="pesq2" value="">Selecione...</option>	
+			  <option id="pesq2" name="pesq2" value="nome">NOME DA VAGA</option>
+			  <option id="pesq2" name="pesq2" value="numeroVaga">NÚMERO DA VAGA</option> 
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
 			</select>	
 		</td> 
@@ -104,7 +106,7 @@
 	 </tr>
 	</table>
 	</form>
-    <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:red;">
+    <table class="table table-bordeared" style="WIDTH: 1200px; border-style:solid; border-color:red;">
 		 <tr>
 		    <thead>
 			  <tr>
@@ -112,18 +114,17 @@
 			  </tr>
 			  <tr>
 			   <td><center>NOME DA VAGA</center></td>
+			   <td><center>NÚMERO DA VAGA</center></td>
 			   <td><center>SOLICITANTE</center></td>
 			   <td><center>MENSAGEM</center></td>
 			   <td><center>Visualizar</center></td>
 			  </tr>
 			 </thead>
-			 <?php $b = 0; ?>
 			 @foreach($vagas as $vaga)
-			 @if(($vaga->solicitante == Auth::user()->name && Auth::user()->funcao != "RH") && ($vaga->concluida == 1 && $vaga->aprovada == 0))
-			 <?php $b = 1; ?>
 			 <tbody>
 			  <tr>  
 			   <td><center>{{ $vaga->vaga }}</center></td>
+			   <td><center>{{ $vaga->numeroVaga }}</center></td>
 			   <td><center>{{ $vaga->solicitante }}</center></td>   
 			   <td>
 			   <?php $qtd = sizeof($aprovacao); ?>
@@ -169,114 +170,6 @@
 			   <td><center><a href="{{ route('visualizarVaga', $vaga->id) }}" class="btn-info btn">Visualizar</center></a></td>
 			  </tr>
 			 </tbody>
-			 @elseif((Auth::user()->id == 30 || Auth::user()->id == 72 || Auth::user()->id == 32 || Auth::user()->id == 23 || Auth::user()->id == 74 || Auth::user()->id == 62) && ($vaga->concluida == 1 && $vaga->aprovada == 0))
-			 <?php $b = 1; ?>
-			 <tbody>
-			  <tr>  
-			   <td><center>{{ $vaga->vaga }}</center></td>
-			   <td><center>{{ $vaga->solicitante }}</center></td>   
-			   <td>
-			   <?php $qtd = sizeof($aprovacao); ?>
-			   <?php for($i = 0; $i < $qtd; $i++) { ?>
-			   <?php  if($aprovacao[$i]->vaga_id == $vaga->id && $aprovacao[$i]->ativo == 1) { ?>
-			     <center><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<?php echo $aprovacao[$i]->id; ?>" > 
-			     Status
-				 </button>
-				 <div class="modal fade" id='exampleModal<?php echo $aprovacao[$i]->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class='modal-content'>
-						  <div class='modal-header'>
-							<h5 class='modal-title' align="left"><b><center>Status:</center></b></h5>
-							<button type='button' class='close' data-dismiss='modal'>&times;</button>
-						  </div>
-						  <div class='modal-body'>
-							<div class='panel panel-default'>
-							 <div class='panel-heading'> </div>
-							 <div class='panel-body'>
-							   @foreach($gestores as $g)
-							    @if($g->id == $aprovacao[$i]->gestor_anterior)
-							      <p align="justify">{{ 'Validação Final: ' }}<b>{{ $g->nome }}</b></a>
-							    @endif
-							   @endforeach	
-							   @if($mp->aprovada == 1)
-								 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
-							   @else
-								 <p align="justify">{{ 'Situação:' }}<b><font color="red">{{ ' REPROVADO' }}</font></b></a>		 
-							   @endif
-								<p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
-							 </div>
-							</div>
-						  </div>
-						  <div class='modal-footer'>
-							<span class='codigo'></span>
-						  </div>
-					   </div>
-					 </div>
-				 </div></center>
-			   <?php  } ?>
-			   <?php } ?>
-			   </td>
-			   <td><center><a href="{{ route('visualizarVaga', $vaga->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			  </tr>
-			 </tbody>
-			 @elseif((($vaga->unidade_id == 3 && Auth::user()->id == 95) || ($vaga->unidade_id == 7 && Auth::user()->id == 40) || 
-					($vaga->unidade_id == 6 && Auth::user()->id == 87)   || ($vaga->unidade_id == 4 && Auth::user()->id == 86) || 
-					($vaga->unidade_id == 6 && Auth::user()->id == 133)  || ($vaga->unidade_id == 3 && Auth::user()->id == 5)  ||
-					($vaga->unidade_id == 4 && Auth::user()->id == 1)    || ($vaga->unidade_id == 5 && Auth::user()->id == 34) ||
-					($vaga->unidade_id == 6 && Auth::user()->id == 48)   || ($vaga->unidade_id == 2 && Auth::user()->id == 59) ||
-					($vaga->unidade_id == 2 && Auth::user()->id == 65)   || ($vaga->unidade_id == 7 && Auth::user()->id == 60) ||
-					($vaga->unidade_id == 8 && Auth::user()->id == 61)   ||
-					($vaga->unidade_id == 8 && Auth::user()->id == 73)) && ($vaga->concluida == 1 && $vaga->aprovada == 0))
-			 <?php $b = 1; ?>
-			 <tbody>
-			  <tr>  
-			   <td><center>{{ $vaga->vaga }}</center></td>
-			   <td><center>{{ $vaga->solicitante }}</center></td>   
-			   <td>
-			   <?php $qtd = sizeof($aprovacao); ?>
-			   <?php for($i = 0; $i < $qtd; $i++) { ?>
-			   <?php  if($aprovacao[$i]->vaga_id == $vaga->id && $aprovacao[$i]->ativo == 1) { ?>
-			     <center><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<?php echo $aprovacao[$i]->id; ?>" > 
-			     Status
-				 </button>
-				 <div class="modal fade" id='exampleModal<?php echo $aprovacao[$i]->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class='modal-content'>
-						  <div class='modal-header'>
-							<h5 class='modal-title' align="left"><b><center>Status:</center></b></h5>
-							<button type='button' class='close' data-dismiss='modal'>&times;</button>
-						  </div>
-						  <div class='modal-body'>
-							<div class='panel panel-default'>
-							 <div class='panel-heading'> </div>
-							 <div class='panel-body'>
-							   @foreach($gestores as $g)
-							    @if($g->id == $aprovacao[$i]->gestor_anterior)
-							      <p align="justify">{{ 'Validação Final: ' }}<b>{{ $g->nome }}</b></a>
-							    @endif
-							   @endforeach	
-							   @if($vaga->aprovada == 1)
-								 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
-							   @else
-								 <p align="justify">{{ 'Situação:' }}<b><font color="red">{{ ' REPROVADO' }}</font></b></a>		 
-							   @endif
-								<p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
-							 </div>
-							</div>
-						  </div>
-						  <div class='modal-footer'>
-							<span class='codigo'></span>
-						  </div>
-					   </div>
-					 </div>
-				 </div></center>
-			   <?php  } ?>
-			   <?php } ?>
-			   </td>
-			   <td><center><a href="{{ route('visualizarVaga', $vaga->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			  </tr>
-			 </tbody>
-			 @endif
 			 @endforeach
 		  </td>
 		 </tr>

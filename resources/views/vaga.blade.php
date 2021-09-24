@@ -89,7 +89,8 @@
 			  <td hidden><input hidden class="form-control" type="text" id="concluida" name="concluida" value="" readonly="true" /></td>
 			  <td hidden><input hidden class="form-control" type="text" id="aprovada" name="aprovada" value="0" readonly="true" /></td>
 			  <td hidden><input hidden class="form-control" type="text" id="descricao" name="descricao" value="" readonly="true" /></td>
-			  <td hidden><input hidden class="form-control" type="text" id="data_emissao" name="data_emissao" value="<?php echo date('Y-m-d', strtotime('now')); ?>" readonly="true" /></td>
+			  <td hidden><input hidden class="form-control" type="text" id="numeroVaga" name="numeroVaga" value="" readonly="true" /></td>
+			  <td hidden><input hidden class="form-control" type="text" id="ordem" name="ordem" value="" readonly="true" /></td>
 			</tr>
 			<tr>
 			  <td width="340px" hidden>Unidade: <input class="form-control" type="text" id="unidade" name="unidade" value="<?php echo $unidade[0]->id; ?>" readonly="true" /></td>
@@ -142,12 +143,9 @@
 					@endif
 				</select>
 			  </td>
-			  <td>Processo Seletivo:
-			   <select class="form-control" id="processo_seletivo" name="processo_seletivo" required="true">
-			    <option id="processo_seletivo" name="processo_seletivo" value="">Selecione...</option>
-				<option id="processo_seletivo" name="processo_seletivo" value="externo">Externo</option>
-				<option id="processo_seletivo" name="processo_seletivo" value="interno">Interno (Programa Degrau)</option>
-			   </select>
+			  <td><?php $now = date('Y-m-d', strtotime('now')); ?>
+			    Data Emissão: <br>
+				<input type="date" id="data_emissao" name="data_emissao" class="form-control" value="<?php echo $now; ?>" readonly="true" />
 			  </td>
 			</tr>
 		   </table>

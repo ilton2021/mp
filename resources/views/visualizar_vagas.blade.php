@@ -95,16 +95,10 @@
 					<option id="edital_disponivel" name="edital_disponivel" value="Não" selected> {{ 'Não' }}</option>
 					@endif
 				</select>
-			  </td>
-			  <td>Processo Seletivo:
-			   <select class="form-control" disabled="true" id="processo_seletivo" name="processo_seletivo" required="true">
-				   @if($vaga->processo_seletivo == 'externo')
-					<option id="processo_seletivo" name="processo_seletivo" value="externo">Externo</option>
-				   @elseif($vaga->processo_seletivo == 'interno')
-					<option id="processo_seletivo" name="processo_seletivo" value="interno">Interno (Programa Degrau)</option>
-				   @endif
-			   </select>
 			  </td>	
+			  <td>Número da Vaga:
+				  <input type="text" id="numeroVaga" name="numeroVaga" class="form-control" value="<?php echo $vaga->numeroVaga; ?>" readonly="true" />
+			  </td>
 			</tr>
 		   </table>
 		  </center>
@@ -113,8 +107,9 @@
 		  <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			  <tr>
-			   <td width="800px;" colspan="2"><center><strong><h4>Preenchimento da Área</h4></strong></center></td>
-		 	   <td>Data Prevista: <input class="form-control" disabled="true" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $vaga->data_prevista; ?>" /></td>
+			   <td width="600px;" colspan="2"><center><strong><h4>Preenchimento da Área</h4></strong></center></td>
+			   <td>Data de Emissão:<input type="text" class="form-control" readonly="true" id="data_emissao" name="data_emissao" value="<?php echo date('d-m-Y', strtotime($vaga->data_emissao)); ?>"  /></td>
+			   <td>Data Prevista: <input class="form-control" disabled="true" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $vaga->data_prevista; ?>" /></td>
 			  </tr>	
 			</table>
 		  </center>

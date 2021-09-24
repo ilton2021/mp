@@ -83,9 +83,11 @@
             </div>
         </div>
     </div>
-	<p style="margin-left: 1170px"> <a href="{{url('/homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
+	
+    <span class="font-weight-bold"></span>
+    <a href="{{url('/homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF; margin-left:1170px;"> Voltar <i class="fas fa-undo-alt"></i> </a>
     <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
+    <div class="container" style="margin-top:10px; margin-bottom:20px;">
         <div class="row">
             <div class="col-12 text-center">
                 <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
@@ -133,14 +135,15 @@
               </div>
 		  </td>
 		</tr>
-	</table>
-	<br><br>
-	@if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59)
+	</table><br><br>
+    
 	<div class="card-body text-center">
-		<a href="{{ route('graphicsIndex') }}" class="btn btn-outline-info">GRÁFICOS MP</a>
+         <a href="{{ route('minhasMPS') }}" class="btn btn-outline-warning">HISTÓRICO MP'S</a>    
+         @if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59)
+         <a href="{{ route('graphicsIndex') }}" class="btn btn-outline-info">GRÁFICOS MP</a>
 		 <span class="font-weight-bold"></span>
+         @endif
 	</div>
-	@endif
 	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

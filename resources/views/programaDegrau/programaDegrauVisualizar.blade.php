@@ -51,7 +51,7 @@
 			  <td> Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" name="codigo_vaga" value="<?php echo $pd[0]->codigo_vaga; ?>" readonly="true" /> </td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" disabled="true">
-			    <option id="gestor_id" name="gestor_id" value="73">{{ 'CAMILA FERNANDES' }}</option>
+			    <option id="gestor_id" name="gestor_id" value="73">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 			  </select>
 			</tr>
 			<tr>
@@ -62,7 +62,7 @@
 		   </table>
 		  </center> 
 		  <?php $a = 0; ?>
-		  @if(Auth::user()->id != 73 && Auth::user()->id != 30 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
+		  @if(Auth::user()->id != 30 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
 			@if(empty($aprovacao))
 			      <a style="margin-left: 180px;" class="btn btn-primary" href="{{ route('alterarPD', $pd[0]->id) }}">Alterar</a></td>
 			@else 
@@ -445,7 +445,7 @@
 			<td>Coordenador de Seleção</td>
 			<td>
 			@foreach($aprovacao as $ap)	
-			  @if($ap->gestor_anterior == 73)
+			  @if($ap->gestor_anterior == 30)
 			  <input readonly="true" type="text" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  <input readonly="true" type="text" id="justificativa" name="justificativa" class="form-control" value="<?php echo $ap->motivo; ?>" />
 			  @endif

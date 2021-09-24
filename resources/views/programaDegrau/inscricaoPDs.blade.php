@@ -46,7 +46,7 @@
 			  <td colspan="1">Vaga: <input class="form-control" type="text" id="vaga" name="vaga" readonly="true" value="<?php echo $pd[0]->vaga; ?>" /></td>
 			  <td>Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" name="codigo_vaga" value="<?php echo $pd[0]->codigo_vaga; ?>" readonly="true" /> </td>
 			  <td hidden><input readonly="true" class="form-control" type="text" id="gestor_id" name="gestor_id" required value="73" /></td>
-			  <td>Gestor Imediato: <input readonly="true" class="form-control" type="text" id="gestor" name="gestor" required value="CAMILA FERNANDES" /></td>
+			  <td>Gestor Imediato: <input readonly="true" class="form-control" type="text" id="gestor" name="gestor" required value="JANAINA GLAYCE PEREIRA LIMA" /></td>
 			</tr>
 			<tr>
 			  <td>Departamento Atual: 

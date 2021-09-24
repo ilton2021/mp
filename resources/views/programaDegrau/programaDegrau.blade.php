@@ -114,7 +114,7 @@
 			  <td> Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" name="codigo_vaga" value="{{Request::old('codigo_vaga')}}" /> </td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" readonly="true">
-			    <option id="gestor_id" name="gestor_id" value="73">{{ 'CAMILA FERNANDES' }}</option>
+			    <option id="gestor_id" name="gestor_id" value="73">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 			  </select>
 			</tr>
 			<tr>

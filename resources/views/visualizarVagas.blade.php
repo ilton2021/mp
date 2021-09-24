@@ -27,8 +27,7 @@
 				<h4 class="d-none d-sm-block">Abertura de Vaga - RH</h4>
 			</span>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
+                    <ul class="navbar-nav mr-auto"> </ul>
 
                     <ul class="navbar-nav ml-auto">
                         @guest
@@ -135,12 +134,15 @@
 		</tr>
 	</table>
 	<br><br>
-	@if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59)
+	
 	<div class="card-body text-center">
-		<a href="{{ route('graphicsVagaIndex') }}" class="btn btn-outline-info">GRÁFICOS VAGAS</a>
-		 <span class="font-weight-bold"></span>
+        <a href="{{ route('minhasVagas') }}" class="btn btn-outline-warning">HISTÓRICO VAGAS</a>
+        @if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59)
+          <a href="{{ route('graphicsVagaIndex') }}" class="btn btn-outline-info">GRÁFICOS VAGAS</a>
+        @endif 
+		<span class="font-weight-bold"></span>
 	</div>
-	@endif
+	
 	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

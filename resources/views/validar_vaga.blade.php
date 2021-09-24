@@ -1,4 +1,3 @@
-@if(Auth::user()->funcao != "Gestor")
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -113,7 +112,7 @@
 	    @endif
         <div class="container d-flex justify-content-between" style="margin-left: -10px;">
          <div class="row"> 
-         <form action="{{ \Request::route('validarVagas') }}" method="post">
+         <form action="{{ \Request::route('storeValidaVaga') }}" method="post">
 	     <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <table class="table table-sm table-bordered" style="font-size: 12px;">
             <?php $qtdVagas = sizeof($vagas); ?>
@@ -126,7 +125,6 @@
                 <td><center>CARGO</center></td>
                 <td><center>REMUNERAÇÃO</center></td>
                 <td><center>CENTRO DE CUSTO</center></td>
-                <td><center>PROCESSO SELETIVO</center></td>
                 <td><center>FLUXO</center></td>
                 <td ><center>JUSTIFICATIVA</center></td>
                 <td ><center>VISUALIZAR</center></td>
@@ -150,7 +148,6 @@
                  <td title="<?php echo $vaga->cargo; ?>"> <p><center> {{ $vaga->cargo }} </center> </p>  </td>
                  <td> <p><center> {{ "R$ ".number_format($vaga->salario, 2,',','.') }} </center> </p>  </td>
                  <td> <br> <center> {{ $vaga->centro_custo }} </center> </td>
-                 <td> <br> <center> @if($vaga->processo_seletivo == "interno") {{ 'PROGRAMA DEGRAU' }} @else {{ 'EXTERNO' }} @endif </center> </td>
                  <td>
                  <center><input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($vaga->solicitante, 0, 8); ?>" title="<?php echo $vaga->solicitante; ?>" style="width: 60px" /></center> 
                  <?php $qtdAp = sizeof($aprovacao); for($ap = 0; $ap < $qtdAp; $ap++) { ?>
@@ -275,7 +272,7 @@
           <input hidden type="text" id="resposta" name="resposta" value="" /> 
           <input hidden type="text" id="data_aprovacao" name="data_aprovacao" value="" /> 
           <input hidden type="text" id="gestor_anterior" name="gestor_anterior" value="" /> 
-          <input hidden type="text" id="mp_id" name="mp_id" value="" /> 
+          <input hidden type="text" id="vaga_id" name="vaga_id" value="" /> 
           <input hidden type="text" id="unidade_id" name="unidade_id" value="" /> 
           <input hidden type="text" id="motivo" name="motivo" value="" /> 
           <input hidden type="text" id="ativo" name="ativo" value="" /> 
@@ -291,140 +288,3 @@
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     </body>
 </html>
-@else   
-  <!DOCTYPE html>
-  <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
-        <title>Abertura de Vaga - RH</title>
-		    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/style.css')}}">
-        <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
-        <style>
-        .navbar .dropdown-menu .form-control {
-          width: 300px;
-        }
-        </style>
-    </head>
-    <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
-  	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
-			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-				<h4 class="d-none d-sm-block">Abertura de Vaga - RH</h4>
-			</span>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-
-                    <ul class="navbar-nav ml-auto">
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('telaReset') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form1').submit();">
-                                        {{ __('Trocar Senha') }}
-                                    </a>
-
-                                    <form id="logout-form1" action="{{ route('telaReset') }}" method="GET" style="display: none;">
-                                        
-                                    </form>
-									
-									<a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form2').submit();">
-                                        {{ __('Sair') }}
-                                    </a>
-
-                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">     
-            
-            </div>
-            <div class="col-sm-4">
-            </div>
-        </div>
-    </div>
-	<section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
-		<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
-        <div class="row">
-            <div class="col-12 text-center">
-                <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-2 text-center"></div>
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div>
-		<div class="container d-flex justify-content-between">
-     <div class="row ">
-  	 @foreach($vagas as $vaga)
-		 @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 65 && Auth::user()->id == 27))
-          <table>
-				<tr>
-				<td>
-				<div class="col-sm-4">
-					<div id="img-body" class="sborder-0 text-white text-center">
-						<img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-					</div>
-				</div>
-				</td>
-				</tr>
-				<tr>
-				 <td>
-					<p><center> <span class="font-weight-bold" style="aling: center;">{{$vaga->vaga}} </span> </center> </p> 
-					<p><center> <a href="{{ route('validarVaga', $vaga->id) }}" class="btn btn-outline-success">Clique Aqui</a> </center></p>
-				 </td>
-				</tr>
-		  </table>		 
-		 @endif
-		 @endforeach
-     </div>
-		</div>
-    </div>
-    </div>
-    </section >
-	</footer>
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    </body>
-</html>
-@endif  

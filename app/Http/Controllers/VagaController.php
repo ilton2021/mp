@@ -50,6 +50,58 @@ class VagaController extends Controller
 		$gestor 	= Gestor::where('id',$usuario_id)->get();
 		return view('vaga', compact('unidades','gestor'));
     }
+
+	public function minhasVagas()
+	{
+		$unidades  = Unidade::all();
+		$nome      = Auth::user()->name;
+		$vagas = DB::table('vaga')->where('solicitante',$nome)->orderBy('unidade_id','ASC')->get();
+		$qtd = sizeof($vagas);
+		if($qtd > 0){
+			return view('minhasVagas', compact('unidades','vagas'));
+		} else {
+			$validator = 'Você não tem nenhuma Vaga cadastrada!';
+			return view('minhasVagas', compact('unidades','vagas'))
+					->withErrors($validator);
+		}
+	}
+
+	public function pesquisaHistVagas(Request $request)
+	{
+		$nome = Auth::user()->name;
+		$unidades = Unidade::all();
+		$input = $request->all();
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq  = $input['pesq']; 
+		$pesq2 = $input['pesq2'];
+		if($pesq2 == "numeroVaga"){
+			$vagas = DB::table('vaga')->where('solicitante',$nome)
+				->where('numeroVaga',$pesq)->orderBy('unidade_id','ASC')->get();
+		} else if($pesq2 == "nome"){
+			$vagas = DB::table('vaga')->where('solicitante',$nome)
+			->where('vaga','like','%'.$pesq.'%')->orderBy('unidade_id','ASC')->get();
+		} else if($pesq2 == "cargo"){
+			$vagas = DB::table('vaga')->where('solicitante',$nome)
+			->where('cargo',$pesq)->orderBy('unidade_id','ASC')->get();
+		} else if($pesq2 == "status"){
+			$status = $input['status'];
+			if($status == 0){
+				$vagas = DB::table('vaga')->where('solicitante',$nome)
+				->where('concluida',0)->where('aprovada',0)->orderBy('unidade_id','ASC')->get();
+			} else if($status == 1){
+				$vagas = DB::table('vaga')->where('solicitante',$nome)
+				->where('concluida',1)->where('aprovada',1)->orderBy('unidade_id','ASC')->get();
+			} else if($status == 2){
+				$vagas = DB::table('vaga')->where('solicitante',$nome)
+				->where('concluida',1)->where('aprovada',0)->orderBy('unidade_id','ASC')->get();
+			}
+		} else {
+			$vagas = DB::table('vaga')->where('solicitante',$nome)->orderBy('unidade_id','ASC')->get();
+		}
+		$qtd  = sizeof($vagas);
+		return view('minhasVagas', compact('unidades','vagas'));
+	}
 	
 	public function visualizarVagas()
 	{
@@ -63,7 +115,17 @@ class VagaController extends Controller
 	public function criadasVagas()
 	{
 		$unidades  = Unidade::all();
-		$vagas 	   = Vaga::orderBy('id', 'ASC')->get();
+		$und 	   = Auth::user()->unidade;
+		$und 	   = explode(",",$und); 
+		$funcao    = Auth::user()->funcao;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
+			$vagas = Vaga::where('solicitante',Auth::user()->name)->where('concluida',0)->get();
+		} else if ($funcao == "Administrador") {
+			$vagas = DB::table('vaga')->where('concluida',0)->orderby('vaga.unidade_id', 'ASC')->get();
+		} else {
+			$vagas = DB::table('vaga')->whereIn('unidade_id',$und)
+			->where('concluida',0)->orderby('vaga.unidade_id', 'ASC')->get();
+		} 
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('criadasVagas', compact('unidades','vagas','aprovacao','gestores'));
@@ -72,7 +134,19 @@ class VagaController extends Controller
 	public function aprovadasVagas()
 	{
 		$unidades  = Unidade::all();
-		$vagas 	   = Vaga::orderBy('id', 'ASC')->get();
+		$und 	   = Auth::user()->unidade;
+		$und 	   = explode(",",$und); 
+		$funcao    = Auth::user()->funcao;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
+			$vagas = Vaga::where('solicitante',Auth::user()->name)->where('concluida',1)
+			->where('aprovada',1)->get();
+		} else if ($funcao == "Administrador") {
+			$vagas = DB::table('vaga')->where('concluida',1)->where('aprovada',1)
+			->orderby('vaga.unidade_id', 'ASC')->get();
+		} else {
+			$vagas = DB::table('vaga')->whereIn('unidade_id',$und)->where('aprovada',1)
+			->where('concluida',1)->orderby('vaga.unidade_id', 'ASC')->get();
+		} 
 		$aprovacao = AprovacaoVaga::all();
 		$gestores  = Gestor::all();
 		return view('aprovadasVagas', compact('unidades','vagas','aprovacao','gestores'));
@@ -81,7 +155,19 @@ class VagaController extends Controller
 	public function reprovadasVagas()
 	{
 		$unidades  = Unidade::all();
-		$vagas 	   = Vaga::orderBy('id', 'ASC')->get();
+		$und 	   = Auth::user()->unidade;
+		$und 	   = explode(",",$und); 
+		$funcao    = Auth::user()->funcao;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
+			$vagas = Vaga::where('solicitante',Auth::user()->name)->where('concluida',1)
+			->where('aprovada',0)->get();
+		} else if ($funcao == "Administrador") {
+			$vagas = DB::table('vaga')->where('concluida',1)->where('aprovada',0)
+			->orderby('vaga.unidade_id', 'ASC')->get();
+		} else {
+			$vagas = DB::table('vaga')->whereIn('unidade_id',$und)->where('aprovada',0)
+			->where('concluida',1)->orderby('vaga.unidade_id', 'ASC')->get();
+		} 
 		$aprovacao = AprovacaoVaga::all();
 		$gestores  = Gestor::all();
 		return view('reprovadasVagas', compact('unidades','vagas','aprovacao','gestores'));
@@ -90,7 +176,6 @@ class VagaController extends Controller
 	public function pesquisaVagas(Request $request)
 	{
 		$unidades   = Unidade::all();
-		$vagas 	    = Vaga::all();
 		$aprovacao  = AprovacaoVaga::all();
 		$gestores   = Gestor::all();
 		$input 	    = $request->all();
@@ -100,31 +185,73 @@ class VagaController extends Controller
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
-		if($unidade_id != "0" && $pesq == "") {
-			$vagas = DB::table('vaga')->where('vaga.unidade_id', $unidade_id)
-			->where('concluida', 0)->get();	
-		} else if ($unidade_id == 0 && $pesq != "") {
-			if($pesq2 == "vaga"){
-				$vagas = DB::table('vaga')->where('vaga.vaga', 'like', '%' . $pesq . '%')
-				->where('concluida', 0)->get();	
-			} else if($pesq2 == "solicitante") {
-				$vagas = DB::table('vaga')->where('vaga.solicitante', 'like', '%' . $pesq . '%')
-				->where('concluida', 0)->get();
-			}
-		} else if($unidade_id != "0" && $pesq != "") {
-			if($pesq2 == "vaga"){
-				$vagas = DB::table('vaga')
-				->where('vaga.vaga', 'like', '%' . $pesq . '%')
-				->where('vaga.unidade_id', $unidade_id)
-				->where('vaga.concluida', 0)->get();
-			} else if($pesq2 == "solicitante") {
-				$vagas = DB::table('vaga')
-				->where('vaga.solicitante', 'like', '%' . $pesq . '%')
-				->where('vaga.unidade_id', $unidade_id)
-				->where('vaga.concluida', 0)->get();
+		$und 	    = Auth::user()->unidade; 
+		$und 	    = explode(",",$und);
+		$funcao     = Auth::user()->funcao; 
+		$nome       = Auth::user()->name;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato") {	
+			if($pesq2 == "nome"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)->where('concluida', 0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')->where('concluida', 0)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)->where('concluida', 0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')->where('concluida', 0)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)->where('concluida', 0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')->where('concluida', 0)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else {
+				$vagas = Vaga::where('solicitante',Auth::user()->name)->where('concluida',0)
+				->whereIn('unidade_id',$und)->orderBy('unidade_id', 'ASC')->get();
 			}
 		} else {
-			$vagas = Vaga::orderBy('vaga', 'ASC')->get();
+			if($pesq2 == "nome"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('vaga.unidade_id', $unidade_id)->where('concluida', 0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('concluida', 0)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('vaga.unidade_id', $unidade_id)->where('concluida', 0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('concluida', 0)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('vaga.unidade_id', $unidade_id)->where('concluida', 0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('concluida', 0)->get();
+				}
+			} else {
+				$vagas = Vaga::where('concluida',0)->whereIn('unidade_id',$und)->orderBy('unidade_id', 'ASC')->get();
+			}
 		}
 		return view('criadasVagas', compact('unidades','vagas','aprovacao','gestores'));
 	}
@@ -142,31 +269,84 @@ class VagaController extends Controller
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
-		if($unidade_id != "0" && $pesq == "") {
-			$vagas = DB::table('vaga')->where('vaga.unidade_id', $unidade_id)
-			->where('concluida', 1)->where('aprovada', 1)->get();	
-		} else if ($unidade_id == 0 && $pesq != "") {
-			if($pesq2 == "vaga"){
-				$vagas = DB::table('vaga')->where('vaga.vaga', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->where('aprovada', 1)->get();	
-			} else if($pesq2 == "solicitante") {
-				$mps = DB::table('vaga')->where('vaga.solicitante', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->where('aprovada', 1)->get();
-			}
-		} else if($unidade_id != "0" && $pesq != "") {
-			if($pesq2 == "vaga"){
-				$vagas = DB::table('vaga')
-				->where('vaga.numeroMP', 'like', '%' . $pesq . '%')
-				->where('vaga.unidade_id', $unidade_id)
-				->where('vaga.concluida', 1)->where('aprovada', 1)->get();
-			} else if($pesq2 == "solicitante") {
-				$vagas = DB::table('vaga')
-				->where('vaga.solicitante', 'like', '%' . $pesq . '%')
-				->where('vaga.unidade_id', $unidade_id)
-				->where('vaga.concluida', 1)->where('aprovada', 1)->get();
+		$und 	    = Auth::user()->unidade; 
+		$und 	    = explode(",",$und);
+		$funcao     = Auth::user()->funcao; 
+		$nome       = Auth::user()->name;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato") {	
+			if($pesq2 == "nome"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)
+					->where('concluida', 1)->where('aprovada',1)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->where('concluida',1)->where('aprovada',1)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)
+					->where('concluida', 1)->where('aprovada',1)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->where('concluida',1)->where('aprovada',1)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)
+					->where('concluida',1)->where('aprovada',1)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->where('concluida',1)->where('aprovada',1)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else {
+				$vagas = Vaga::where('solicitante',Auth::user()->name)
+				->where('concluida',1)->where('aprovada',1)
+				->whereIn('unidade_id',$und)->orderBy('unidade_id', 'ASC')->get();
 			}
 		} else {
-			$vagas = Vaga::orderBy('vaga', 'ASC')->get();
+			if($pesq2 == "nome"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('vaga.unidade_id',$unidade_id)
+					->where('concluida',1)->where('aprovada',1)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('concluida',1)->where('aprovada',1)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('vaga.unidade_id', $unidade_id)
+					->where('concluida', 0)->where('aprovada',1)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('concluida',1)->where('aprovada',1)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('vaga.unidade_id', $unidade_id)
+					->where('concluida',1)->where('aprovada',1)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('concluida',1)->where('aprovada',1)->get();
+				}
+			} else {
+				$vagas = Vaga::where('concluida',1)->whereIn('unidade_id',$und)
+				->where('aprovada',1)->orderBy('unidade_id', 'ASC')->get();
+			}
 		}
 		return view('aprovadasVagas', compact('unidades','vagas','aprovacao','gestores'));
 	}
@@ -184,31 +364,84 @@ class VagaController extends Controller
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
-		if($unidade_id != "0" && $pesq == "") {
-			$vagas = DB::table('vaga')->where('vaga.unidade_id', $unidade_id)
-			->where('concluida', 1)->where('aprovada', 0)->get();	
-		} else if ($unidade_id == 0 && $pesq != "") {
-			if($pesq2 == "vaga"){
-				$vagas = DB::table('vaga')->where('vaga.vaga', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->where('aprovada', 0)->get();	
-			} else if($pesq2 == "solicitante") {
-				$vagas = DB::table('vaga')->where('vaga.solicitante', 'like', '%' . $pesq . '%')
-				->where('concluida', 1)->where('aprovada', 0)->get();
-			}
-		} else if($unidade_id != "0" && $pesq != "") {
-			if($pesq2 == "vaga"){
-				$vagas = DB::table('vaga')
-				->where('vaga.vaga', 'like', '%' . $pesq . '%')
-				->where('vaga.unidade_id', $unidade_id)
-				->where('vaga.concluida', 1)->where('aprovada', 0)->get();
-			} else if($pesq2 == "solicitante") {
-				$vagas = DB::table('vaga')
-				->where('vaga.solicitante', 'like', '%' . $pesq . '%')
-				->where('vaga.unidade_id', $unidade_id)
-				->where('vaga.concluida', 1)->where('aprovada', 0)->get();
+		$und 	    = Auth::user()->unidade; 
+		$und 	    = explode(",",$und);
+		$funcao     = Auth::user()->funcao; 
+		$nome       = Auth::user()->name;
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato") {	
+			if($pesq2 == "nome"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)
+					->where('concluida', 1)->where('aprovada',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->where('concluida',1)->where('aprovada',0)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)
+					->where('concluida', 1)->where('aprovada',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->where('concluida',1)->where('aprovada',0)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('solicitante',Auth::user()->name)
+					->where('vaga.unidade_id', $unidade_id)
+					->where('concluida',1)->where('aprovada',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->where('concluida',1)->where('aprovada',0)
+					->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();
+				}
+			} else {
+				$vagas = Vaga::where('solicitante',Auth::user()->name)
+				->where('concluida',1)->where('aprovada',0)
+				->whereIn('unidade_id',$und)->orderBy('unidade_id', 'ASC')->get();
 			}
 		} else {
-			$vagas = Vaga::orderBy('vaga', 'ASC')->get();
+			if($pesq2 == "nome"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('vaga.unidade_id',$unidade_id)
+					->where('concluida',1)->where('aprovada',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('concluida',1)->where('aprovada',0)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('vaga.unidade_id', $unidade_id)
+					->where('concluida', 0)->where('aprovada',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('numeroVaga','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('concluida',1)->where('aprovada',0)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id != 0){
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)->where('vaga.unidade_id', $unidade_id)
+					->where('concluida',1)->where('aprovada',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('solicitante','like','%'.$pesq.'%')
+					->whereIn('unidade_id',$und)
+					->where('concluida',1)->where('aprovada',0)->get();
+				}
+			} else {
+				$vagas = Vaga::where('concluida',1)->whereIn('unidade_id',$und)
+				->where('aprovada',0)->orderBy('unidade_id', 'ASC')->get();
+			}
 		}
 		return view('reprovadasVagas', compact('unidades','vagas','aprovacao','gestores'));
 	}
@@ -224,7 +457,6 @@ class VagaController extends Controller
 		$gestores  = Gestor::all();
 		return view('validar_vaga', compact('vagas','aprovacao','gestores'));
 	}
-
 	public function storeValidaVaga(Request $request)
 	{
 		$input = $request->all();
@@ -253,12 +485,12 @@ class VagaController extends Controller
 				}
 			}
 		}
-
+		$idG = Auth::user()->id;
 		if($ap > 0) {
 			$vagas  = DB::table('vaga')
-			->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
-			->select('vaga.*','justificativa_vaga.descricao as just')
-			->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+				->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
+				->select('vaga.*','justificativa_vaga.descricao as just')
+				->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
 			$qtdVagas = sizeof($vagas);
 			$aprovacao = AprovacaoVaga::all();
 			$gestores  = Gestor::all();
@@ -274,7 +506,6 @@ class VagaController extends Controller
 			$qtdVagas = sizeof($vagas);
 			$aprovacao = AprovacaoVaga::all();
 			$gestores  = Gestor::all();
-			$idG       = Auth::user()->id;
 			$validator = 'Selecione uma Vaga!';
 			return view('validar_vaga', compact('vagas','aprovacao','gestores','idG'))
 				->withErrors($validator)
@@ -418,8 +649,12 @@ class VagaController extends Controller
 		$data_aprovacao = $vagas[0]->created_at; 	
 		for($i = 0; $i < $qtdA; $i++) {
 			$idU = $aprovacao[$i]->gestor_anterior;
-			$funcao = User::where('id', $idU)->get();
-			$funcao = $funcao[0]['funcao'];
+			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 5 || $idU == 34){ 
+			    $funcao = "Gestor Imediato"; 
+			} else {
+			    $funcao = User::where('id', $idU)->get(); 
+			    $funcao = $funcao[0]['funcao']; 
+			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Gestor Imediato") {
 				$data_gestor_imediato = $aprovacao[$i]->data_aprovacao;
 				$gestorA = $aprovacao[$i]->gestor_anterior;  
@@ -429,46 +664,96 @@ class VagaController extends Controller
     				} else {
     				    $gestorData = ""; 
     				}
-			}		
+			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Gestor Imediato"){
+			    $data_gestor_imediato = $aprovacao[$i]->data_aprovacao;
+				$gestorA = $aprovacao[$i]->gestor_anterior;  
+    				if($gestorA != ""){
+    				    $gestorData = Gestor::where('id', $gestorA)->get('nome');
+						$gestorDataId = Gestor::where('id', $gestorA)->get('id');
+    				} else {
+    				    $gestorData = ""; 
+    				}
+			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "RH"){
 				$data_rec_humanos = $aprovacao[$i]->data_aprovacao;
-				$gestorB = $aprovacao[$i]->gestor_anterior;  
+				if($aprovacao[$i]->gestor_anterior == 30){
+				    $gestorB = $aprovacao[$i]->gestor_anterior;  
+				}
 				if($gestorB != ""){
-    			   $rh = Gestor::where('id', $gestorB)->get('nome'); 
-				   $rhId = Gestor::where('id', $gestorB)->get('id'); 
+    			    $rh = Gestor::where('id', $gestorB)->get('nome'); 
+					$rhId = Gestor::where('id', $gestorB)->get('id'); 
     			} else {
-    			   $rh = ""; 
-    			}
+    			    $rh = ""; 
+    			}    
+			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "RH"){
+			    $data_rec_humanos = $aprovacao[$i]->data_aprovacao;
+				if($aprovacao[$i]->gestor_anterior == 30){
+					$gestorB = $aprovacao[$i]->gestor_anterior;  
+				}
+				if($gestorB != ""){
+    			    $rh = Gestor::where('id', $gestorB)->get('nome'); 
+					$rhId = Gestor::where('id', $gestorB)->get('id'); 
+    			} else {
+    			    $rh = ""; 
+    			}       
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Tecnica"){
 				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				$gestorC = $aprovacao[$i]->gestor_anterior;  
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
+				    $gestorC = $aprovacao[$i]->gestor_anterior;  
+				}
     			if($gestorC != ""){
     			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
 					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
     			} else {
     			    $diretoriaT = ""; 
     			}
-			} 
-			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
-				$data_diretoria = $aprovacao[$i]->data_aprovacao;
-				$gestorD = $aprovacao[$i]->gestor_anterior;  
-			    if($gestorD != ""){
-    			   $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-				   $diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
+			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Tecnica") {
+				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
+				    $gestorC = $aprovacao[$i]->gestor_anterior;   
+				}
+    			if($gestorC != ""){
+    			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
+					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
     			} else {
-    			   $diretoria = ""; 
+    			    $diretoriaT = ""; 
     			}
+			}
+			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
+				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
+				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
+					$gestorD = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorD != ""){
+    				$diretoria = Gestor::where('id', $gestorD)->get('nome'); 
+					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
+				}
+			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria") {
+				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
+				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
+					$gestorD = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorD != ""){
+    			    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
+					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
+    			}	
 			}
 			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia"){
 				$data_superintendencia = $aprovacao[$i]->data_aprovacao;
-				$gestorE = $aprovacao[$i]->gestor_anterior;  
-			    if($gestorE != ""){
-					$super = Gestor::where('id', $gestorE)->get('nome');
+				if($aprovacao[$i]->gestor_anterior == 62){
+					$gestorE = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorE != ""){
+    			    $super = Gestor::where('id', $gestorE)->get('nome');
 					$superId = Gestor::where('id', $gestorE)->get('id');	
     			} else {
-    				$super = ""; 
-    			}    
+    			    $super = ""; 
+    			}		    
 			}
 		}
 		$comportamental = Comportamental::where('vaga_id', $id)->get();
@@ -505,202 +790,111 @@ class VagaController extends Controller
 		$data_aprovacao = $vagas[0]->created_at;		
 		for($i = 0; $i < $qtdA; $i++) {
 			$idU = $aprovacao[$i]->gestor_anterior;
-			$funcao = User::where('id', $idU)->get();
-			$funcao = $funcao[0]['funcao'];
-			
+			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 5 || $idU == 34){ 
+			    $funcao = "Gestor Imediato"; 
+			} else {
+			    $funcao = User::where('id', $idU)->get(); 
+			    $funcao = $funcao[0]['funcao']; 
+			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Gestor Imediato") {
 				$data_gestor_imediato = $aprovacao[$i]->data_aprovacao;
-				$gestorA = $aprovacao[0]->gestor_anterior;  
+				$gestorA = $aprovacao[$i]->gestor_anterior;  
     				if($gestorA != ""){
     				    $gestorData = Gestor::where('id', $gestorA)->get('nome');
 						$gestorDataId = Gestor::where('id', $gestorA)->get('id');
     				} else {
     				    $gestorData = ""; 
     				}
-			}		
-			if($aprovacao[$i]->resposta == 1 && $funcao == "RH" || (Auth::user()->id == 32 || Auth::user()->id == 23)){
+			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Gestor Imediato"){
+			    $data_gestor_imediato = $aprovacao[$i]->data_aprovacao;
+				$gestorA = $aprovacao[$i]->gestor_anterior;  
+    				if($gestorA != ""){
+    				    $gestorData = Gestor::where('id', $gestorA)->get('nome');
+						$gestorDataId = Gestor::where('id', $gestorA)->get('id');
+    				} else {
+    				    $gestorData = ""; 
+    				}
+			}
+			if($aprovacao[$i]->resposta == 1 && $funcao == "RH"){
 				$data_rec_humanos = $aprovacao[$i]->data_aprovacao;
-				
-				    if($aprovacao[$i]->gestor_anterior == 30){
-				        $gestorB = $aprovacao[$i]->gestor_anterior;  
-				    }
-				    if($gestorB != ""){
-    				    $rh = Gestor::where('id', $gestorB)->get('nome'); 
-						$rhId = Gestor::where('id', $gestorB)->get('id'); 
-    				} else {
-    				    $rh = ""; 
-    				}
-				    
-			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "RH" || (Auth::user()->id == 32 || Auth::user()->id == 23)){
-			    $data_rec_humanos = $aprovacao[$i]->data_aprovacao;
-				if($qtdA == 1) {
-				    $gestorB = $aprovacao[0]->gestor_anterior;  
-				    if($gestorB != ""){
-    				    $rh = Gestor::where('id', $gestorB)->get('nome'); 
-						$rhId = Gestor::where('id', $gestorB)->get('id'); 
-    				} else {
-    				    $rh = ""; 
-    				}
-				} else if ($qtdA == 2) {
-				    $gestorB = $aprovacao[1]->gestor_anterior;  
-				    if($gestorB != ""){
-    				    $rh = Gestor::where('id', $gestorB)->get('nome'); 
-						$rhId = Gestor::where('id', $gestorB)->get('id'); 
-    				} else {
-    				    $rh = ""; 
-    				}
-				} else if ($qtdA == 3) {
-				    $gestorB = $aprovacao[2]->gestor_anterior;  
-				    if($gestorB != ""){
-    				    $rh = Gestor::where('id', $gestorB)->get('nome'); 
-						$rhId = Gestor::where('id', $gestorB)->get('id'); 
-    				} else {
-    				    $rh = ""; 
-    				}
+				if($aprovacao[$i]->gestor_anterior == 30){
+				    $gestorB = $aprovacao[$i]->gestor_anterior;  
 				}
-			    
+				if($gestorB != ""){
+    			    $rh = Gestor::where('id', $gestorB)->get('nome'); 
+					$rhId = Gestor::where('id', $gestorB)->get('id'); 
+    			} else {
+    			    $rh = ""; 
+    			}    
+			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "RH"){
+			    $data_rec_humanos = $aprovacao[$i]->data_aprovacao;
+				if($aprovacao[$i]->gestor_anterior == 30){
+					$gestorB = $aprovacao[$i]->gestor_anterior;  
+				}
+				if($gestorB != ""){
+    			    $rh = Gestor::where('id', $gestorB)->get('nome'); 
+					$rhId = Gestor::where('id', $gestorB)->get('id'); 
+    			} else {
+    			    $rh = ""; 
+    			}       
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Tecnica"){
 				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65){
-				    $gestorC = $aprovacao[$i]->gestor_anterior;
-				} 
-					if($gestorC != ""){
-    				    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
-						$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
-    				} else {
-    				    $diretoriaT = ""; 
-    				}
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
+				    $gestorC = $aprovacao[$i]->gestor_anterior;  
+				}
+    			if($gestorC != ""){
+    			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
+					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
+    			} else {
+    			    $diretoriaT = ""; 
+    			}
 			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Tecnica") {
 				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65){
-				    $gestorC = $aprovacao[$i]->gestor_anterior;
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
+				    $gestorC = $aprovacao[$i]->gestor_anterior;   
 				}
-    				if($gestorC != ""){
-    				    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
-						$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
-    				} else {
-    				    $diretoriaT = ""; 
-    				}
+    			if($gestorC != ""){
+    			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
+					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
+    			} else {
+    			    $diretoriaT = ""; 
+    			}
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
-				if($qtdA == 1) {
-					$gestorD = $aprovacao[0]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
+				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
+				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
+					$gestorD = $aprovacao[$i]->gestor_anterior;
 				}
-				if($qtdA == 2) {
-					$gestorD = $aprovacao[0]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
-				} else if($qtdA == 3) {
-				    if(($aprovacao[$i]->gestor_anterior == 60) || ($aprovacao[$i]->gestor_anterior == 59) || ($aprovacao[$i]->gestor_anterior == 61)){
-				        $gestorD = $aprovacao[$i]->gestor_anterior;
-				    }
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
-				} else if($qtdA == 4) {
-					$gestorD = $aprovacao[2]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
-				} else if($qtdA == 5) {
-					$gestorD = $aprovacao[2]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
+				if($gestorD != ""){
+    				$diretoria = Gestor::where('id', $gestorD)->get('nome'); 
+					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
 				}
 			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria") {
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
-				if($qtdA == 1) {
-					$gestorD = $aprovacao[0]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
+				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
+				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
+					$gestorD = $aprovacao[$i]->gestor_anterior;
 				}
-				if($qtdA == 2) {
-					$gestorD = $aprovacao[1]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
-				} else if($qtdA == 3) {
-					$gestorD = $aprovacao[2]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
-				} else if($qtdA == 4) {
-					$gestorD = $aprovacao[3]->gestor_anterior;  
-				    if($gestorD != ""){
-    				    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-						$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    				} else {
-    				    $diretoria = ""; 
-    				}
-				}	
+				if($gestorD != ""){
+    			    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
+					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
+    			}	
 			}
 			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia"){
 				$data_superintendencia = $aprovacao[$i]->data_aprovacao;
-				if($qtdA == 2) {
-					$gestorE = $aprovacao[1]->gestor_anterior;  
-				    if($gestorE != ""){
-    				    $super = Gestor::where('id', $gestorE)->get('nome');
-						$superId = Gestor::where('id', $gestorE)->get('id');	
-    				} else {
-    				    $super = ""; 
-    				}
-				} else if($qtdA == 3) {
-					$gestorE = $aprovacao[2]->gestor_anterior;  
-				    if($gestorE != ""){
-    				    $super = Gestor::where('id', $gestorE)->get('nome');
-						$superId = Gestor::where('id', $gestorE)->get('id');	
-    				} else {
-    				    $super = ""; 
-    				}
-				} else if($qtdA == 4) {
-					$gestorE = $aprovacao[3]->gestor_anterior;  
-				    if($gestorE != ""){
-    				    $super = Gestor::where('id', $gestorE)->get('nome');
-						$superId = Gestor::where('id', $gestorE)->get('id');	
-    				} else {
-    				    $super = ""; 
-    				}
-				} else if($qtdA == 5) {
-					$gestorE = $aprovacao[4]->gestor_anterior;  
-				    if($gestorE != ""){
-    				    $super = Gestor::where('id', $gestorE)->get('nome');
-						$superId = Gestor::where('id', $gestorE)->get('id');	
-    				} else {
-    				    $super = ""; 
-    				}
-				}   
+				if($aprovacao[$i]->gestor_anterior == 62){
+					$gestorE = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorE != ""){
+    			    $super = Gestor::where('id', $gestorE)->get('nome');
+					$superId = Gestor::where('id', $gestorE)->get('id');	
+    			} else {
+    			    $super = ""; 
+    			}		    
 			}
 		}
 		$comportamental = Comportamental::where('vaga_id', $idVaga)->get();
@@ -851,12 +1045,12 @@ class VagaController extends Controller
 				$email  = $gestor[0]->email;
 				$motivo = $input['motivo'];
 				$vaga   = $vaga[0]->vaga;
-				Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+				/*Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
 					$m->from('portal@hcpgestao.org.br', 'Solicitação de Vaga');
 					$m->subject('Sua Vaga - '.$vaga. ' Não foi Autorizada!');
 					$m->setBody($motivo .'! Acesse: http:/www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-				});
+				});*/
 			}
 			return view('home_vaga', compact('unidade', 'idG', 'idVaga'));
 		}
@@ -967,7 +1161,6 @@ class VagaController extends Controller
 			'codigo_vaga' 				=> 'required|max:255',
 			'area' 						=> 'required|max:255',
 			'edital_disponivel'			=> 'required|max:255',
-			'processo_seletivo'			=> 'required|max:255',
 			'data_prevista'				=> 'required',
 			'cargo'						=> 'required|max:255',
 			'salario' 					=> 'required|max:255',
@@ -986,11 +1179,11 @@ class VagaController extends Controller
 			'idiomas'					=> 'required|max:255',
 			'justificativa'				=> 'required|max:1000'
         ]);
-		if ($validator->fails()) {
+		if ($validator->fails()) { 
             return view('vaga', compact('unidade','gestores','tipo_vaga','unidades','email','cargos','centro_custos','setores','centro_custo_nv'))
                         ->withErrors($validator)
                         ->withInput(session()->flashInput($request->input()));
-        } else {
+        } else { 
 			if($input['horario_trabalho'] == "0") {
 				$input['horario_trabalho'] = $input['horario_trabalho2'];
 			}
@@ -1011,7 +1204,29 @@ class VagaController extends Controller
 			}
 			$input['concluida'] = 0;
 			$input['aprovada']  = 0;
-			$vaga = Vaga::create($input);
+			$unidades = Unidade::all();
+			$qtdU     = sizeof($unidades); 
+			for($i = 1; $i <= $qtdU; $i++) {
+				if($id_unidade == $i) {
+					$idU   = $input['unidade_id']; 
+					$vaga1 = DB::table('vaga')->where('unidade_id', $id_unidade)->max('ordem');
+					$vagas = Vaga::where('unidade_id',$id_unidade)->get();
+					$qtd1  = sizeof($vagas);
+					$sigla = Unidade::where('id',$id_unidade)->get();
+					$sigla = $sigla[0]->sigla;
+					$va = 0;
+					$hoje  = date('Y',(strtotime('now')));
+					if($qtd1 == 0){
+						$input['numeroVaga'] = $sigla.'_VAGA_1/'.$hoje;	
+						$input['ordem']    = $vaga1 + 1;								
+					}else if($qtd1 > 0){
+						$va = $vaga1+1;
+						$input['numeroVaga'] = $sigla.'_VAGA_'.$va.'/'.$hoje;
+						$input['ordem']    = $vaga1 + 1;								
+					}
+				}
+			}
+			$vaga 	 = Vaga::create($input);
 			$vaga    = DB::table('vaga')->max('id');
 			$id_vaga = $vaga;
 			$input['vaga_id'] = $id_vaga;
@@ -1029,6 +1244,7 @@ class VagaController extends Controller
 					$comportamental = Comportamental::create($input);
 				}
 			}
+			
 			$input['descricao'] = $input['justificativa'];
 			$justificativa = JustificativaVaga::create($input);
 			$vaga 		   = Vaga::where('id',$vaga)->get();

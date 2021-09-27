@@ -457,6 +457,7 @@ class VagaController extends Controller
 		$gestores  = Gestor::all();
 		return view('validar_vaga', compact('vagas','aprovacao','gestores'));
 	}
+	
 	public function storeValidaVaga(Request $request)
 	{
 		$input = $request->all();
@@ -603,18 +604,18 @@ class VagaController extends Controller
 		/*if(Auth::user()->funcao == "Superintendencia"){
 			Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$vaga) {
 				$m->from('portal@hcpgestao.org.br', 'Abertura de Vaga');
-				$m->subject('MP - '.$numeroMP.' foi Assinada e está Concluída!!');
-				$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+				$m->subject('MP - '.$vaga.' foi Assinada e está Concluída!!');
+				$m->setBody($motivo .'! Acesse o portal da Solicitação de Vaga: www.hcpgestao-mprh.hcpgestao.org.br');
 				$m->to($email);
 				$m->cc($email2);
 				$m->cc($email3);
 				$m->cc($email4);
 			});
 		} else {
-			Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
-				$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-				$m->subject('MP - '.$numeroMP.' Autorizada!');
-				$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+			Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+				$m->from('portal@hcpgestao.org.br', 'Abertura de Vaga');
+				$m->subject('MP - '.$vaga.' Autorizada!');
+				$m->setBody($motivo .'! Acesse o portal da Solicitação de Vaga: www.hcpgestao-mprh.hcpgestao.org.br');
 				$m->to($email);
 			});
 		}*/
@@ -952,9 +953,9 @@ class VagaController extends Controller
 			$solicitante = $vaga[0]->solicitante;
 			$sol 	= Gestor::where('nome', $solicitante)->get();
 			$email2 = $sol[0]->email;
-			//$email3 = 'janaina.lima@hcpgestao.org.br'; 
+			$email3 = 'janaina.lima@hcpgestao.org.br'; 
 			$email3 = "";
-			//$email4 = 'rogerio.reis@hcpgestao.org.br';
+			$email4 = 'rogerio.reis@hcpgestao.org.br';
 			$email4 = "";
 			$motivo   = $input['motivo'];
 			$vaga 	  = $vaga[0]->vaga;

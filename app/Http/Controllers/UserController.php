@@ -136,7 +136,7 @@ class UserController extends Controller
 				$alt_senha = AlterarSenha::where('token',$input['token'])->get();
 				$qtdAlt = sizeof($alt_senha);
 				if($qtdAlt > 0){
-					$validator = 'ESTE TOKIN JÁ FOI CADASTRADO';
+					$validator = 'ESTE TOKEN JÁ FOI CADASTRADO';
 					return view('auth.passwords.email', compact('email','usuarios'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));

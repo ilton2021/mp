@@ -1298,12 +1298,14 @@ class HomeController extends Controller
 		$data_gestor_imediato 	= null;
 		$data_rec_humanos 		= null;
 		$data_diretoria_tecnica = null;
+		$data_diretoria_financeira = null;
 		$data_diretoria 		= null;
 		$data_superintendencia  = null;
 		$solicitante = $mps[0]->solicitante;
 		$gestorData   = ""; $gestorDataId = "";
 		$rh           = ""; $rhId    	  = "";
-		$diretoriaT   = ""; $diretoriaTId = "";
+		$diretoriaT   = ""; $diretoriaTId = ""; 
+		$diretoriaF   = ""; $diretoriaFId = "";
 		$diretoria    = ""; $diretoriaId  = "";
 		$super        = ""; $superId      = "";
 		$data_aprovacao = $mps[0]->created_at; 	
@@ -1313,7 +1315,7 @@ class HomeController extends Controller
 			    $funcao = "Gestor Imediato"; 
 			} else {
 			    $funcao = User::where('id', $idU)->get(); 
-			    $funcao = $funcao[0]['funcao']; 
+			    $funcao = $funcao[0]['funcao'];
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Gestor Imediato") {
 				$data_gestor_imediato = $aprovacao[$i]->data_aprovacao;
@@ -1339,7 +1341,7 @@ class HomeController extends Controller
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Tecnica"){
 				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao; 
-				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 173 || $aprovacao[$i]->gestor_anterior == 174 || $aprovacao[$i]->gestor_anterior == 93){
+				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 93){
 				    $gestorC = $aprovacao[$i]->gestor_anterior;  
 				} 
     			if($gestorC != ""){
@@ -1349,6 +1351,18 @@ class HomeController extends Controller
     			    $diretoriaT = ""; 
     			}
 			} 
+			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao;
+				if($aprovacao[$i]->gestor_anterior == 174){
+					$gestorC2 = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorC2 != ""){
+					$diretoriaF   = Gestor::where('id',$gestorC2)->get('nome');
+					$diretoriaFId = Gestor::where('id',$gestorC2)->get('id');
+				} else {
+					$diretoriaF = "";
+				}
+			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao;
 				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 42 
@@ -1375,11 +1389,11 @@ class HomeController extends Controller
 		} 
 		$justNA = JustificativaN_Autorizada::where('mp_id',$id)->get();
 		if($qtdAdm > 0){
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
 		} else if($qtdDem > 0) {
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
 		} else if($qtdAlt > 0) {
-			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('index_', compact('mps','gestores','unidades','unidade','admissao','alteracaoF','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','justNA','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
 		}	
 	}
 	
@@ -1407,12 +1421,14 @@ class HomeController extends Controller
 		$data_gestor_imediato 	= null;
 		$data_rec_humanos 		= null;
 		$data_diretoria_tecnica = null; 
+		$data_diretoria_financeira = null;
 		$data_diretoria 		= null;
 		$data_superintendencia  = null;
 		$solicitante = $mps[0]->solicitante;
 		$gestorData   = ""; $gestorDataId = "";
 		$rh           = ""; $rhId    	  = "";
 		$diretoriaT   = ""; $diretoriaTId = "";
+		$diretoriaF   = ""; $diretoriaFId = "";
 		$diretoria    = ""; $diretoriaId  = "";
 		$super        = ""; $superId      = "";
 		$data_aprovacao = $mps[0]->created_at;		
@@ -1490,6 +1506,29 @@ class HomeController extends Controller
     			    $diretoriaT = ""; 
     			}
 			}
+			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao;
+				if($aprovacao[$i]->gestor_anterior == 174){
+					$gestorC2 = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorC2 != ""){
+					$diretoriaF   = Gestor::where('id',$gestorC2)->get('nome');
+					$diretoriaFId = Gestor::where('id',$gestorC2)->get('id');
+				} else {
+					$diretoriaF = "";
+				}
+			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao;
+				if($aprovacao[$i]->gestor_anterior == 174){
+					$gestorC2 = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorC2 != ""){
+					$diretoriaF   = Gestor::where('id',$gestorC2)->get('nome');
+					$diretoriaFId = Gestor::where('id',$gestorC2)->get('id');
+				} else {
+					$diretoriaF = "";
+				}
+			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
@@ -1527,11 +1566,11 @@ class HomeController extends Controller
 		} 
 		
 		if($qtdAdm > 0){
-			return view('visualizar', compact('mps','gestores','unidades','unidade','admissao','demissao','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('visualizar', compact('mps','gestores','unidades','unidade','admissao','demissao','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
 		} else if($qtdDem > 0) {
-			return view('visualizar', compact('mps','gestores','unidades','unidade','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+			return view('visualizar', compact('mps','gestores','unidades','unidade','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
 		} else if($qtdAlt > 0) {
-		    return view('visualizar', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor'));
+		    return view('visualizar', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
 		}
 	}
 	
@@ -1713,14 +1752,14 @@ class HomeController extends Controller
 						}
 					} else if($idG == 60 || $idG == 5 || $idG == 48 || $idG == 1 || $idG == 34 || $idG == 59 
 					|| $idG == 155 || $idG == 165 || $idG == 160 || $idG == 166){
-						if($idA == 30) {
+						if($idA == 30 || $idA == 174) {
 							$idG = 62;
 						} else {
 							$idG = 30;
 						}
 					} else if($idG == 65) {
 						if($idA == 30) {
-							$idG = 59;
+							$idG = 174;
 						} else {
 							$idG = 30;
 						}
@@ -1733,7 +1772,7 @@ class HomeController extends Controller
 					} else if($idG == 19 || $idG == 39 || $idG == 99){
 						$idG = 30;
 					} else if($idG == 174) {
-					    $idG = 61;
+					    $idG = 59;
 					} else if($idG == 173) {
 					    if($idA == 30) {
 					        $idG = 61;    

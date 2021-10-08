@@ -111,11 +111,11 @@
                 <td><center><b>{{ date('d/m/Y', strtotime($vaga->data_prevista)) }}</b></center></td> 
 				<td> <center> <b>
 				@if($vaga->concluida == 0)
-				  {{ 'NO FLUXO' }}
+				<a href="{{ route('visualizarVaga', $vaga->id) }}"><font color="blue"><b> {{ 'NO FLUXO' }} </b></font></a>
 				@elseif($vaga->concluida == 1 && $vaga->aprovada == 0)
-				 <font color="red"> {{ 'REPROVADA' }} </font>
+				<a href="{{ route('visualizarVaga', $vaga->id) }}"><font color="red"><b> <font color="red"> {{ 'REPROVADA' }} </font></b></a>
 				@elseif($vaga->concluida == 1 && $vaga->aprovada == 1)
-				 <font color="green"> {{ 'APROVADA' }} </font>
+				<a href="{{ route('visualizarVaga', $vaga->id) }}"><font color="green"><b> <font color="green"> {{ 'APROVADA' }} </font></b></a>
 				@endif
 				</b></center></td>
 			  </tr> 

@@ -90,9 +90,7 @@
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
 					   <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-    			       <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option> 
-    			       <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
-				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+    			       <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>  
 					 </select>  
 				   @endif
 				  @elseif(Auth::user()->id == 163)
@@ -110,14 +108,14 @@
 				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
 					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
 					</select>  
-				 @elseif(Auth::user()->id == 173 || Auth::user()->id == 174)
+				 @elseif(Auth::user()->id == 174)
 				   @if($qtdAp == 0)    
 				     <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
 					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
 					 </select>  
 				   @else
 				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option> 
+						<option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
 					</select>
 				   @endif
 				 @endif
@@ -130,12 +128,10 @@
 				  @foreach($gestoresUnd as $gestor)
 				   <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id; ?>"> {{ $gestor->nome }}</option>   
 				  @endforeach
-				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-				  <option id="gestor_id" name="gestor_id" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
-				  <option id="gestor_id" name="gestor_id" value="173">DIRETORIA TÉCNICA - SORAIA DO CARMO CUNHA XIMENES</option>   
-				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>   
 				  <option id="gestor_id" name="gestor_id" value="12">ANALICE MARIA DE MENDONCA FERNANDES SILVA</option>
 				  @if($vaga[0]->unidade_id == 2)
+				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
+				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>   
 				  <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
 				  @elseif($vaga[0]->unidade_id == 3)
 				  <option id="gestor_id" name="gestor_id" value="5">COORDENADOR UNIDADE - ALEXANDRA SILVESTRE AMARAL</option>   
@@ -146,10 +142,8 @@
 				  @elseif($vaga[0]->unidade_id == 6)
 				  <option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
 				  @elseif($vaga[0]->unidade_id == 7)
-				  <!--option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option-->   
-				  <option id="gestor_id" name="gestor_id" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>   
+				  <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option>   
 				  @elseif($vaga[0]->unidade_id == 8)
-				  
 				  <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
 				  @endif
 			      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   

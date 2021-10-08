@@ -89,11 +89,19 @@
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
-					   <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-    			       <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option> 
-    			       <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
-				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>  
+    			  	 </select>  
+				   @endif
+				   @elseif(Auth::user()->id == 174)
+				   @if($qtdAp == 0)
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
 					 </select>  
+				   @else
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
+					   <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
+    			    </select>  
 				   @endif
 				  @elseif(Auth::user()->id == 163)
 				   @if($qtdAp == 0)
@@ -113,28 +121,32 @@
 			   @endif
 			  @endif
 			   
-			   @if(Auth::user()->funcao == "RH")
+			  @if(Auth::user()->funcao == "RH")
 				 @if($mp[0]->tipo_mp == 0)
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 				  @foreach($gestoresUnd as $gestor)
 				   <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id; ?>"> {{ $gestor->nome }}</option>   
 				  @endforeach
-				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-				  <option id="gestor_id" name="gestor_id" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
 				  <option id="gestor_id" name="gestor_id" value="12">ANALICE MARIA DE MENDONCA FERNANDES SILVA</option>
-				  @if($mp[0]->unidade_id == 3)
-				  <option id="gestor_id" name="gestor_id" value="165">COORDENADOR UNIDADE - ALEXANDRA AMARAL</option>	
+				  @if($mp[0]->unidade_id == 2)
+				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
+				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>  
+				  <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
+				  @elseif($mp[0]->unidade_id == 3)
+				  <option id="gestor_id" name="gestor_id" value="5">COORDENADOR UNIDADE - ALEXANDRA SILVESTRE AMARAL</option>   
 				  @elseif($mp[0]->unidade_id == 4)
 				  <option id="gestor_id" name="gestor_id" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
 				  @elseif($mp[0]->unidade_id == 5)
-				  <option id="gestor_id" name="gestor_id" value="166">COORDENADOR UNIDADE - ADRIANA BEZERRA</option>	
+				  <option id="gestor_id" name="gestor_id" value="167">COORDENADOR UNIDADE - ADRIANA CAVALCANTI BEZERRA</option>
 				  @elseif($mp[0]->unidade_id == 6)
 				  <option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+				  @elseif($mp[0]->unidade_id == 7)
+				  <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option>   
+				  @elseif($mp[0]->unidade_id == 8)
+				  <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+				  <option id="gestor_id" name="gestor_id" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
+				  <option id="gestor_id" name="gestor_id" value="173">DIRETORIA TÉCNICA - SORAIA DO CARMO CUNHA XIMENES</option>   
 				  @endif
-			      <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-			      <!--option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option-->   
-				  <option id="gestor_id" name="gestor_id" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>   
-			      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
 			      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
 				 </select>
 				 @else

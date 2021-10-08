@@ -342,14 +342,14 @@
 		   </tr>
 		   <tr>
 		    @if(!empty($data_aprovacao))
-			  <td>Solicitante </td>
-			  <td width="270"><?php if($solicitante == ""){ echo ""; } else { echo $solicitante; } ?></td>
-			  <td><input readonly="true" type="text" id="data_aprovacao" name="data_aprovacao" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_aprovacao))); ?>" /></td>
-			  <td>
+			  <td width="150">Solicitante </td>
+			  <td width="400"><?php if($solicitante == ""){ echo ""; } else { echo $solicitante; } ?></td>
+			  <td width="5"><input readonly="true" type="text" id="data_aprovacao" name="data_aprovacao" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_aprovacao))); ?>" /></td>
+			  <td width="400">
 			    <p align="justify"> {{ $justificativa[0]->descricao }} </p>
 			  </td>
 			@else
-			  <td>Solicitante </td>
+			  <td style="witdh: 300px">Solicitante </td>
 			  <td></td>
 		      <td><input readonly="true" type="date" id="data_aprovacao" name="data_aprovacao" class="form-control" value="" /></td>	
 			  <td></td>
@@ -511,6 +511,58 @@
 			</td>
 		   @endif	
 		   </tr>
+		   @if($mps[0]->unidade_id == 2)
+		   <tr>
+		   @if(!empty($data_diretoria_financeira))
+			<td>Diretoria Financeira</td>
+			<td><?php if($diretoriaF == ""){ echo ""; } else { echo $diretoriaF[0]->nome; } ?></td>
+			<td><input readonly="true" type="text" id="data_diretoria_financeira" name="data_diretoria_financeira" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_diretoria_financeira))); ?>" /></td>
+			<td>
+			@foreach($aprovacao as $ap) 
+			  @if($ap->mp_id == $mps[0]->id && $diretoriaFId[0]->id == $ap->gestor_anterior)
+				 <p align="justify">{{ $ap->motivo }}</p>
+			  @endif
+			@endforeach
+			</td>
+		   @else
+		   	<td>Diretoria Financeira</td>
+		   	<td></td>
+		   	<td><input readonly="true" type="date" id="data_diretoria_financeira" name="data_diretoria_financeira" class="form-control" value="" /></td>   
+			<td>
+			@if(!empty($diretoriaFId))
+			@foreach($aprovacao as $ap) 
+			  @if($ap->mp_id == $mps[0]->id && $diretoriaFId[0]->id == $ap->gestor_anterior)
+				 <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $ap->id; ?>" > 
+			     Mensagem
+				 </button>
+				 <div class="modal fade" id='exampleModal<?php echo $ap->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class='modal-content'>
+						  <div class='modal-header'>
+							<h5 class='modal-title' align="left"></h5>
+							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+						  </div>
+						  <div class='modal-body'>
+							<div class='panel panel-default'>
+							 <div class='panel-heading'><b>Mensagem:</b> </div>
+							 <div class='panel-body'>
+								<p align="justify">{{ $ap->motivo }}</a>
+							 </div>
+							</div>
+						  </div>
+						  <div class='modal-footer'>
+							<span class='codigo'></span>
+						  </div>
+					   </div>
+					 </div>
+				 </div></center>
+			  @endif
+			@endforeach
+			@endif
+			</td>
+		   @endif	
+		   </tr>
+		   @endif
 		   <tr>
 		   @if(!empty($data_diretoria))
 			<td>Diretoria</td>

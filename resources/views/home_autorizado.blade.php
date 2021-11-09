@@ -56,7 +56,7 @@
 			    @foreach($gestores as $gestor)
 				 @if(Auth::user()->id == 55 || Auth::user()->id == 117)
 				  <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
+			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'ANA AMÉRICA OLIVEIRA DE ARRUDA' }}</option>   
 				  </select>
 				 @else
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
@@ -70,12 +70,18 @@
 			   	 @if(!empty($aprovacao)) <?php $qtdAp = sizeof($aprovacao); ?>
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
-					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
-				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+				     @if(Auth::user()->id == 61)
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>  	    
+				     </select>  
+					 @else
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">
+					   <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
 					 </select>  
+					 @endif
 				   @endif
 				 @endif
     		   @endif
@@ -85,18 +91,18 @@
 			      @if(Auth::user()->id == 65)
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					   <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>  
     			  	 </select>  
 				   @endif
 				   @elseif(Auth::user()->id == 174)
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
@@ -106,7 +112,7 @@
 				  @elseif(Auth::user()->id == 163)
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	     
@@ -115,7 +121,7 @@
 				  @endif
 				 @elseif(Auth::user()->id == 93)
 				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					</select>  
 				 @endif
 			   @endif

@@ -62,7 +62,7 @@
 		   </table>
 		  </center> 
 		  <?php $a = 0; ?>
-		  @if(Auth::user()->id != 30 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
+		  @if(Auth::user()->id != 198 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
 			@if(empty($aprovacao))
 			      <a style="margin-left: 180px;" class="btn btn-primary" href="{{ route('alterarPD', $pd[0]->id) }}">Alterar</a></td>
 			@else 
@@ -442,21 +442,10 @@
 			</td>
 		   </tr>
 		   <tr>
-			<td>Coordenador de Seleção</td>
-			<td>
-			@foreach($aprovacao as $ap)	
-			  @if($ap->gestor_anterior == 30)
-			  <input readonly="true" type="text" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
-			  <input readonly="true" type="text" id="justificativa" name="justificativa" class="form-control" value="<?php echo $ap->motivo; ?>" />
-			  @endif
-			@endforeach
-			</td>
-		   </tr>
-		   <tr>
 			<td>Gerente de RH</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 30)
+			  @if($ap->gestor_anterior == 198)
 			  <input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  <input readonly="true" type="text" id="justificativa" name="justificativa" class="form-control" value="<?php echo $ap->motivo; ?>" />
 			  @endif
@@ -485,7 +474,7 @@
 		   <tr>
 		    <td align="right"> 
 			 <a href="javascript:history.back();" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
-			 @if(Auth::user()->id == 73 || Auth::user()->id == 30 || Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 166)
+			 @if(Auth::user()->id == 73 || Auth::user()->id == 198 || Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 166)
 			 <a href="{{ route('n_autorizarPD', $pd[0]->id) }}" type="button" class="btn btn-danger btn-sm" > Não Autorizar <i class="fas fa-times-circle"></i> </a>
 			 <a href="{{ route('autorizarPD', $pd[0]->id) }}" type="button" class="btn btn-success btn-sm" > Autorizar <i class="fas fa-times-circle"></i> </a>
 			 @endif

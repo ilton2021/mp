@@ -12,6 +12,9 @@ use App\Model\Demissao;
 use App\Model\Alteracao_Funcional;
 use App\Model\Aprovacao;
 use App\Model\Justificativa;
+use App\Model\Plantao;
+use App\Model\AdmissaoHCP;
+use App\Model\AdmissaoSalariosUnidades;
 use App\Model\MP;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -422,11 +425,11 @@ class MPController extends Controller
 			}
 		} else if (!empty($input['tipo_mov3'])) { 
 			$validator = Validator::make($request->all(), [
-				'setor' 	   		=> 'required|max:255',
-				'cargo_atual'       => 'required|max:255',
-				'cargo_novo'   		=> 'required|max:255',
-				'salario_atual' 	=> 'required',
-				'motivo' 			=> 'required|max:255'
+				'setor' 	   	=> 'required|max:255',
+				'cargo_atual'   => 'required|max:255',
+				'cargo_novo'   	=> 'required|max:255',
+				'salario_atual' => 'required',
+				'motivo' 		=> 'required|max:255'
 			]);
 			if ($validator->fails()) {
 				return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
@@ -520,7 +523,293 @@ class MPController extends Controller
 				$a = 1;
 				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao','a'));
 			}
-		}else {
+		} else if (!empty($input['tipo_mov4'])) {
+			$validator = Validator::make($request->all(), [
+				'setor_plantao' 	   => 'required|max:255',
+				'cargo_plantao'   	   => 'required|max:255',
+				'motivo_plantao'   	   => 'required|max:800',
+				'substituto' 		   => 'required|max:255',
+				'centro_custo_plantao' => 'required|max:255',
+				'quantidade_plantao'   => 'required|max:255',
+				'valor_plantao' 	   => 'required|max:255',
+				'valor_pago_plantao'   => 'required|max:255'
+			]);
+			if ($validator->fails()) {
+				return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+			} else {
+				if($input['descricao'] != "") {
+					$unidades = Unidade::all();
+					$qtdU     = sizeof($unidades);
+					$input['data_emissao'] = date('Y-m-d',(strtotime($dataEmissao)));
+					for($i = 1; $i <= $qtdU; $i++) {
+						if($id_unidade == $i) {
+							$idU   = $input['unidade_id'];
+							$mp1   = DB::table('mp')->where('unidade_id', $id_unidade)->max('ordem');
+							$mps   = MP::where('unidade_id',$id_unidade)->get();
+							$qtd1  = sizeof($mps);
+							$sigla = Unidade::where('id',$id_unidade)->get();
+							$sigla = $sigla[0]->sigla;
+							$va    = 0;
+							$hoje  = date('Y',(strtotime('now')));
+							if($qtd1 == 0){
+								$input['numeroMP'] = $sigla.'1/'.$hoje;	
+								$input['ordem']    = $mp1 + 1;								
+							}else if($qtd1 > 0){
+								$va = $mp1+1;
+								$input['numeroMP'] = $sigla.$va.'/'.$hoje;
+								$input['ordem']    = $mp1 + 1;								
+							}
+						}
+					}
+					$input['unidade_id'] = $id_unidade;
+					$input['concluida']  = 0;
+					if($input['gestor_id'] == 25){
+					    $input['gestor_id'] = 61;   
+					} else if($input['gestor_id'] == 15) {
+					    $input['gestor_id'] = 65;   
+					} else if($input['gestor_id'] == 43) {
+					    $input['gestor_id'] = 60;
+					} else {
+					    $input['gestor_id'] = $input['gestor_id'];
+					}
+					$input['acessorh3'] = 0;
+					$input['usuario_acessorh3'] = '';
+					$mp 		 	= MP::create($input);
+					$nome 		 	= $input['nome'];
+					$unidade_id  	= $input['unidade_id'];
+					$solicitante 	= $input['solicitante'];
+					$numeroMP    	= $input['numeroMP'];
+					$input['gestor_criador_mp'] = Auth::user()->id;
+					$mps  			= MP::where('numeroMP', $numeroMP)->get();
+					$idMP 			= $mps[0]->id;
+					$input['mp_id'] = $idMP;	
+					$plantao = Plantao::create($input);
+					$unidade 	    = Unidade::where('id', $id_unidade)->get();
+					$justificativa  = Justificativa::create($input);
+					if($input['gestor_id'] == 25){
+					    $idG = 61;   
+					} else if($input['gestor_id'] == 15) {
+					    $idG = 65;   
+					} else if($input['gestor_id'] == 43) {
+					    $idG = 60;
+					} else {
+					    $idG = $input['gestor_id'];   
+					}
+					$idG 	= $input['gestor_id'];
+					$gestor = Gestor::where('id', $idG)->get();
+					$email  = $gestor[0]->email; /*
+					Mail::send('email.emailMP', array($email), function($m) use ($email) {
+						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+						$m->subject('Validar MP!');
+						$m->to($email);
+					}); */
+				} else {
+					$validator = "Informe a Justificativa!";
+					return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+			
+				}
+				$unidades 	   = Unidade::all();
+				$admissao 	   = Admissao::where('mp_id', $idMP)->get(); 
+				$demissao 	   = Demissao::where('mp_id', $idMP)->get();
+				$alteracaoF    = Alteracao_Funcional::where('mp_id', $idMP)->get();
+				$plantao       = Plantao::where('mp_id', $idMP)->get();
+				$justificativa = Justificativa::where('mp_id', $idMP)->get();	
+				$aprovacao 	   = Aprovacao::where('mp_id', $idMP)->get();		
+				$idG 		   = $input['gestor_id'];
+				$gestor 	   = Gestor::where('id', $idG)->get();				
+				$a = 1;
+				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','plantao','justificativa','aprovacao','a'));
+			}
+		} else if(!empty($input['tipo_mov5'])) {
+			$validator = Validator::make($request->all(), [
+				'jornadahcp' 	   			=> 'required|max:255',
+				'tipohcp'   	   			=> 'required|max:255',
+				'motivohcp'   	   			=> 'required|max:255',
+				'possibilidade_contratacao' => 'required|max:255',
+				'necessidade_email' 		=> 'required|max:255',
+			]);
+			if ($validator->fails()) {
+				return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+			} else {
+				if($input['descricao'] != "") {
+					$unidades = Unidade::all();
+					$qtdU     = sizeof($unidades);
+					$input['data_emissao'] = date('Y-m-d',(strtotime($dataEmissao)));
+					for($i = 1; $i <= $qtdU; $i++) {
+						if($id_unidade == $i) {
+							$idU   = $input['unidade_id'];
+							$mp1   = DB::table('mp')->where('unidade_id', $id_unidade)->max('ordem');
+							$mps   = MP::where('unidade_id',$id_unidade)->get();
+							$qtd1  = sizeof($mps);
+							$sigla = Unidade::where('id',$id_unidade)->get();
+							$sigla = $sigla[0]->sigla;
+							$va    = 0;
+							$hoje  = date('Y',(strtotime('now')));
+							if($qtd1 == 0){
+								$input['numeroMP'] = $sigla.'1/'.$hoje;	
+								$input['ordem']    = $mp1 + 1;								
+							}else if($qtd1 > 0){
+								$va = $mp1+1;
+								$input['numeroMP'] = $sigla.$va.'/'.$hoje;
+								$input['ordem']    = $mp1 + 1;								
+							}
+						}
+					}
+					$input['unidade_id'] = $id_unidade;
+					$input['concluida']  = 0;
+					$input['gestor_id'] = 61;
+					$input['acessorh3'] = 0;
+					$input['usuario_acessorh3'] = '';
+					$mp 		 	= MP::create($input);
+					$nome 		 	= $input['nome'];
+					$unidade_id  	= $input['unidade_id'];
+					$solicitante 	= $input['solicitante'];
+					$numeroMP    	= $input['numeroMP'];
+					$input['gestor_criador_mp'] = Auth::user()->id;
+					$mps  			= MP::where('numeroMP', $numeroMP)->get();
+					$idMP 			= $mps[0]->id;
+					$input['mp_id'] = $idMP;	
+					
+					if($input['tipohcp'] == "rpa"){
+						$input['tipo'] = 'rpa';
+						$input['periodo_contrato'] = $input['periodo_contratohcp'];
+					}
+
+					if($input['motivohcp'] == "substituicao_definitiva") {
+						$input['motivo2'] = $input['motivo6hcp'];
+					}
+
+					$input['jornada'] = $input['jornadahcp'];
+					$input['tipo'] 	  = $input['tipohcp'];
+					$input['motivo']  = $input['motivohcp'];
+				
+					$admissao_hcp   = AdmissaoHCP::create($input);
+					$unidade 	    = Unidade::where('id', $id_unidade)->get();
+					$justificativa  = Justificativa::create($input);
+
+					$idAdHCP = AdmissaoHCP::max('id');
+
+					if(!empty($input['und'])){
+						if($input['und'] == "on"){
+							$input['gestor']          = $input['nome'];
+							$input['unidade_id']      = 2;
+							$input['salario'] 	      = $input['salario_2'];
+							$input['outras_verbas']   = $input['outras_verbas_2'];
+							$input['cargo'] 		  = $input['cargo_2'];
+							$input['centro_custo']    = $input['centro_custo_2'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
+					if(!empty($input['und2'])){
+						if($input['und2'] == "on"){
+							$input['gestor']          = $input['nome'];
+							$input['unidade_id']      = 3;
+							$input['salario'] 	      = $input['salario_3'];
+							$input['outras_verbas']   = $input['outras_verbas_3'];
+							$input['cargo'] 		  = $input['cargo_3'];
+							$input['centro_custo']    = $input['centro_custo_3'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
+					if(!empty($input['und3'])){
+						if($input['und3'] == "on"){
+							$input['gestor']          = $input['nome'];
+							$input['unidade_id']      = 4;
+							$input['salario'] 	      = $input['salario_4'];
+							$input['outras_verbas']   = $input['outras_verbas_4'];
+							$input['cargo'] 		  = $input['cargo_4'];
+							$input['centro_custo']    = $input['centro_custo_4'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
+					if(!empty($input['und4'])){
+						if($input['und4'] == "on"){
+							$input['gestor']          = $input['nome'];
+							$input['unidade_id']      = 5;
+							$input['salario'] 	      = $input['salario_5'];
+							$input['outras_verbas']   = $input['outras_verbas_5'];
+							$input['cargo'] 		  = $input['cargo_5'];
+							$input['centro_custo']    = $input['centro_custo_5'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
+					if(!empty($input['und5'])){
+						if($input['und5'] == "on"){
+							$input['gestor_id']       = $input['nome'];
+							$input['unidade_id']      = 6;
+							$input['salario'] 	      = $input['salario_6'];
+							$input['outras_verbas']   = $input['outras_verbas_6'];
+							$input['cargo'] 		  = $input['cargo_6'];
+							$input['centro_custo']    = $input['centro_custo_6'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
+					if(!empty($input['und6'])){
+						if($input['und6'] == "on"){
+							$input['gestor']          = $input['nome'];
+							$input['unidade_id']      = 7;
+							$input['salario'] 	      = $input['salario_7'];
+							$input['outras_verbas']   = $input['outras_verbas_7'];
+							$input['cargo'] 		  = $input['cargo_7'];
+							$input['centro_custo']    = $input['centro_custo_7'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
+					if($input['gestor_id'] == 25){
+					    $idG = 61;   
+					} else if($input['gestor_id'] == 15) {
+					    $idG = 65;   
+					} else if($input['gestor_id'] == 43) {
+					    $idG = 60;
+					} else {
+					    $idG = $input['gestor_id'];   
+					}
+					$idG 	= $input['gestor_id'];
+					$gestor = Gestor::where('id', $idG)->get();
+					$email  = $gestor[0]->email; /*
+					Mail::send('email.emailMP', array($email), function($m) use ($email) {
+						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+						$m->subject('Validar MP!');
+						$m->to($email);
+					}); */
+				} else {
+					$validator = "Informe a Justificativa!";
+					return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+			
+				}
+				$unidades 	   = Unidade::all();
+				$admissao 	   = Admissao::where('mp_id', $idMP)->get(); 
+				$demissao 	   = Demissao::where('mp_id', $idMP)->get();
+				$alteracaoF    = Alteracao_Funcional::where('mp_id', $idMP)->get();
+				$plantao       = Plantao::where('mp_id', $idMP)->get();
+				$justificativa = Justificativa::where('mp_id', $idMP)->get();	
+				$aprovacao 	   = Aprovacao::where('mp_id', $idMP)->get();		
+				$idG 		   = $input['gestor_id'];
+				$gestor 	   = Gestor::where('id', $idG)->get();				
+				$a = 1;
+				return view('home', compact('unidade','idMP','idG','mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','plantao','justificativa','aprovacao','a'));
+			}
+		} else {
 			$validator = "Escolha um Tipo de Movimentação!";
 			return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 					  ->withErrors($validator)
@@ -932,6 +1221,335 @@ class MPController extends Controller
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
 		});
+		$a = 0;
+		return view('home', compact('unidade','idMP','idG','a'));
+	}
+
+	// Tela para Alterar MP de Plantão //
+	public function alterarMPPlantao($id, $id_plan) {
+		$gestores = Gestor::all();
+		$unidades = Unidade::all();
+		$mps = MP::where('id',$id)->get();
+		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
+		$solicitante = $mps[0]->solicitante;
+		$solic   = Gestor::where('nome',$solicitante)->get();
+		$gestor  = $solic[0]->gestor_imediato;
+		$gestor  = Gestor::where('nome', $gestor)->get();
+		$unidade = $mps[0]->unidade_id;
+		$unidade = Unidade::where('id',$unidade)->get();
+		$plantao = Plantao::where('mp_id',$mps[0]->id)->get();
+		$idA = $id_plan;
+		$idMP = $id;
+		$cargos = Cargos::all();
+		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
+		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->orderBy('nome','ASC')->get();
+		return view('alterarMPPlantao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','justificativa','gestor','cargos','centro_custos','setores'));
+	}
+
+	// Alterar MP de Plantão //
+	public function updateMPPlantao($id, $id_plan, Request $request){
+		$input = $request->all(); 
+		$dataE = $input['data_emissao'];
+		$dataP = $input['data_prevista'];
+		$dataEmissao  = date('d-m-Y', strtotime($dataE));
+		$dataPrevista = date('d-m-Y', strtotime($dataP));
+		$gestores  	   = Gestor::all();
+		$unidades  	   = Unidade::all();
+		$mps 		   = MP::where('id',$id)->get();
+		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
+		$solicitante   = $mps[0]->solicitante;
+		$solic   	   = Gestor::where('nome',$solicitante)->get();
+		$gestor  	   = $solic[0]->gestor_imediato;
+		$gestor  	   = Gestor::where('nome', $gestor)->get();
+		$unidade 	   = $mps[0]->unidade_id;
+		$unidade 	   = Unidade::where('id',$unidade)->get();
+		$plantao 	   = Plantao::where('mp_id',$mps[0]->id)->get();
+		$idA 		   = $id_plan;
+		$idMP 		   = $id;
+		$aprovacao     = Aprovacao::where('mp_id',$id)->get();
+		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
+			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
+			return view('alterarMPDemissao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+		}
+		
+		$validator = Validator::make($request->all(), [
+				'setor_plantao' 	   => 'required|max:255',
+				'cargo_plantao' 	   => 'required|max:255',
+				'motivo_plantao' 	   => 'required|max:255',
+				'substituto' 		   => 'required|max:255',
+				'centro_custo_plantao' => 'required|max:225',
+				'quantidade_plantao'   => 'required|max:255',
+				'valor_plantao'        => 'required',
+				'valor_pago_plantao'   => 'required|max:255'
+		]);
+		if ($validator->fails()) {
+			return view('alterarMPPlantao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+		} else {
+			$input['acesssorh3'] = 0;
+			$input['usuario_acessorh3'] = '';
+			$plantao 	   = Plantao::find($id_plan);
+			$plantao->update($input);
+			$mp			   = MP::find($id);
+			$mp->update($input);
+			$J   		   = Justificativa::where('mp_id', $id)->get();
+			$idJ 		   = $J[0]->id; 
+			$justificativa = Justificativa::find($idJ);
+			$justificativa->update($input);
+			$mps 		   = MP::where('id', $id)->get();
+			$solicitante   = $mps[0]->solicitante;
+			$solic    	   = Gestor::where('nome',$solicitante)->get();
+			$gestor   	   = $solic[0]->gestor_imediato;
+			$gestor   	   = Gestor::where('nome', $gestor)->get();
+			$gestores 	   = Gestor::all();
+			$unidades 	   = Unidade::all();
+			$idU 		   = $mps[0]->unidade_id;
+			$unidade 	   = Unidade::where('id', $idU)->get();
+			$plantao 	   = Plantao::where('mp_id',$id)->get();
+			$justificativa = Justificativa::where('mp_id', $id)->get();
+			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
+			$validator 	   = "Plantão Extra Alterado com sucesso!";
+			return view('index_', compact('mps','gestores','unidades','unidade','plantao','justificativa','aprovacao','gestor'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+		}
+	}
+	
+	public function salvarMPPlantao($id, $idG, Request $request){
+		$input 	  = $request->all();
+		$mp 	  = MP::where('id',$id)->get();
+		$idMP 	  = $id;
+		$idU      = $mp[0]->unidade_id;
+		$unidade  = Unidade::where('id', $idU)->get();
+		$numeroMP = $mp[0]->numeroMP;
+		$gestor   = Gestor::where('id', $idG)->get();
+		$nome     = $mp[0]->solicitante;
+		$email 	  = $gestor[0]->email;
+		DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
+		/*Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
+			$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+			$m->subject('MP - '.$numeroMP.' Alterada!');
+			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+			$m->to($email);
+		});*/
+		$a = 0;
+		return view('home', compact('unidade','idMP','idG','a'));
+	}
+
+	// Tela para Alterar MP de Plantão //
+	public function alterarMPAdmissaoHCP($id, $id_adm_hcp) {
+		$gestores = Gestor::all();
+		$unidades = Unidade::all();
+		$mps = MP::where('id',$id)->get();
+		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
+		$solicitante = $mps[0]->solicitante;
+		$solic   = Gestor::where('nome',$solicitante)->get();
+		$gestor  = $solic[0]->gestor_imediato;
+		$gestor  = Gestor::where('nome', $gestor)->get();
+		$unidade = $mps[0]->unidade_id;
+		$unidade = Unidade::where('id',$unidade)->get();
+		$admissaoHCP = AdmissaoHCP::where('mp_id',$mps[0]->id)->get();
+		$admissaoSalUnd = AdmissaoSalariosUnidades::where('admissao_hcp_id',$admissaoHCP[0]->id)->get();
+		$idA = $id_adm_hcp;
+		$idMP = $id;
+		$cargos = Cargos::all();
+		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
+		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->orderBy('nome','ASC')->get();
+		return view('alterarMPAdmissaoHCP', compact('unidade','gestores','unidades','mps','admissaoHCP','admissaoSalUnd','idA','idMP','justificativa','gestor','cargos','centro_custos','setores'));
+	}
+
+	// Alterar MP de Plantão //
+	public function updateMPAdmissaoHCP($id, $id_adm_hcp, Request $request){
+		$input = $request->all(); 
+		$dataE = $input['data_emissao'];
+		$dataP = $input['data_prevista'];
+		$dataEmissao  = date('d-m-Y', strtotime($dataE));
+		$dataPrevista = date('d-m-Y', strtotime($dataP));
+		$gestores  	   = Gestor::all();
+		$unidades  	   = Unidade::all();
+		$mps 		   = MP::where('id',$id)->get();
+		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
+		$solicitante   = $mps[0]->solicitante;
+		$solic   	   = Gestor::where('nome',$solicitante)->get();
+		$gestor  	   = $solic[0]->gestor_imediato;
+		$gestor  	   = Gestor::where('nome', $gestor)->get();
+		$unidade 	   = $mps[0]->unidade_id;
+		$unidade 	   = Unidade::where('id',$unidade)->get();
+		$admissaoHCP   = AdmissaoHCP::where('mp_id',$mps[0]->id)->get();
+		$admissaoSalUnd = AdmissaoSalariosUnidades::where('admissao_hcp_id',$admissaoHCP[0]->id)->get();
+		$idA 		   = $id_adm_hcp;
+		$idMP 		   = $id;
+		$aprovacao     = Aprovacao::where('mp_id',$id)->get();
+		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
+			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
+			return view('alterarMPDemissao', compact('unidade','gestores','unidades','mps','admissaoHCP','admissaoSalUnd','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+		}
+		$validator = Validator::make($request->all(), [
+			'jornadahcp' 	   			=> 'required|max:255',
+			'tipohcp'   	   			=> 'required|max:255',
+			'motivohcp'   	   			=> 'required|max:255',
+			'possibilidade_contratacao' => 'required|max:255',
+			'necessidade_email' 		=> 'required|max:255',
+		]);
+		if ($validator->fails()) {
+			return view('alterarMPAdmissaoHCP', compact('unidade','gestores','unidades','mps','admissaoHCP','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+		} else {
+			$input['acesssorh3'] = 0;
+			$input['usuario_acessorh3'] = '';
+			
+			if($input['tipohcp'] == "rpa"){
+				$input['periodo_contrato'] = $input['periodo_contratohcp'];
+			} else {
+				$input['periodo_contrato'] = "";
+			}
+
+			if($input['motivohcp'] == "substituicao_definitiva") {
+				$input['motivo2'] = $input['motivo6hcp'];
+			} else {
+				$input['motivo2'] = "";
+			}
+
+			$input['jornada'] = $input['jornadahcp'];
+			$input['tipo']    = $input['tipohcp'];
+			$input['motivo']  = $input['motivohcp'];
+
+			if(!empty($input['salario_2'])){
+				$input['gestor']          = $input['nome'];
+				$input['unidade_id']      = 2;
+				$input['salario'] 	      = $input['salario_2'];
+				$input['outras_verbas']   = $input['outras_verbas_2'];
+				$input['cargo'] 		  = $input['cargo_2'];
+				$input['centro_custo']    = $input['centro_custo_2'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 ->where('unidade_id',2)->get('id');
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
+
+			if(!empty($input['salario_3'])){
+				$input['gestor']          = $input['nome'];
+				$input['unidade_id']      = 3;
+				$input['salario'] 	      = $input['salario_3'];
+				$input['outras_verbas']   = $input['outras_verbas_3'];
+				$input['cargo'] 		  = $input['cargo_3'];
+				$input['centro_custo']    = $input['centro_custo_3'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 ->where('unidade_id',3)->get('id');
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
+
+			if(!empty($input['salario_4'])){
+				$input['gestor']          = $input['nome'];
+				$input['unidade_id']      = 4;
+				$input['salario'] 	      = $input['salario_4'];
+				$input['outras_verbas']   = $input['outras_verbas_4'];
+				$input['cargo'] 		  = $input['cargo_4'];
+				$input['centro_custo']    = $input['centro_custo_4'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 ->where('unidade_id',4)->get('id');
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
+
+			if(!empty($input['salario_5'])){
+				$input['gestor']          = $input['nome'];
+				$input['unidade_id']      = 5;
+				$input['salario'] 	      = $input['salario_5'];
+				$input['outras_verbas']   = $input['outras_verbas_5'];
+				$input['cargo'] 		  = $input['cargo_5'];
+				$input['centro_custo']    = $input['centro_custo_5'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 ->where('unidade_id',5)->get('id');
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
+
+			if(!empty($input['salario_6'])){
+				$input['gestor_id']       = $input['nome'];
+				$input['unidade_id']      = 6;
+				$input['salario'] 	      = $input['salario_6'];
+				$input['outras_verbas']   = $input['outras_verbas_6'];
+				$input['cargo'] 		  = $input['cargo_6'];
+				$input['centro_custo']    = $input['centro_custo_6'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 ->where('unidade_id',6)->get('id');
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
+
+			if(!empty($input['salario_7'])){
+				$input['gestor']          = $input['nome'];
+				$input['unidade_id']      = 7;
+				$input['salario'] 	      = $input['salario_7'];
+				$input['outras_verbas']   = $input['outras_verbas_7'];
+				$input['cargo'] 		  = $input['cargo_7'];
+				$input['centro_custo']    = $input['centro_custo_7'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 	 ->where('unidade_id',7)->get();
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
+			$input['unidade_id'] = 1;
+			$input['gestor_id'] = 61;
+			$admissaoHCP   = AdmissaoHCP::find($id_adm_hcp);
+			$admissaoHCP->update($input);
+			$mp			   = MP::find($id);
+			$mp->update($input);
+			$J   		   = Justificativa::where('mp_id', $id)->get();
+			$idJ 		   = $J[0]->id; 
+			$justificativa = Justificativa::find($idJ);
+			$justificativa->update($input);
+			$mps 		    = MP::where('id', $id)->get();
+			$solicitante    = $mps[0]->solicitante;
+			$solic    	    = Gestor::where('nome',$solicitante)->get();
+			$gestor   	    = $solic[0]->gestor_imediato;
+			$gestor   	    = Gestor::where('nome', $gestor)->get();
+			$gestores 	    = Gestor::all();
+			$unidades 	    = Unidade::all();
+			$idU 		    = $mps[0]->unidade_id;
+			$unidade 	    = Unidade::where('id', $idU)->get();
+			$admissaoHCP    = AdmissaoHCP::where('mp_id',$id)->get();
+			$admissaoSalUnd = AdmissaoSalariosUnidades::where('admissao_hcp_id',$admissaoHCP[0]->id)->get();
+			$justificativa  = Justificativa::where('mp_id', $id)->get();
+			$aprovacao 	    = Aprovacao::where('mp_id',$id)->get();
+			$validator 	    = "Admissão HCPGESTÃO Alterado com sucesso!";
+			return view('index_', compact('mps','gestores','unidades','unidade','admissaoHCP','admissaoSalUnd','justificativa','aprovacao','gestor'))
+					  ->withErrors($validator)
+                      ->withInput(session()->flashInput($request->input()));
+		}
+	}
+	
+	public function salvarMPAdmissaoHCP($id, $idG, Request $request){
+		$input 	  = $request->all();
+		$mp 	  = MP::where('id',$id)->get();
+		$idMP 	  = $id;
+		$idU      = $mp[0]->unidade_id;
+		$unidade  = Unidade::where('id', $idU)->get();
+		$numeroMP = $mp[0]->numeroMP;
+		$gestor   = Gestor::where('id', 61)->get();
+		$nome     = $mp[0]->solicitante;
+		$email 	  = $gestor[0]->email;
+		DB::statement('UPDATE mp SET gestor_id = 61 WHERE id = '.$id.';');
+		/*Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
+			$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+			$m->subject('MP - '.$numeroMP.' Alterada!');
+			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+			$m->to($email);
+		});*/
 		$a = 0;
 		return view('home', compact('unidade','idMP','idG','a'));
 	}

@@ -41,6 +41,10 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}', 'HomeController@salvarMP')->name('salvarMP');
 		Route::get('/home/validar/{id}/salvarDemissao/{idG}', 'MPController@salvarMPDemissao')->name('salvarMPDemissao');
 		Route::post('/home/validar/{id}/salvarDemissao/{idG}', 'MPController@salvarMPDemissao')->name('salvarMPDemissao');
+
+		Route::get('/home/validar/{id}/salvarAdmHCP/{idG}', 'MPController@salvarMPAdmissaoHCP')->name('salvarMPAdmissaoHCP');
+		Route::post('/home/validar/{id}/salvarAdmHCP/{idG}', 'MPController@salvarMPAdmissaoHCP')->name('salvarMPAdmissaoHCP');
+
 		Route::get('/home/validar/{id}/salvarAlteracao/{idG}', 'MPController@salvarMPAlteracao')->name('salvarMPAlteracao');
 		Route::post('/home/validar/{id}/salvarAlteracao/{idG}', 'MPController@salvarMPAlteracao')->name('salvarMPAlteracao');
 		Route::get('/home/validar/{id}/salvarAdmissao/{idG}', 'MPController@salvarMPAdmissao')->name('salvarMPAdmissao');
@@ -62,6 +66,13 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}/updem/{id_dem}', 'MPController@updateMPDemissao')->name('updateMPDemissao');
 		Route::get('/home/validar/{id}/upadm/{id_adm}', 'MPController@alterarMPAdmissao')->name('alterarMPAdmissao');
 		Route::post('/home/validar/{id}/upadm/{id_adm}', 'MPController@updateMPAdmissao')->name('updateMPAdmissao');
+
+		Route::get('/home/validar/{id}/uppla/{id_plan}', 'MPController@alterarMPPlantao')->name('alterarMPPlantao');
+		Route::post('/home/validar/{id}/uppla/{id_plan}', 'MPController@updateMPPlantao')->name('updateMPPlantao');
+
+		Route::get('/home/validar/{id}/upadm_hcp/{id_adm_hcp}', 'MPController@alterarMPAdmissaoHCP')->name('alterarMPAdmissaoHCP');
+		Route::post('/home/validar/{id}/upadm_hcp/{id_adm_hcp}', 'MPController@updateMPAdmissaoHCP')->name('updateMPAdmissaoHCP');
+
 		Route::get('/home/validar/{id}/autorizar', 'HomeController@autorizarMP')->name('autorizarMP');
 		Route::post('/home/validar/{id}/autorizar/store', 'HomeController@storeAutMP')->name('storeAutMP');
 		Route::get('/home/validar/{id}/n_autorizar', 'HomeController@n_autorizarMP')->name('n_autorizarMP');
@@ -194,6 +205,12 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/escolha/{id}/{i}/vaga', 'VagaController@storeVaga')->name('storeVaga');
 		Route::get('/home/email/vaga/{i}', 'VagaController@homeVaga')->name('homeVaga');
 		Route::get('/pdf/vaga/{idG}/{idVaga}','VagaController@vagaPDF')->name('vagaPDF');
+		////
+
+		//Inativar MP's
+		Route::post('/home/inativar/mp/{id}','HomeController@inativandoMPs')->name('inativandoMPs');
+		Route::get('/home/inativar/mp/{id}','HomeController@inativarMPs')->name('inativarMPs');
+		Route::get('/home/visualizarMPS/inativasMPs', 'HomeController@inativasMPs')->name('inativasMPs');
 		////
 		
 		Route::get('/home/graphicsIndex','HomeController@graphicsIndex')->name('graphicsIndex');

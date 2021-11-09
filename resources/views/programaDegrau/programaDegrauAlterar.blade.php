@@ -545,20 +545,10 @@
 			</td>
 		   </tr>
 		   <tr>
-			<td>Coordenador de Seleção</td>
-			<td>
-			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 30)
-			  <input readonly="true" type="text" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
-			  @endif
-			 @endforeach
-			</td>
-		   </tr>
-		   <tr>
 			<td>Gerente de RH</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 30)
+			  @if($ap->gestor_anterior == 198)
 			  <input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  @endif
 			 @endforeach

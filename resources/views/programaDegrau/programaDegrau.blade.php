@@ -114,7 +114,7 @@
 			  <td> Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" name="codigo_vaga" value="{{Request::old('codigo_vaga')}}" /> </td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" readonly="true">
-			    <option id="gestor_id" name="gestor_id" value="73">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
+			    <option id="gestor_id" name="gestor_id" value="198">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
 			  </select>
 			</tr>
 			<tr>
@@ -558,9 +558,6 @@
 		   </tr>
 		   <tr>
 			<td>Solicitante </td><td><input readonly="true" type="date" id="data_solicitante" name="data_solicitante" class="form-control" /></td>
-		   </tr>
-		   <tr>
-			<td>Coordenador de Seleção</td><td><input readonly="true" type="date" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" /></td>
 		   </tr>
 		   <tr>
 			<td>Gerente de RH</td><td><input readonly="true" type="date" id="data_rec_humanos" name="data_rec_humanos" class="form-control" /></td>

@@ -82,7 +82,7 @@
 
 			   @if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) 
 				 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
+			       <option id="gestor_id" name="gestor_id" value="198"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
 				 </select>
 			   @endif
     			

@@ -33,9 +33,9 @@
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
-        </ul>
+        </ul> 
       </div>
-	  @endif		 
+	  @endif 		 
 	  <form action="{{\Request::route('storeVaga'), $unidade[0]->id}}" method="POST">             
 	  <input type="hidden" name="_token" value="{{ csrf_token() }}">
           <center>
@@ -65,6 +65,8 @@
 			  <td> Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" disabled="true" name="codigo_vaga" value="<?php echo $vaga->codigo_vaga; ?>" /> </td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" disabled="true">
+			  <?php $dataI = date('d-m-Y', strtotime($data_rec_humanos)); ?> 
+			  <?php $dataF = date('d-m-Y', strtotime('02-09-2021')); ?>
 			  @if($vaga->tipo_vaga == 0)
 			   @if(Auth::user()->name == $vaga->solicitante)
 				<option id="gestor_id" name="gestor_id" value="<?php echo $gestor[0]->id ?>" title="{{ $gestor[0]->nome }}">{{ $gestor[0]->nome }}</option>  
@@ -73,8 +75,12 @@
 				  @if(!empty($gestores))
 				   @foreach($gestores as $gestor)
 					@if($vaga->gestor_id == $gestor->id)
-					  <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id ?>" title="{{ $gestor->nome }}">{{ $gestor->nome }}</option>
 					  <?php $gId = 0; ?>
+					  <?php if(strtotime($dataI) < strtotime($dataF)){  ?>
+						<option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id ?>" title="{{ $gestor->nome }}">{{'RAFAELA CARAZZAI' }}</option>
+				      <?php } else {  ?>
+						<option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id ?>" title="{{ $gestor->nome }}">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>	
+					  <?php } ?>
 					@endif
 				   @endforeach
 				  @else
@@ -475,7 +481,16 @@
 		   <tr>
 		   @if(!empty($data_rec_humanos))
 			<td>Rec. Humanos</td>
-			<td><?php if($rh == ""){ echo ""; } else { echo $rh[0]->nome; } ?></td>
+			<?php $dataI = date('d-m-Y', strtotime($data_rec_humanos)); ?> 
+			<?php $dataF = date('d-m-Y', strtotime('02-09-2021')); ?>
+			<?php $dataFJana = date('d-m-Y', strtotime('22-10-2021'));?>
+			<?php if(strtotime($dataI) < strtotime($dataF)){  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'RAFAELA CARAZZAI'; } ?></td>	
+			<?php } else if(strtotime($dataI) < strtotime($dataFJana)) {  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'JANAINA GLAYCE PEREIRA LIMA'; } ?></td>	
+			<?php } else {  ?>
+			<td><?php if($rh == ""){ echo ""; } else { echo 'ANA AMÉRICA OLIVEIRA DE ARRUDA'; } ?></td>	
+			<?php } ?>
 			<td><input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_rec_humanos))); ?>" /></td>
 			<td> 
 			@foreach($aprovacao as $ap) 

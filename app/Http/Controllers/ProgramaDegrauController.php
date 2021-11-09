@@ -606,7 +606,7 @@ class ProgramaDegrauController extends Controller
 			if(!empty($input['check_'.$a])){
 				if($input['check_'.$a] == "on"){
 					$id_vaga = $input['id_vaga_'.$a];
-					if(Auth::user()->id == 30){
+					if(Auth::user()->id == 198){
 						$idG   = $input['gestor_id_'.$a]; 
 						ProgramaDegrauController::aprovar($id_vaga,$idG);
 					} else {
@@ -643,35 +643,28 @@ class ProgramaDegrauController extends Controller
 		$id	  = $vaga[0]->id;
 		$idU  = Auth::user()->id;
 		if(Auth::user()->name == $vaga[0]->solicitante){
-			$idGI   = 73;
-			$input['gestor_id'] = 73;
+			$idGI   = 198;
+			$input['gestor_id'] = 198;
 			$input['resposta'] = 1;
 			$email = 'janaina.lima@hcpgestao.org.br';
 			DB::statement('UPDATE vaga_interna SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
 			DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 		} else {
-			if($idU == 30){
+			if($idU == 198){
 				$input['resposta']  = 1; 
-				$input['gestor_id'] = 30;
+				$input['gestor_id'] = 198;
 				$email = 'janaina.lima@hcpgestao.org.br';
-				DB::statement('UPDATE vaga_interna SET gestor_id = 30 WHERE id = '.$id.';');
+				DB::statement('UPDATE vaga_interna SET gestor_id = 198 WHERE id = '.$id.';');
 				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
-			} else if($idU == 30) {
-				$input['resposta']  = 1; 
-				$input['gestor_id'] = $idG;
-				$e_gestor = Gestor::where('id',$idG)->get();
-				$email = $e_gestor[0]->email; 
-				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
-				DB::statement('UPDATE vaga_interna SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 			} else if($idU == 59 || $idU == 60 || $idU == 61 || $idU == 155 || $idU == 160 || $idU == 5 || $idU == 166) {
 				$input['resposta'] = 3;
-				$email = 'camila.fernandes@hcpgestao.org.br';
+				$email = 'janaina.lima@hcpgestao.org.br';
 				DB::statement('UPDATE vaga_interna SET concluida = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE vaga_interna SET aprovada  = 1 WHERE id  = '.$id.';');
-				DB::statement('UPDATE vaga_interna SET gestor_id = 30 WHERE id = '.$id.';');
+				DB::statement('UPDATE vaga_interna SET gestor_id = 198 WHERE id = '.$id.';');
 				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
-				$input['gestor_id'] = 30;
-				$idG = 30;
+				$input['gestor_id'] = 198;
+				$idG = 198;
 			}
 		}
 		$input['data_aprovacao']  = date('Y-m-d',(strtotime('now')));
@@ -998,7 +991,7 @@ class ProgramaDegrauController extends Controller
    public function updatePDs($id, Request $request)
    {
 	   $input = $request->all();
-	   $input['gestor_id'] = 73;
+	   $input['gestor_id'] = 198;
 	   $input['data_emissao']  = date('Y-m-d', strtotime($input['data_emissao']));
 	   $input['data_prevista'] = date('Y-m-d', strtotime($input['data_prevista']));
 	   $input['vinculo'] = 0;

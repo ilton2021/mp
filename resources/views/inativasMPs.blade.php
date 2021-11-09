@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Programa Degrau - RH</title>
+        <title>MP RH</title>
 		<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         <link rel="stylesheet" href="{{asset('css/style.css')}}">
@@ -14,24 +14,6 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
-		<script type="text/javascript">
-			function data(value) {
-				var a = document.getElementById('pesq2').value;
-				if(a == "data") {
-					document.getElementById('linha').hidden       = false;
-					document.getElementById('data_inicio').hidden = false;
-					document.getElementById('data_fim').hidden    = false;
-					document.getElementById('txtInicio').hidden   = false;
-					document.getElementById('txtFim').hidden 	  = false;
-				} else {
-					document.getElementById('linha').hidden		  = true;
-					document.getElementById('data_inicio').hidden = true;
-					document.getElementById('data_fim').hidden    = true;
-					document.getElementById('txtInicio').hidden   = true;
-					document.getElementById('txtFim').hidden      = true;
-				}
-			}
-		</script>
 		<style>
 		.navbar .dropdown-menu .form-control {
 			width: 300px;
@@ -42,7 +24,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
   	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-				<h4 class="d-none d-sm-block">Programa Degrau - RH</h4>
+				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
@@ -90,9 +72,10 @@
                     </ul>
                 </div>
     </nav>
-	<p style="margin-left: 1170px"> <a href="{{url('homeProgramaDegrau')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
+	
+	<p style="margin-left: 1170px"> <a href="{{url('home/visualizarMPS')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
 	<center>
-	<form action="{{ route('pesquisaPD') }}" method="POST">
+	<form action="{{ route('pesquisaMPs') }}" method="POST">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid;"> 
 	 <tr>
@@ -111,46 +94,68 @@
 		 </select>
 		</td>
 		<td align="right"> 
-			<select class="form-control" id="pesq2" name="pesq2" onchange="data('sim')">
-			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
+			<select class="form-control" id="pesq2" name="pesq2">
+			  <option id="pesq2" name="pesq2" value="numero">NÚMERO MP</option>
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
-			  <option id="pesq2" name="pesq2" value="data">DATA</option>
+			  <option id="pesq2" name="pesq2" value="funcionario">FUNCIONÁRIO</option>
 			</select>	
 		</td> 
 		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
 		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
 	 </tr>
-	 <tr hidden id="linha">
-	 <td id="txtInicio" hidden><p align="center"> Data Início: </p></td>
-	 <td> <input hidden type="date" id="data_inicio" name="data_inicio" class="form-control" /> </td>
-	 <td id="txtFim" hidden><p align="center"> Data Fim: </p></td>
-	 <td> <input hidden type="date" id="data_fim" name="data_fim" class="form-control" /> </td>
-	 </tr>
 	</table>
 	</form>
-    <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:blue;">
+    <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:#0000ff;">
 		 <tr>
 		    <thead>
 			  <tr>
-			   <td colspan="4"><center><font color="blue"><b>VAGAS CRIADAS:</b></font><center></td>
+			   <td colspan="3"><center><font color="blue"><b>MP'S INATIVAS:</b></font><center></td>
 			  </tr>
 			  <tr>
-			   <td><center>NOME DA VAGA</center></td>
-			   <td><center>SOLICITANTE</center></td>
-			   <td><center>Visualizar</center></td>
+			   <td><center>NOME DA MP</center></td>
+			   <td><center>SOLICITANTE</center></td>   
+		       <td><center>VISUALIZAR</center></td>
 			  </tr>
 			 </thead>
-			 <?php $b = 0; ?>
-			 @foreach($pd as $pd)
-			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 198 || Auth::user()->id == 71))
-			 <?php $b = 1; ?>
-			 <tbody>
-			  <tr>  
-			   <td><center>{{ $pd->vaga }}</center></td>
-			   <td><center>{{ $pd->solicitante }}</center></td>   
-			   <td><center><a href="{{ route('visualizarVagaPD', $pd->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			  </tr>
-			 </tbody>
+			 <?php $a = 0; ?>
+			 @foreach($mps as $mp)
+			 @if(($mp->solicitante == Auth::user()->name || Auth::user()->funcao == "RH") && ($mp->concluida == 0 && $mp->inativa == 1))
+			  
+			  @if(Auth::user()->id != 95 && Auth::user()->id != 40 && Auth::user()->id != 87 && Auth::user()->id != 86 && Auth::user()->id != 73)
+			  <?php $a = 1; ?>
+			  <tbody>
+			   <tr>
+			    <td><center>{{ $mp->numeroMP }}</center></td>
+			    <td><center>{{ $mp->solicitante }}</center></td>   
+			    <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
+			   </tr>
+			  </tbody>
+			 @endif
+			@endif
+			  
+			 @if($mp->concluida == 0 && $a == 0)
+			  @if((Auth::user()->id == 65 && $mp->unidade_id == 2) || (Auth::user()->id == 155 && $mp->unidade_id == 6)
+			   || (Auth::user()->id == 59 && $mp->unidade_id == 2) || (Auth::user()->id == 61 && $mp->unidade_id == 8)
+			   || (Auth::user()->id == 60 && $mp->unidade_id == 7) || (Auth::user()->id == 5  && $mp->unidade_id == 3)
+			   || (Auth::user()->id == 104 && $mp->unidade_id == 8) || ($mp->unidade_id == 3 && Auth::user()->id == 186)
+			   || (Auth::user()->id == 160  && $mp->unidade_id == 4) || (Auth::user()->id == 34 && $mp->unidade_id == 5)
+			   || ($mp->unidade_id == 7 && Auth::user()->id == 150)  || ($mp->unidade_id == 6 && Auth::user()->id == 151) 
+			   || ($mp->unidade_id == 2  && Auth::user()->id == 154) || ($mp->unidade_id == 3  && Auth::user()->id == 154)
+			   || (($mp->unidade_id == 1 || $mp->unidade_id == 2 || $mp->unidade_id == 4 || $mp->unidade_id == 8) && Auth::user()->id == 169)
+			   || (($mp->unidade_id == 2 || $mp->unidade_id == 3 || $mp->unidade_id == 4 || $mp->unidade_id == 5 || $mp->unidade_id == 6 || $mp->unidade_id == 7) && Auth::user()->id == 152)
+			   || (($mp->unidade_id == 2 || $mp->unidade_id == 3 || $mp->unidade_id == 4 || $mp->unidade_id == 5 || $mp->unidade_id == 6 || $mp->unidade_id == 7) && Auth::user()->id == 162)
+			   || (($mp->unidade_id == 2 || $mp->unidade_id == 3 || $mp->unidade_id == 4 || $mp->unidade_id == 5 || $mp->unidade_id == 6 || $mp->unidade_id == 7 || $mp->unidade_id == 8) && Auth::user()->id == 153)
+			   || (($mp->unidade_id == 2 || $mp->unidade_id == 3 || $mp->unidade_id == 4 || $mp->unidade_id == 5 || $mp->unidade_id == 6 || $mp->unidade_id == 7 || $mp->unidade_id == 8) && Auth::user()->id == 177)
+			   || (($mp->unidade_id == 2 || $mp->unidade_id == 3 || $mp->unidade_id == 4 || $mp->unidade_id == 5 || $mp->unidade_id == 6 || $mp->unidade_id == 7 || $mp->unidade_id == 8) && Auth::user()->id == 176)
+			   || Auth::user()->id == 23 || Auth::user()->id == 32 || Auth::user()->id == 62 || Auth::user()->id == 148 && $mp->unidade_id == 4)
+			    <tbody>
+			     <tr>
+			      <td><center>{{ $mp->numeroMP }}</center></td>
+			      <td><center>{{ $mp->solicitante }}</center></td>   
+			      <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</center></a></td>
+			     </tr>
+			    </tbody>
+			  @endif
 			 @endif
 			 @endforeach
 		  </td>

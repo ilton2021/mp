@@ -128,8 +128,10 @@
 			<select class="form-control" id="pesq2" name="pesq2" onchange="data('sim')">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
 			  <option id="pesq2" name="pesq2" value="admissao">ADMISSÃO</option>
+			  <option id="pesq2" name="pesq2" value="admissaoHCP">
 			  <option id="pesq2" name="pesq2" value="alteracao">ALTERAÇÃO FUNCIONAL</option>
 			  <option id="pesq2" name="pesq2" value="demissao">DEMISSÃO</option>
+			  <option id="pesq2" name="pesq2" value="plantao">PLANTÃO EXTRA</option>
 			  <option id="pesq2" name="pesq2" value="nome">FUNCIONÁRIO</option>
 			  <option id="pesq2" name="pesq2" value="numeroMP">NÚMERO MP</option>	
 			  <option id="pesq2" name="pesq2" value="rpa">RPA</option>

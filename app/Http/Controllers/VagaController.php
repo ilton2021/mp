@@ -768,8 +768,10 @@ class VagaController extends Controller
 		$idVaga = $vagas[0]->id; 
 		$solicitante = $vagas[0]->solicitante;
 		$solic    = Gestor::where('nome',$solicitante)->get();
-		$gestor   = $solic[0]->gestor_imediato;
-		$gestor   = Gestor::where('nome', $gestor)->get();
+		//$gestor   = $solic[0]->gestor_imediato;
+		//$gestor   = Gestor::where('nome', $gestor)->get();
+		$gestor = $vagas[0]->gestor_id;
+		$gestor = Gestor::where('id',$gestor)->get();
 		$gestores = Gestor::all();
 		$unidades = Unidade::all();
 		$idU = $vagas[0]->unidade_id;
@@ -1159,7 +1161,6 @@ class VagaController extends Controller
 		}  
 		$validator = Validator::make($request->all(), [
 			'vaga'                      => 'required|max:255',
-			'codigo_vaga' 				=> 'required|max:255',
 			'area' 						=> 'required|max:255',
 			'edital_disponivel'			=> 'required|max:255',
 			'data_prevista'				=> 'required',
@@ -1197,6 +1198,9 @@ class VagaController extends Controller
 				$input['periodo_contrato'] = $input['periodo_contrato'];
 			} else {
 				$input['periodo_contrato'] = NULL;
+			}
+			if($input['codigo_vaga'] == ""){
+				$input['codigo_vaga'] = 0000;
 			}
 			if($input['motivo'] != "substituicao_definitiva"){
 				$input['motivo2'] = NULL;

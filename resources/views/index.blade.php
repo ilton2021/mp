@@ -13,6 +13,48 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
 	<script type="text/javascript">
+
+		function comoSoube(){
+			var optionSelect = document.getElementById("como_soube").value;
+			if(optionSelect == "outros"){
+				document.getElementById("como_soube2").disabled = false;
+			} else {
+				document.getElementById("como_soube2").disabled = true;
+			}
+		}
+
+		function multiplicar(){
+
+			m1 = Number(document.getElementById("valor_plantao").value);
+			m2 = Number(document.getElementById("quantidade_plantao").value);
+			r = Number(m1*m2);
+			document.getElementById("valor_pago_plantao").value = r;
+		}
+
+		function multiplicar2(){
+			m1  = Number(document.getElementById("salario_2").value);
+			m2  = Number(document.getElementById("outras_verbas_2").value);
+			m3  = Number(document.getElementById("salario_3").value);
+			m4  = Number(document.getElementById("outras_verbas_3").value);
+			m5  = Number(document.getElementById("salario_4").value);
+			m6  = Number(document.getElementById("outras_verbas_4").value);
+			m7  = Number(document.getElementById("salario_5").value);
+			m8 = Number(document.getElementById("outras_verbas_5").value);
+			m9 = Number(document.getElementById("salario_6").value);
+			m10 = Number(document.getElementById("outras_verbas_6").value);
+			m11 = Number(document.getElementById("salario_7").value);
+			m12 = Number(document.getElementById("outras_verbas_7").value);
+			r = Number((m1 + m2 + m3 + m4 + m5 + m6 + m7 + m8 + m9 + m10 + m11 + m12));
+			document.getElementById("total").value = r;
+		}
+
+		function subtrai(){
+			m1 = document.getElementById("salario_atual").value;
+			m2 = document.getElementById("salario_novo").value;
+			r = parseInt(m2-m1);
+			document.getElementById("renda_var").value = r;
+		}
+
 		function desabilitar(valor) {
 		  var status = document.getElementById('tipo_mov1').checked;
 		  
@@ -72,6 +114,144 @@
 		  }
 		  
 		}
+
+		function desabilitarUnd1(valor){
+			var status = document.getElementById('und').checked;
+			if(status == true) {
+				document.getElementById('cargo_2').disabled 	    = false;
+				document.getElementById('centro_custo_2').disabled 	= false;
+				document.getElementById('salario_2').disabled 	    = false;
+				document.getElementById('outras_verbas_2').disabled = false;
+			} else {
+				document.getElementById('cargo_2').disabled 	    = true;
+				document.getElementById('centro_custo_2').disabled 	= true;
+				document.getElementById('salario_2').disabled 	    = true;
+				document.getElementById('outras_verbas_2').disabled = true;
+			}
+		}
+
+		function desabilitarUnd2(valor) {
+			var status = document.getElementById('und2').checked;
+			if(status == true){
+				document.getElementById('cargo_3').disabled 	    = false;
+				document.getElementById('centro_custo_3').disabled 	= false;
+				document.getElementById('salario_3').disabled 	    = false;
+				document.getElementById('outras_verbas_3').disabled = false;
+			} else {
+				document.getElementById('cargo_3').disabled 	    = true;
+				document.getElementById('centro_custo_3').disabled 	= true;
+				document.getElementById('salario_3').disabled 	    = true;
+				document.getElementById('outras_verbas_3').disabled = true;
+			}
+		}
+
+		function desabilitarUnd3(valor) {
+			var status = document.getElementById('und3').checked;
+			if(status == true){
+				document.getElementById('cargo_4').disabled 	    = false;
+				document.getElementById('centro_custo_4').disabled 	= false;
+				document.getElementById('salario_4').disabled 	    = false;
+				document.getElementById('outras_verbas_4').disabled = false;
+			} else {
+				document.getElementById('cargo_4').disabled 	    = true;
+				document.getElementById('centro_custo_4').disabled 	= true;
+				document.getElementById('salario_4').disabled 	    = true;
+				document.getElementById('outras_verbas_4').disabled = true;
+			}
+		}	
+
+		function desabilitarUnd4(valor) {
+			var status = document.getElementById('und4').checked;
+			if(status == true){
+				document.getElementById('cargo_5').disabled 	    = false;
+				document.getElementById('centro_custo_5').disabled 	= false;
+				document.getElementById('salario_5').disabled 	    = false;
+				document.getElementById('outras_verbas_5').disabled = false;
+			} else {
+				document.getElementById('cargo_5').disabled 	    = true;
+				document.getElementById('centro_custo_5').disabled 	= true;
+				document.getElementById('salario_5').disabled 	    = true;
+				document.getElementById('outras_verbas_5').disabled = true;
+			}
+		}	
+
+		function desabilitarUnd5(valor) {
+			var status = document.getElementById('und5').checked;
+			if(status == true){
+				document.getElementById('cargo_6').disabled 	    = false;
+				document.getElementById('centro_custo_6').disabled 	= false;
+				document.getElementById('salario_6').disabled 	    = false;
+				document.getElementById('outras_verbas_6').disabled = false;
+			} else {
+				document.getElementById('cargo_6').disabled 	    = true;
+				document.getElementById('centro_custo_6').disabled 	= true;
+				document.getElementById('salario_6').disabled 	    = true;
+				document.getElementById('outras_verbas_6').disabled = true;
+			}
+		}	
+			
+		function desabilitarUnd6(valor) {
+			var status = document.getElementById('und6').checked;
+			if(status == true){
+				document.getElementById('cargo_7').disabled 	    = false;
+				document.getElementById('centro_custo_7').disabled 	= false;
+				document.getElementById('salario_7').disabled 	    = false;
+				document.getElementById('outras_verbas_7').disabled = false;
+			} else {
+				document.getElementById('cargo_7').disabled 	    = true;
+				document.getElementById('centro_custo_7').disabled 	= true;
+				document.getElementById('salario_7').disabled 	    = true;
+				document.getElementById('outras_verbas_7').disabled = true;
+			}
+		}	
+
+		function desabilitar5(valor) {
+		  var status = document.getElementById('tipo_mov5').checked;
+		  
+		  if (status == true) {
+			document.getElementById('und').disabled             = false;	
+			document.getElementById('und2').disabled            = false;
+			document.getElementById('und3').disabled            = false;
+			document.getElementById('und4').disabled            = false;
+			document.getElementById('und5').disabled            = false;
+			document.getElementById('und6').disabled            = false;
+			document.getElementById('jornadahcp').disabled  	= false;
+			document.getElementById('tipohcp_1').disabled  		= false;
+			document.getElementById('tipohcp_2').disabled  		= false;
+			document.getElementById('tipohcp_3').disabled  		= false;
+			document.getElementById('tipohcp_4').disabled  		= false;
+			document.getElementById('tipohcp_5').disabled  		= false;			
+			document.getElementById('motivohcp_1').disabled  	= false;
+			document.getElementById('motivohcp_2').disabled  	= false;
+			document.getElementById('motivohcp_3').disabled  	= false;
+			document.getElementById('motivohcp_4').disabled  	= false;
+			document.getElementById('possibilidade_contratacaohcp').disabled   = false;
+			document.getElementById('possibilidade_contratacaohcp_2').disabled = false;
+			document.getElementById('necessidade_emailhcp').disabled  		   = false;
+			document.getElementById('necessidade_emailhcp_2').disabled  	   = false;			
+		  } else {
+			document.getElementById('und').disabled             = true;	
+			document.getElementById('und2').disabled            = true;
+			document.getElementById('und3').disabled            = true;
+			document.getElementById('und4').disabled            = true;
+			document.getElementById('und5').disabled            = true;
+			document.getElementById('und6').disabled            = true;
+			document.getElementById('jornadahcp').disabled  	= true;
+			document.getElementById('tipohcp_1').disabled  		= true;
+			document.getElementById('tipohcp_2').disabled  		= true;
+			document.getElementById('tipohcp_3').disabled  		= true;
+			document.getElementById('tipohcp_4').disabled  		= true;
+			document.getElementById('tipohcp_5').disabled  		= true;				
+			document.getElementById('motivohcp_1').disabled  	= true;
+			document.getElementById('motivohcp_2').disabled  	= true;
+			document.getElementById('motivohcp_3').disabled  	= true;
+			document.getElementById('motivohcp_4').disabled  	= true;
+			document.getElementById('possibilidade_contratacaohcp').disabled   = true;
+			document.getElementById('possibilidade_contratacaohcp_2').disabled = true;
+			document.getElementById('necessidade_emailhcp').disabled  		   = true;
+			document.getElementById('necessidade_emailhcp_2').disabled  	   = true;
+		  }
+		}
 		
 		function desabilitar2(valor) {
 		  var status = document.getElementById('tipo_desligamento').disabled;
@@ -113,6 +293,7 @@
 			  document.getElementById('cargo_novo').disabled 	 = false;
 			  document.getElementById('remuneracao').disabled    = false;
 			  document.getElementById('salario_atual').disabled  = false;
+			  document.getElementById('salario_novo').disabled   = false;
 			  document.getElementById('centro_custo_novo').disabled = false;
 			  document.getElementById('horario_novo').disabled 		= false;
 			  document.getElementById('motivoA').disabled 			= false;
@@ -125,7 +306,6 @@
 			  document.getElementById('motivoA8').disabled  = false;
 			  document.getElementById('motivoA9').disabled  = false;
 			  document.getElementById('motivoA10').disabled = false;
-			  document.getElementById('motivoA11').disabled = false;
 		  } else {
 			  document.getElementById('unidade_id2').disabled    = true;
 			  document.getElementById('setor').disabled 	     = true;
@@ -133,6 +313,7 @@
 			  document.getElementById('cargo_novo').disabled     = true;
 			  document.getElementById('remuneracao').disabled    = true;
 			  document.getElementById('salario_atual').disabled  = true;
+			  document.getElementById('salario_novo').disabled  = true;
 			  document.getElementById('centro_custo_novo').disabled = true;
 			  document.getElementById('horario_novo').disabled 		= true;
 			  document.getElementById('motivoA').disabled 			= true;
@@ -145,7 +326,28 @@
 			  document.getElementById('motivoA8').disabled  = true;
 			  document.getElementById('motivoA9').disabled  = true;
 			  document.getElementById('motivoA10').disabled = true;
-			  document.getElementById('motivoA11').disabled = true;
+		  }
+		}
+		function desabilitar4(valor) {
+		  var status = document.getElementById('tipo_mov4').checked;
+		  if (status == true) {
+		      document.getElementById('setor_plantao').disabled    		 = false;
+			  document.getElementById('cargo_plantao').disabled 	     = false;
+			  document.getElementById('motivo_plantao').disabled 	 	 = false;
+			  document.getElementById('centro_custo_plantao').disabled 	 = false;
+			  document.getElementById('valor_plantao').disabled    	  	 = false;
+			  document.getElementById('valor_pago_plantao').disabled  	 = false;
+			  document.getElementById('quantidade_plantao').disabled  	 = false;
+			  document.getElementById('substituto').disabled 			 = false;
+		  } else {
+			document.getElementById('setor_plantao').disabled    	   = true;
+			  document.getElementById('cargo_plantao').disabled 	   = true;
+			  document.getElementById('motivo_plantao').disabled 	   = true;
+			  document.getElementById('centro_custo_plantao').disabled = true;
+			  document.getElementById('valor_plantao').disabled    	   = true;
+			  document.getElementById('valor_pago_plantao').disabled   = true;
+			  document.getElementById('quantidade_plantao').disabled   = true;
+			  document.getElementById('substituto').disabled  		   = true;
 		  }
 		}
 		
@@ -170,11 +372,17 @@
 		function desabilitarRPA(valor) {
 		  var status = document.getElementById('periodo_contrato').disabled;
 		  if (status == true) {
-			document.getElementById('periodo_contrato').disabled 	= false;
-			document.getElementById('table_remuneracao').style.display 	= 'block';
+			document.getElementById('periodo_contrato').disabled = false;
 		  }else {
 			document.getElementById('periodo_contrato').disabled = true;  
-			document.getElementById('table_remuneracao').style.display 	= 'none';
+		  }
+		}
+		function desabilitarRPA2(valor) {
+		  var status = document.getElementById('periodo_contratohcp').disabled;
+		  if (status == true) {
+			document.getElementById('periodo_contratohcp').disabled = false;
+		  }else {
+			document.getElementById('periodo_contratohcp').disabled = true;  
 		  }
 		}
 		
@@ -184,6 +392,14 @@
 			document.getElementById('motivo6').disabled = false;
 		  }else {
 			document.getElementById('motivo6').disabled = true;  
+		  }
+		}
+		function desabilitarSubst2(valor) {
+		  var status = document.getElementById('motivo6hcp').disabled;
+		  if (status == true) {
+			document.getElementById('motivo6hcp').disabled = false;
+		  }else {
+			document.getElementById('motivo6hcp').disabled = true;  
 		  }
 		}
 
@@ -247,7 +463,7 @@
 			   @endforeach
 			  @endif
 			  <?php } else { ?>
-			    <option id="gestor_id" name="gestor_id" value="30">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
+			    <option id="gestor_id" name="gestor_id" value="30">{{ 'ANA AMÉRICA OLIVEIRA DE ARRUDA' }}</option>
 			  <?php } ?>
 			  </select>
 			  <td hidden><input id="tipo_mp" name="tipo_mp" value="{{ $tipo_mp }}" /></td>
@@ -270,6 +486,589 @@
 		  </center>
 
 		  <br>	 
+
+	  @if($unidade[0]->id == '1')
+	  <center>
+		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
+		    <tr>
+			 <td rowspan="5" width="150"><center><h5>Admissão HCP </h5> 
+			 @if(old('tipo_mov5') == "on")
+			 <input type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" checked />
+		     @else
+			 <input type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" /> 
+			 @endif
+			 </center>
+			 </td> 
+			 <td colspan="4" width="300"><b>Soma Total de salários e outras verbas: </b>
+			  @if(old('tipo_mov5') == "on")
+				<input required class="form-control" readonly="true" placeholder="ex: 2500 ou 2580,21"  type="number" id="total" name="total" value="{{ old('total') }}" />	
+			  @else
+				<input required disabled="true"  readonly="true" class="form-control" placeholder="ex: 2500 ou 2580,21"  type="number" id="total" name="total"  />	
+			  @endif
+			 </td>
+			 <td width="450" colspan="2">Jornada:
+			   @if(old('tipo_mov5') == "on")
+			   <select class="form-control" id="jornadahcp" name="jornadahcp" required>
+				 <option id="jornadahcp" name="jornadahcp" value="">Selecione...</option>
+				 @if(old('jornadahcp') == "diarista")
+				 <option id="jornadahcp" name="jornadahcp" value="diarista" selected>Diarista</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
+				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
+				 @elseif(old('jornadahcp') == "plantao_par")
+				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_par" selected>Plantão Par</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
+				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
+				 @elseif(old('jornadahcp') == "plantao_impar")
+				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar" selected>Plantão Ímpar</option>
+				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
+				 @elseif(old('jornadahcp') == "outra")
+				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
+				 <option id="jornadahcp" name="jornadahcp" value="outra" selected>Outra</option>
+				 @endif
+			   </select>
+			   @else
+			   <select disabled="true" class="form-control" id="jornadahcp" name="jornadahcp" required>
+				 <option id="jornadahcp" name="jornadahcp" value="">Selecione...</option>
+				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
+				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
+				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
+			   </select>	
+			   @endif
+			 </td>
+			</tr>
+			<tr>	
+			 <td width="370">			 
+			    HMR: <input type="checkbox" onclick="desabilitarUnd1('sim')" id="und" name="und" disabled /><br>
+				 <input type="hidden" class="form-control" id="unidade_2" name="unidade_2" value="2" />
+				@if(old('tipo_mov5') == "on")
+				Salário <br>
+				<input class="form-control" required placeholder="Salário HMR" step="00.01" type="number" disabled="true"  id="salario_2" onChange="multiplicar2();" name="salario_2" value="{{ old('salario_2') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" disabled="true" id="outras_verbas_2" onChange="multiplicar2();" name="outras_verbas_2" value="{{ old('outras_verbas_2') }}" />
+				@else
+				Salário <br>
+				<input class="form-control" required placeholder="Salário HMR" step="00.01" disabled="true" type="number"  id="salario_2" onChange="multiplicar2();" name="salario_2" value="{{ old('salario_2') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_2" onChange="multiplicar2();" name="outras_verbas_2" value="{{ old('outras_verbas_2') }}" />	 
+				@endif
+				Centro de Custo: 
+				 @if(old('tipo_mov5') == "on")
+				 <select id="centro_custo_2" name="centro_custo_2" class="form-control" required>
+				    <option id="centro_custo_2" name="centro_custo_2" value="">Selecione...</option>
+				    @if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					 @if(old('centro_custo') == $c_c->nome)
+					 <option id="centro_custo_2" name="centro_custo_2" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
+					 @else
+					 <option id="centro_custo_2" name="centro_custo_2" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					 @endif
+					 @endforeach
+					@endif
+				 </select>
+				 @else
+				 <select id="centro_custo_2" disabled="true" name="centro_custo_2" class="form-control" required>
+					<option id="centro_custo_2" name="centro_custo_2" value="">Selecione...</option>
+					 @if(!empty($centro_custos))
+					  @foreach($centro_custos as $c_c)
+					   <option id="centro_custo_2" name="centro_custo_2" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					  @endforeach
+					 @endif
+				 </select>	   
+				 @endif
+				 Cargo:
+				 @if(old('tipo_mov5') == "on")
+				 <select class="form-control" id="cargo_2" name="cargo_2" required>
+				  <option id="cargo_2" name="cargo_2" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+				      @if(old('cargo') == $cargo->nome)
+						<option id="cargo_2" name="cargo_2" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					  @else
+						<option id="cargo_2" name="cargo_2" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
+					  @endif
+					@endforeach
+				  @endif
+				 </select>
+				 @else
+				 <select class="form-control" id="cargo_2" name="cargo_2" disabled="" required>
+				  <option id="cargo_2" name="cargo_2" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+						<option id="cargo_2" name="cargo_2" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					@endforeach
+				  @endif
+				 </select>	
+				 @endif
+				</td>
+
+				<td width="370">
+				 Belo Jardim: <input type="checkbox" onclick="desabilitarUnd2('sim')" id="und2" name="und2" disabled /><br>
+				 <input type="hidden" class="form-control" id="unidade_3" name="unidade_3" value="3" />
+				 @if(old('tipo_mov5') == "on")
+				 Salário <br>
+				 <input class="form-control" required placeholder="Salário BELO" step="00.01" type="number"  id="salario_3" onChange="multiplicar2();" name="salario_3" value="{{ old('salario_3') }}" />
+				 Outras Verbas
+				 <input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_3" onChange="multiplicar2();" name="outras_verbas_3" value="{{ old('outras_verbas_3') }}" />
+				 @else
+				 Salário <br>
+				 <input class="form-control" required placeholder="Salário BELO" step="00.01" disabled="true" type="number"  id="salario_3" onChange="multiplicar2();" name="salario_3" value="{{ old('salario_3') }}" />
+				 Outras Verbas
+				 <input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_3" onChange="multiplicar2();" name="outras_verbas_3" value="{{ old('outras_verbas_3') }}" />	 
+				 @endif
+				 Centro de Custo: 
+				 @if(old('tipo_mov5') == "on")
+				 <select id="centro_custo_3" name="centro_custo_3" class="form-control" required>
+				 	<option id="centro_custo_3" name="centro_custo_3" value="">Selecione...</option>
+					@if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					  @if(old('centro_custo') == $c_c->nome)
+					   <option id="centro_custo_3" name="centro_custo_3" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
+					  @else
+					   <option id="centro_custo_3" name="centro_custo_3" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					  @endif
+					 @endforeach
+					@endif
+					</select>
+				 @else
+				 <select id="centro_custo_3" disabled="true" name="centro_custo_3" class="form-control" required>
+				   <option id="centro_custo_3" name="centro_custo_3" value="">Selecione...</option>
+					@if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					  <option id="centro_custo_3" name="centro_custo_3" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					 @endforeach
+					@endif
+				 </select>	   
+				 @endif
+				 Cargo:
+				 @if(old('tipo_mov5') == "on")
+				 <select class="form-control" id="cargo_3" name="cargo_3" required>
+				  <option id="cargo_3" name="cargo_3" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+				      @if(old('cargo') == $cargo->nome)
+						<option id="cargo_3" name="cargo_3" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					  @else
+						<option id="cargo_3" name="cargo_3" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
+					  @endif
+					@endforeach
+				  @endif
+				 </select>
+				 @else
+				 <select class="form-control" id="cargo_3" name="cargo_3" disabled="" required>
+				  <option id="cargo_3" name="cargo_3" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+						<option id="cargo_3" name="cargo_3" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					@endforeach
+				  @endif
+				 </select>	
+				 @endif	
+				</td>
+				
+				<td width="370">
+				Arcoverde: <input type="checkbox" onclick="desabilitarUnd3('sim')" id="und3" name="und3" disabled /><br>
+				<input type="hidden" class="form-control" id="unidade_4" name="unidade_4" value="6" />
+				@if(old('tipo_mov5') == "on")
+				Salário <br>
+				<input class="form-control" required placeholder="Salário ARCO" step="00.01" type="number" id="salario_4" onChange="multiplicar2();" name="salario_4" value="{{ old('salario_4') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_4" onChange="multiplicar2();" name="outras_verbas_4" value="{{ old('outras_verbas_4') }}" />
+				@else
+				Salário <br>
+				<input class="form-control" required placeholder="Salário ARCO" step="00.01" disabled="true" type="number" id="salario_4" onChange="multiplicar2();" name="salario_4" value="{{ old('salario_4') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_4" onChange="multiplicar2();" name="outras_verbas_4" value="{{ old('outras_verbas_4') }}" />	 
+				@endif
+				Centro de Custo: 
+				 @if(old('tipo_mov5') == "on")
+				 <select id="centro_custo_4" name="centro_custo_4" class="form-control" required>
+				 	<option id="centro_custo_4" name="centro_custo_4" value="">Selecione...</option>
+					@if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					  @if(old('centro_custo') == $c_c->nome)
+					   <option id="centro_custo_4" name="centro_custo_4" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
+					  @else
+					   <option id="centro_custo_4" name="centro_custo_4" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					  @endif
+					 @endforeach
+					@endif
+					</select>
+				 @else
+					<select id="centro_custo_4" disabled="true" name="centro_custo_4" class="form-control" required>
+					 <option id="centro_custo_4" name="centro_custo_4" value="">Selecione...</option>
+					  @if(!empty($centro_custos))
+					   @foreach($centro_custos as $c_c)
+						<option id="centro_custo_4" name="centro_custo_4" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					   @endforeach
+					  @endif
+					</select>	   
+				 @endif
+				 Cargo:
+				 @if(old('tipo_mov5') == "on")
+				 <select class="form-control" id="cargo_4" name="cargo_4" required>
+				  <option id="cargo_4" name="cargo_4" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+				      @if(old('cargo') == $cargo->nome)
+						<option id="cargo_4" name="cargo_4" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					  @else
+						<option id="cargo_4" name="cargo_4" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
+					  @endif
+					@endforeach
+				  @endif
+				 </select>
+				 @else
+				 <select class="form-control" id="cargo_4" name="cargo_4" disabled="" required>
+				  <option id="cargo_4" name="cargo_4" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+						<option id="cargo_4" name="cargo_4" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					@endforeach
+				  @endif
+				 </select>	
+				 @endif	
+				</td>
+				
+				<td width="370">
+				Arruda: <input type="checkbox" onclick="desabilitarUnd4('sim')" id="und4" name="und4" disabled /><br>
+				<input type="hidden" class="form-control" id="unidade_5" name="unidade_5" value="5" />
+				@if(old('tipo_mov5') == "on")
+				Salário <br>
+				<input class="form-control" required placeholder="Salário Arruda" step="00.01" type="number"  id="salario_5" onChange="multiplicar2();" name="salario_5" value="{{ old('salario_5') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_5" onChange="multiplicar2();" name="outras_verbas_5" value="{{ old('outras_verbas_5') }}" />
+				@else
+				Salário <br>
+				<input class="form-control" required placeholder="Salário Arruda" step="00.01" disabled="true" type="number"  id="salario_5" onChange="multiplicar2();" name="salario_5" value="{{ old('salario_5') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_5" onChange="multiplicar2();" name="outras_verbas_5" value="{{ old('outras_verbas_5') }}" />	 
+				@endif
+				Centro de Custo: 
+				 @if(old('tipo_mov5') == "on")
+				 <select id="centro_custo_5" name="centro_custo_5" class="form-control" required>
+				 	<option id="centro_custo_5" name="centro_custo_5" value="">Selecione...</option>
+					@if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					  @if(old('centro_custo') == $c_c->nome)
+					   <option id="centro_custo_5" name="centro_custo_5" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
+					  @else
+					   <option id="centro_custo_5" name="centro_custo_5" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					  @endif
+					 @endforeach
+					@endif
+					</select>
+					@else
+					<select id="centro_custo_5" disabled="true" name="centro_custo_5" class="form-control" required>
+					 <option id="centro_custo_5" name="centro_custo_5" value="">Selecione...</option>
+					  @if(!empty($centro_custos))
+						@foreach($centro_custos as $c_c)
+						 <option id="centro_custo_5" name="centro_custo_5" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+						@endforeach
+					  @endif
+					</select>	   
+					@endif
+					Cargo:
+				 	@if(old('tipo_mov5') == "on")
+					<select class="form-control" id="cargo_5" name="cargo_5" required>
+					<option id="cargo_5" name="cargo_5" value="">Selecione...</option>
+					@if(!empty($cargos))	
+					 @foreach($cargos as $cargo)
+					  @if(old('cargo') == $cargo->nome)
+						<option id="cargo_5" name="cargo_5" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					  @else
+						<option id="cargo_5" name="cargo_5" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
+					  @endif
+					 @endforeach
+					@endif
+					</select>
+					@else
+					<select class="form-control" id="cargo_5" name="cargo_5" disabled="" required>
+					 <option id="cargo_5" name="cargo_5" value="">Selecione...</option>
+					  @if(!empty($cargos))	
+						@foreach($cargos as $cargo)
+						 <option id="cargo_5" name="cargo_5" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+						@endforeach
+					  @endif
+					</select>	
+				 	@endif
+				</td>
+
+				<td width="370">
+				Caruaru: <input type="checkbox" onclick="desabilitarUnd5('sim')" id="und5" name="und5" disabled /><br>
+				<input type="hidden" class="form-control" id="unidade_6" name="unidade_6" value="6" />
+				@if(old('tipo_mov5') == "on")
+				Salário <br>
+				<input class="form-control" required placeholder="Salário Caruaru" step="00.01" type="number"  id="salario_6" onChange="multiplicar2();" name="salario_6" value="{{ old('salario_6') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_6" onChange="multiplicar2();" name="outras_verbas_6" value="{{ old('outras_verbas_6') }}" />
+				@else
+				Salário <br>
+				<input class="form-control" required placeholder="Salário Caruaru" step="00.01" disabled="true" type="number"  id="salario_6" onChange="multiplicar2();" name="salario_6" value="{{ old('salario_6') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_6" onChange="multiplicar2();" name="outras_verbas_6" value="{{ old('outras_verbas_6') }}" />	 
+				@endif
+				Centro de Custo: 
+				 @if(old('tipo_mov5') == "on")
+				 <select id="centro_custo_6" name="centro_custo_6" class="form-control" required>
+				 	<option id="centro_custo_6" name="centro_custo_6" value="">Selecione...</option>
+				    @if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					  @if(old('centro_custo') == $c_c->nome)
+					   <option id="centro_custo_6" name="centro_custo_6" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
+					  @else
+					   <option id="centro_custo_6" name="centro_custo_6" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					  @endif
+					 @endforeach
+					@endif
+				 </select>
+				 @else
+				  <select id="centro_custo_6" disabled="true" name="centro_custo_6" class="form-control" required>
+					<option id="centro_custo_6" name="centro_custo_6" value="">Selecione...</option>
+					 @if(!empty($centro_custos))
+					  @foreach($centro_custos as $c_c)
+					   <option id="centro_custo_6" name="centro_custo_6" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					  @endforeach
+					 @endif
+				  </select>	   
+				 @endif
+				 Cargo:
+				 @if(old('tipo_mov5') == "on")
+				 <select class="form-control" id="cargo_6" name="cargo_6" required>
+				  <option id="cargo_6" name="cargo_6" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+				      @if(old('cargo') == $cargo->nome)
+						<option id="cargo_6" name="cargo_6" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					  @else
+						<option id="cargo_6" name="cargo_6" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
+					  @endif
+					@endforeach
+				  @endif
+				 </select>
+				 @else
+				 <select class="form-control" id="cargo_6" name="cargo_6" disabled="" required>
+				  <option id="cargo_6" name="cargo_6" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+					 <option id="cargo_6" name="cargo_6" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					@endforeach
+				  @endif
+				 </select>	
+				 @endif
+				</td>
+
+				<td width="370">
+				HSS: <input type="checkbox" onclick="desabilitarUnd6('sim')" id="und6" name="und6" disabled /><br>
+				<input type="hidden" class="form-control" id="unidade_7" name="unidade_7" value="7" />
+				@if(old('tipo_mov5') == "on")
+				Salário <br>
+				<input class="form-control" required placeholder="Salário HSS" step="00.01" type="number" id="salario_7" onChange="multiplicar2();" name="salario_7" value="{{ old('salario_7') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_7" onChange="multiplicar2();" name="outras_verbas_7" value="{{ old('outras_verbas_7') }}" />
+				@else
+				Salário <br>
+				<input class="form-control" required placeholder="Salário HSS" step="00.01" disabled="true" type="number"  id="salario_7" onChange="multiplicar2();" name="salario_7" value="{{ old('salario_7') }}" />
+				Outras Verbas
+				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_7" onChange="multiplicar2();" name="outras_verbas_7" value="{{ old('outras_verbas_7') }}" />	 
+				@endif
+				Centro de Custo: 
+				 @if(old('tipo_mov5') == "on")
+				 <select id="centro_custo_7" name="centro_custo_7" class="form-control" required>
+				  <option id="centro_custo_7" name="centro_custo_7" value="">Selecione...</option>
+				  @if(!empty($centro_custos))
+				   @foreach($centro_custos as $c_c)
+					@if(old('centro_custo') == $c_c->nome)
+					 <option id="centro_custo_7" name="centro_custo_7" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
+					@else
+					 <option id="centro_custo_7" name="centro_custo_7" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					@endif
+				   @endforeach
+				  @endif
+				 </select>
+				 @else
+				 <select id="centro_custo_7" disabled="true" name="centro_custo_7" class="form-control" required>
+				  <option id="centro_custo_7" name="centro_custo_7" value="">Selecione...</option>
+					@if(!empty($centro_custos))
+					 @foreach($centro_custos as $c_c)
+					  <option id="centro_custo_7" name="centro_custo_7" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
+					 @endforeach
+					@endif
+				 </select>	   
+				 @endif
+				 Cargo:
+				 @if(old('tipo_mov5') == "on")
+				 <select class="form-control" id="cargo_7" name="cargo_7" required>
+				  <option id="cargo_7" name="cargo_7" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+				      @if(old('cargo') == $cargo->nome)
+						<option id="cargo_7" name="cargo_7" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					  @else
+						<option id="cargo_7" name="cargo_7" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
+					  @endif
+					@endforeach
+				  @endif
+				 </select>
+				 @else
+				 <select class="form-control" id="cargo_7" name="cargo_7" disabled="" required>
+				  <option id="cargo_7" name="cargo_7" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargo)
+					 <option id="cargo_7" name="cargo_7" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
+					@endforeach
+				  @endif
+				 </select>	
+				 @endif
+				</td>			
+			</tr>
+			<tr>
+			 <td colspan="6">Tipo: <br> 
+			 @if(old('tipo_mov5') == "on")
+			 @if(old('tipohcp') == "efetivo")
+			 <input checked type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
+			 @elseif(old('tipohcp') == "estagiario")
+			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input checked type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
+			 @elseif(old('tipohcp') == "temporario")
+			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input checked type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
+			 @elseif(old('tipohcp') == "aprendiz")
+			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input checked type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
+			 @elseif(old('tipohcp') == "rpa")
+			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input checked type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" value="{{ old('periodo_contrato') }}" /> 
+			 @else
+			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 	 
+			 @endif
+			 @else
+			 <input disabled="true" type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
+			 <input disabled="true" type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
+			 <input disabled="true" type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
+			 <input disabled="true" type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
+			 <input disabled="true" type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
+			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 	 	 
+			 @endif
+			 </td>
+			</tr>
+			<tr>
+			 <td colspan="6">Motivo: <br> 
+			 @if(old('tipo_mov5') == "on")
+			 @if(old('motivohcp') == "aumento_quadro")
+			 <input checked type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
+			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
+			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
+			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
+			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6" /> 
+			 @elseif(old('motivohcp') == "substituicao_temporaria")
+			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
+			 <input checked type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
+			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
+			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
+			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6" /> 
+			 @elseif(old('motivohcp') == "segundo_vinculo")
+			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
+			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
+			 <input checked type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
+			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
+			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6" /> 
+			 @elseif(old('motivohcp') == "substituicao_definitiva")
+			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
+			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
+			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
+			 <input checked type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
+			 <input type="text" style="width: 220px;" id="motivo6hcp" name="motivo6hcp" value="{{ old('motivo6') }}" /> 
+			 @else
+			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
+			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
+			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
+			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
+			 <input type="text" style="width: 220px;" id="motivo6hcp" name="motivo6hcp" /> 
+			 @endif
+			 @else
+			 <input disabled="true" type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
+			 <input disabled="true" type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
+			 <input disabled="true" type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
+			 <input disabled="true" type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
+			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6hcp" /> 	 
+			 @endif
+			 </td>
+			</tr>
+			<tr>
+			 <td colspan="3">Possibilidade de Contratação de Deficiente:<br> 
+			 @if(old('tipo_mov5') == "on")
+			 @if(old('possibilidade_contratacao') == "sim")
+			 <input checked type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
+			 <input type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não
+			 @elseif(old('possibilidade_contratacao') == "nao")
+			 <input type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
+			 <input checked type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não
+			 @else
+			 <input type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
+			 <input type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não	 
+			 @endif
+			 @else
+			 <input disabled="true" type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
+			 <input disabled="true" type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não	 
+			 @endif
+			 </td>
+			 <td colspan="3">Necessidade de conta de e-mail:<br> 
+			 @if(old('tipo_mov5') == "on")
+			 @if(old('necessidade_email') == "sim")
+			 <input checked type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
+			 <input type="checkbox" id="necessidade_emailhcp_2" name="necessidade_email" value="nao" /> Não
+			 @elseif(old('necessidade_email') == "nao")
+			 <input type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
+			 <input checked type="checkbox" id="necessidade_email2hcp_2" name="necessidade_email" value="nao" /> Não
+			 @else
+			 <input type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
+			 <input type="checkbox" id="necessidade_emailhcp_2" name="necessidade_email" value="nao" /> Não
+			 @endif
+			 @else
+			 <input disabled="true" type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
+			 <input disabled="true" type="checkbox" id="necessidade_emailhcp_2" name="necessidade_email" value="nao" /> Não	 
+			 @endif
+			 </td>
+			</tr>
+		   </table>
+		  </center>
+		  <br>		
+
+	  @elseif($unidade[0]->id != '1')
+		
 		  <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		    </tr>
@@ -282,7 +1081,6 @@
 			 @endif
 			 </center></td>
 			 <td colspan="1" width="1050">Cargo: 
-				
 				@if(old('tipo_mov1') == "on")
 				<select class="form-control" id="cargo" name="cargo" required="true">
 				  <option id="cargo" name="cargo" value="">Selecione...</option>
@@ -320,14 +1118,6 @@
 			 Outras Verbas
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" />	 
 			 @endif
-			 <table class="table-sm" style="display: none;" id="table_remuneracao">
-			  <tr> <td> <input type="checkbox" id="g_1" name="g_1" value="1" /> Gratificação </td> </tr>
-			  <tr> <td> <input type="checkbox" id="g_2" name="g_2" value="2" /> Insalubridade </td> </tr>
-			  <tr> <td> <input type="checkbox" id="g_3" name="g_3" value="3" /> Periculosidade </td> </tr>
-			  <tr> <td> <input type="checkbox" id="g_4" name="g_4" value="4" /> VA </td> </tr>
-			  <tr> <td> <input type="checkbox" id="g_5" name="g_5" value="5" /> VT </td> </tr>
-			  <tr> <td> <input type="checkbox" id="g_6" name="g_6" value="6" /> Nenhuma das Respostas </td> </tr>
-			 </table>
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
 				  @if(old('tipo_mov1') == "on")
@@ -642,9 +1432,11 @@
 			</tr>
 		   </table>
 		  </center>
-			 
-		  <br>
-			
+
+		  
+		 <!--demiss-->		
+		 @endif
+
 		  <center>
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
@@ -805,27 +1597,49 @@
 			  @endforeach
 			  </select>
 			  @endif
-			<td colspan="2">Departamento Proposto 
-			 @if(old('tipo_mov3') == "on")
+			  <td colspan="1">Departamento Proposto 
+				  @if(old('tipo_mov3') == "on")
 			 <select required class="form-control" id="setor" name="setor">
 			 <option id="setor" name="setor" value="">Selecione...</option>
 			 @foreach($setores as $setor)
-			   @if(old('setor') == $setor->nome)
+			 @if(old('setor') == $setor->nome)
 			    <option id="setor" name="setor" value="<?php echo $setor->nome; ?>" selected>{{ $setor->nome }}</option>
-			   @else
+				@else
 				<option id="setor" name="setor" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>   
-			   @endif
-			 @endforeach
-			 </select>
-			 @else
-			 <select required disabled="true" class="form-control" id="setor" name="setor">
-			 <option id="setor" name="setor" value="">Selecione...</option>
-			 @foreach($setores as $setor)
+				@endif
+				@endforeach
+			</select>
+			@else
+			<select required disabled="true" class="form-control" id="setor" name="setor">
+				<option id="setor" name="setor" value="">Selecione...</option>
+				@foreach($setores as $setor)
 			    <option id="setor" name="setor" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>
-			 @endforeach
-			 </select>	 
-			 @endif
-			</td>
+				@endforeach
+			</select>	 
+			@endif
+		</td>
+		</td>
+		<td>Novo Centro de Custo: 
+		@if(old('tipo_mov3') == "on")
+		<select required name="centro_custo_novo" id="centro_custo_novo" class="form-control">	
+		<option id="centro_custo_novo" name="centro_custo_novo" value="">Selecione...</option>
+			@foreach($centro_custo_nv as $cc_nv)
+			@if(old('centro_custo_novo') == $cc_nv->nome)
+			<option id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $cc_nv->nome; ?>" selected>{{ $cc_nv->nome }}</option>
+			@else
+			<option id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>	
+			@endif
+			@endforeach
+		</select>
+		@else
+		<select required disabled="true" name="centro_custo_novo" id="centro_custo_novo" class="form-control">	
+		<option id="centro_custo_novo" name="centro_custo_novo" value="">Selecione...</option>
+			@foreach($centro_custo_nv as $cc_nv)
+			<option id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>
+			@endforeach
+		</select>	   
+		@endif
+		</td>
 		   </tr>
 		   <tr>
 		    <td colspan="1">Cargo Atual: 
@@ -878,6 +1692,7 @@
 			  </select> 	  
 			  @endif
 			</td>
+
 			<td width="50">Novo Horário de Trabalho 
 			@if(old('tipo_mov3') == "on")
 			<input class="form-control" style="width: 250px;" type="text" id="horario_novo" name="horario_novo" value="{{ old('horario_novo') }}" />
@@ -893,39 +1708,24 @@
 		   <tr>
 		    <td>Salário Atual: 
 			@if(old('tipo_mov3') == "on")
-			<input required class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_atual" name="salario_atual" value="{{ old('salario_atual') }}" />
+			<input required class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_atual" onChange="subtrai();"  name="salario_atual" value="{{ old('salario_atual') }}" />
 		    @else
-			<input required class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="salario_atual" name="salario_atual"  />	
+			<input required class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="salario_atual" onChange="subtrai();"  name="salario_atual"  />	
 			@endif
 			</td>
 			<td width="300">Salário Proposto: 
 			@if(old('tipo_mov3') == "on")
-			<input required class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_novo" name="salario_novo" value="{{ old('salario_novo') }}" />	
+			<input required class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_novo" onChange="subtrai();"  name="salario_novo" value="{{ old('salario_novo') }}" />	
 			@else
-			<input required disabled="true" class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_novo" name="salario_novo"  />	
+			<input required disabled="true" class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_novo" onChange="subtrai();"  name="salario_novo"  />	
 			@endif
-			</td>
-			<td>Novo Centro de Custo: 
-			   @if(old('tipo_mov3') == "on")
-			   <select required name="centro_custo_novo" id="centro_custo_novo" class="form-control">	
-			   <option id="centro_custo_novo" name="centro_custo_novo" value="">Selecione...</option>
-				@foreach($centro_custo_nv as $cc_nv)
-				@if(old('centro_custo_novo') == $cc_nv->nome)
-				 <option id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $cc_nv->nome; ?>" selected>{{ $cc_nv->nome }}</option>
-			    @else
-				 <option id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>	
-				@endif
-				@endforeach
-			   </select>
-			   @else
-			   <select required disabled="true" name="centro_custo_novo" id="centro_custo_novo" class="form-control">	
-			   <option id="centro_custo_novo" name="centro_custo_novo" value="">Selecione...</option>
-				@foreach($centro_custo_nv as $cc_nv)
-				<option id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>
-				@endforeach
-			   </select>	   
-			   @endif
-			</td>
+			  </td>
+			  <td width="300"><b>Renda Variável: </b>
+			@if(old('tipo_mov3') == "on")
+			<input required class="form-control" readonly="true" placeholder="ex: 2500 ou 2580,21"  type="number" id="renda_var"   name="renda_var" value="{{ old('renda_var') }}" />	
+			@else
+			<input required disabled="true"  readonly="true" class="form-control" placeholder="ex: 2500 ou 2580,21"  type="number" id="renda_var" name="renda_var"  />	
+			@endif
 		   </tr>
 		   <tr>
 			<td colspan="3">Motivo: <br><br> 
@@ -935,7 +1735,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -947,7 +1746,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" checked /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -959,7 +1757,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" checked /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -971,19 +1768,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" checked /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
-			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
-			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
-			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
-			@elseif(old('motivo') == "substituicao_temporaria")
-			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
-			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" checked /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -995,7 +1779,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" checked /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1007,7 +1790,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" checked /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1019,7 +1801,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" checked /> Substituição por demissão voluntária <br><br> 
@@ -1031,7 +1812,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1043,7 +1823,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1055,7 +1834,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1067,7 +1845,6 @@
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
@@ -1081,7 +1858,6 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<input disabled="true" type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
 			<input disabled="true" type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input disabled="true" type="checkbox" id="motivoA11" name="motivo" value="substituicao_temporaria" /> Substituição Temporária
 			<br><br> <input disabled="true" type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input disabled="true" type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1094,7 +1870,127 @@
 		   </tr>
 		  </table>
 		  </center>
-				
+
+		<center>
+		<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
+		  <tr>
+			<td width="130" rowspan="5"><center><h5>Plantão Extra</h5> 
+			@if(old('tipo_mov4') == "on")
+			<input type="checkbox" onclick="desabilitar4('sim')" checked id="tipo_mov4" name="tipo_mov4" />
+			@else
+			<input type="checkbox" onclick="desabilitar4('sim')" id="tipo_mov4" name="tipo_mov4" />	
+			@endif
+			</center>
+			<td colspan="2">Departamento 
+			 @if(old('tipo_mov4') == "on")
+			 <select  class="form-control" id="setor_plantao" name="setor_plantao">
+			 <option id="setor_plantao" name="setor_plantao" value="">Selecione...</option>
+			 @foreach($setores as $setor)
+			   @if(old('setor_plantao') == $setor->nome)
+			    <option id="setor_plantao" name="setor_plantao" value="<?php echo $setor->nome; ?>" selected>{{ $setor->nome }}</option>
+			   @else
+				<option id="setor_plantao" name="setor_plantao" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>   
+			   @endif
+			 @endforeach
+			 </select>
+			 @else
+			 <select required disabled="true" class="form-control" id="setor_plantao" name="setor_plantao">
+			 <option id="setor_plantao" name="setor_plantao" value="">Selecione...</option>
+			 @foreach($setores as $setor)
+			    <option id="setor_plantao" name="setor_plantao" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>
+			 @endforeach
+			 </select>	 
+			 @endif
+			</td>
+			<td colspan="1">Cargo: 
+			  @if(old('tipo_mov4') == "on")
+			  <select required class="form-control" id="cargo_plantao" name="cargo_plantao">
+			    <option id="cargo_plantao" name="cargo_plantao" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargoP)
+				      @if(old('cargo_plantao') == $cargoP->nome)
+						<option id="cargo_plantao" name="cargo_plantao" value="<?php echo $cargoP->nome; ?>" selected>{{ $cargoP->nome }}</option>	
+					  @else
+						<option id="cargo_plantao" name="cargo_plantao" value="<?php echo $cargoP->nome; ?>">{{ $cargoP->nome }}</option>  
+					  @endif
+					@endforeach
+				  @endif
+			  </select>
+			  @else
+			  <select required disabled="true" class="form-control" id="cargo_plantao" name="cargo_plantao">
+			    <option id="cargo_plantao" name="cargo_plantao" value="">Selecione...</option>
+				  @if(!empty($cargos))	
+					@foreach($cargos as $cargoP)
+						<option id="cargo_plantao" name="cargo_plantao" value="<?php echo $cargoP->nome; ?>">{{ $cargoP->nome }}</option>	
+					@endforeach
+				  @endif
+			  </select> 	  
+			  @endif
+			</td>
+		   </tr>
+		   <tr>
+			<td width=" ">Motivo:
+			@if(old('tipo_mov4') == "on")
+			<input class="form-control" required style="width: 250px;" type="text" id="motivo_plantao" name="motivo_plantao" value="{{ old('motivo_plantao') }}" />
+			@else
+			<input disabled="true" class="form-control" style="width: 250px;" type="text" id="motivo_plantao" name="motivo_plantao" />	
+			@endif
+			</td>
+			<td width="50">Substituto:
+			@if(old('tipo_mov4') == "on")
+			<input class="form-control" required style="width: 250px;" type="text" id="substituto" name="substituto" value="{{ old('substituto') }}" />
+			@else
+			<input disabled="true" class="form-control" style="width: 250px;" type="text" id="substituto" name="substituto" />	
+			@endif
+			</td>
+			<td>Novo Centro de Custo: 
+			   @if(old('tipo_mov4') == "on")
+			   <select required name="centro_custo_plantao" id="centro_custo_plantao" class="form-control">	
+			   <option id="centro_custo_plantao" name="centro_custo_plantao" value="">Selecione...</option>
+				@foreach($centro_custo_nv as $cc_nv)
+				@if(old('centro_custo_plantao') == $cc_nv->nome)
+				 <option id="centro_custo_plantao" name="centro_custo_plantao" value="<?php echo $cc_nv->nome; ?>" selected>{{ $cc_nv->nome }}</option>
+				@else
+				 <option id="centro_custo_plantao" name="centro_custo_plantao" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>	
+				@endif
+				@endforeach
+			   </select>
+			   @else
+			   <select required disabled="true" name="centro_custo_plantao" id="centro_custo_plantao" class="form-control">	
+			   <option id="centro_custo_plantao" name="centro_custo_plantao" value="">Selecione...</option>
+				@foreach($centro_custo_nv as $cc_nv)
+				<option id="centro_custo_plantao" name="centro_custo_plantao" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>
+				@endforeach
+			   </select>	   
+			   @endif
+			</td>
+		   </tr>
+		   <tr>
+			   <td width="50">Quantidade de Plantões:
+			   @if(old('tipo_mov4') == "on")
+			   <input required="true" class="form-control" style="width: 250px;" type="text" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();" value="{{ old('quantidade_plantao') }}" />
+			   @else
+			   <input disabled="true" class="form-control" style="width: 250px;" type="text" id="quantidade_plantao" onChange="multiplicar();" name="quantidade_plantao" />	
+			   @endif
+			   </td>
+		       <td>Valor do Plantão:
+				@if(old('tipo_mov4') == "on")
+				<input required="true" class="form-control" placeholder="ex: 2500 ou 2580,21"  type="number" id="valor_plantao" name="valor_plantao" onChange="multiplicar();" value="{{ old('valor_plantao') }}" />
+				@else
+				<input required class="form-control" placeholder="ex: 2500 ou 2580,21"  disabled="true" type="number" onChange="multiplicar();" id="valor_plantao" name="valor_plantao"  />	
+				@endif
+				</td>
+				<td width="300">Valor a ser Pago:
+				@if(old('tipo_mov4') == "on")
+				<input required class="form-control" readonly="true" placeholder="ex: 2500 ou 2580,21"  type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />	
+				@else
+				<input required disabled="true"  readonly="true" class="form-control" placeholder="ex: 2500 ou 2580,21"  type="number" id="valor_pago_plantao" name="valor_pago_plantao"  />	
+				@endif
+			   </td>
+		   </tr>
+		 </table>
+	  	</center>
+
 		  <br>
 		  <center>		
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
@@ -1143,4 +2039,6 @@
 		  </table>
 		  </center>
    </form>
+
 </body>
+

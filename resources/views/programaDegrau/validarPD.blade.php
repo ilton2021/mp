@@ -129,7 +129,7 @@
                 <td><center>FLUXO</center></td>
                 <td ><center>JUSTIFICATIVA</center></td>
                 <td ><center>VISUALIZAR</center></td>
-                @if(Auth::user()->id == 30)
+                @if(Auth::user()->id == 198)
                 <td><center>GESTOR:</center></td>
                 @endif
               </tr> <?php $a = 1; ?>
@@ -185,7 +185,7 @@
                 </div> </center> </td>
                  <td> <p><center> <a href="{{ route('visualizarVagaPD', $vaga->id) }}" class="btn btn-dark btn-sm">Visualizar</a> </center></p></td>
                  <input hidden type="text" id="id_vaga_<?php echo $a ?>" name="id_vaga_<?php echo $a ?>" value="<?php echo $vaga->id; ?>" /> 
-                 @if(Auth::user()->id == 30)
+                 @if(Auth::user()->id == 198)
                  <td>
                   <center>
                   <select type="text" id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" class="form-control" style="width: 200px;"> 

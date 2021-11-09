@@ -51,6 +51,30 @@
                     }
                 <?php } ?>
             }
+
+            function habilitar4(valor) {
+		        var status = document.getElementById('checkAll4').checked;  
+                <?php $qtdPla = sizeof($plantao);  
+                for($d = 1; $d <= $qtdPla; $d++){ ?>
+                    if(status == true){ 
+                        document.getElementById('check4_<?php echo $d ?>').checked = true;
+                    } else {
+                        document.getElementById('check4_<?php echo $d ?>').checked = false;
+                    }
+                <?php } ?>
+            }
+
+            function habilitar5(valor) {
+		        var status = document.getElementById('checkAll5').checked;  
+                <?php $qtdAdmHCP = sizeof($admissaoHCP);  
+                for($d = 1; $d <= $qtdAdmHCP; $d++){ ?>
+                    if(status == true){ 
+                        document.getElementById('check5_<?php echo $d ?>').checked = true;
+                    } else {
+                        document.getElementById('check5_<?php echo $d ?>').checked = false;
+                    }
+                <?php } ?>
+            }
         </script>
     </head>
     <body>
@@ -284,8 +308,8 @@
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id_<?php echo $c ?>" name="gestor_id_<?php echo $c ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
-                    <!--option id="gestor_id_" name="gestor_id_" value="60">FÉRIAS - LUCIANA MELO</option-->   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
                     @elseif($adm->unidade_id == 8)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
@@ -310,8 +334,112 @@
                @endif
                </tr>
           </table>
+          <table class="table table-sm table-bordered" style="font-size: 12px;">
+            <?php $qtdAdmHCP = sizeof($admissaoHCP); ?>
+              @if($qtdAdmHCP > 0) 
+              <tr><td colspan="12"><br><b><font size="04px">ADMISSÃO HCPGESTÃO:</font></b></td></tr>
+              <tr>
+              <td><center>SELECIONAR <br><input onclick="habilitar5('sim')" type="checkbox" id="checkAll5" name="checkAll5" /></center> </td>
+                <td><center>UNIDADE</center></td>
+                <td><center>NÚMERO MP</center></td>
+                <td><center>NOME</center></td>
+                <td><center>TIPO</center></td>
+                <td><center>MOTIVO</center></td>
+                <td><center>FLUXO</center></td>
+                <td ><center>JUSTIFICATIVA</center></td>
+                <td ><center>VISUALIZAR</center></td>
+                @if(Auth::user()->id == 30)
+                <td><center>GESTOR:</center></td>
+                @endif
+              </tr> <?php $e = 1; ?>
+				      @foreach($admissaoHCP as $admHCP)
+              	<tr> 
+                 <td> <br><center> <input type="checkbox" id="check5_<?php echo $e ?>" name="check5_<?php echo $e ?>"  /> </center> </td>
+				         <td> <br><center> <b> @if($admHCP->unidade_id == 1) <?php echo "HCP GESTÃO"; ?>  @endif </b> </center> </td>
+                 <td title="<?php echo $admHCP->numeroMP; ?>"> <p><center>  {{ $admHCP->numeroMP }} </center></p></td> 
+                 <td title="<?php echo $admHCP->nome; ?>"> <p><center> {{ substr($admHCP->nome, 0, 30) }} </center> </p>  </td>
+                 <td> <p><center> <?php if($admHCP->tipo == "efetivo"){ ?>
+                                    {{ "Efetivo" }} </center> </p>  </td>
+                                  <?php }else if($admHCP->tipo == "rpa"){ ?>
+                                    {{ "RPA" }} </center> </p>  </td>    
+                                  <?php }else if($admHCP->tipo == "estagiario"){ ?>
+                                    {{ "Estagiário" }} </center> </p>  </td>
+                                  <?php }else if($admHCP->tipo == "temporario"){ ?>
+                                    {{ "Temporário" }} </center> </p>  </td>
+                                  <?php }else if($admHCP->tipo == "aprendiz"){ ?>
+                                    {{ "Aprendiz" }} </center> </p>  </td>
+                                  <?php } ?>
+                 <td> <p><center> <?php if($admHCP->motivo == "aumento_quadro") { ?>
+                                    {{ 'Aumento de Quadro' }}  
+                                  <?php } else if($admHCP->motivo == "substituicao_temporaria") { ?> 
+                                    {{ 'Substituição Temporária' }}
+                                  <?php } else if($admHCP->motivo == "segundo_vinculo") { ?> 
+                                    {{ 'Segundo Vínculo' }}
+                                  <?php } else if($admHCP->motivo == "substituicao_definitiva") { ?>
+                                    {{ 'Substituição Definitiva' }}
+                                  <?php } else { ?> {{ $motivo2 }}   <?php } ?> 
+                        </center> </p>  </td>
+                 <td> 
+                 <center><input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($admHCP->solicitante, 0, 8); ?>" title="<?php echo $admHCP->solicitante; ?>" style="width: 60px" /></center> 
+                 <?php $qtdApHCP = sizeof($aprovacaoAdmHCP); for($ap = 0; $ap < $qtdApHCP; $ap++) { ?>
+                 @if($aprovacaoAdmHCP[$ap]->mp_id == $admHCP->mp_id)
+                  <?php $idG = $aprovacaoAdmHCP[$ap]->gestor_anterior; ?> 
+                  @foreach($gestores as $g)
+                      @if($g->id == $idG) 
+                        <center><input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($g->nome, 0, 8); ?>" title="<?php echo $g->nome; ?>" style="width: 60px" /></center> 
+                      @endif  
+                  @endforeach
+                 @endif 
+                 <?php } ?>                
+                 </td>
+                 <td><br>
+                 <center>
+                  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $admHCP->id?>"> 
+                    Justificativa
+                  </button> 
+                 </center>
+                  <div class="modal fade" id="exampleModal<?php echo $admHCP->id ?>" >
+                  <div class="modal-dialog" role="document">
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                    <h5 class='modal-title' align="left"></h5>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                    </div>
+                    <div class='modal-body'>
+                    <div class='panel panel-default'>
+                    <div class='panel-heading'><b>Justificativa:</b> <br><br> </div>
+                    <div class='panel-body'>
+                      <p align="justify">{{ $admHCP->just }}</a>
+                    </div>
+                    </div>
+                  </div>
+                </div> </td>
+                 <td> <p><center> <a href="{{ route('validarMP', $admHCP->mp_id) }}" target="_blank" class="btn btn-dark btn-sm">Visualizar</a> </center></p></td>
+                 <input hidden type="text" id="id_mp5_<?php echo $e ?>" name="id_mp5_<?php echo $e ?>" value="<?php echo $admHCP->mp_id; ?>" /> 
+                 @if(Auth::user()->id == 61)
+                 <td>
+                  <center>
+                  <select type="text" id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" class="form-control" style="width: 200px;"> 
+                    <option id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>   
+                  </select>
+                  </center>	 
+                 </td>   
+                 @endif
+                 @if(Auth::user()->id == 30)
+                 <td>
+                  <center>
+                  <select type="text" id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" class="form-control" style="width: 200px;"> 
+                    <option id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                  </select>
+                 </td>   
+                 @endif
+                 <?php $e += 1; ?>
+                @endforeach
+               @endif
+               </tr>
+          </table>
           <table class="table table-responsive table-bordered" style="font-size: 12px; width: 1344px;"> 
-			<?php $qtdDem = sizeof($demissao); ?>
+			    <?php $qtdDem = sizeof($demissao); ?>
               @if($qtdDem > 0)	
                <tr><td colspan="10"><br><b><font size="04">DEMISSÃO:</font></b></td></tr>
                 <tr>
@@ -457,8 +585,8 @@
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id2_<?php echo $c ?>" name="gestor_id2_<?php echo $c ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
-                    <!--option id="gestor_id2_" name="gestor_id2_" value="60">FÉRIAS - LUCIANA MELO</option-->   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
                     @elseif($dem->unidade_id == 8)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
@@ -636,8 +764,7 @@
                     <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
-                    <!--option id="gestor_id_" name="gestor_id_" value="60">FÉRIAS - LUCIANA MELO</option-->   
+                    <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
                     <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
                     @elseif($altF->unidade_id == 8)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
@@ -661,8 +788,182 @@
                  <?php $c += 1; ?>
                 @endforeach
               @endif
-              
-		  </table>                          
+		  </table>     
+      <table class="table table-responsive table-bordered" style="font-size: 12px; width: 1344px;"> 
+			    <?php $qtdPla = sizeof($plantao); ?>
+              @if($qtdPla > 0)	
+               <tr><td colspan="12"><br><b><font size="04">PLANTÃO EXTRA:</font></b></td></tr>
+                <tr>
+                <td><center>Selecionar <br><input onclick="habilitar4('sim')" type="checkbox" id="checkAll4" name="checkAll4" /></center> </td>
+                <td><center>UNIDADE</center></td>
+                <td style="width: 200px;"><center>NÚMERO MP</center></td>
+                <td style="width: 300px;"><center>NOME</center></td>
+                <td style="width: 300px;"><center>SETOR</center></td>
+                <td style="width: 200px;"><center>MOTIVO</center></td>
+                <td style="width: 200px;"><center>QUANTIDADE</center></td>
+                <td style="width: 200px;"><center>VALOR PAGO</center></td>
+                <td><center>FLUXO</center></td>
+                <td><center>JUSTIFICATIVA</center></td>
+                @if(Auth::user()->id == 30)
+                <td><center>GESTOR</center></td>
+                @endif
+               </tr>
+               <?php $d = 1; ?>
+                @foreach($plantao as $pla)
+               <tr>
+                 <td> <br><center> <input type="checkbox" id="check4_<?php echo $d ?>" name="check4_<?php echo $d ?>" /> </center> </td>
+				         <td> <br><center> <b> @if($pla->unidade_id == 1) <?php echo "HCP GESTÃO"; ?>   
+                      @elseif($pla->unidade_id == 2) <?php echo "HMR"; ?>  
+                      @elseif($pla->unidade_id == 3) <?php echo "BELO JARDIM"; ?>  
+                      @elseif($pla->unidade_id == 4) <?php echo "ARCOVERDE"; ?>  
+                      @elseif($pla->unidade_id == 5) <?php echo "ARRUDA"; ?>  
+                      @elseif($pla->unidade_id == 6) <?php echo "CARUARU"; ?>  
+                      @elseif($pla->unidade_id == 7) <?php echo "HSS"; ?>  
+                      @elseif($pla->unidade_id == 8) <?php echo "HPR"; ?>  
+                      @endif </b> </center> </td>
+                 <td> <p><center> {{ $pla->numeroMP }}  </center></p> </td>
+                 <td> <p><center> {{ $pla->nome }} </center> </p>  </td>
+                 <td> <p><center> {{ $pla->setor_plantao }} </center> </p>  </td>
+                 <td><br>
+                 <center>
+                  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $pla->id?>"> 
+                    Motivo
+                  </button> 
+                 </center> 
+                  <div class="modal fade" id="exampleModal<?php echo $pla->id ?>" >
+                  <div class="modal-dialog" role="document">
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                    <h5 class='modal-title' align="left"></h5>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                    </div>
+                    <div class='modal-body'>
+                    <div class='panel panel-default'>
+                    <div class='panel-heading'><b>Justificativa:</b> <br><br> </div>
+                    <div class='panel-body'>
+                      <p align="justify">{{ $pla->motivo_plantao }}</a>
+                    </div>
+                    </div>
+                  </div>
+                 </div> </td>
+                 <td> <p><center> {{ $pla->quantidade_plantao }} </center> </p>  </td>
+                 <td> <p><center> {{ "R$ ".number_format($pla->valor_pago_plantao, 2,',','.') }} </center> </p>  </td>
+                 <td>
+                 <input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($pla->solicitante, 0, 8); ?>" title="<?php echo $pla->solicitante; ?>" style="width: 70px" /> <br>
+                 <?php $qtdPl = sizeof($aprovacaoPl); for($pl = 0; $pl < $qtdPl; $pl++) { ?>
+                 @if($aprovacaoPl[$pl]->mp_id == $pla->mp_id)
+                  <?php $idG = $aprovacaoPl[$pl]->gestor_anterior; ?> 
+                  @foreach($gestores as $g)
+                      @if($g->id == $idG)
+                        <input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($g->nome, 0, 8); ?>" title="<?php echo $g->nome; ?>" style="width: 70px" /> <br>
+                      @endif  
+                  @endforeach
+                 @endif 
+                 <?php } ?> 
+                 </td>       
+                 <td><br>
+                  <center>
+                  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal1<?php echo $pla->id?>"> 
+                    Justificativa
+                  </button>
+                  </center> 
+                  <div class="modal fade" id="exampleModal1<?php echo $pla->id ?>" >
+                  <div class="modal-dialog" role="document">
+                  <div class='modal-content'>
+                    <div class='modal-header'>
+                    <h5 class='modal-title' align="left"></h5>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                    </div>
+                    <div class='modal-body'>
+                    <div class='panel panel-default'>
+                    <div class='panel-heading'><b>Justificativa:</b> <br><br> </div>
+                    <div class='panel-body'>
+                      <p align="justify">{{ $pla->just }}</a>
+                    </div>
+                    </div>
+                  </div>
+                 </div> </td>
+                 <td> <p><center> <a href="{{ route('validarMP', $pla->mp_id) }}" target="_blank" class="btn btn-dark btn-sm">Visualizar</a> </center></p> </td>
+				         <td> <input hidden type="text" id="id_mp_<?php echo $d ?>" name="id_mp2_<?php echo $d ?>" value="<?php echo $pla->mp_id; ?>" />  </td>
+                 @if(Auth::user()->id == 30)
+                 <td>
+                  @if($pla->tipo_mp == 0)
+                  <center>
+                  <select type="text" id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" class="form-control" style="width: 200px;"> 
+                    @if($pla->unidade_id == 1)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 1)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 2)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 2)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="59">DIRETORIA - ISABELA COUTINHO</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 3)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 3)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="165">COORDENADOR UNIDADE - ALEXANDRA AMARAL</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 4)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 4)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 5)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 5)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="166">COORDENADOR UNIDADE - ADRIANA BEZERRA</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 6)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 6 && $gestor->id != 48)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 7)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 7)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @elseif($pla->unidade_id == 8)
+                    @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
+                    @endif @endforeach
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    @endif 
+                  </select>
+                  @else
+                  <select type="text" id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" class="form-control"> 
+                      <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                  </select>
+                  </center>	 
+                  @endif
+                 </td>   
+                 @endif
+				        </tr>
+                <?php $d += 1; ?>
+                @endforeach
+              @endif
+          </table>                                               
           <table style="width: 1340px;">
             <tr>
                 <td> <a href="{{ url('/homeMP') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>  </td>

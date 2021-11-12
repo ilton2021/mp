@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 71)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 71 || Auth::user()->id == 13)
 		<center>
 	    <form action="{{\Request::route('pesquisarGrafico8')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -146,6 +146,58 @@
 		   </tr>
 		  </table>
 		</center>
+
+		<table class="table table-bordered" width="1000">
+		<tr>
+		 <td colspan="5"><b>Total de Salário por RPA - MP Admissão</b></td>
+		</tr>
+		<tr>
+		 <td colspan="2"><b><center>Centro de Custo</center></td>
+		 <td colspan="2"><b><center>Quantidade</center><b></td>
+		 <td><b><center>Salário</center></b></td>
+		</tr>
+		@foreach($rpa2 as $cc)
+		<tr>
+		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo }}</b></center></td>
+		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
+		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
+	 	</tr>
+		 <tr id="table_descricao" disabled="true">
+	  	    <td><center>NÚMERO MP</center></td>
+			<td><center>CARGO</center></td>
+			<td><center>SALÁRIO</center></td>
+			<td><center>OUTRAS VERBAS</center></td>
+			<td><center>MOTIVO</center></td>
+		 </tr>
+		@foreach($rpa as $alt)
+		 @if($alt->centro_custo == $cc->centro_custo)
+		 <tr>
+		 <tbody>
+			@foreach($row5 as $mps)
+			 @if($mps->id == $alt->mp_id)
+	  		   <td><center> {{ $mps->numeroMP }} </center></td>
+			 @endif
+			@endforeach
+			<td><center> {{ $alt->cargo }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario,2,',','.') }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->outras_verbas,2,',','.') }} </center></td>
+			@if($alt->motivo == "substituicao_temporaria")
+			<td><center> {{ 'Substituição Temporária' }} </center></td>
+			@elseif($alt->motivo == "aumento_quadro")
+			<td><center> {{ 'Aumento de Quadro' }} </center></td>
+			@elseif($alt->motivo == "seguno_vinculo")
+			<td><center> {{ 'Segundo Vínculo' }} </center></td>
+			@elseif($alt->motivo == "substituicao_definitiva")
+			<td><center> {{ 'Substituição Definitiva' }} </center></td>
+			@endif
+		 </tbody>	
+		 </tr>
+		 @endif
+		@endforeach
+		@endforeach
+		</table>
+
+
     </div>
     </section>		 
  </body>

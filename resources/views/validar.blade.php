@@ -5,10 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
         <title>MP RH</title>
-		    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-		    <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-        <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
+		    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
        <style>
 		.navbar .dropdown-menu .form-control {
@@ -83,10 +84,8 @@
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
 				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto"></ul>
                     <ul class="navbar-nav ml-auto">
                         @guest
                             <li class="nav-item">
@@ -233,7 +232,7 @@
                  <?php } ?>                
                  </td>
                  <td><br>
-                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $adm->id?>"> 
+                  <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#exampleModal<?php echo $adm->id?>"> 
                     Justificativa
                   </button> 
                   <div class="modal fade" id="exampleModal<?php echo $adm->id ?>" >
@@ -975,7 +974,6 @@
           <input hidden type="text" id="resposta" name="resposta" value="" /> 
           <input hidden type="text" id="data_aprovacao" name="data_aprovacao" value="" /> 
           <input hidden type="text" id="gestor_anterior" name="gestor_anterior" value="" /> 
-          
           <input hidden type="text" id="mp_id" name="mp_id" value="" /> 
           <input hidden type="text" id="unidade_id" name="unidade_id" value="" /> 
           <input hidden type="text" id="motivo" name="motivo" value="" /> 

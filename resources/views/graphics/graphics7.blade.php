@@ -48,7 +48,6 @@
       chart.draw(view, options);
       }
     </script>
-	
   </head>
 
   <body>
@@ -85,7 +84,7 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 13 || Auth::user()->id == 71)
 		<center>
 	    <form action="{{\Request::route('pesquisarGrafico7')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -95,9 +94,9 @@
 		  <td>
 		  <select width="400px" class="form-control" id="unidade_id" name="unidade_id">
 			 <option id="unidade_id" name="unidade_id" value="0">{{ 'Todos' }}</option>
-		  @foreach($unidades as $unidade)
-		     <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
-		  @endforeach
+		  	 @foreach($unidades as $unidade)
+		       <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
+		  	 @endforeach
 		  </select>
 		  </td>
 		  <td>&nbsp;&nbsp;&nbsp;</td>
@@ -116,7 +115,7 @@
 		  </td>
 		 </tr>
 		 <tr>
-		   <td colspan="10"><br><center><b>Total de MP's: {{ $qtd }}</b></center></td>
+		   <td colspan="10"><br><center><b>Total de MP's: {{ $qtdMP }}</b></center></td>
 		 </tr>
 		</table>
 		</form>
@@ -124,19 +123,64 @@
 		@endif
 		<table class="table table-bordered" width="1000">
 		<tr>
-		 <td colspan="3"><b>Total de Salário por Centro de Custo - MP Alteração Funcional</b></td>
+		 <td colspan="5"><b>Total de Salário por Centro de Custo - MP Alteração Funcional</b></td>
 		</tr>
 		<tr>
-		 <td><b><center>Centro de Custo</center></td>
-		 <td><b><center>Quantidade</center><b></td>
+		 <td colspan="2"><b><center>Centro de Custo</center></td>
+		 <td colspan="2"><b><center>Quantidade</center><b></td>
 		 <td><b><center>Salário</center></b></td>
 		</tr>
 		@foreach($centro_custo2 as $cc)
 		<tr>
-		 <td style="background-color: #90EE90"><center>{{ $cc->centro_custo_novo }}</center></td>
-		 <td style="background-color: #FFDB58"><center>{{ $cc->qtd }}</center></td>
-		 <td style="background-color: #87CEFA"><center>{{ "R$ ". number_format($cc->soma,2,',','.') }}</center></td>
-		</tr>
+		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo_novo }}</b></center></td>
+		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
+		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
+	 	</tr>
+		 <tr id="table_descricao" disabled="true">
+	  	    <td><center>NÚMERO MP</center></td>
+			<td><center>SETOR</center></td>
+			<td><center>SALÁRIO NOVO</center></td>
+			<td><center>SALÁRIO ATUAL</center></td>
+			<td><center>MOTIVO</center></td>
+		 </tr>
+		@foreach($alteracaoF as $alt)
+		 @if($alt->centro_custo_novo == $cc->centro_custo_novo)
+		 
+		 <tr>
+		 <tbody>
+			@foreach($row5 as $mps)
+			 @if($mps->id == $alt->mp_id)
+	  		   <td><center> {{ $mps->numeroMP }} </center></td>
+			 @endif
+			@endforeach
+			<td><center> {{ $alt->setor }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario_novo,2,',','.') }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario_atual,2,',','.') }} </center></td>
+			@if($alt->motivo == "mudanca_setor_area")
+			<td><center> {{ 'Mudança Setor Área' }} </center></td>
+			@elseif($alt->motivo == "transferencia_outra_unidade")
+			<td><center> {{ 'Transferência Outra Unidade' }} </center></td>
+			@elseif($alt->motivo == "mudanca_horaria")
+			<td><center> {{ 'Mudança Horária' }} </center></td>
+			@elseif($alt->motivo == "merito")
+			<td><center> {{ 'Mérito' }} </center></td>
+			@elseif($alt->motivo == "promocao")
+			<td><center> {{ 'Promoção' }} </center></td>
+			@elseif($alt->motivo == "enquadramento")
+			<td><center> {{ 'Enquadramento' }}</center></td>
+			@elseif($alt->motivo == "substituicao_demissao_voluntaria")
+			<td><center> {{ 'Substituição Demissão Voluntária' }} </center></td>
+			@elseif($alt->motivo == "recrutamento_interno")
+			<td><center> {{ 'Recrutamento Interno' }} </center></td>
+			@elseif($alt->motivo == "aumento_quadro")
+			<td><center> {{ 'Aumento de Quadro' }} </center></td>
+			@elseif($alt->motivo == "substituicao_demissao_forcada")
+			<td><center> {{ 'Substituição Demissão Forçada' }} </center></td>
+			@endif
+		 </tbody>	
+		 </tr>
+		 @endif
+		@endforeach
 		@endforeach
 		</table>
     </div>

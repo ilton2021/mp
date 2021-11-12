@@ -139,7 +139,7 @@
     
 	<div class="card-body text-center">
          <a href="{{ route('minhasMPS') }}" class="btn btn-outline-warning">HISTÓRICO MP'S</a>    
-         @if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59)
+         @if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59 || Auth::user()->id == 13)
          <a href="{{ route('graphicsIndex') }}" class="btn btn-outline-info">GRÁFICOS MP</a>
 		 <span class="font-weight-bold"></span>
          @endif

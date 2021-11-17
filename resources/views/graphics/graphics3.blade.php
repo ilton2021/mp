@@ -97,7 +97,7 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 71 || Auth::user()->id == 13)
 		<center>
 	    <form action="{{\Request::route('pesquisarGrafico3')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -147,6 +147,44 @@
 			</td> 
 		   </tr>
 		  </table>
+		</center>
+		<center>
+	  	 <table class="table table-bordered">
+	  	  <tr>
+			<td style="background-color: #90EE90"><center>NÚMERO MP</center></td>			
+			<td style="background-color: #FFDB58"><center>CENTRO DE CUSTO</center></td>
+			<td style="background-color: #87CEFA"><center>SALÁRIO NOVO</center></td>
+			<td style="background-color: #90EE90"><center>SALÁRIO ATUAL</center></td>
+			<td style="background-color: #FFDB58"><center>MOTIVO</center></td>
+		  </tr> <?php $a = 0; $totalCustos = 0; ?>
+		  @foreach($admissao as $adm)
+		  <tr> <?php $a += 1; $totalCustos += $adm->salario_novo - $adm->salario_atual; ?>
+			@foreach($row5 as $mp)
+			 @if($mp->id == $adm->mp_id)
+			   <td><center>{{ $mp->numeroMP }}</center></td>
+			 @endif
+			@endforeach
+			<td><center>{{ $adm->centro_custo }}</center></td>
+			<td><center>{{ "R$ ". number_format($adm->salario,2,',','.') }}</center></td>
+			<td><center>{{ "R$ ". number_format($adm->outras_verbas,2,',','.') }}</center></td>
+			@if($adm->motivo == "aumento_quadro")
+			<td><center>{{ 'AUMENTO DE QUADRO' }}</center></td>
+			@elseif($adm->motivo == "segundo_vinculo")
+			<td><center>{{ 'SEGUNDO VÍNCULO' }}</center></td>
+			@elseif($adm->motivo == "substituicao_definitiva")
+			<td><center>{{ 'SUBSTITUIÇÃO DEFINITIVA' }}</center></td>
+			@elseif($adm->motivo == "substituicao_temporaria")
+			<td><center>{{ 'SUBSTITUIÇÃO TEMPORÁRIA' }}</center></td>
+			@endif
+		  </tr>
+		  @endforeach
+		  <tr>
+	  		<td><center><b>QUANTIDADE MP's:</b></center></td>
+			<td><center><b>{{ $a }}</b></center></td>
+			<td colspan="2"><center><b>TOTAL DE CUSTOS:</b></center></td>
+			<td ><center><b>{{ "R$ ". number_format($totalCustos,2,',','.') }}</b></center></td>
+		  </tr>
+		 </table>
 		</center>
     </div>
     </section>		 

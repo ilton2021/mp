@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 13 || Auth::user()->id == 71)
 		<center>
 	    <form action="{{\Request::route('pesquisarGrafico4')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -145,6 +145,58 @@
 			</td> 
 		   </tr>
 		  </table>
+		</center>
+		<center>
+	  	 <table class="table table-bordered">
+	  	  <tr>
+			<td style="background-color: #90EE90"><center>NÚMERO MP</center></td>			
+			<td style="background-color: #FFDB58"><center>CENTRO DE CUSTO</center></td>
+			<td style="background-color: #87CEFA"><center>SALÁRIO NOVO</center></td>
+			<td style="background-color: #90EE90"><center>SALÁRIO ATUAL</center></td>
+			<td style="background-color: #FFDB58"><center>MOTIVO</center></td>
+		  </tr> <?php $a = 0; $totalCustos = 0; ?>
+		  @foreach($alteracaoF as $altF)
+		  <tr> <?php $a += 1; $totalCustos += $altF->salario_novo - $altF->salario_atual; ?>
+			@foreach($row5 as $mp)
+			 @if($mp->id == $altF->mp_id)
+			   <td><center>{{ $mp->numeroMP }}</center></td>
+			 @endif
+			@endforeach
+			<td><center>{{ $altF->centro_custo_novo }}</center></td>
+			<td><center>{{ "R$ ". number_format($altF->salario_novo,2,',','.') }}</center></td>
+			<td><center>{{ "R$ ". number_format($altF->salario_atual,2,',','.') }}</center></td>
+			@if($altF->motivo == "merito")
+			<td><center>{{ 'MÉRITO' }}</center></td>
+			@elseif($altF->motivo == "substituicao_demissao_voluntaria")
+			<td><center>{{ 'SUBSTITUIÇÃO POR DEMISSÃO' }}</center></td>
+			@elseif($altF->motivo == "mudanca_horaria")
+			<td><center>{{ 'MUDANÇA DE HORÁRIO' }}</center></td>
+			@elseif($altF->motivo == "mudanca_setor_area")
+			<td><center>{{ 'MUDANÇA DE SETOR/ÁREA' }}</center></td>
+			@elseif($altF->motivo == "recrutamento_interno")
+			<td><center>{{ 'RECRUTAMENTO INTERNO' }}</center></td>
+			@elseif($altF->motivo == "promocao")
+			<td><center>{{ 'PROMOÇÃO' }}</center></td>
+			@elseif($altF->motivo == "transferencia_outra_unidade")
+			<td><center>{{ 'TRANSFERÊNCIA PARA OUTRA UNIDADE' }}</center></td>
+			@elseif($altF->motivo == "enquadramento")
+			<td><center>{{ 'ENQUADRAMENTO' }}</center></td>
+			@elseif($altF->motivo == "aumento_quadro")
+			<td><center>{{ 'AUMENTO DE QUADRO' }}</center></td>
+			@elseif($altF->motivo == "empregado")
+			<td><center>{{ 'EMPREGADO' }}</center></td>
+			@elseif($altF->motivo == "empregador")
+			<td><center>{{ 'EMPREGADOR' }}</center></td>
+			@endif
+		  </tr>
+		  @endforeach
+		  <tr>
+	  		<td><center><b>QUANTIDADE MP's:</b></center></td>
+			<td><center><b>{{ $a }}</b></center></td>
+			<td colspan="2"><center><b>TOTAL DE CUSTOS:</b></center></td>
+			<td ><center><b>{{ "R$ ". number_format($totalCustos,2,',','.') }}</b></center></td>
+		  </tr>
+		 </table>
 		</center>
     </div>
     </section>		 

@@ -17,6 +17,7 @@ class MP extends Model
 		'matricula',
 		'nome',
 		'gestor_id',
+		'impacto_financeiro',
 		'departamento',
 		'tipo_mp',
 		'data_emissao',

@@ -24,11 +24,17 @@
 		}
 
 		function multiplicar(){
-
 			m1 = Number(document.getElementById("valor_plantao").value);
 			m2 = Number(document.getElementById("quantidade_plantao").value);
 			r = Number(m1*m2);
 			document.getElementById("valor_pago_plantao").value = r;
+		}
+
+		function somarSalarios(){
+			s1 = Number(document.getElementById("salario").value);
+			s2 = Number(document.getElementById("outras_verbas").value);
+			soma = Number(s1 + s2);
+			document.getElementById("remuneracao_total").value = soma;
 		}
 
 		function multiplicar2(){
@@ -53,6 +59,42 @@
 			m2 = document.getElementById("salario_novo").value;
 			r = parseInt(m2-m1);
 			document.getElementById("renda_var").value = r;
+		}
+
+		function desabilitarTipos1(valor){
+			var a = document.getElementById('sim_impacto').checked;
+			var b = document.getElementById('nao_impacto').checked; 
+			
+			if(a == true || b == true){
+				document.getElementById('tipo_mov2').disabled = false;
+				document.getElementById('tipo_mov3').disabled = false;
+				document.getElementById('tipo_mov4').disabled = false;
+				document.getElementById('tipo_mov5').disabled = false;
+			} else {
+				document.getElementById('tipo_mov2').disabled = true;
+				document.getElementById('tipo_mov3').disabled = true;
+				document.getElementById('tipo_mov4').disabled = true;
+				document.getElementById('tipo_mov5').disabled = true;
+			}
+		}
+
+		function desabilitarTipos2(valor){
+			var a = document.getElementById('sim_impacto').checked;
+			var b = document.getElementById('nao_impacto').checked; 
+			
+			if(a == true || b == true){
+				document.getElementById('tipo_mov1').disabled = false;
+				document.getElementById('tipo_mov2').disabled = false;
+				document.getElementById('tipo_mov3').disabled = false;
+				document.getElementById('tipo_mov4').disabled = false;
+				document.getElementById('tipo_mov5').disabled = false;
+			} else {
+				document.getElementById('tipo_mov1').disabled = true;
+				document.getElementById('tipo_mov2').disabled = true;
+				document.getElementById('tipo_mov3').disabled = true;
+				document.getElementById('tipo_mov4').disabled = true;
+				document.getElementById('tipo_mov5').disabled = true;
+			}
 		}
 
 		function desabilitar(valor) {
@@ -112,7 +154,6 @@
 			document.getElementById('necessidade_email').disabled  		   = true;
 			document.getElementById('necessidade_email2').disabled  	   = true;
 		  }
-		  
 		}
 
 		function desabilitarUnd1(valor){
@@ -306,6 +347,7 @@
 			  document.getElementById('motivoA8').disabled  = false;
 			  document.getElementById('motivoA9').disabled  = false;
 			  document.getElementById('motivoA10').disabled = false;
+			  document.getElementById('motivoA11').disabled = false;
 		  } else {
 			  document.getElementById('unidade_id2').disabled    = true;
 			  document.getElementById('setor').disabled 	     = true;
@@ -326,8 +368,10 @@
 			  document.getElementById('motivoA8').disabled  = true;
 			  document.getElementById('motivoA9').disabled  = true;
 			  document.getElementById('motivoA10').disabled = true;
+			  document.getElementById('motivoA11').disabled = true;
 		  }
 		}
+
 		function desabilitar4(valor) {
 		  var status = document.getElementById('tipo_mov4').checked;
 		  if (status == true) {
@@ -370,18 +414,25 @@
 		}
 		
 		function desabilitarRPA(valor) {
-		  var status = document.getElementById('periodo_contrato').disabled;
+		  var status = document.getElementById('tipo5').checked;
 		  if (status == true) {
-			document.getElementById('periodo_contrato').disabled = false;
-		  }else {
-			document.getElementById('periodo_contrato').disabled = true;  
+			document.getElementById('mes_rpa').disabled  = false;
+			document.getElementById('ano_rpa').disabled  = false;
+			document.getElementById('mes2_rpa').disabled = false;
+			document.getElementById('ano2_rpa').disabled = false;
+		  } else {
+			document.getElementById('mes_rpa').disabled  = true;
+			document.getElementById('ano_rpa').disabled  = true;
+			document.getElementById('mes2_rpa').disabled = true;
+			document.getElementById('ano2_rpa').disabled = true;
 		  }
 		}
+
 		function desabilitarRPA2(valor) {
 		  var status = document.getElementById('periodo_contratohcp').disabled;
 		  if (status == true) {
 			document.getElementById('periodo_contratohcp').disabled = false;
-		  }else {
+		  } else {
 			document.getElementById('periodo_contratohcp').disabled = true;  
 		  }
 		}
@@ -394,6 +445,7 @@
 			document.getElementById('motivo6').disabled = true;  
 		  }
 		}
+
 		function desabilitarSubst2(valor) {
 		  var status = document.getElementById('motivo6hcp').disabled;
 		  if (status == true) {
@@ -412,7 +464,6 @@
 				document.getElementById('horario_trabalho2').disabled = true;
 			}
 		}
-		
     </script>
 <body>
 	  @if ($errors->any())
@@ -479,12 +530,23 @@
 		  <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			  <tr>
-			   <td width="800px;" colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
+			   <td  colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
+			  </tr>
+			  <tr>  
+			   <td width="800px;"> <center><br><b>IMPACTO FINANCEIRO:</b>
+			   	 @if($unidade[0]->id == '1')
+				   SIM: <input type="checkbox" id="sim_impacto" name="sim_impacto" onclick="desabilitarTipos1('sim')" /> 
+				   NÃO: <input type="checkbox" id="nao_impacto" name="nao_impacto" onclick="desabilitarTipos1('sim')" /> 
+				 @else
+				   SIM: <input type="checkbox" id="sim_impacto" name="sim_impacto" onclick="desabilitarTipos2('sim')" /> 
+				   NÃO: <input type="checkbox" id="nao_impacto" name="nao_impacto" onclick="desabilitarTipos2('sim')" /> 
+				 @endif
+				</center>
+				</td>
 		 	   <td >Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" required value="{{ Request::old('data_prevista') }}" /></td>
 			  </tr>	
 			</table>
 		  </center>
-
 		  <br>	 
 
 	  @if($unidade[0]->id == '1')
@@ -493,9 +555,9 @@
 		    <tr>
 			 <td rowspan="5" width="150"><center><h5>Admissão HCP </h5> 
 			 @if(old('tipo_mov5') == "on")
-			 <input type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" checked />
+			 <input disabled type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" checked />
 		     @else
-			 <input type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" /> 
+			 <input disabled type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" /> 
 			 @endif
 			 </center>
 			 </td> 
@@ -1075,9 +1137,9 @@
 		    <tr>
 			 <td rowspan="5" width="150"><center><h5>Admissão</h5> 
 			 @if(old('tipo_mov1') == "on")
-			 <input type="checkbox" onclick="desabilitar('sim')" id="tipo_mov1" name="tipo_mov1" checked />
+			 <input disabled type="checkbox" onclick="desabilitar('sim')" id="tipo_mov1" name="tipo_mov1" checked />
 		     @else
-			 <input type="checkbox" onclick="desabilitar('sim')" id="tipo_mov1" name="tipo_mov1" /> 
+			 <input disabled type="checkbox" onclick="desabilitar('sim')" id="tipo_mov1" name="tipo_mov1" /> 
 			 @endif
 			 </center></td>
 			 <td colspan="1" width="1050">Cargo: 
@@ -1106,17 +1168,20 @@
 				@endif
 			 </td>
 			 <td width="370">
-			 Remuneração Total: <br>
 			 @if(old('tipo_mov1') == "on")
 			 Salário <br>
-			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required="true" id="salario" name="salario" value="{{ old('salario') }}" />
+			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required="true" id="salario" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" />
 			 Outras Verbas
-			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" />
+			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />
+			 Remuneração Total:
+			 <input class="form-control" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
 			 @else
 			 Salário <br>
-			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" required="true" id="salario" name="salario" value="{{ old('salario') }}" />
+			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" required="true" id="salario" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" />
 			 Outras Verbas
-			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" />	 
+			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />	 
+			 Remuneração Total:
+			 <input class="form-control" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
 			 @endif
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
@@ -1303,51 +1368,58 @@
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" /> 
+			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "estagiario")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input checked type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" /> 
+			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "temporario")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input checked type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" /> 
+			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "aprendiz")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input checked type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" /> 
+			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "rpa")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input checked type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" value="{{ old('periodo_contrato') }}" /> 
+			 <input checked type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @else
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" /> 	 
+			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" /> 	 
 			 @endif
 			 @else
 			 <input disabled="true" type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input disabled="true" type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input disabled="true" type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input disabled="true" type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input disabled="true" type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contrato" name="periodo_contrato" style="width: 200px" /> 	 	 
+			 <input disabled="true" type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
+			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
+			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @endif
 			 </td>
 			</tr>
@@ -1433,7 +1505,6 @@
 		   </table>
 		  </center>
 
-		  
 		 <!--demiss-->		
 		 @endif
 
@@ -1442,9 +1513,9 @@
 		   <tr>
 			<td width="135"><center><h5>Demissão</h5> 
 			@if(old('tipo_mov2') == "on")
-			<input type="checkbox" onclick="desabilitar2('sim')" id="tipo_mov2" name="tipo_mov2" checked />
+			<input disabled type="checkbox" onclick="desabilitar2('sim')" id="tipo_mov2" name="tipo_mov2" checked />
 		    @else
-			<input type="checkbox" onclick="desabilitar2('sim')" id="tipo_mov2" name="tipo_mov2" />	
+			<input disabled type="checkbox" onclick="desabilitar2('sim')" id="tipo_mov2" name="tipo_mov2" />	
 			@endif
 			</center>
 			</td>
@@ -1572,9 +1643,9 @@
 		   <tr>
 			<td width="130" rowspan="5"><center><h5>Alteração Funcional</h5> 
 			@if(old('tipo_mov3') == "on")
-			<input type="checkbox" onclick="desabilitar3('sim')" checked id="tipo_mov3" name="tipo_mov3" />
+			<input disabled type="checkbox" onclick="desabilitar3('sim')" checked id="tipo_mov3" name="tipo_mov3" />
 			@else
-			<input type="checkbox" onclick="desabilitar3('sim')" id="tipo_mov3" name="tipo_mov3" />	
+			<input disabled type="checkbox" onclick="desabilitar3('sim')" id="tipo_mov3" name="tipo_mov3" />	
 			@endif
 			</center></td>
 			
@@ -1720,7 +1791,7 @@
 			<input required disabled="true" class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_novo" onChange="subtrai();"  name="salario_novo"  />	
 			@endif
 			  </td>
-			  <td width="300"><b>Renda Variável: </b>
+			  <td width="300"><b>Diferença Salarial: </b>
 			@if(old('tipo_mov3') == "on")
 			<input required class="form-control" readonly="true" placeholder="ex: 2500 ou 2580,21"  type="number" id="renda_var"   name="renda_var" value="{{ old('renda_var') }}" />	
 			@else
@@ -1740,7 +1811,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada  
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "merito")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" checked /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1751,7 +1823,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "mudanca_setor_area")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1762,7 +1835,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "transferencia_outra_unidade")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1773,7 +1847,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "enquadramento")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1784,7 +1859,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "mudanca_horaria")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1795,7 +1871,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;  
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "substituicao_demissao_voluntaria")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1806,7 +1883,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" checked /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "recrutamento_interno")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1817,7 +1895,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" checked /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@elseif(old('motivo') == "aumento_quadro")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1828,8 +1907,9 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" checked /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
-			@elseif(old('motivo') == "substituicao_demissao_forcada")
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
+			@elseif(old('motivo') == "empregado")
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
@@ -1839,7 +1919,20 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" checked /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
+			@elseif(old('motivo') == "empregador")
+			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivoA3" name="motivo" value="mudanca_setor_area" /> Mudança de Setor/Área &nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA4" name="motivo" value="transferencia_outra_unidade" /> Transferência para outra unidade 
+			<br><br> <input type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
+			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp; 
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@else
 			<input type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA2" name="motivo" value="merito" /> Mérito &nbsp;&nbsp;&nbsp;&nbsp;
@@ -1850,7 +1943,8 @@
 			<input type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
 			<input type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="checkbox" id="motivoA10" name="motivo" value="substituicao_demissao_forcada" /> Substituição por demissão forçada	
+			<input type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;  
+			<input type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@endif
 			@else
 			<input disabled="true" type="checkbox" id="motivoA" name="motivo" value="promocao" /> Promoção &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -1861,10 +1955,11 @@
 			<br><br> <input disabled="true" type="checkbox" id="motivoA5" name="motivo" value="enquadramento" /> Enquadramento &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 			<input disabled="true" type="checkbox" id="motivoA6" name="motivo" value="mudanca_horaria" /> Mudança de Horário 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input disabled="true" type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao_voluntaria" /> Substituição por demissão voluntária <br><br> 
+			<input disabled="true" type="checkbox" id="motivoA7" name="motivo" value="substituicao_demissao" /> Substituição por demissão <br><br> 
 			<input disabled="true" type="checkbox" id="motivoA8" name="motivo" value="recrutamento_interno" /> Recrutamento Interno &nbsp;&nbsp;&nbsp;&nbsp; 
 			<input disabled="true" type="checkbox" id="motivoA9" name="motivo" value="aumento_quadro" /> Aumento de Quadro &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input disabled="true" type="checkbox" id="motivoA10" name="motivo" /> Substituição por demissão forçada  	
+			<input disabled="true" type="checkbox" id="motivoA10" name="motivo" value="empregado" /> Empregado &nbsp;&nbsp;   
+			<input disabled="true" type="checkbox" id="motivoA11" name="motivo" value="empregador" /> Empregador
 			@endif
 			</td>
 		   </tr>
@@ -1876,9 +1971,9 @@
 		  <tr>
 			<td width="130" rowspan="5"><center><h5>Plantão Extra</h5> 
 			@if(old('tipo_mov4') == "on")
-			<input type="checkbox" onclick="desabilitar4('sim')" checked id="tipo_mov4" name="tipo_mov4" />
+			<input disabled type="checkbox" onclick="desabilitar4('sim')" checked id="tipo_mov4" name="tipo_mov4" />
 			@else
-			<input type="checkbox" onclick="desabilitar4('sim')" id="tipo_mov4" name="tipo_mov4" />	
+			<input disabled type="checkbox" onclick="desabilitar4('sim')" id="tipo_mov4" name="tipo_mov4" />	
 			@endif
 			</center>
 			<td colspan="2">Departamento 
@@ -1968,9 +2063,17 @@
 		   <tr>
 			   <td width="50">Quantidade de Plantões:
 			   @if(old('tipo_mov4') == "on")
-			   <input required="true" class="form-control" style="width: 250px;" type="text" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();" value="{{ old('quantidade_plantao') }}" />
+			   <select disabled required="true" class="form-control" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
+				 @for($a = 1; $a < 11; $a++)  
+				 <option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>
+				 @endfor
+			   </select>
 			   @else
-			   <input disabled="true" class="form-control" style="width: 250px;" type="text" id="quantidade_plantao" onChange="multiplicar();" name="quantidade_plantao" />	
+			   <select disabled required="true" class="form-control" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
+				 @for($a = 1; $a < 11; $a++)  
+				 <option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>
+				 @endfor
+			   </select>
 			   @endif
 			   </td>
 		       <td>Valor do Plantão:
@@ -1980,7 +2083,7 @@
 				<input required class="form-control" placeholder="ex: 2500 ou 2580,21"  disabled="true" type="number" onChange="multiplicar();" id="valor_plantao" name="valor_plantao"  />	
 				@endif
 				</td>
-				<td width="300">Valor a ser Pago:
+				<td width="300">Valor a ser Pago: (Quantidade * Valor)
 				@if(old('tipo_mov4') == "on")
 				<input required class="form-control" readonly="true" placeholder="ex: 2500 ou 2580,21"  type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />	
 				@else
@@ -1996,7 +2099,7 @@
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
 			<td width="40"><strong><h5>Justificativa/Observações:</h5></strong></td>
-			<td><textarea required type="text" id="descricao" name="descricao" class="form-control" required="true" rows="10" cols="60">  </textarea></td>
+			<td><textarea required type="text" id="descricao" name="descricao" class="form-control" required="true" rows="3" cols="60" maxlength="200">  </textarea></td>
 		   </tr>
 		  </table>
 		  </center>

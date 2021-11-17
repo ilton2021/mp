@@ -183,28 +183,25 @@ class HomeController extends Controller
 	public function graphics3()
     {
 		if(Auth::user()->id == 5){
-			$row5 = MP::where('unidade_id', 3)->get();
+			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 160){
-			$row5 = MP::where('unidade_id', 4)->get();
+			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 167){
-			$row5 = MP::where('unidade_id', 5)->get();
+			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 155){
-			$row5 = MP::where('unidade_id', 6)->get();
+			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 60){
-			$row5 = MP::where('unidade_id', 7)->get();
+			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 61){
-			$row5 = MP::where('unidade_id', 8)->get();
+			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 59){
-			$row5 = MP::where('unidade_id', 2)->get();
+			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			$row5 = MP::all();
+			$row5 = MP::where('unidade_id',0)->where('aprovada',1)->where('concluida',1)->get();
 		}
 		$qtd = sizeof($row5);
-		for($a = 0; $a < $qtd; $a++){
-			$ids[] = $row5[$a]->id;
-		} 
-		$admissao = Admissao::whereIn('mp_id',$ids)->get();
-		$qtdAd    = sizeof($admissao);
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$admissao = Admissao::whereIn('mp_id',$ids)->get(); $qtdAd = sizeof($admissao);
 		$totalSal = 0; $totalOutrasVerbas = 0;
 		for($a = 0; $a < $qtdAd; $a++)
 		{
@@ -212,7 +209,7 @@ class HomeController extends Controller
 			$totalOutrasVerbas += $admissao[$a]->outras_verbas;
 		} 
 		$unidades   = Unidade::all();
-		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades'));
+		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades','admissao'));
     }
 	
 	public function pesquisarGrafico3(Request $request)
@@ -223,72 +220,61 @@ class HomeController extends Controller
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
 			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::all();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
 				$data_i = "1970-01-01";
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
 		$qtd = sizeof($row5);
-		if($qtd > 0) {
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $row5[$a]->id;
-			} 
-		} else {
-			$ids[] = 0;
-		}
-		$admissao = Admissao::whereIn('mp_id',$ids)->get();
-		$qtdAd    = sizeof($admissao);
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$admissao = Admissao::whereIn('mp_id',$ids)->get(); $qtdAd = sizeof($admissao);
 		$totalSal = 0; $totalOutrasVerbas = 0;
 		for($a = 0; $a < $qtdAd; $a++)
 		{
 			$totalSal 		   += $admissao[$a]->salario;
 			$totalOutrasVerbas += $admissao[$a]->outras_verbas;
-		} 
-		
+		}
 		$unidades   = Unidade::all();
-		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades'));
+		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades','admissao'));
     }
 	
 	public function graphics4()
     {
 		if(Auth::user()->id == 5){
-			$row5 = MP::where('unidade_id', 3)->get();
+			$row5 = MP::where('unidade_id', 3)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 3;
 		} else if(Auth::user()->id == 160){
-			$row5 = MP::where('unidade_id', 4)->get();
+			$row5 = MP::where('unidade_id', 4)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 4;
 		} else if(Auth::user()->id == 167){
-			$row5 = MP::where('unidade_id', 5)->get();
+			$row5 = MP::where('unidade_id', 5)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 5;
 		} else if(Auth::user()->id == 155){
-			$row5 = MP::where('unidade_id', 6)->get();
+			$row5 = MP::where('unidade_id', 6)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 6;
 		} else if(Auth::user()->id == 60){
-			$row5 = MP::where('unidade_id', 7)->get();
+			$row5 = MP::where('unidade_id', 7)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 7;
 		} else if(Auth::user()->id == 61){
-			$row5 = MP::where('unidade_id', 8)->get();
+			$row5 = MP::where('unidade_id', 8)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 8;
 		} else if(Auth::user()->id == 59){
-			$row5 = MP::where('unidade_id', 2)->get();
-		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			$row5 = MP::all();
+			$row5 = MP::where('unidade_id', 2)->where('concluida',1)->where('aprovada',1)->get(); $idUnd = 2;
+		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('unidade_id',0)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 0;
 		}
-		$qtd  = sizeof($row5);
-		for($a = 0; $a < $qtd; $a++){
-			$ids[] = $row5[$a]->id;
-		}
-		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get();
-		$qtdAlt     = sizeof($alteracaoF);
+		$qtd = sizeof($row5);
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdAlt = sizeof($alteracaoF);
 		$totalAltSA = 0; $totalAltSN = 0;
 		for($c = 0; $c < $qtdAlt; $c++)
 		{
@@ -296,7 +282,7 @@ class HomeController extends Controller
 			$totalAltSN += $alteracaoF[$c]->salario_novo;
 		}
 		$unidades = Unidade::all();
-		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades'));
+		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades','alteracaoF'));
     }
 	
 	public function pesquisarGrafico4(Request $request)
@@ -305,38 +291,31 @@ class HomeController extends Controller
 		$idU   = $input['unidade_id'];
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
-		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
 			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::all();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
 				$data_i = "1970-01-01";
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
-		$qtd  = sizeof($row5);
-		if($qtd > 0) {
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $row5[$a]->id;
-			} 
-		} else {
-			$ids[] = 0;
-		}
-		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get();
-		$qtdAlt     = sizeof($alteracaoF);
+		$qtd = sizeof($row5);
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdAlt = sizeof($alteracaoF);
 		$totalAltSA = 0; $totalAltSN = 0;
 		for($c = 0; $c < $qtdAlt; $c++)
 		{
@@ -344,41 +323,38 @@ class HomeController extends Controller
 			$totalAltSN += $alteracaoF[$c]->salario_novo;
 		}
 		$unidades = Unidade::all();
-		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades'));
+		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades','alteracaoF'));
     }
 	
 	public function graphics5()
     {
 		if(Auth::user()->id == 5){
-			$row5 = MP::where('unidade_id', 3)->get();
+			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 3;
 		} else if(Auth::user()->id == 160){
-			$row5 = MP::where('unidade_id', 4)->get();
+			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 4;
 		} else if(Auth::user()->id == 167){
-			$row5 = MP::where('unidade_id', 5)->get();
+			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 5;
 		} else if(Auth::user()->id == 155){
-			$row5 = MP::where('unidade_id', 6)->get();
+			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 6;
 		} else if(Auth::user()->id == 60){
-			$row5 = MP::where('unidade_id', 7)->get();
+			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 7;
 		} else if(Auth::user()->id == 61){
-			$row5 = MP::where('unidade_id', 8)->get();
+			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 8;
 		} else if(Auth::user()->id == 59){
-			$row5 = MP::where('unidade_id', 2)->get();
+			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 2;
 		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			$row5 = MP::all();
+			$row5 = MP::where('unidade_id',0)->where('aprovada',1)->where('concluida',1)->get(); $idUnd = 0;
 		}
-		$qtd  		= sizeof($row5);
-		for($a = 0; $a < $qtd; $a++){
-			$ids[] = $row5[$a]->id;
-		} 
-		$demissao   = Demissao::whereIn('mp_id',$ids)->get();
-		$qtdDem     = sizeof($demissao);
-		$totalDem   = 0;
+		$qtd = sizeof($row5);
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$demissao = Demissao::whereIn('mp_id',$ids)->get(); $qtdDem = sizeof($demissao);
+		$totalDem = 0;
 		for($b = 0; $b < $qtdDem; $b++)
 		{
 			$totalDem += $demissao[$b]->custo_recisao;
 		}
 		$unidades = Unidade::all();
-		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','unidades'));
+		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','unidades','demissao'));
     }
 	
 	public function pesquisarGrafico5(Request $request)
@@ -387,9 +363,9 @@ class HomeController extends Controller
 		$idU   = $input['unidade_id'];
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
-		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
 			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::all();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
@@ -410,62 +386,58 @@ class HomeController extends Controller
 			}
 		} 
 		$qtd = sizeof($row5);
-		if($qtd > 0) {
-			for($a = 0; $a < $qtd; $a++){
-				$ids[] = $row5[$a]->id;
-			} 
-		} else {
-			$ids[] = 0;
-		}
-		$demissao   = Demissao::whereIn('mp_id',$ids)->get();
-		$qtdDem     = sizeof($demissao);
-		$totalDem   = 0;
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$demissao = Demissao::whereIn('mp_id',$ids)->get();
+		$qtdDem   = sizeof($demissao);
+		$totalDem = 0;
 		for($b = 0; $b < $qtdDem; $b++)
 		{
 			$totalDem += $demissao[$b]->custo_recisao;
 		}
 		$unidades = Unidade::all();
-		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','unidades'));
+		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','unidades','demissao'));
     }
 	
 	public function graphics6()
     {
 		if(Auth::user()->id == 5){
-			$row5 	  = MP::where('unidade_id', 3)->get();
-			$admissao = Admissao::where('unidade_id',3)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 3 GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 3;
 		} else if(Auth::user()->id == 160){
-			$row5 	  = MP::where('unidade_id', 4)->get();
-			$admissao = Admissao::where('unidade_id',4)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 4 GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 4;
 		} else if(Auth::user()->id == 167){
-			$row5 	  = MP::where('unidade_id', 5)->get();
-			$admissao = Admissao::where('unidade_id',5)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 5 GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 5;
 		} else if(Auth::user()->id == 155){
-			$row5 	  = MP::where('unidade_id', 6)->get();
-			$admissao = Admissao::where('unidade_id',6)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 6 GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 6;
 		} else if(Auth::user()->id == 60){
-			$row5 	  = MP::where('unidade_id', 7)->get();
-			$admissao = Admissao::where('unidade_id',7)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 7 GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 7;
 		} else if(Auth::user()->id == 61){
-			$row5 	  = MP::where('unidade_id', 8)->get();
-			$admissao = Admissao::where('unidade_id',8)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 8 GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 8;
 		} else if(Auth::user()->id == 59){
-			$row5 	  = MP::where('unidade_id', 2)->get();
-			$admissao = Admissao::where('unidade_id',2)->get();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao WHERE unidade_id = 2 GROUP BY `centro_custo` ORDER BY qtd DESC");
-		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			$row5 = MP::all();
-			$admissao = Admissao::all();
-			$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 2;
+		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('aprovada',1)->where('concluida',1)->get(); $qtd = sizeof($row5); $idUnd = 0;	 			
+		}
+		
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$admissao = Admissao::whereIn('mp_id',$ids)->get(); $qtdAdm = sizeof($admissao);
+		if($qtdAdm > 0) {
+			if($idUnd == 0) {
+				$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',0)
+					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+											  DB::raw('count(`centro_custo`) as qtd'))
+					->groupby('centro_custo')->get();
+			} else {
+				$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',$idUnd)
+					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+											  DB::raw('count(`centro_custo`) as qtd'))
+					->groupby('centro_custo')->get();
+			}
+		} else {
+			$centro_custo = DB::statement('SELECT * FROM admissao WHERE id = 0');
 		}
 		$qtdAd 	  = sizeof($admissao);
 		$unidades = Unidade::all();
-		return view('/graphics/graphics6', compact('row5','qtdAd','unidades','centro_custo'));
+		return view('/graphics/graphics6', compact('row5','qtdAd','unidades','admissao','centro_custo'));
     }
 	
 	public function pesquisarGrafico6(Request $request)
@@ -474,156 +446,92 @@ class HomeController extends Controller
 		$idU   = $input['unidade_id'];
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
-		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			$a = 0;
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
 			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$a = 0;
-				$row5 	  = MP::all();
+				$row5 	  = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)->where('aprovada',1)->get();
 				$admissao = Admissao::all();
-		 		$centro_custo = DB::select("SELECT Sum(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) AS qtd FROM admissao GROUP BY `centro_custo` ORDER BY qtd DESC");
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
-				$data_f = date('Y-m-d', strtotime('now')); $a = 1;
-				$row5 	= MP::whereBetween('data_emissao', [$data_i,$data_f])->get();
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 	= MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)
+					->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->get(); $a = 1;
+				$row5 = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)
+					->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->get(); $a = 1;
+				$row5 = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)
+					->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('unidade_id',$idU)->get(); $a = 1;
+				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
+															  ->where('unidade_id',$idU)->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
-				$data_f = date('Y-m-d', strtotime('now')); $a = 1;
-				$row5 	= MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 	= MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
+				  ->where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get(); $a = 1;
+				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
+					->where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get(); $a = 1;
+				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
+					->where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			}
 		}
 		$qtd = sizeof($row5);
-		if($a == 1){
-			if($qtd > 0) {
-				for($a = 0; $a < $qtd; $a++){
-					$ids[] = $row5[$a]->id;
-				} 
-			} else {
-				$ids[] = 0;
-			}
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		if($idU == 0){
 			$admissao = Admissao::whereIN('mp_id',$ids)->get();
-			$centro_custo = DB::select("SELECT SUM(`salario`) as soma, `centro_custo`, COUNT(`centro_custo`) 
-			AS qtd FROM admissao WHERE unidade_id = $idU GROUP BY `centro_custo` ORDER BY qtd DESC");
+			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)
+					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+							  DB::raw('count(`centro_custo`) as qtd'))
+					->groupby('centro_custo')->get();
+		} else {
+			$admissao = Admissao::whereIN('mp_id',$ids)->get();
+			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',$idU)
+					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+							  DB::raw('count(`centro_custo`) as qtd'))
+					->groupby('centro_custo')->get();
 		}
-		
 		$qtdAd    = sizeof($admissao); 
 		$unidades = Unidade::all();
-		return view('/graphics/graphics6', compact('row5','qtd','centro_custo','unidades','qtdAd'));
+		return view('/graphics/graphics6', compact('row5','qtd','centro_custo','unidades','qtdAd','admissao'));
     } 
 	
 	public function graphics7()
     {
 		if(Auth::user()->id == 5){
-			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',3)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
+			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 3;	
 		} else if(Auth::user()->id == 160){
-			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',4)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
-		} else if(Auth::user()->id == 167){
-			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',5)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
-		} else if(Auth::user()->id == 155){
-			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',6)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
-		} else if(Auth::user()->id == 60){
-			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',7)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
-		} else if(Auth::user()->id == 61){
-			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',8)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
-		} else if(Auth::user()->id == 59){
-			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
-			   $centro_custo2 = DB::table('alteracao_funcional')
-				    ->whereIn('mp_id',$ids)->where('unidade_id',2)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupby('centro_custo_novo')->get();
-			} else {
-			   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-			}
-		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			$row5 = MP::where('unidade_id',0)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        	if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-			$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-			if($qtdMP > 0){
+			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 4;
+  		} else if(Auth::user()->id == 167){
+			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 5;
+     	} else if(Auth::user()->id == 155){
+			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 6;
+     	} else if(Auth::user()->id == 60){
+			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 7;
+     	} else if(Auth::user()->id == 61){
+			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 8;
+  		} else if(Auth::user()->id == 59){
+			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 2;
+   		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('unidade_id',0)->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5); $idUnd = 0;
+ 		}
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
+		if($qtdMP > 0){
+			if($idUnd == 0) {
 				$centro_custo2 = DB::table('alteracao_funcional')
-					->whereIn('mp_id',$ids)
-				    ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   		  DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					->groupByRaw('centro_custo_novo')->get();
+				->whereIn('mp_id',$ids)
+				->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
+				   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
+				->groupby('centro_custo_novo')->get();
 			} else {
-				$centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
+				$centro_custo2 = DB::table('alteracao_funcional')
+				->whereIn('mp_id',$ids)->where('unidade_id',$idUnd)
+				->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
+				   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
+				->groupby('centro_custo_novo')->get();
 			}
+		} else {
+			$centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
 		}
 		$qtd  = sizeof($alteracaoF);
 		$unidades = Unidade::all();

@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 71 || Auth::user()->id == 13)
 		<center>
 	    <form action="{{\Request::route('pesquisarGrafico6')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -105,20 +105,52 @@
 		@endif
 		<table class="table table-bordered" width="1000">
 		<tr>
-		 <td colspan="2"><b>Total de Salário por Centro de Custo - MP Admissão</b></td>
+		 <td colspan="4"><b>Total de Salário por Centro de Custo - MP Admissão</b></td>
 		 <td align="center"><a id="imprimir" width="80px" name="imprimir" type="button" class="btn btn-info btn-sm" style="color: #FFFFFF;"> Imprimir <i class="fas fa-box"></i> </a> </td>
 		</tr>
 		<tr>
-		 <td><b><center>Centro de Custo</center></td>
-		 <td><b><center>Quantidade</center><b></td>
+		 <td colspan="2"><b><center>Centro de Custo</center></td>
+		 <td colspan="2"><b><center>Quantidade</center><b></td>
 		 <td><b><center>Salário</center></b></td>
 		</tr>
 		@foreach($centro_custo as $cc)
 		<tr>
-		 <td style="background-color: #90EE90"><center>{{ $cc->centro_custo }}</center></td>
-		 <td style="background-color: #FFDB58"><center>{{ $cc->qtd }}</center></td>
-		 <td style="background-color: #87CEFA"><center>{{ "R$ ". number_format($cc->soma,2,',','.') }}</center></td>
-		</tr>
+		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo }}</b></center></td>
+		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
+		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
+	 	</tr>
+		 <tr id="table_descricao" disabled="true">
+	  	    <td><center>NÚMERO MP</center></td>
+			<td><center>CARGO</center></td>
+			<td><center>SALÁRIO</center></td>
+			<td><center>OUTRAS VERBAS</center></td>
+			<td><center>MOTIVO</center></td>
+		 </tr>
+		@foreach($admissao as $adm)
+		 @if($adm->centro_custo == $cc->centro_custo)	 
+		 <tr>
+		 <tbody>
+			@foreach($row5 as $mps)
+			 @if($mps->id == $adm->mp_id)
+	  		   <td><center> {{ $mps->numeroMP }} </center></td>
+			 @endif
+			@endforeach
+			<td><center> {{ $adm->cargo }} </center></td>
+			<td><center> {{ "R$ ". number_format($adm->salario,2,',','.') }} </center></td>
+			<td><center> {{ "R$ ". number_format($adm->outras_verbas,2,',','.') }} </center></td>
+			@if($adm->motivo == "substituicao_definitiva")
+			<td><center> {{ 'Substituição Definitiva' }} </center></td>
+			@elseif($adm->motivo == "substituicao_temporaria")
+			<td><center> {{ 'Substituição Temporária' }} </center></td>
+			@elseif($adm->motivo == "aumento_quadro")
+			<td><center> {{ 'Aumento de Quadro' }} </center></td>
+			@elseif($adm->motivo == "segundo_vinculo")
+			<td><center> {{ 'Segundo Vínculo' }} </center></td>
+			@endif
+		 </tbody>	
+		 </tr>
+		 @endif
+		@endforeach
 		@endforeach
 		</table>	
       </div>

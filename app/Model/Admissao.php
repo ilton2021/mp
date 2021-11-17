@@ -20,6 +20,8 @@ class Admissao extends Model
 		'turno',
 		'tipo',
 		'periodo_contrato',
+		'periodo_inicio',
+		'periodo_fim',
 		'motivo',
 		'motivo2',
 		'possibilidade_contratacao',

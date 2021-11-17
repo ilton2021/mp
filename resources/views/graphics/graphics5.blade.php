@@ -94,7 +94,7 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 13 || Auth::user()->id == 71)
 		<center>
 	    <form action="{{\Request::route('pesquisarGrafico5')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -144,6 +144,58 @@
 			</td> 
 		   </tr>
 		  </table>
+		</center>
+		<center>
+	  	 <table class="table table-bordered">
+	  	  <tr>
+			<td style="background-color: #90EE90"><center>NÚMERO MP</center></td>			
+			<td style="background-color: #FFDB58"><center>AVISO PRÉVIO</center></td>
+			<td style="background-color: #FFDB58"><center>TIPO DE DESLIGAMENTO</center></td>
+			<td style="background-color: #87CEFA"><center>ÚLTIMO DIA</center></td>
+			<td style="background-color: #90EE90"><center>CUSTO DA RECISÃO</center></td>
+		  </tr> <?php $a = 0; $totalCustos = 0; ?>
+		  @foreach($demissao as $dem)
+		  <tr> <?php $a += 1; $totalCustos += $dem->custo_recisao; ?>
+			@foreach($row5 as $mp)
+			 @if($mp->id == $dem->mp_id)
+			   <td><center>{{ $mp->numeroMP }}</center></td>
+			 @endif
+			@endforeach
+			@if($dem->aviso_previo == "dispensado")
+			<td><center>{{ 'DISPENSADO' }}</center></td>
+			@elseif($dem->aviso_previo == "indenizado")
+			<td><center>{{ 'INDENIZADO' }}</center></td>
+			@elseif($dem->aviso_previo == "trabalhado")
+			<td><center>{{ 'TRABALHADO' }}</center></td>
+			@elseif($dem->aviso_previo == "dispensado")
+			<td><center>{{ 'DISPENSADO' }}</center></td>
+			@endif
+			@if($dem->tipo_desligamento == "sem_justa_causa")
+			<td><center>{{ 'DISPENSA SEM JUSTA CAUSA' }}</center></td>
+			@elseif($dem->tipo_desligamento == "termino_contrato")
+			<td><center>{{ 'TÉRMINO DE CONTRATO' }}</center></td>
+			@elseif($dem->tipo_desligamento == "extincao_antecipada")
+			<td><center>{{ 'EXTINÇÃO ANTECIPADA DO CONTRATO' }}</center></td>
+			@elseif($dem->tipo_desligamento == "aposentadoria")
+			<td><center>{{ 'APOSENTADORIA' }}</center></td>
+			@elseif($dem->tipo_desligamento == "com_justa_causa")
+			<td><center>{{ 'DISPENSA COM JUSTA CAUSA' }}</center></td>
+			@elseif($dem->tipo_desligamento == "morte")
+			<td><center>{{ 'MORTE' }}</center></td>
+			@elseif($dem->tipo_desligamento == "pedido_demissao")
+			<td><center>{{ 'PEDIDO DE DEMISSÃO' }}</center></td>
+			@endif
+			<td><center>{{ date('d/m/Y', strtotime($dem->ultimo_dia))  }}</center></td>
+			<td><center>{{ "R$ ". number_format($dem->custo_recisao,2,',','.') }}</center></td>
+		  </tr>
+		  @endforeach
+		  <tr>
+	  		<td><center><b>QUANTIDADE MP's:</b></center></td>
+			<td><center><b>{{ $a }}</b></center></td>
+			<td><center><b>TOTAL DE CUSTOS:</b></center></td>
+			<td colspan="2"><center><b>{{ "R$ ". number_format($totalCustos,2,',','.') }}</b></center></td>
+		  </tr>
+		 </table>
 		</center>
     </div>
     </section>		 

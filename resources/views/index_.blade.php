@@ -101,9 +101,16 @@
 		  <br>	 
 		  <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
+			  <tr><td width="800px;" colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td></tr>
 			  <tr>
-			   <td width="800px;" colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
-		 	   <td >Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" value="<?php echo $mp->data_prevista; ?>" required readonly="true" title="{{ $mp->data_prevista }}" /></td>
+			  <td width="800px;"> <center><br><b>IMPACTO FINANCEIRO:</b>
+				  @if($mp->impacto_financeiro == "sim")
+			   	   SIM: <input type="checkbox" id="sim_impacto" name="sim_impacto" disabled checked onclick="desabilitarTipos1('sim')" /> 
+				  @elseif($mp->impacto_financeiro == "nao")
+				   NÃO: <input type="checkbox" id="nao_impacto" name="nao_impacto" disabled checked onclick="desabilitarTipos1('sim')" /> 
+				  @endif
+			  </center></td>	  
+		 	   <td>Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" value="<?php echo $mp->data_prevista; ?>" required readonly="true" title="{{ $mp->data_prevista }}" /></td>
 			  </tr>	
 			</table>
 		  </center>
@@ -209,7 +216,14 @@
 			 <input type="checkbox" checked id="tipo" name="tipo" value="aprendiz" disabled="true" /> Aprendiz 
 			 @elseif($adm->tipo == "rpa")
 			 <input type="checkbox" checked id="tipo" name="tipo" value="rpa" disabled="true" /> RPA </td>
+			 @if($adm->periodo_contrato != "")
 		     <td>Período do Contrato RPA: <input class="form-control" type="text" id="periodo_contrato" name="periodo_contrato" value="<?php echo $adm->periodo_contrato; ?>" readonly="true" /></td>
+			 @elseif($adm->periodo_inicio != "")
+			 <td>
+				Período Início RPA: <input class="form-control" type="text" id="periodo_inicio" name="periodo_inicio" value="<?php echo $adm->periodo_inicio; ?>" readonly="true" />
+				Período Fim RPA: <input class="form-control" type="text" id="periodo_fim" name="periodo_fim" value="<?php echo $adm->periodo_fim; ?>" readonly="true" />
+			 </td>
+			 @endif
 			 @endif
 			</tr>
 			<tr>

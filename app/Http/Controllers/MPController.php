@@ -80,11 +80,18 @@ class MPController extends Controller
 	
 	//Salvar MP//
 	public function storeMP($id_unidade, Request $request)
-	{
+	{ 
+		$input        = $request->all(); 	
+		$input['inativa'] = 0;
 		$input['unidade_id'] = $id_unidade;
+		if(!empty($input['sim_impacto']) == "on") {
+			$input['impacto_financeiro'] = 'sim';
+		} else if (!empty($input['nao_impacto']) == "on") {
+			$input['impacto_financeiro'] = 'nao';
+		}
 		$unidade 	  = Unidade::where('id',$id_unidade)->get();
-		$input        = $request->all(); 	 
 		$tipo_mp      = $input['tipo_mp'];
+		$input['inativa'] = 0;
 		$aprovada     = 0;
 		$dataEmissao  = date('d-m-Y', strtotime('now'));
 		$dataP 		  = $input['data_prevista'];
@@ -211,14 +218,35 @@ class MPController extends Controller
 				}
 				if($input['tipo'] == "rpa")
 				{
-					if($input['periodo_contrato'] == ""){
-						$validator = "Informe qual é o Período do Contrato do RPA!";
-					    return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
-					    ->withErrors($validator)
-                        ->withInput(session()->flashInput($request->input()));
+					$periodo_inicio = date('m/Y', strtotime($input['mes_ano']));
+					$periodo_fim	= date('m/Y', strtotime($input['mes_ano2']));
+					$arr  = explode('/',$periodo_inicio);
+					$arr2 = explode('/',$periodo_fim);
+					$mes1 = $arr[0];	
+					$ano1 = $arr[1];
+					$mes2 = $arr2[0];
+					$ano2 = $arr2[1];
+					$a1 = ($ano2 - $ano1)*12;
+					$m1 = ($mes2 - $mes1)+1;
+					$m3 = ($m1 + $a1);
+
+					if(strtotime($periodo_inicio) > strtotime($periodo_fim)) {
+						$validator = "Datas de RPA Inválidas!";
+						return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+							->withErrors($validator)
+							->withInput(session()->flashInput($request->input()));
 					} else {
-						$input['tipo'] = 'rpa';
+						if($m3 > 3) {
+							$validator = "Máximo 3 meses de RPA!";
+							return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+								->withErrors($validator)
+								->withInput(session()->flashInput($request->input()));
+						}
 					}
+
+					$input['periodo_inicio'] = $periodo_inicio;
+					$input['periodo_fim'] 	 = $periodo_fim;
+
 					$missing = array();
 					for($a = 1; $a <= 6; $a++){
 						if(!empty($input['g_'.$a])){

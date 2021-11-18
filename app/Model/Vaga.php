@@ -40,6 +40,7 @@ class Vaga extends Model
 		'tipo_vaga',
 		'concluida',
 		'aprovada',
+		'inativa',
 		'data_emissao',
 		'created_at',
 		'updated_at'

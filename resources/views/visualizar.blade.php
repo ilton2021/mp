@@ -534,7 +534,7 @@
 		   <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			<tr>
-				<td width="130" rowspan="5"><center><h5>Plantão Extra</h5></center>
+				<td width="130" rowspan="5"><center><h5>Outros</h5></center>
 				<td colspan="2">Departamento 
 				<select readonly class="form-control" id="setor_plantao" name="setor_plantao">
 				  <option id="setor_plantao" name="setor_plantao" value="<?php echo $plantao->setor_plantao ?>">{{ $plantao->setor_plantao }}</option>

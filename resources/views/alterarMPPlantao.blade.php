@@ -124,7 +124,15 @@
 			</tr>
 			<tr>
 				<td width="50"><b>Quantidade de Plantões:</b>
-				 <input class="form-control" style="width: 250px;" type="text" onChange="multiplicar();" id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $plantao->quantidade_plantao; ?>" />
+				<select required="true" class="form-control" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
+				 @for($a = 1; $a < 11; $a++)  
+				 @if($plantao->quantidade_plantao == $a)
+				  <option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>" selected>{{ $a }}</option>
+				 @else
+				  <option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>	
+				 @endif
+				 @endfor
+			   </select>
 				</td>
 				<td><b>Valor do Plantão: </b>
 				 <input class="form-control" id="valor_plantao" name="valor_plantao" onChange="multiplicar();" value="<?php echo $plantao->valor_plantao; ?>" />

@@ -1063,8 +1063,6 @@ class HomeController extends Controller
 	public function pesquisaMPsAp(Request $request)
 	{
 		$unidades   = Unidade::all();
-		$aprovacao  = Aprovacao::all();
-		$gestores   = Gestor::all();
 		$input 	    = $request->all();
 		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
 		if(empty($input['pesq'])) { $input['pesq'] = ""; }
@@ -1087,11 +1085,11 @@ class HomeController extends Controller
 			$qtd = sizeof($pesquisa); 
 		} else if($pesq2 == "plantao") {
 			$pesquisa = Plantao::all();
-			$qtd = sizeof($pesquisa);
+			$qtd = sizeof($pesquisa); 
 		} else if($pesq2 == "rpa"){
 			$pesquisa = Admissao::where('tipo','rpa')->get();
 			$qtd = sizeof($pesquisa); 
-		} else if($pesq2 == "admissaoHCP") {
+		} else if($pesq2 == "admissao_hcp") {
 			$pesquisa = AdmissaoHCP::all();
 			$qtd = sizeof($pesquisa);
 		} else { $qtd = 0; } 
@@ -1163,18 +1161,18 @@ class HomeController extends Controller
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
-						->where('aprovada',1)->where('unidade_id',$unidade_id)->get();	  
+						->where('aprovada',1)->where('unidade_id',$unidade_id)->paginate(50);	  
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
-						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->get();	  
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->paginate(50);	  
 					}
 				} else {
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->paginate(50);
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('unidade_id',$und)
-						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->paginate(50);
 					}
 				}
 			} else { 
@@ -1186,33 +1184,33 @@ class HomeController extends Controller
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
 								->where('mp.unidade_id',$unidade_id)
-								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->get();
+								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->paginate(50);
 					}else {
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
-								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->get();
+								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->paginate(50);
 					}
 				} else if($unidade_id != 0){
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
-						->where('aprovada',1)->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->get();
+						->where('aprovada',1)->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->paginate(50);
 					} else {
 						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida',1)
-						->where('aprovada',1)->where('unidade_id',$unidade_id)->get();
+						->where('aprovada',1)->where('unidade_id',$unidade_id)->paginate(50);
 					}
 				} else {
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
-						->where('aprovada',1)->whereIn('unidade_id',$und)->get();
+						->where('aprovada',1)->whereIn('unidade_id',$und)->paginate(50);
 					} else {
 						$mps = DB::table('mp')->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',1)->orderBy('unidade_id','ASC')->get();
+						->where('aprovada',1)->orderBy('unidade_id','ASC')->paginate(50);
 					}
 				}
 			}
 		}
-		return view('aprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
+		return view('aprovadasMPs', compact('unidades','mps','pesq2','pesq'));
 	}
 	
 	public function pesquisaMPsRe(Request $request)

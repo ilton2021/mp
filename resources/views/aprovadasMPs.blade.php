@@ -128,7 +128,7 @@
 			<select class="form-control" id="pesq2" name="pesq2" onchange="data('sim')">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
 			  <option id="pesq2" name="pesq2" value="admissao">ADMISSÃO</option>
-			  <option id="pesq2" name="pesq2" value="admissaoHCP">
+			  <option id="pesq2" name="pesq2" value="admissao_hcp">ADMISSÂO HCP </option>
 			  <option id="pesq2" name="pesq2" value="alteracao">ALTERAÇÃO FUNCIONAL</option>
 			  <option id="pesq2" name="pesq2" value="demissao">DEMISSÃO</option>
 			  <option id="pesq2" name="pesq2" value="plantao">PLANTÃO EXTRA</option>
@@ -159,7 +159,6 @@
 			  <tr>
 			   <td><center>NOME DA MP</center></td>
 			   <td><center>SOLICITANTE</center></td>
-			   <td><center>MENSAGEM</center></td>
 			   <td><center>Visualizar</center></td>
 			   @if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH")
 			   <td><center>RH3</center></td>
@@ -172,43 +171,6 @@
 			  <tr>  
 			   <td><center>{{ $mp->numeroMP }}</center></td>
 			   <td><center>{{ $mp->solicitante }}</center></td>   
-			   <td>
-			   <?php $qtd = sizeof($aprovacao); ?>
-			   <?php for($i = 0; $i < $qtd; $i++) { ?>
-			   <?php  if($aprovacao[$i]->mp_id == $mp->id && $aprovacao[$i]->ativo == 1) { ?>
-			     <center><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal<?php echo $aprovacao[$i]->id; ?>" > 
-			     Status
-				 </button>
-				 <div class="modal fade" id='exampleModal<?php echo $aprovacao[$i]->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  <div class="modal-dialog" role="document">
-						<div class='modal-content'>
-						  <div class='modal-header'>
-							<h5 class='modal-title' align="left"><b><center>Status:</center></b></h5>
-							<button type='button' class='close' data-dismiss='modal'>&times;</button>
-						  </div>
-						  <div class='modal-body'>
-							<div class='panel panel-default'>
-							 <div class='panel-heading'> </div>
-							 <div class='panel-body'>
-							   @foreach($gestores as $g)
-							    @if($g->id == $aprovacao[$i]->gestor_anterior)
-							      <p align="justify">{{ 'Validação Final: ' }}<b>{{ $g->nome }}</b></a>
-							    @endif
-							   @endforeach	
-							 	 <p align="justify">{{ 'Situação:' }}<b><font color="blue">{{ ' APROVADO' }}</font></b></a>		
-							  	 <p align="justify">{{ 'Mensagem: ' }} <b> {{ $aprovacao[$i]->motivo }}</b></a>
-							 </div>
-							</div>
-						  </div>
-						  <div class='modal-footer'>
-							<span class='codigo'></span>
-						  </div>
-					   </div>
-					 </div>
-				 </div></center>
-			   <?php  } ?>
-			   <?php } ?>
-			   </td>
 			   <td><center><a href="{{ route('visualizarMP', $mp->id) }}" class="btn-info btn">Visualizar</a></center></td>
 			   @if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH")
 			   <td> 
@@ -224,7 +186,12 @@
 			 @endforeach
 		  </td>
 		 </tr>
-		 </table>
+		 </table><center>
+		 <table>
+			<tr>
+			  <td> {{ $mps->appends(['pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
+			</tr> 
+		 </table></center>
 	    </center>
 	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>

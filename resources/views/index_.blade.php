@@ -41,11 +41,14 @@
         </ul>
       </div>
 	  @endif 	
+	  
+	  @if(!empty($admissaoHCP))
 	  <?php $qtdAdmHCP = sizeof($admissaoHCP); ?>
 	  @if($qtdAdmHCP > 0)
 	  <form action="{{\Request::route('salvarMPAdmissaoHCP'), $unidade[0]->id}}" method="post">
 	  @else
 	  <form action="{{\Request::route('salvarMPAdmissao'), $unidade[0]->id}}" method="post">	
+	  @endif
 	  @endif
 	  <input type="hidden" name="_token" value="{{ csrf_token() }}">
 	      <center>
@@ -115,6 +118,7 @@
 			</table>
 		  </center>
 		  @endforeach
+		  
 
 		  @if(!empty($admissao))
 		  @foreach($admissao as $adm)	
@@ -585,7 +589,7 @@
 		   <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			<tr>
-				<td width="130" rowspan="5"><center><h5>Plantão Extra</h5> 
+				<td width="130" rowspan="5"><center><h5>Outros</h5> 
 				<input type="checkbox" disabled="true" checked id="tipo_mov4" name="tipo_mov4" />
 				</center>
 				<?php $a = 0; ?>
@@ -1116,7 +1120,7 @@
 		    <td><input readonly="true" type="date" id="data_superintendencia" name="data_superintendencia" class="form-control" value="" /></td>   
 			<td>
 			@if(!empty($superId))
-			@foreach($aprovacao as $ap) <?php var_dump($superId[0]->id); exit(); ?>
+			@foreach($aprovacao as $ap) 
 			  @if($ap->mp_id == $mps[0]->id && $superId[0]->id == $ap->gestor_anterior)
 				 <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $ap->id; ?>" > 
 			     Mensagem
@@ -1160,11 +1164,15 @@
 			<td align="right"> 
 			<?php $a = 0; ?>
 			@if(Auth::user()->name == $mps[0]->solicitante)
+			 @if(!empty($admissaoHCP))
 			  @if($qtdAdmHCP > 0)
 			  <a href="{{ route('salvarMPAdmissaoHCP', array($mps[0]->id,$gId)) }}" type="button" class="btn btn-success btn-sm" > Concluir <i class="fas fa-times-circle"></i> </a>
 			  @else
 			  <a href="{{ route('salvarMPDemissao', array($mps[0]->id,$gId)) }}" type="button" class="btn btn-success btn-sm" > Concluir <i class="fas fa-times-circle"></i> </a>
 			  @endif
+			 @else
+			  <a href="{{ route('salvarMPDemissao', array($mps[0]->id,$gId)) }}" type="button" class="btn btn-success btn-sm" > Concluir <i class="fas fa-times-circle"></i> </a>
+			 @endif
 			@elseif(Auth::user()->id == 104 && $mps[0]->gestor_id == 25)
 				
 			@else

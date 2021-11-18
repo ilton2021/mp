@@ -292,9 +292,17 @@
 			 <input type="checkbox" id="tipo" name="tipo" value="temporario"  /> Temporário  
 			 <input type="checkbox" id="tipo" name="tipo" value="aprendiz"  /> Aprendiz 
 			 <input type="checkbox" checked id="tipo" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" /> RPA - (Período do Contrato RPA): 
-			 <input type="text" id="periodo_contrato" name="periodo_contrato" value="<?php echo $adm->periodo_contrato; ?>" /></td>
+			 @if($adm->periodo_contrato != "")
+		     Período do Contrato RPA: <input class="form-control" type="text" id="periodo_contrato" name="periodo_contrato" value="<?php echo $adm->periodo_contrato; ?>" readonly="true" />
+			 @elseif($adm->periodo_inicio != "")
+			    <input type="text" id="mes_ano_" name="mes_ano_" style="width: 70px;" disabled value="<?php echo $adm->periodo_inicio; ?>" />
+				<input type="month" required id="mes_ano" name="mes_ano" style="width: 150px;" value="<?php echo $adm->periodo_inicio; ?>" /> <br>Até
+				
+				<input type="text" id="mes_ano2_" name="mes_ano2_" style="width: 70px;" disabled value="<?php echo $adm->periodo_fim; ?>" />
+				<input type="month" required id="mes_ano2" name="mes_ano2" style="width: 150px;" value="<?php echo $adm->periodo_fim; ?>" />
+			 @endif
 		     @endif
-			</tr>
+			</tr> 
 			<tr>
 			 <td colspan="3">Motivo: <br> 
 			 @if($adm->motivo == "aumento_quadro")

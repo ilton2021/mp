@@ -1969,7 +1969,7 @@
 		<center>
 		<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		  <tr>
-			<td width="130" rowspan="5"><center><h5>Plantão Extra</h5> 
+			<td width="130" rowspan="5"><center><h5>Outros</h5> 
 			@if(old('tipo_mov4') == "on")
 			<input disabled type="checkbox" onclick="desabilitar4('sim')" checked id="tipo_mov4" name="tipo_mov4" />
 			@else

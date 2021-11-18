@@ -1137,14 +1137,13 @@ class MPController extends Controller
 		$idMP 		   = $id;
 		$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
 		$cargos 	   = Cargos::all();
-		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
+		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade','like','%'.$unidade[0]->id.'%')->get();
 		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
 			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
 			return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
-		
 		$validator = Validator::make($request->all(), [
 				'cargo' 					=> 'required|max:255',
 				'salario'  					=> 'required',
@@ -1204,6 +1203,36 @@ class MPController extends Controller
 				}
 			$input['acesssorh3'] = 0;
 			$input['usuario_acessorh3'] = '';	
+
+			$periodo_inicio = date('m/Y', strtotime($input['mes_ano']));
+			$periodo_fim	= date('m/Y', strtotime($input['mes_ano2']));
+			$arr  = explode('/',$periodo_inicio);
+			$arr2 = explode('/',$periodo_fim);
+			$mes1 = $arr[0];	
+			$ano1 = $arr[1];
+			$mes2 = $arr2[0];
+			$ano2 = $arr2[1];
+			$a1 = ($ano2 - $ano1)*12;
+			$m1 = ($mes2 - $mes1)+1;
+			$m3 = ($m1 + $a1); 
+			
+			if($m3 < 0) {
+				$validator = "Datas de RPA Inválidas!";
+				return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
+			} else {
+				if($m3 > 3) {
+					$validator = "Máximo 3 meses de RPA!";
+					return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
+				}
+			}
+
+			$input['periodo_inicio'] = $periodo_inicio;
+			$input['periodo_fim'] 	 = $periodo_fim;
+
 			$admissao 	   = Admissao::find($id_adm);
 			$admissao->update($input);
 			$mp 		   = MP::find($id);
@@ -1270,7 +1299,7 @@ class MPController extends Controller
 		$idMP = $id;
 		$cargos = Cargos::all();
 		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
-		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->orderBy('nome','ASC')->get();
+		$setores 	   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->orderBy('nome','ASC')->get();
 		return view('alterarMPPlantao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','justificativa','gestor','cargos','centro_custos','setores'));
 	}
 
@@ -1295,9 +1324,12 @@ class MPController extends Controller
 		$idA 		   = $id_plan;
 		$idMP 		   = $id;
 		$aprovacao     = Aprovacao::where('mp_id',$id)->get();
+		$cargos = Cargos::all(); 
+		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
+		$setores 	   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->orderBy('nome','ASC')->get();
 		if(strtotime($dataEmissao) >= strtotime($dataPrevista)){
 			$validator = "Data Prevista não pode ser Menor ou Igual a Data de Emissão!";
-			return view('alterarMPDemissao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+			return view('alterarMPDemissao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','setores'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		}
@@ -1313,7 +1345,7 @@ class MPController extends Controller
 				'valor_pago_plantao'   => 'required|max:255'
 		]);
 		if ($validator->fails()) {
-			return view('alterarMPPlantao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+			return view('alterarMPPlantao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','aprovacao','justificativa','gestor','solicitante','cargos','centro_custos','setores'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
 		} else {

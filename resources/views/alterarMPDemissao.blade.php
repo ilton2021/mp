@@ -58,8 +58,20 @@
 		  <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			  <tr>
-			   <td width="800px;" colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
-		 	   <td >Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" value="<?php echo $mp->data_prevista; ?>" required  title="{{ $mp->data_prevista }}" /></td>
+			   <td  colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
+			  </tr>
+			  <tr>  
+			   <td width="800px;"> <center><br><b>IMPACTO FINANCEIRO:</b>
+				   <?php if($mp->impacto_financeiro == "sim"){  ?>
+				   SIM: <input type="checkbox" checked id="sim_impacto" name="sim_impacto" value="sim" />
+				   NÃO: <input type="checkbox" id="nao_impacto" name="nao_impacto" value="nao" />  
+				   <?php } else if($mp->impacto_financeiro == "nao"){ ?>
+				   SIM: <input type="checkbox" id="sim_impacto" name="sim_impacto" value="sim" />
+				   NÃO: <input type="checkbox" checked id="nao_impacto" name="nao_impacto" value="nao" /> 
+				   <?php } ?>
+				</center>
+				</td>
+		 	   <td>Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $mp->data_prevista; ?>" /></td>
 			  </tr>	
 			</table>
 		  </center>
@@ -144,7 +156,8 @@
 			<br><br> <input type="checkbox" checked id="aviso_previo" name="aviso_previo" value="dispensado" /> Dispensado </td>
 		    @endif
 			<td width="50">Último dia Trabalhado: <br> <input class="form-control" type="date" id="ultimo_dia" name="ultimo_dia" value="<?php echo $dem->ultimo_dia; ?>" required /> 
-			<br><br> Custo da Recisão: <input required class="form-control" placeholder="ex: 2500 ou 2580,21" title="ex: 2500 ou 2580,21" step="00.01" type="number" id="custo_recisao" name="custo_recisao" value="<?php echo $dem->custo_recisao; ?>" /></td>
+			<br> Custo da Recisão: <input required class="form-control" placeholder="ex: 2500 ou 2580,21" title="ex: 2500 ou 2580,21" step="00.01" type="number" id="custo_recisao" name="custo_recisao" value="<?php echo $dem->custo_recisao; ?>" />
+			<br> Salário Bruto: <input required class="form-control" placeholder="ex: 2500 ou 2580,21" title="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario_bruto" name="salario_bruto" value="<?php echo $dem->salario_bruto; ?>" /></td>
 		   </tr>
 		  </table>
 		  </center>

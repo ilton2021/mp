@@ -189,7 +189,7 @@
 		 </table><center>
 		 <table>
 			<tr>
-			  <td> {{ $mps->appends(['pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
+			  <td> {{ $mps->appends(['unidade_id' => isset($unidade_id) ? $unidade_id : 	'','pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
 			</tr> 
 		 </table></center>
 	    </center>

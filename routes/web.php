@@ -80,7 +80,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/unidade/mp/{id}/{i}/', 'MPController@storeMP')->name('storeMP');
 		Route::get('/pdf/{idG}/{idMP}','MPController@mpPDF')->name('mpPDF');
 		Route::get('/home/excluir/mp','MPController@excluirMPs')->name('excluirMPs');
-		Route::post('/home/excluir/mp','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
+		Route::post('/home/excluir/mp/','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
 		Route::get('/home/excluir/mp/{id}','MPController@excluirMP')->name('excluirMP');
 		Route::post('/home/excluir/mp/{id}','MPController@deleteMP')->name('deleteMP');
 		Route::get('/home/visualizarMPS/minhasMPS', 'HomeController@minhasMPS')->name('minhasMPS');
@@ -165,6 +165,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroUnidade/unidadeAlterar/{id}/', 'UnidadeController@updateUnidade')->name('updateUnidade');
 		Route::get('cadastroUnidade/unidadeExcluir/{id}', 'UnidadeController@unidadeExcluir')->name('unidadeExcluir');
 		Route::post('cadastroUnidade/unidadeExcluir/{id}/', 'UnidadeController@destroyUnidade')->name('destroyUnidade');
+		
 		////
 
 		//Cargos
@@ -212,6 +213,12 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/home/inativar/mp/{id}','HomeController@inativarMPs')->name('inativarMPs');
 		Route::get('/home/visualizarMPS/inativasMPs', 'HomeController@inativasMPs')->name('inativasMPs');
 		////
+
+		//Inativar Vagas
+		Route::post('/home/inativar/vaga/{id}','HomeController@inativandoVagas')->name('inativandoVagas');
+		Route::get('/home/inativar/vaga/{id}','HomeController@inativarVagas')->name('inativarVagas');
+		Route::get('/home/visualizarVagas/inativasVagas', 'HomeController@inativasVagas')->name('inativasVagas');
+		////
 		
 		Route::get('/home/graphicsIndex','HomeController@graphicsIndex')->name('graphicsIndex');
 		Route::get('/home/graphics','HomeController@graphics')->name('graphics');
@@ -239,6 +246,15 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/home/graphics9','HomeController@graphics9')->name('graphics9');
 		Route::post('/home/graphics9','HomeController@graphics9')->name('graphics9');
 		Route::post('/home/graphics9','HomeController@pesquisarGrafico9')->name('pesquisarGrafico9');
+		Route::get('/home/graphics10','HomeController@graphics10')->name('graphics10');
+		Route::post('/home/graphics10','HomeController@graphics10')->name('graphics10');
+		Route::post('/home/graphics10','HomeController@pesquisarGrafico10')->name('pesquisarGrafico10');
+		Route::get('/home/graphics11','HomeController@graphics11')->name('graphics11');
+		Route::post('/home/graphics11','HomeController@graphics11')->name('graphics11');
+		Route::post('/home/graphics11','HomeController@pesquisarGrafico11')->name('pesquisarGrafico11');
+		Route::get('/home/graphics12','HomeController@graphics12')->name('graphics12');
+		Route::post('/home/graphics12','HomeController@graphics12')->name('graphics12');
+		Route::post('/home/graphics12','HomeController@pesquisarGrafico12')->name('pesquisarGrafico12');
 		Route::get('/homeVaga/graphicsVagaIndex','VagaController@graphicsVagaIndex')->name('graphicsVagaIndex');
 		Route::get('/homeVaga/graphicsVaga','VagaController@graphicsVaga')->name('graphicsVaga');
 		Route::get('/homeVaga/graphicsVaga2','VagaController@graphicsVaga2')->name('graphicsVaga2');

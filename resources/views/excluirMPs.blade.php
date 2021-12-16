@@ -114,7 +114,7 @@
 		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
 	 </tr>
 	</table>
-	</form>
+	
     <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:red;">
 		 <tr>
 		    <thead>
@@ -143,6 +143,12 @@
 			 @endif
 		 </tr>
 		 </table>
+		 <table>
+			<tr>
+			  <td> {{ $mps->appends(['unidade_id' => isset($unidade_id) ? $unidade_id : '','pesq2' => isset($pesq2) ? $pesq2 : '', 'pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
+			</tr> 
+		 </table>
+		 </form>
 	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

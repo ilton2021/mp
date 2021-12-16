@@ -121,6 +121,7 @@
               <tr>
               <td><center>SELECIONAR <br><input onclick="habilitar('sim')" type="checkbox" id="checkAll1" name="checkAll1" /></center> </td>
                 <td><center>UNIDADE</center></td>
+                <td><center>NÚMERO VAGA</center></td>
                 <td><center>NOME</center></td>
                 <td><center>CARGO</center></td>
                 <td><center>REMUNERAÇÃO</center></td>
@@ -144,6 +145,7 @@
                       @elseif($vaga->unidade_id == 7) <?php echo "HSS"; ?>  
                       @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?>  
                       @endif </b> </center> </td>
+                 <td title="<?php echo $vaga->numeroVaga; ?>"> <p><center> {{ $vaga->numeroVaga }} </center></p></td>
                  <td title="<?php echo $vaga->vaga; ?>"> <p><center> {{ substr($vaga->vaga, 0, 30) }} </center> </p>  </td>
                  <td title="<?php echo $vaga->cargo; ?>"> <p><center> {{ $vaga->cargo }} </center> </p>  </td>
                  <td> <p><center> {{ "R$ ".number_format($vaga->salario, 2,',','.') }} </center> </p>  </td>

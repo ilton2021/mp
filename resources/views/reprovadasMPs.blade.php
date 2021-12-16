@@ -203,7 +203,12 @@
 			 @endforeach
 		  </td>
 		 </tr>
-		 </table>
+		 </table><center>
+		 <table>
+			<tr>
+			  <td> {{ $mps->appends(['unidade_id' => isset($unidade_id) ? $unidade_id : '','pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
+			</tr> 
+		 </table></center>
 	    </center>
 	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>

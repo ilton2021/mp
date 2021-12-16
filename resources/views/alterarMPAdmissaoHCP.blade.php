@@ -65,8 +65,20 @@
 		  <center>
 			<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 			  <tr>
-			   <td width="800px;" colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
-		 	   <td >Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" value="<?php echo $mp->data_prevista; ?>" required  title="{{ $mp->data_prevista }}" /></td>
+			   <td  colspan="2"><center><strong><h4>Tipos de Movimentação</h4></strong></center></td>
+			  </tr>
+			  <tr>  
+			   <td width="800px;"> <center><br><b>IMPACTO FINANCEIRO:</b>
+				   <?php if($mp->impacto_financeiro == "sim"){  ?>
+				   SIM: <input type="checkbox" checked id="sim_impacto" name="sim_impacto" value="sim" />
+				   NÃO: <input type="checkbox" id="nao_impacto" name="nao_impacto" value="nao" />  
+				   <?php } else if($mp->impacto_financeiro == "nao"){ ?>
+				   SIM: <input type="checkbox" id="sim_impacto" name="sim_impacto" value="sim" />
+				   NÃO: <input type="checkbox" checked id="nao_impacto" name="nao_impacto" value="nao" /> 
+				   <?php } ?>
+				</center>
+				</td>
+		 	   <td>Data Prevista: <input class="form-control" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $mp->data_prevista; ?>" /></td>
 			  </tr>	
 			</table>
 		  </center>

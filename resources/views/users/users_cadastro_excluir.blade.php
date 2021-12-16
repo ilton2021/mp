@@ -54,6 +54,10 @@
 						<td><b><br>Deseja Realmente Excluir este Usuário??</b></td>
 					</tr>
 					<tr>
+						<td> <input hidden type="text" id="acao" name="acao" value="excluir_usuario" class="form-control" /> </td>
+						<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+					</tr>
+					<tr>
                       <td colspan="2"> <br> 
 					    <p align="right"><a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/homeMP/cadastro_usuario') }}"> Voltar <i class="fas fa-undo-alt"></i> </a>
 						<input type="submit" class="btn btn-danger btn-sm" value="Excluir" id="Salvar" name="Salvar" /></p>

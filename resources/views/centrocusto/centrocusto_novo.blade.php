@@ -68,14 +68,16 @@
                               <p align="left"><input type="checkbox" id="unidade_8" name="unidade_8" /> HCA </p>
                             </td>
 						  <td> 
-                          <p style="margin-top: 260px; margin-right: -45px;"> 
+						  <p style="margin-top: 260px; margin-right: -45px;"> 
                            <a href="{{ route('cadastroCentrocusto') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a> 
 						   <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Salvar" id="Salvar" name="Salvar" />
                           </p> 
                           </td>
+						  <td hidden> <input hidden type="text" id="acao" name="acao" value="cadastrar_novo_centrocusto" class="form-control" /> </td>
+						  <td hidden> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
 						 </tr>
 						</table>
-						</form>
+					 </form>
 		</div>
     </div>
 </div>

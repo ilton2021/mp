@@ -8,6 +8,7 @@ use App\Model\User;
 use App\Model\Auth;
 use App\Model\Unidade;
 use App\Model\AlterarSenha;
+use App\Model\Loggers;
 use Spatie\Permission\Models\Role;
 use DB;
 use Str;
@@ -109,6 +110,7 @@ class UserController extends Controller
 			} else {
 				$unidades = $this->unidade->all();
 				Auth::login($user);
+				$loggers = Loggers::create($input);
 				return view('home', compact('unidades','user'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input())); 							
@@ -272,6 +274,7 @@ class UserController extends Controller
 			$input['unidade_abertura'] = $result2; 
 			$input['password'] = Hash::make($input['password']);
 			$user = User::create($input);
+			$loggers = Loggers::create($input);
 			$validator = 'Usuário cadastrado com sucesso!';
 			$unidades  = Unidade::all();
 			$users     = User::all();
@@ -346,6 +349,7 @@ class UserController extends Controller
 			$user = User::find($id);
 			$user->update($input);
 			$users = User::all();
+			$loggers = Loggers::create($input);
 			$validator = "Usuário alterado com sucesso!!";
 			return view('users/users_cadastro', compact('users'))
 				->withErrors($validator)
@@ -370,6 +374,7 @@ class UserController extends Controller
 			$users = User::find($id);
 			$users->update($input);
 			$users = User::where('id',$id)->get();
+			$loggers = Loggers::create($input);
 			$validator = "Senha alterada com sucesso!!";
 			return redirect()->route('alterarUsuario',[$id])
 					->withErrors($validator)
@@ -377,11 +382,13 @@ class UserController extends Controller
 		}	
 	}
 
-	public function deleteUsuario($id)
+	public function deleteUsuario($id, Request $request)
     {
+		$input = $request->all(); 
         User::find($id)->delete();
 		$validator = "Usuário excluído com sucesso!!";
 		$users = User::all();
+		$loggers = Loggers::create($input);
         return view('users/users_cadastro', compact('users'))
 					->withErrors($validator);
     }

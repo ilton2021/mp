@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\Unidade;
+use App\Model\Loggers;
 use Illuminate\Support\Facades\Storage;
 use Validator;
 
@@ -44,6 +45,7 @@ class UnidadeController extends Controller
 					$input['imagem'] = $nome; 
 					$input['caminho'] = 'unidade/'.$nome; 
 					$unidade = Unidade::create($input);
+					$loggers = Loggers::create($input);
 					$unidades = Unidade::all();
 					$validator = 'Unidade Cadastrada com Sucesso!';
 					return view('unidade.unidade_cadastro', compact('unidades'))
@@ -98,6 +100,7 @@ class UnidadeController extends Controller
 					} 
 					$unidade = Unidade::find($id); 
 					$unidade->update($input);
+					$loggers = Loggers::create($input);
 					$unidades = Unidade::all();
 					$validator ='Unidade Alterada com Sucesso!';
 					return view('unidade.unidade_cadastro', compact('unidades'))
@@ -125,6 +128,7 @@ class UnidadeController extends Controller
 		$nome = $input['imagem'];
 		$pasta = 'public/storage/unidade/'.$nome; 
 		Storage::delete($pasta);
+		$loggers = Loggers::create($input);
 		$unidades = Unidade::all();
         $validator = 'Unidade excluída com sucesso!';
 		return view('unidade.unidade_cadastro', compact('unidades'))

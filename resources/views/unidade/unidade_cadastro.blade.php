@@ -39,10 +39,26 @@
 	@endif
 	<div class="row" style="margin-top: 25px;">
 		<div class="col-md-12">
-			<p align="right">
-			 <a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/home') }}"> Voltar <i class="fas fa-undo-alt"></i> </a> &nbsp;
-			 <a class="btn btn-dark btn-sm" style="color: #FFFFFF;" href="{{route('unidadeNovo')}}"> Novo <i class="fas fa-check"></i> </a>
-			</p>
+			<table class="table"id="table_pesq">
+			<form action="" method="post">
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<tr>
+					<td> 
+					<input type="text" id="pesq" name="pesq"  style="width: 400px;" />
+					<select  id="pesq" name="pesq" style="width: 150px;">
+						<option id="pesq" name="pesq" value="1">NOME</option>
+						<option id="pesq" name="pesq" value="2">SIGLA</option>
+					</select>
+					<input type="submit" id="btn" name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
+					</td>	
+					<td>
+					  <p align="right">
+						<a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/home') }}"> Voltar <i class="fas fa-undo-alt"></i> </a> &nbsp;
+						<a class="btn btn-dark btn-sm" style="color: #FFFFFF;" href="{{route('unidadeNovo')}}"> Novo <i class="fas fa-check"></i> </a>
+					  </p>
+					</td>
+				</tr>
+			</table>
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\CentroCusto;
+use App\Model\Loggers;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -51,6 +52,7 @@ class CentroCustoController extends Controller
 			}	
 			$input['unidade'] = $result;
 			$centrocustos = CentroCusto::create($input);
+			$loggers = Loggers::create($input);
             $centrocustos = CentroCusto::All();
 			$validator = 'Cargo Cadastrado com Sucesso!';
 			return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
@@ -97,6 +99,7 @@ class CentroCustoController extends Controller
 			$input['unidade'] = $result;
 			$centrocustos = CentroCusto::find($id); 
 			$centrocustos ->update($input);
+			$loggers = Loggers::create($input);
 		 	$centrocustos = CentroCusto::all();
 			$validator = 'Cargo Alterado com Sucesso!';
 			return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
@@ -114,6 +117,7 @@ class CentroCustoController extends Controller
 	public function destroyCentrocusto(Request $request, $id){
 		CentroCusto::find($id)->delete();
 		$input = $request->all();
+		$loggers = Loggers::create($input);
 		$centrocustos = CentroCusto::all();
         $validator = 'Cargo excluído com sucesso!';
 		return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))

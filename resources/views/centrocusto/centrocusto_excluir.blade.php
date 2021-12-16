@@ -61,7 +61,12 @@
                             <p align="left"><b> Deseja Realmente Excluir este Centro de Custo?? </b></p>
                            </td>
                          </tr>
-						
+						</table>
+						<table>
+							<tr>
+								<td> <input hidden type="text" id="acao" name="acao" value="excluir_centrocusto" class="form-control" /> </td>
+								<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+							</tr>
 						</table>
 						<table>
 						 <tr>

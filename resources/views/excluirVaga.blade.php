@@ -64,6 +64,14 @@
 			</table>
 		  </center>
 		  @endforeach
+
+		  <table hidden>
+			  <tr>
+				<td> <input hidden type="text" id="acao" name="acao" value="excluir_vaga" class="form-control" /> </td>
+				<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+			  </tr>
+		  </table>
+
 		  <center> <br><br>
 		  <table class="table" style="width: 1000px;" cellspacing="0">
 		   <tr>

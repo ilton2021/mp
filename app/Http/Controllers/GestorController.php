@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Gestor;
 use App\Model\Unidade;
+use App\Model\Loggers;
 use DB;
 use Validator;
 
@@ -62,6 +63,7 @@ class GestorController extends Controller
 			$gestor   = Gestor::create($input);
 			$gestores = Gestor::all();
 			$unidades = Unidade::all();
+			$loggers = Loggers::create($input);
 			$validator = 'Gestor Cadastrado com Sucesso!';
 			return view('gestor.gestor_cadastro', compact('gestores','unidades'))
 				->withErrors($validator)
@@ -93,6 +95,7 @@ class GestorController extends Controller
 			$gestor = Gestor::find($id);
 			$gestor->update($input);
 			$gestores = Gestor::all();
+			$loggers = Loggers::create($input);
 			$validator = 'Gestor Alterado com Sucesso!';
 			$unidades = Unidade::all();
 			return view('gestor.gestor_cadastro', compact('gestores','unidades'))
@@ -112,6 +115,7 @@ class GestorController extends Controller
 		Gestor::find($id)->delete();
 		$input = $request->all();
 		$gestores = Gestor::all();
+		$loggers = Loggers::create($input);
         $validator = 'Gestor excluído com sucesso!';
 		$unidades = Unidade::all();
 		return view('gestor.gestor_cadastro', compact('gestores','unidades'))

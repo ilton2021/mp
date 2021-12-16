@@ -59,6 +59,10 @@
 					  <td> <input type="password" id="password_confirmation" required name="password_confirmation" class="form-control" value="{{ old('password') }}" /> </td>	
 					</tr>
 					<tr>
+						<td> <input hidden type="text" id="acao" name="acao" value="alterar_senha_usuario" class="form-control" /> </td>
+						<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+					</tr>
+					<tr>
                       <td colspan="2"> <br> 
 					    <p align="right"><a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="javascript:history.back();"> Voltar <i class="fas fa-undo-alt"></i> </a>
 						<input type="submit" class="btn btn-success btn-sm" value="Alterar" id="Salvar" name="Salvar" /></p>

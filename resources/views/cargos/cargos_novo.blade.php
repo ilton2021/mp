@@ -57,6 +57,12 @@
 						 </tr>
 						</table>
 						<table>
+							<tr>
+								<td> <input hidden type="text" id="acao" name="acao" value="cadastrar_novo_cargo" class="form-control" /> </td>
+								<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+							</tr>
+						</table>
+						<table>
 						 <tr>
 						  <td> <br /> <a href="{{ route('cadastroCargo') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a> </td>
 						  <td> <br /> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Salvar" id="Salvar" name="Salvar" /> </td>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Model\Cargos;
+use App\Model\Loggers;
+use Validator;
 use Illuminate\Http\Request;
 
 class CargosController extends Controller
@@ -26,8 +28,9 @@ class CargosController extends Controller
 		if ($validator->fails()) {
 					return view('cargos/cargos_novo', compact('text'));
 		} else {
-			$cargo = Cargos::create($input);
-			$cargos = Cargos::all();
+			$cargo   = Cargos::create($input);
+			$loggers = Loggers::create($input);
+			$cargos  = Cargos::all();
 			$validator = 'Cargo Cadastrado com Sucesso!';
 			return view('cargos/cargos_cadastro', compact('cargos'))
 						->withErrors($validator)
@@ -52,8 +55,9 @@ class CargosController extends Controller
 					->withInput(session()->flashInput($request->input()));
 		} else {
 			$cargos = Cargos::find($id); 
-			$cargos ->update($input);
-			$cargos = Cargos::all();
+			$cargos->update($input);
+			$loggers = Loggers::create($input);
+			$cargos  = Cargos::all();
 			$validator = 'Cargo Alterado com Sucesso!';
 			return view('cargos/cargos_cadastro', compact('cargos'))
 					->withErrors($validator)
@@ -69,8 +73,9 @@ class CargosController extends Controller
 	
 	public function destroyCargo(Request $request, $id){
 		Cargos::find($id)->delete();
-		$input = $request->all();
-		$cargos = Cargos::all();
+		$input   = $request->all();
+		$loggers = Loggers::create($input);
+		$cargos  = Cargos::all();
         $validator = 'Cargo excluído com sucesso!';
 		return view('cargos.cargos_cadastro', compact('cargos'))
 					->withErrors($validator)

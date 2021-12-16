@@ -78,6 +78,7 @@
 			   <td><center>NOME DA VAGA</center></td>
 			   <td><center>SOLICITANTE</center></td>
 			   <td><center>EXCLUIR</center></td>
+			   <td><center>INATIVAR</center></td>
 			  </tr>
 			 </thead>
 			 <?php $qtd = sizeof($vagas); ?>
@@ -88,6 +89,7 @@
 			   <td><center>{{ $vaga->vaga }}</center></td>
 			   <td><center>{{ $vaga->solicitante }}</center></td>   
 			   <td><center><a href="{{ route('excluirVaga', $vaga->id) }}" class="btn-danger btn">EXCLUIR</center></a></td>
+			   <td><center><a href="{{ route('inativarVagas', $vaga->id) }}" class="btn-info btn">INATIVAR</center></a></td>
 			  </tr>
 			 </tbody>
 			 @endforeach

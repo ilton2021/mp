@@ -125,6 +125,7 @@
 			   <td><center>NOME DA MP</center></td>
 			   <td><center>SOLICITANTE</center></td>
 			   <td><center>EXCLUIR</center></td>
+			   <td><center>INATIVAR</center></td>
 			  </tr>
 			 </thead>
 			 <?php $qtd = sizeof($mps); ?>
@@ -135,6 +136,7 @@
 			   <td><center>{{ $mp->numeroMP }}</center></td>
 			   <td><center>{{ $mp->solicitante }}</center></td>   
 			   <td><center><a href="{{ route('excluirMP', $mp->id) }}" class="btn-danger btn">EXCLUIR</center></a></td>
+			   <td><center><a href="{{ route('inativarMPs', $mp->id) }}" class="btn-info btn">INATIVAR</center></a></td>
 			  </tr>
 			 </tbody>
 			 @endforeach

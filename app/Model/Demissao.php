@@ -15,6 +15,7 @@ class Demissao extends Model
 		'aviso_previo',
 		'ultimo_dia',
 		'custo_recisao',
+		'salario_bruto',
 		'gestor_criador_mp',
 		'created_at',
 		'updated_at'

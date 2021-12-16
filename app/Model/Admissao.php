@@ -22,6 +22,7 @@ class Admissao extends Model
 		'periodo_contrato',
 		'periodo_inicio',
 		'periodo_fim',
+		'qtd_mes',
 		'motivo',
 		'motivo2',
 		'possibilidade_contratacao',

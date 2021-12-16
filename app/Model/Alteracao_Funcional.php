@@ -17,6 +17,7 @@ class Alteracao_Funcional extends Model
 		'horario_novo',
 		'salario_atual',
 		'salario_novo',
+		'gratificacoes',
 		'centro_custo_novo',
 		'motivo',
 		'gestor_criador_mp',

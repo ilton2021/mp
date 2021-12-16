@@ -34,6 +34,33 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+         ["Elemento", "Total", { role: "style" } ],
+		 ["Total Salários Brutos Demissão", <?php echo $totalSal ?>, "green"],
+		 ["", <?php echo 0 ?>, "blue"]
+        ]);
+        var view = new google.visualization.DataView(data);
+		view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+      var options = {
+        title: "Total de Salários Brutos - MP's Demissão:",
+        width: 700,
+        height: 200,
+        bar: {groupWidth: "100%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+      chart.draw(view, options);
+      }
+    </script>
+	<script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart2);
       function drawChart2() {
         var data = google.visualization.arrayToDataTable([
@@ -131,8 +158,10 @@
 		</form>
 		</center>
 		@endif
-		<table style="margin-left: 170px;"> 
+		<table style="margin-left: -80px;"> 
 		 <tr>
+		  <td><div id="barchart_values" style="width: 600px; height: 300px;"></div></td>
+		
 		  <td><div id="barchart_values2" style="width: 600px; height: 300px;"></div></td>
 		 </tr>
 		</table>		
@@ -153,12 +182,13 @@
 			<td style="background-color: #FFDB58"><center>TIPO DE DESLIGAMENTO</center></td>
 			<td style="background-color: #87CEFA"><center>ÚLTIMO DIA</center></td>
 			<td style="background-color: #90EE90"><center>CUSTO DA RECISÃO</center></td>
-		  </tr> <?php $a = 0; $totalCustos = 0; ?>
+			<td style="background-color: #87CEFA"><center>SALÁRIO BRUTO</center></td>
+		  </tr> <?php $a = 0; $totalCustos = 0; $totalSalarios = 0; ?>
 		  @foreach($demissao as $dem)
-		  <tr> <?php $a += 1; $totalCustos += $dem->custo_recisao; ?>
+		  <tr> <?php $a += 1; $totalCustos += $dem->custo_recisao; $totalSalarios += $dem->salario_bruto; ?>
 			@foreach($row5 as $mp)
 			 @if($mp->id == $dem->mp_id)
-			   <td><center>{{ $mp->numeroMP }}</center></td>
+			   <td><center><a href="{{ route('visualizarMP', $dem->id) }} " target="_blank" class="btn btn-info btn-sm">{{ $mp->numeroMP }}</a></center></td>
 			 @endif
 			@endforeach
 			@if($dem->aviso_previo == "dispensado")
@@ -187,13 +217,16 @@
 			@endif
 			<td><center>{{ date('d/m/Y', strtotime($dem->ultimo_dia))  }}</center></td>
 			<td><center>{{ "R$ ". number_format($dem->custo_recisao,2,',','.') }}</center></td>
+			<td><center>{{ "R$ ". number_format($dem->salario_bruto,2,',','.') }}</center></td>
 		  </tr>
 		  @endforeach
 		  <tr>
 	  		<td><center><b>QUANTIDADE MP's:</b></center></td>
 			<td><center><b>{{ $a }}</b></center></td>
 			<td><center><b>TOTAL DE CUSTOS:</b></center></td>
-			<td colspan="2"><center><b>{{ "R$ ". number_format($totalCustos,2,',','.') }}</b></center></td>
+			<td><center><b>{{ "R$ ". number_format($totalCustos,2,',','.') }}</b></center></td>
+			<td><center><b>{{ "R$ ". number_format($totalSalarios,2,',','.') }}</b></center></td>
+			<td><center><b>{{ "R$ ". number_format($totalCustos-$totalSalarios,2,',','.') }}</b></center></td>
 		  </tr>
 		 </table>
 		</center>

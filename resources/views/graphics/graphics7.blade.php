@@ -145,12 +145,11 @@
 		 </tr>
 		@foreach($alteracaoF as $alt)
 		 @if($alt->centro_custo_novo == $cc->centro_custo_novo)
-		 
 		 <tr>
 		 <tbody>
 			@foreach($row5 as $mps)
 			 @if($mps->id == $alt->mp_id)
-	  		   <td><center> {{ $mps->numeroMP }} </center></td>
+	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $alt->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
 			 @endif
 			@endforeach
 			<td><center> {{ $alt->setor }} </center></td>

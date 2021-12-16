@@ -147,56 +147,68 @@
 		  </table>
 		</center>
 		<center>
-	  	 <table class="table table-bordered">
-	  	  <tr>
-			<td style="background-color: #90EE90"><center>NÚMERO MP</center></td>			
-			<td style="background-color: #FFDB58"><center>CENTRO DE CUSTO</center></td>
-			<td style="background-color: #87CEFA"><center>SALÁRIO NOVO</center></td>
-			<td style="background-color: #90EE90"><center>SALÁRIO ATUAL</center></td>
-			<td style="background-color: #FFDB58"><center>MOTIVO</center></td>
-		  </tr> <?php $a = 0; $totalCustos = 0; ?>
-		  @foreach($alteracaoF as $altF)
-		  <tr> <?php $a += 1; $totalCustos += $altF->salario_novo - $altF->salario_atual; ?>
-			@foreach($row5 as $mp)
-			 @if($mp->id == $altF->mp_id)
-			   <td><center>{{ $mp->numeroMP }}</center></td>
+		<table class="table table-bordered" width="1000">
+		<tr>
+		 <td colspan="5"><b>Total de Salário - MP Alteração Funcional</b></td>
+		</tr>
+		<tr>
+		 <td colspan="2"><b><center>Centro de Custo</center></td>
+		 <td colspan="2"><b><center>Quantidade</center><b></td>
+		 <td><b><center>Salário</center></b></td>
+		</tr>
+		@foreach($centro_custo2 as $cc)
+		<tr>
+		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo_novo }}</b></center></td>
+		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
+		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
+	 	</tr>
+		 <tr id="table_descricao" disabled="true">
+	  	    <td><center>NÚMERO MP</center></td>
+			<td><center>SETOR</center></td>
+			<td><center>SALÁRIO NOVO</center></td>
+			<td><center>SALÁRIO ATUAL</center></td>
+			<td><center>MOTIVO</center></td>
+		 </tr>
+		@foreach($alteracaoF as $alt)
+		 @if($alt->centro_custo_novo == $cc->centro_custo_novo)
+		 
+		 <tr>
+		 <tbody>
+			@foreach($row5 as $mps)
+			 @if($mps->id == $alt->mp_id)
+	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $alt->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
 			 @endif
 			@endforeach
-			<td><center>{{ $altF->centro_custo_novo }}</center></td>
-			<td><center>{{ "R$ ". number_format($altF->salario_novo,2,',','.') }}</center></td>
-			<td><center>{{ "R$ ". number_format($altF->salario_atual,2,',','.') }}</center></td>
-			@if($altF->motivo == "merito")
-			<td><center>{{ 'MÉRITO' }}</center></td>
-			@elseif($altF->motivo == "substituicao_demissao_voluntaria")
-			<td><center>{{ 'SUBSTITUIÇÃO POR DEMISSÃO' }}</center></td>
-			@elseif($altF->motivo == "mudanca_horaria")
-			<td><center>{{ 'MUDANÇA DE HORÁRIO' }}</center></td>
-			@elseif($altF->motivo == "mudanca_setor_area")
-			<td><center>{{ 'MUDANÇA DE SETOR/ÁREA' }}</center></td>
-			@elseif($altF->motivo == "recrutamento_interno")
-			<td><center>{{ 'RECRUTAMENTO INTERNO' }}</center></td>
-			@elseif($altF->motivo == "promocao")
-			<td><center>{{ 'PROMOÇÃO' }}</center></td>
-			@elseif($altF->motivo == "transferencia_outra_unidade")
-			<td><center>{{ 'TRANSFERÊNCIA PARA OUTRA UNIDADE' }}</center></td>
-			@elseif($altF->motivo == "enquadramento")
-			<td><center>{{ 'ENQUADRAMENTO' }}</center></td>
-			@elseif($altF->motivo == "aumento_quadro")
-			<td><center>{{ 'AUMENTO DE QUADRO' }}</center></td>
-			@elseif($altF->motivo == "empregado")
-			<td><center>{{ 'EMPREGADO' }}</center></td>
-			@elseif($altF->motivo == "empregador")
-			<td><center>{{ 'EMPREGADOR' }}</center></td>
+			<td><center> {{ $alt->setor }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario_novo,2,',','.') }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario_atual,2,',','.') }} </center></td>
+			@if($alt->motivo == "mudanca_setor_area")
+			<td><center> {{ 'Mudança Setor Área' }} </center></td>
+			@elseif($alt->motivo == "transferencia_outra_unidade")
+			<td><center> {{ 'Transferência Outra Unidade' }} </center></td>
+			@elseif($alt->motivo == "mudanca_horaria")
+			<td><center> {{ 'Mudança Horária' }} </center></td>
+			@elseif($alt->motivo == "merito")
+			<td><center> {{ 'Mérito' }} </center></td>
+			@elseif($alt->motivo == "promocao")
+			<td><center> {{ 'Promoção' }} </center></td>
+			@elseif($alt->motivo == "enquadramento")
+			<td><center> {{ 'Enquadramento' }}</center></td>
+			@elseif($alt->motivo == "substituicao_demissao_voluntaria")
+			<td><center> {{ 'Substituição Demissão Voluntária' }} </center></td>
+			@elseif($alt->motivo == "recrutamento_interno")
+			<td><center> {{ 'Recrutamento Interno' }} </center></td>
+			@elseif($alt->motivo == "aumento_quadro")
+			<td><center> {{ 'Aumento de Quadro' }} </center></td>
+			@elseif($alt->motivo == "substituicao_demissao_forcada")
+			<td><center> {{ 'Substituição Demissão Forçada' }} </center></td>
 			@endif
-		  </tr>
-		  @endforeach
-		  <tr>
-	  		<td><center><b>QUANTIDADE MP's:</b></center></td>
-			<td><center><b>{{ $a }}</b></center></td>
-			<td colspan="2"><center><b>TOTAL DE CUSTOS:</b></center></td>
-			<td ><center><b>{{ "R$ ". number_format($totalCustos,2,',','.') }}</b></center></td>
-		  </tr>
-		 </table>
+		 </tbody>	
+		 </tr>
+		 @endif
+		@endforeach
+		@endforeach
+		</table>
 		</center>
     </div>
     </section>		 

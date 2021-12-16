@@ -145,7 +145,7 @@
 		  </td>
 		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		  @foreach($mps as $mp)
-		   @if($mp->gestor_id == Auth::user()->id && $mp->concluida == 0 || ($mp->gestor_id == 61 && Auth::user()->id == 104))
+		   @if($mp->gestor_id == Auth::user()->id && $mp->concluida == 0 || ($mp->gestor_id == 61 && Auth::user()->id == 104) || ($mp->gestor_id == 62 && Auth::user()->id == 61))
 			<td>
 			  <img style="margin-left: 360px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
 				<div class="card-body text-center">

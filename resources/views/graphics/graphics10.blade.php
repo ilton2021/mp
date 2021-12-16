@@ -31,37 +31,35 @@
 		    }
 		}
 		</script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-         ["Elemento", "Total", { role: "style" } ],
-		 ["Total Remuneração", <?php echo $totalSal + $totalOutrasVerbas ?>, "green"],
-		 ["", <?php echo 0 ?>, "blue"],
-		 ["Total Salário", <?php echo $totalSal ?>, "blue"],
-		 ["", <?php echo 0 ?>, "blue"],
-		 ["Total Outras Verbas", <?php echo $totalOutrasVerbas ?>, "gold"]
-		]);
-        var view = new google.visualization.DataView(data);
-		view.setColumns([0, 1,
-                       { calc: "stringify",
-                         sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2]);
-      var options = {
-        title: "Total de Salários - MP's Admissão:",
-        width: 800,
-        height: 250,
-        bar: {groupWidth: "100%"},
-        legend: { position: "none" },
-      };
-      var chart = new google.visualization.BarChart(document.getElementById("barchart_values1"));
-      chart.draw(view, options);
-      }
-      </script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart2);
+		function drawChart2() {
+			var data = google.visualization.arrayToDataTable([
+			["Elemento", "Total", { role: "style" } ],
+			["Total Salário", <?php echo $total_SAL ?>, "blue"],
+			["", <?php echo 0 ?>, "blue"],
+			["Total Outras Verbas", <?php echo $total_OV ?>, "red"]
+			]);
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1,
+						{ calc: "stringify",
+							sourceColumn: 1,
+							type: "string",
+							role: "annotation" },
+						2]);
+		var options = {
+			title: "Total de Salários:",
+			width: 800,
+			height: 200,
+			bar: {groupWidth: "100%"},
+			legend: { position: "none" },
+		};
+		var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+		chart.draw(view, options);
+		}
+		</script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
@@ -97,22 +95,12 @@
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 71 || Auth::user()->id == 13)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 13 || Auth::user()->id == 71)
 		<center>
-	    <form action="{{\Request::route('pesquisarGrafico3')}}" method="post">
+	    <form action="{{\Request::route('pesquisarGrafico4')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<table>
 		 <tr>
-		  <td>Unidade:</td>
-		  <td>
-		  <select width="400px" class="form-control" id="unidade_id" name="unidade_id">
-			 <option id="unidade_id" name="unidade_id" value="0">{{ 'Todos' }}</option>
-		  @foreach($unidades as $unidade)
-		     <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
-		  @endforeach
-		  </select>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;</td>
 		  <td align="right">Data Início:</td>
 		  <td>
 		   <input type="date" id="data_inicio" name="data_inicio" class="form-control" value="" />
@@ -128,15 +116,15 @@
 		  </td>
 		 </tr>
 		 <tr>
-		   <td colspan="5"><br><center><b>Total de MP's: {{ $qtdAd }}</b></center></td>
+		   <td><br><center><b>Total de MP's: {{ $qtdAdmHCP }}</b></center></td>
 		 </tr>
 		</table>
 		</form>
 		</center>
 		@endif
-		<table style="margin-left:150px;"> 
+		<table style="margin-left: 170px;"> 
 		 <tr>
-		  <td><div id="barchart_values1" style="width: 600px; height: 300px;"></div></td>
+		  <td><div id="barchart_values" style="width: 600px; height: 300px;"></div></td>
 		 </tr>
 		</table>
 		<center>
@@ -151,55 +139,60 @@
 		<center>
 		<table class="table table-bordered" width="1000">
 		<tr>
-		 <td colspan="4"><b>Total de Salário - MP Admissão</b></td>
-		 <td align="center"><a id="imprimir" width="80px" name="imprimir" type="button" class="btn btn-info btn-sm" style="color: #FFFFFF;"> Imprimir <i class="fas fa-box"></i> </a> </td>
+		 <td colspan="5"><b>Total de Salário por Centro de Custo - MP Alteração Funcional</b></td>
 		</tr>
 		<tr>
-		 <td colspan="2"><b><center>Centro de Custo</center></td>
+		 <td colspan="3"><b><center>Centro de Custo</center></td>
 		 <td colspan="2"><b><center>Quantidade</center><b></td>
-		 <td><b><center>Salário</center></b></td>
+		 <td><b><center>Salário + Outras Verbas</center></b></td>
 		</tr>
-		@if(!empty($centro_custo))
-		@foreach($centro_custo as $cc)
+		@foreach($rpa2 as $cc)
 		<tr>
-		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo }}</b></center></td>
+		 <td colspan="3" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo }}</b></center></td>
 		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
 		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
 	 	</tr>
 		 <tr id="table_descricao" disabled="true">
 	  	    <td><center>NÚMERO MP</center></td>
+			<td><center>UNIDADE</center></td>
 			<td><center>CARGO</center></td>
 			<td><center>SALÁRIO</center></td>
 			<td><center>OUTRAS VERBAS</center></td>
 			<td><center>MOTIVO</center></td>
 		 </tr>
-		@foreach($admissao as $adm)
-		 @if($adm->centro_custo == $cc->centro_custo)	 
 		 <tr>
 		 <tbody>
-			@foreach($row5 as $mps)
-			 @if($mps->id == $adm->mp_id)
-	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $adm->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
-			 @endif
-			@endforeach
-			<td><center> {{ $adm->cargo }} </center></td>
-			<td><center> {{ "R$ ". number_format($adm->salario,2,',','.') }} </center></td>
-			<td><center> {{ "R$ ". number_format($adm->outras_verbas,2,',','.') }} </center></td>
-			@if($adm->motivo == "substituicao_definitiva")
-			<td><center> {{ 'Substituição Definitiva' }} </center></td>
-			@elseif($adm->motivo == "substituicao_temporaria")
-			<td><center> {{ 'Substituição Temporária' }} </center></td>
-			@elseif($adm->motivo == "aumento_quadro")
-			<td><center> {{ 'Aumento de Quadro' }} </center></td>
-			@elseif($adm->motivo == "segundo_vinculo")
+			<td><center><a target="_blank" href="{{ route('visualizarMP', $cc->mp_id) }}" class="btn btn-info btn-sm"> {{ $cc->numeroMP }} </a></center></td>
+			@if($cc->unidade_id == 2)
+			<td><center>{{ 'HMR' }}</center></td>
+			@elseif($cc->unidade_id == 3)
+			<td><center>{{ 'UPAE BELO JARDIM' }}</center></td>
+			@elseif($cc->unidade_id == 4)
+			<td><center>{{ 'UPAE ARCOVERDE' }}</center></td>
+			@elseif($cc->unidade_id == 5)
+			<td><center>{{ 'UPAE ARRUDA' }}</center></td>
+			@elseif($cc->unidade_id == 6)
+			<td><center>{{ 'UPAE CARUARU' }}</center></td>
+			@elseif($cc->unidade_id == 7)
+			<td><center>{{ 'HSS' }}</center></td>
+			@elseif($cc->unidade_id == 8)
+			<td><center>{{ 'HPR' }}</center></td>
+			@endif
+			<td><center> {{ $cc->cargo }} </center></td>
+			<td><center> {{ "R$ ". number_format($cc->salario,2,',','.') }} </center></td>
+			<td><center> {{ "R$ ". number_format($cc->outras_verbas,2,',','.') }} </center></td>
+			@if($cc->motivo == "aumento_quadro")
+			<td><center> {{ 'Aumento Quadro' }} </center></td>
+			@elseif($cc->motivo == "segundo_vinculo")
 			<td><center> {{ 'Segundo Vínculo' }} </center></td>
+			@elseif($cc->motivo == "substituicao_definitiva")
+			<td><center> {{ 'Substituição Definitiva' }} </center></td>
+			@elseif($cc->motivo == "substituicao_temporaria")
+			<td><center> {{ 'Substituição Temporária' }} </center></td>
 			@endif
 		 </tbody>	
 		 </tr>
-		 @endif
 		@endforeach
-		@endforeach
-		@endif
 		</table>
 		</center>
     </div>

@@ -62,13 +62,22 @@
 				 <td align="center">
                   <a type="button" href="{{ route('graphics') }}" class="btn btn-success btn-info">Gráfico Total de MP'S</a>
 			      <a type="button" href="{{ route('graphics2') }}" class="btn btn-success btn-info">Gráfico Total de MP'S Por Unidade</a>
+                  <br> ADMISSÃO: <br>
 				  <a type="button" href="{{ route('graphics3') }}" class="btn btn-success btn-info">Gráfico Total de Salários - MP's Admissão</a>
-				  <a type="button" href="{{ route('graphics4') }}" class="btn btn-success btn-info">Gráfico Total de Salários - MP's Alteração Funcional</a>
-				  <a type="button" href="{{ route('graphics5') }}" class="btn btn-success btn-info">Gráfico Total de Custo de Recisão - MP's Demissão</a>
- 				  <a type="button" href="{{ route('graphics6') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Admissão</a>
-				  <a type="button" href="{{ route('graphics7') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Alteração Funcional</a>
-				  <a type="button" href="{{ route('graphics8') }}" class="btn btn-success btn-info">Gráfico Total de Salário por RPA</a>
+                  <a type="button" href="{{ route('graphics6') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Admissão</a>
                   <a type="button" href="{{ route('graphics9') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Aumento de Quadro</a>
+                  <a type="button" href="{{ route('graphics8') }}" class="btn btn-success btn-info">Gráfico Total de Salário por RPA</a>
+                  <br> ALTERAÇÃO FUNCIONAL: <br>
+				  <a type="button" href="{{ route('graphics4') }}" class="btn btn-success btn-info">Gráfico Total de Salários - MP's Alteração Funcional</a>
+                  <a type="button" href="{{ route('graphics7') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Alteração Funcional</a>
+                  <br> DEMISSÃO: <br>
+				  <a type="button" href="{{ route('graphics5') }}" class="btn btn-success btn-info">Gráfico Total de Custo de Recisão - MP's Demissão</a>
+ 				  <br>ADMISSÃO HCP: <br>
+                  <a type="button" href="{{ route('graphics10') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - Admissão HCP</a>
+                  <br>PLANTÃO EXTRA:<br>
+                  <a type="button" href="{{ route('graphics11') }}" class="btn btn-success btn-info">Gráfico Total de Valor Pago por Centro de Custo - Plantão Extras</a>
+                  <br>TOTAL:<br>
+                  <a type="button" href="{{ route('graphics12') }}" class="btn btn-success btn-info">Gráfico Total de Valores</a>
 				 </td>
 				</tr>
                </table>

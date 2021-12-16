@@ -132,7 +132,7 @@
 		 <tbody>
 			@foreach($row5 as $mps)
 			 @if($mps->id == $adm->mp_id)
-	  		   <td><center> {{ $mps->numeroMP }} </center></td>
+	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $adm->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
 			 @endif
 			@endforeach
 			<td><center> {{ $adm->cargo }} </center></td>

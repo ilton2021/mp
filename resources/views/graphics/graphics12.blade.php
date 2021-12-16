@@ -18,32 +18,24 @@
 			width: 300px;
 		}
         </style>
-		<script>
-		window.onload = function() {
-		var imprimir = document.querySelector("#imprimir");
-		    imprimir.onclick = function() {
-		    	
-		    	imprimir.style.display = 'none';
-		    	window.print();
-                var time = window.setTimeout(function() {
-		    		imprimir.style.display = 'block';
-		    	}, 1000);
-		    }
-		}
-		</script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> 
+	<script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
+      google.charts.setOnLoadCallback(drawChart2);
+      function drawChart2() {
         var data = google.visualization.arrayToDataTable([
          ["Elemento", "Total", { role: "style" } ],
-		 ["Total Remuneração", <?php echo $totalSal + $totalOutrasVerbas ?>, "green"],
+		 ["Admissão", <?php echo $totalAdm ?>, "green"],
 		 ["", <?php echo 0 ?>, "blue"],
-		 ["Total Salário", <?php echo $totalSal ?>, "blue"],
+		 ["Alteração Funcional", <?php echo $totalAlt ?>, "yellow"],
 		 ["", <?php echo 0 ?>, "blue"],
-		 ["Total Outras Verbas", <?php echo $totalOutrasVerbas ?>, "gold"]
-		]);
+		 ["Demissão", <?php echo $totalDem ?>, "orange"],
+		 ["", <?php echo 0 ?>, "blue"],
+		 ["Total:", <?php echo $total_SAL ?>, "blue"],
+		 ["", <?php echo 0 ?>, "blue"],
+		 ["Total:", <?php echo $total_DES ?>, "blue"],
+		 ["", <?php echo 0 ?>, "blue"]
+        ]);
         var view = new google.visualization.DataView(data);
 		view.setColumns([0, 1,
                        { calc: "stringify",
@@ -52,17 +44,18 @@
                          role: "annotation" },
                        2]);
       var options = {
-        title: "Total de Salários - MP's Admissão:",
+        title: "Total de Salários:",
         width: 800,
-        height: 250,
+        height: 400,
         bar: {groupWidth: "100%"},
         legend: { position: "none" },
       };
-      var chart = new google.visualization.BarChart(document.getElementById("barchart_values1"));
+      var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
       chart.draw(view, options);
       }
-      </script>
+    </script>
   </head>
+
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
   	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
@@ -87,19 +80,19 @@
         <div class="row">
             <div class="col-5">
                 <div class="progress" style="height: 3px;">
-                    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
             <div class="col-2 text-center"></div>
             <div class="col-5">
                 <div class="progress" style="height: 3px;">
-                    <div class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
-		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 71 || Auth::user()->id == 13)
+		@if(Auth::user()->id == 62 || Auth::user()->id == 30 || Auth::user()->id == 13 || Auth::user()->id == 71)
 		<center>
-	    <form action="{{\Request::route('pesquisarGrafico3')}}" method="post">
+	    <form action="{{\Request::route('pesquisarGrafico12')}}" method="post">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 		<table>
 		 <tr>
@@ -107,9 +100,9 @@
 		  <td>
 		  <select width="400px" class="form-control" id="unidade_id" name="unidade_id">
 			 <option id="unidade_id" name="unidade_id" value="0">{{ 'Todos' }}</option>
-		  @foreach($unidades as $unidade)
-		     <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
-		  @endforeach
+		  	 @foreach($unidades as $unidade)
+		       <option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
+		  	 @endforeach
 		  </select>
 		  </td>
 		  <td>&nbsp;&nbsp;&nbsp;</td>
@@ -128,80 +121,78 @@
 		  </td>
 		 </tr>
 		 <tr>
-		   <td colspan="5"><br><center><b>Total de MP's: {{ $qtdAd }}</b></center></td>
+		   <td colspan="10"><br><center><b>Total de MP's: {{ $qtdMP }}</b></center></td>
+		 </tr>
+		</table>
+		<table style="margin-left: -100px;"> 
+		 <tr>
+		  <td><div id="barchart_values" style="width: 600px; height: 300px;"></div></td>
 		 </tr>
 		</table>
 		</form>
 		</center>
 		@endif
-		<table style="margin-left:150px;"> 
-		 <tr>
-		  <td><div id="barchart_values1" style="width: 600px; height: 300px;"></div></td>
-		 </tr>
-		</table>
-		<center>
-		  <table class="table table-bordered" style="width: 150px;" cellspacing="0">
-		   <tr>
-		    <td align="center"> 
-			 <a id="imprimir" name="imprimir" type="button" class="btn btn-info btn-sm" style="color: #FFFFFF;"> Imprimir <i class="fas fa-box"></i> </a>  
-			</td> 
-		   </tr>
-		  </table>
-		</center>
-		<center>
-		<table class="table table-bordered" width="1000">
+		<!--table class="table table-bordered" width="1000">
 		<tr>
-		 <td colspan="4"><b>Total de Salário - MP Admissão</b></td>
-		 <td align="center"><a id="imprimir" width="80px" name="imprimir" type="button" class="btn btn-info btn-sm" style="color: #FFFFFF;"> Imprimir <i class="fas fa-box"></i> </a> </td>
+		 <td colspan="5"><b>Total de Salário por Centro de Custo - MP Alteração Funcional</b></td>
 		</tr>
 		<tr>
 		 <td colspan="2"><b><center>Centro de Custo</center></td>
 		 <td colspan="2"><b><center>Quantidade</center><b></td>
 		 <td><b><center>Salário</center></b></td>
 		</tr>
-		@if(!empty($centro_custo))
 		@foreach($centro_custo as $cc)
 		<tr>
-		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo }}</b></center></td>
+		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo_novo }}</b></center></td>
 		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
 		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
 	 	</tr>
 		 <tr id="table_descricao" disabled="true">
 	  	    <td><center>NÚMERO MP</center></td>
-			<td><center>CARGO</center></td>
-			<td><center>SALÁRIO</center></td>
-			<td><center>OUTRAS VERBAS</center></td>
+			<td><center>SETOR</center></td>
+			<td><center>SALÁRIO NOVO</center></td>
+			<td><center>SALÁRIO ATUAL</center></td>
 			<td><center>MOTIVO</center></td>
 		 </tr>
-		@foreach($admissao as $adm)
-		 @if($adm->centro_custo == $cc->centro_custo)	 
+		@foreach($alteracaoF as $alt)
+		 @if($alt->centro_custo_novo == $cc->centro_custo_novo)
 		 <tr>
 		 <tbody>
 			@foreach($row5 as $mps)
-			 @if($mps->id == $adm->mp_id)
-	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $adm->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
+			 @if($mps->id == $alt->mp_id)
+	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $alt->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
 			 @endif
 			@endforeach
-			<td><center> {{ $adm->cargo }} </center></td>
-			<td><center> {{ "R$ ". number_format($adm->salario,2,',','.') }} </center></td>
-			<td><center> {{ "R$ ". number_format($adm->outras_verbas,2,',','.') }} </center></td>
-			@if($adm->motivo == "substituicao_definitiva")
-			<td><center> {{ 'Substituição Definitiva' }} </center></td>
-			@elseif($adm->motivo == "substituicao_temporaria")
-			<td><center> {{ 'Substituição Temporária' }} </center></td>
-			@elseif($adm->motivo == "aumento_quadro")
+			<td><center> {{ $alt->setor }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario_novo,2,',','.') }} </center></td>
+			<td><center> {{ "R$ ". number_format($alt->salario_atual,2,',','.') }} </center></td>
+			@if($alt->motivo == "mudanca_setor_area")
+			<td><center> {{ 'Mudança Setor Área' }} </center></td>
+			@elseif($alt->motivo == "transferencia_outra_unidade")
+			<td><center> {{ 'Transferência Outra Unidade' }} </center></td>
+			@elseif($alt->motivo == "mudanca_horaria")
+			<td><center> {{ 'Mudança Horária' }} </center></td>
+			@elseif($alt->motivo == "merito")
+			<td><center> {{ 'Mérito' }} </center></td>
+			@elseif($alt->motivo == "promocao")
+			<td><center> {{ 'Promoção' }} </center></td>
+			@elseif($alt->motivo == "enquadramento")
+			<td><center> {{ 'Enquadramento' }}</center></td>
+			@elseif($alt->motivo == "substituicao_demissao_voluntaria")
+			<td><center> {{ 'Substituição Demissão Voluntária' }} </center></td>
+			@elseif($alt->motivo == "recrutamento_interno")
+			<td><center> {{ 'Recrutamento Interno' }} </center></td>
+			@elseif($alt->motivo == "aumento_quadro")
 			<td><center> {{ 'Aumento de Quadro' }} </center></td>
-			@elseif($adm->motivo == "segundo_vinculo")
-			<td><center> {{ 'Segundo Vínculo' }} </center></td>
+			@elseif($alt->motivo == "substituicao_demissao_forcada")
+			<td><center> {{ 'Substituição Demissão Forçada' }} </center></td>
 			@endif
 		 </tbody>	
 		 </tr>
 		 @endif
 		@endforeach
 		@endforeach
-		@endif
-		</table>
-		</center>
+		</table-->
     </div>
     </section>		 
  </body>

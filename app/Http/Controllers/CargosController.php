@@ -6,6 +6,7 @@ use App\Model\Cargos;
 use App\Model\Loggers;
 use Validator;
 use Illuminate\Http\Request;
+use DB;
 
 class CargosController extends Controller
 {
@@ -18,6 +19,18 @@ class CargosController extends Controller
 	public function cargoNovo()
 	{
 		return view('cargos/cargos_novo');
+	}
+
+	public function pesquisarCargo(Request $request)
+	{
+		$input = $request->all();
+		$id    = $input['id'];
+		$pesq  = $input['pesq'];
+		
+		if($id == 1) {
+			$cargos = DB::table('cargos')->where('cargos.nome','like','%'.$pesq.'%')->get();
+		} 
+		return view('cargos/cargos_cadastro', compact('cargos'));
 	}
 	
 	public function storeCargo(Request $request){

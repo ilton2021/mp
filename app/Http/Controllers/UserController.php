@@ -357,6 +357,18 @@ class UserController extends Controller
 		}
     }
 
+	public function pesquisarUsuario(Request $request)
+	{
+		$input = $request->all();
+		$id    = $input['id'];
+		$pesq  = $input['pesq'];
+		
+		if($id == 1) {
+			$users = DB::table('users')->where('users.name','like','%'.$pesq.'%')->get();
+		} 
+		return view('users/users_cadastro', compact('users'));
+	}
+
 	public function updateSenha(Request $request, $id)
 	{
 		$input = $request->all(); 

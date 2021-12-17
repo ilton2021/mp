@@ -41,10 +41,8 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}', 'HomeController@salvarMP')->name('salvarMP');
 		Route::get('/home/validar/{id}/salvarDemissao/{idG}', 'MPController@salvarMPDemissao')->name('salvarMPDemissao');
 		Route::post('/home/validar/{id}/salvarDemissao/{idG}', 'MPController@salvarMPDemissao')->name('salvarMPDemissao');
-
 		Route::get('/home/validar/{id}/salvarAdmHCP/{idG}', 'MPController@salvarMPAdmissaoHCP')->name('salvarMPAdmissaoHCP');
 		Route::post('/home/validar/{id}/salvarAdmHCP/{idG}', 'MPController@salvarMPAdmissaoHCP')->name('salvarMPAdmissaoHCP');
-
 		Route::get('/home/validar/{id}/salvarAlteracao/{idG}', 'MPController@salvarMPAlteracao')->name('salvarMPAlteracao');
 		Route::post('/home/validar/{id}/salvarAlteracao/{idG}', 'MPController@salvarMPAlteracao')->name('salvarMPAlteracao');
 		Route::get('/home/validar/{id}/salvarAdmissao/{idG}', 'MPController@salvarMPAdmissao')->name('salvarMPAdmissao');
@@ -66,13 +64,10 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}/updem/{id_dem}', 'MPController@updateMPDemissao')->name('updateMPDemissao');
 		Route::get('/home/validar/{id}/upadm/{id_adm}', 'MPController@alterarMPAdmissao')->name('alterarMPAdmissao');
 		Route::post('/home/validar/{id}/upadm/{id_adm}', 'MPController@updateMPAdmissao')->name('updateMPAdmissao');
-
 		Route::get('/home/validar/{id}/uppla/{id_plan}', 'MPController@alterarMPPlantao')->name('alterarMPPlantao');
 		Route::post('/home/validar/{id}/uppla/{id_plan}', 'MPController@updateMPPlantao')->name('updateMPPlantao');
-
 		Route::get('/home/validar/{id}/upadm_hcp/{id_adm_hcp}', 'MPController@alterarMPAdmissaoHCP')->name('alterarMPAdmissaoHCP');
 		Route::post('/home/validar/{id}/upadm_hcp/{id_adm_hcp}', 'MPController@updateMPAdmissaoHCP')->name('updateMPAdmissaoHCP');
-
 		Route::get('/home/validar/{id}/autorizar', 'HomeController@autorizarMP')->name('autorizarMP');
 		Route::post('/home/validar/{id}/autorizar/store', 'HomeController@storeAutMP')->name('storeAutMP');
 		Route::get('/home/validar/{id}/n_autorizar', 'HomeController@n_autorizarMP')->name('n_autorizarMP');
@@ -165,7 +160,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroUnidade/unidadeAlterar/{id}/', 'UnidadeController@updateUnidade')->name('updateUnidade');
 		Route::get('cadastroUnidade/unidadeExcluir/{id}', 'UnidadeController@unidadeExcluir')->name('unidadeExcluir');
 		Route::post('cadastroUnidade/unidadeExcluir/{id}/', 'UnidadeController@destroyUnidade')->name('destroyUnidade');
-		
+		Route::post('cadastroUnidade/pesquisarUnidade','UnidadeController@pesquisarUnidade')->name('pesquisarUnidade');
 		////
 
 		//Cargos
@@ -176,6 +171,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroCargo/cargoAlterar/{id}/', 'CargosController@updateCargo')->name('updateCargo');
 		Route::get('cadastroCargo/cargoExcluir/{id}', 'CargosController@cargoExcluir')->name('cargoExcluir');
 		Route::post('cadastroCargo/cargoExcluir/{id}/', 'CargosController@destroyCargo')->name('destroyCargo');
+		Route::post('cadastroCargo/pesquisarCargo','CargosController@pesquisarCargo')->name('pesquisarCargo');
 		////
 
 		//Centro de custo
@@ -186,6 +182,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post	('cadastroCentrocusto/centrocustoAlterar/{id}/', 'CentroCustoController@updateCentrocusto')->name('updateCentrocusto');
 		Route::get	('cadastroCentrocusto/centrocustoExcluir/{id}', 'CentroCustoController@centrocustoExcluir')->name('centrocustoExcluir');
 		Route::post	('cadastroCentrocusto/centrocustoExcluir/{id}/', 'CentroCustoController@destroyCentrocusto')->name('destroyCentrocusto');
+		Route::post('cadastroCentroCusto/pesquisarCentroCusto','CentroCustoController@pesquisarCentroCusto')->name('pesquisarCentroCusto');
 		////
 		
 		//Gestor
@@ -274,6 +271,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeMP/cadastro_usuario/alterar_senha/{id}','UserController@updateSenha')->name('updateSenha');
 		Route::get('/homeMP/cadastro_usuario/excluir/{id}','UserController@cadastroUsuarioExcluir')->name('cadastroUsuarioExcluir');
 		Route::post('/homeMP/cadastro_usuario/excluir/{id}','UserController@deleteUsuario')->name('deleteUsuario');	
+		Route::post('/homeMP/cadastro_usuario/pesquisarUsuario','UserController@pesquisarUsuario')->name('pesquisarUsuario');
 		////
 
 		//RH3

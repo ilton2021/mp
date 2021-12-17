@@ -39,26 +39,29 @@
 	@endif
 	<div class="row" style="margin-top: 25px;">
 		<div class="col-md-12">
-			<table class="table"id="table_pesq">
-			<form action="" method="post">
+		<p align="right">
+			<a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/homeMP') }}"> Voltar <i class="fas fa-undo-alt"></i> </a> &nbsp;
+			<a class="btn btn-dark btn-sm" style="color: #FFFFFF;" href="{{route('unidadeNovo')}}"> Novo <i class="fas fa-check"></i> </a>
+		</p>
+		<form method="POST" action="{{ route('pesquisarUnidade') }}">	
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				<tr>
-					<td> 
-					<input type="text" id="pesq" name="pesq"  style="width: 400px;" />
-					<select  id="pesq" name="pesq" style="width: 150px;">
-						<option id="pesq" name="pesq" value="1">NOME</option>
-						<option id="pesq" name="pesq" value="2">SIGLA</option>
-					</select>
-					<input type="submit" id="btn" name="btn" class="btn btn-success btn-sm" value="Pesquisar" />
-					</td>	
-					<td>
-					  <p align="right">
-						<a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/home') }}"> Voltar <i class="fas fa-undo-alt"></i> </a> &nbsp;
-						<a class="btn btn-dark btn-sm" style="color: #FFFFFF;" href="{{route('unidadeNovo')}}"> Novo <i class="fas fa-check"></i> </a>
-					  </p>
-					</td>
-				</tr>
+			<table align="center">
+			 <tr>
+			 <td>
+				<input type="text" style="width: 500px" id="pesq" name="pesq" class="form-control" value="" />
+			 </td>
+			 <td>&nbsp;&nbsp;&nbsp;</td>
+			 <td>
+			 <select id="id" name="id" class="form-control">
+			   <option id="id" name="id" value="1">Nome</option>
+			   <option id="id" name="id" value="2">Sigla</option>
+			 </select>
+			 </td>
+			 <td>&nbsp;&nbsp;&nbsp;</td>
+			 <td width="100px"> <input type="submit" class="btn btn-info btn-sm" value="Pesquisar" id="Pesquisar" name="Pesquisar" /> </td>
+			 </tr>
 			</table>
+			</form>
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>

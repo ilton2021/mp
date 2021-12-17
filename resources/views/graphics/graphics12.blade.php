@@ -27,14 +27,14 @@
          ["Elemento", "Total", { role: "style" } ],
 		 ["Admissão", <?php echo $totalAdm ?>, "green"],
 		 ["", <?php echo 0 ?>, "blue"],
-		 ["Alteração Funcional", <?php echo $totalAlt ?>, "yellow"],
+		 ["Alteração Funcional", <?php echo $totalAlt ?>, "black"],
 		 ["", <?php echo 0 ?>, "blue"],
 		 ["Demissão", <?php echo $totalDem ?>, "orange"],
 		 ["", <?php echo 0 ?>, "blue"],
-		 ["Total:", <?php echo $total_SAL ?>, "blue"],
+		 ["Total1:", <?php echo $total_SAL ?>, "blue"],
 		 ["", <?php echo 0 ?>, "blue"],
-		 ["Total:", <?php echo $total_DES ?>, "blue"],
-		 ["", <?php echo 0 ?>, "blue"]
+		 ["Total2:", <?php echo $total_DES ?>, "red"],
+		 ["", <?php echo 0 ?>, "red"]
         ]);
         var view = new google.visualization.DataView(data);
 		view.setColumns([0, 1,
@@ -49,6 +49,17 @@
         height: 400,
         bar: {groupWidth: "100%"},
         legend: { position: "none" },
+		series: {
+            0: { axis: 'admissão' }, 
+            1: { axis: 'alteração' },
+			2: { axis: 'demissão' } 	
+          },
+          axes: {
+            x: {
+              distance: {label: 'parsecs'}, 
+              brightness: {side: 'top', label: 'apparent magnitude'} 
+            }
+          }
       };
       var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
       chart.draw(view, options);
@@ -124,75 +135,31 @@
 		   <td colspan="10"><br><center><b>Total de MP's: {{ $qtdMP }}</b></center></td>
 		 </tr>
 		</table>
-		<table style="margin-left: -100px;"> 
+		<table style="margin-left: 250px;"> 
 		 <tr>
 		  <td><div id="barchart_values" style="width: 600px; height: 300px;"></div></td>
 		 </tr>
 		</table>
+		<table class="table" style="margin-left: -250px; margin-top: -260px;">
+	  	    <tr>
+			 <td><font color="green"><b>Admissão (Salário + Outras Verbas)</b></font></td>
+			</tr>
+			<tr>
+			 <td><font color="black"><b>Alteração Funcional (Salário Novo - Salário Atual)</b></font></td>
+			</tr>
+			<tr>
+			 <td><font color="gold"><b>Demissão (Custo Recisão - Salário Bruto)</b></font></td>
+		    </tr>
+			<tr>
+			 <td><font color="blue"><b>Total 1 (Admissão + Alteração F. + Demissão)</b></font></td>
+		    </tr>
+			<tr>
+			 <td><font color="red"><b>Total 2 (Admissão + Alteração F. - Demissão)</b></font></td>
+		    </tr>
+		</table>
 		</form>
 		</center>
 		@endif
-		<!--table class="table table-bordered" width="1000">
-		<tr>
-		 <td colspan="5"><b>Total de Salário por Centro de Custo - MP Alteração Funcional</b></td>
-		</tr>
-		<tr>
-		 <td colspan="2"><b><center>Centro de Custo</center></td>
-		 <td colspan="2"><b><center>Quantidade</center><b></td>
-		 <td><b><center>Salário</center></b></td>
-		</tr>
-		@foreach($centro_custo as $cc)
-		<tr>
-		 <td colspan="2" style="background-color: #90EE90"><center><b>{{ $cc->centro_custo_novo }}</b></center></td>
-		 <td colspan="2" style="background-color: #FFDB58"><center><b>{{ $cc->qtd }}</b></center></td>
-		 <td style="background-color: #87CEFA"><center><b>{{ "R$ ". number_format($cc->soma,2,',','.') }}</b></center></td>
-	 	</tr>
-		 <tr id="table_descricao" disabled="true">
-	  	    <td><center>NÚMERO MP</center></td>
-			<td><center>SETOR</center></td>
-			<td><center>SALÁRIO NOVO</center></td>
-			<td><center>SALÁRIO ATUAL</center></td>
-			<td><center>MOTIVO</center></td>
-		 </tr>
-		@foreach($alteracaoF as $alt)
-		 @if($alt->centro_custo_novo == $cc->centro_custo_novo)
-		 <tr>
-		 <tbody>
-			@foreach($row5 as $mps)
-			 @if($mps->id == $alt->mp_id)
-	  		   <td><center><a target="_blank" href="{{ route('visualizarMP', $alt->mp_id) }}" class="btn btn-info btn-sm"> {{ $mps->numeroMP }} </a></center></td>
-			 @endif
-			@endforeach
-			<td><center> {{ $alt->setor }} </center></td>
-			<td><center> {{ "R$ ". number_format($alt->salario_novo,2,',','.') }} </center></td>
-			<td><center> {{ "R$ ". number_format($alt->salario_atual,2,',','.') }} </center></td>
-			@if($alt->motivo == "mudanca_setor_area")
-			<td><center> {{ 'Mudança Setor Área' }} </center></td>
-			@elseif($alt->motivo == "transferencia_outra_unidade")
-			<td><center> {{ 'Transferência Outra Unidade' }} </center></td>
-			@elseif($alt->motivo == "mudanca_horaria")
-			<td><center> {{ 'Mudança Horária' }} </center></td>
-			@elseif($alt->motivo == "merito")
-			<td><center> {{ 'Mérito' }} </center></td>
-			@elseif($alt->motivo == "promocao")
-			<td><center> {{ 'Promoção' }} </center></td>
-			@elseif($alt->motivo == "enquadramento")
-			<td><center> {{ 'Enquadramento' }}</center></td>
-			@elseif($alt->motivo == "substituicao_demissao_voluntaria")
-			<td><center> {{ 'Substituição Demissão Voluntária' }} </center></td>
-			@elseif($alt->motivo == "recrutamento_interno")
-			<td><center> {{ 'Recrutamento Interno' }} </center></td>
-			@elseif($alt->motivo == "aumento_quadro")
-			<td><center> {{ 'Aumento de Quadro' }} </center></td>
-			@elseif($alt->motivo == "substituicao_demissao_forcada")
-			<td><center> {{ 'Substituição Demissão Forçada' }} </center></td>
-			@endif
-		 </tbody>	
-		 </tr>
-		 @endif
-		@endforeach
-		@endforeach
-		</table-->
     </div>
     </section>		 
  </body>

@@ -2685,19 +2685,19 @@ class HomeController extends Controller
 		$input 	   = $request->all();
 		$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
 		->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
-		->where('mp.solicitante',$nome)
+		->where('mp.solicitante',$nome)->where('inativa',0)
 		->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
 		->orderby('mp.unidade_id')->get();
 		$qtdAdm = sizeof($admissao);
 		$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
 		->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
-		->where('mp.solicitante',$nome)
+		->where('mp.solicitante',$nome)->where('inativa',0)
 		->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
 		->orderby('mp.unidade_id')->get();
 		$qtdDem = sizeof($demissao);
 		$alteracao  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
 		->select('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
-		->where('mp.solicitante',$nome)
+		->where('mp.solicitante',$nome)->where('inativa',0)
 		->groupby('mp.id','mp.nome','mp.data_emissao','mp.data_prevista','mp.numeroMP','mp.concluida','mp.aprovada','mp.unidade_id')
 		->orderby('mp.unidade_id')->get();
 		$qtdAlt = sizeof($alteracao); 

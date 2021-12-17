@@ -7,6 +7,7 @@ use App\Model\Unidade;
 use App\Model\Loggers;
 use Illuminate\Support\Facades\Storage;
 use Validator;
+use DB;
 
 class UnidadeController extends Controller
 {
@@ -21,6 +22,20 @@ class UnidadeController extends Controller
 		return view('unidade.unidade_novo');
 	}
 	
+	public function pesquisarUnidade(Request $request)
+	{
+		$input = $request->all();
+		$id    = $input['id'];
+		$pesq  = $input['pesq'];
+		
+		if($id == 1) {
+			$unidades = DB::table('unidade')->where('unidade.nome','like','%'.$pesq.'%')->get();
+		} else if($id == 2) {
+			$unidades = DB::table('unidade')->where('unidade.sigla','like','%'.$pesq.'%')->get();
+		}
+		return view('unidade/unidade_cadastro', compact('unidades'));
+	}
+
 	public function storeUnidade(Request $request){
 		$input = $request->all();
 		$nome = $_FILES['imagem']['name'];

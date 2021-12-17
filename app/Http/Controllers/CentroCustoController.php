@@ -6,6 +6,7 @@ use App\Model\CentroCusto;
 use App\Model\Loggers;
 use Illuminate\Http\Request;
 use Validator;
+use DB;
 
 class CentroCustoController extends Controller
 {
@@ -18,6 +19,19 @@ class CentroCustoController extends Controller
 	public function centrocustoNovo()
 	{
 		return view('centrocusto/centrocusto_novo');
+	}
+
+	public function pesquisarCentroCusto(Request $request)
+	{
+		$input = $request->all();
+		$id    = $input['id'];
+		$pesq  = $input['pesq'];
+		
+		if($id == 1) {
+			$centrocustos = DB::table('centro_custo')->where('centro_custo.nome','like','%'.$pesq.'%')->get();
+		} 
+		return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
+					->withInput(session()->flashInput($request->input()));
 	}
 	
 	public function storeCentrocusto(Request $request){

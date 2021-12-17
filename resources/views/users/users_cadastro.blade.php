@@ -43,6 +43,24 @@
 			 <a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/homeMP') }}"> Voltar <i class="fas fa-undo-alt"></i> </a> &nbsp;
 			 <a class="btn btn-dark btn-sm" style="color: #FFFFFF;" href="{{route('cadastroUsuarioNovo')}}"> Novo <i class="fas fa-check"></i> </a>
 			</p>
+			<form method="POST" action="{{ route('pesquisarUsuario') }}">	
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
+			<table align="center">
+			 <tr>
+			 <td>
+				<input type="text" style="width: 500px" id="pesq" name="pesq" class="form-control" value="" />
+			 </td>
+			 <td>&nbsp;&nbsp;&nbsp;</td>
+			 <td>
+			 <select id="id" name="id" class="form-control">
+			   <option id="id" name="id" value="1">Nome</option>
+			 </select>
+			 </td>
+			 <td>&nbsp;&nbsp;&nbsp;</td>
+			 <td width="100px"> <input type="submit" class="btn btn-info btn-sm" value="Pesquisar" id="Pesquisar" name="Pesquisar" /> </td>
+			 </tr>
+			</table>
+			</form>
 			<table class="table table-sm " id="my_table">
 				<thead class="bg-success">
 					<tr>

@@ -74,10 +74,10 @@
 					 </select>  
 				   @else
 				     @if(Auth::user()->id == 61)
-					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">
-					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>  	    
-				     </select>  
-					 @else
+					 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
+					   <option id="gestor_id" name="gestor_id" value="30"></option>   
+					 </select>  
+			  	     @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">
 					   <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
 					 </select>  
@@ -126,8 +126,18 @@
 				 @endif
 			   @endif
 			  @endif
-			   
+			  <?php $b = 0; ?>
 			  @if(Auth::user()->funcao == "RH")
+				 
+				 @if(!empty($alteracaoF))
+				  @if($alteracaoF[0]->salario_atual == $alteracaoF[0]->salario_novo) <?php $b = 1; ?>
+				  <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
+					<option id="gestor_id" name="gestor_id" value="30"></option>   
+				  </select>
+				  @endif
+				 @endif
+					
+				 @if($b == 0)
 				 @if($mp[0]->tipo_mp == 0)
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 				  @foreach($gestoresUnd as $gestor)
@@ -159,6 +169,7 @@
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 			        <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
 			     </select>	 
+				 @endif
 				 @endif
 			   @endif
 			</td>

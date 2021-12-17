@@ -70,12 +70,18 @@
 			   	 @if(!empty($aprovacao)) <?php $qtdAp = sizeof($aprovacao); ?>
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
+				    @if(Auth::user()->id == 61)
+					 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
+					  <option id="gestor_id" name="gestor_id" value="30"></option>   
+					 </select>
+					@else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
 				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
 					 </select>  
+					@endif
 				   @endif
 				 @endif
     		   @endif

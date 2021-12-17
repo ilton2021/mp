@@ -11,6 +11,7 @@ class MP extends Model
 	protected $fillable = [
 		'unidade_id',
 		'local_trabalho',
+		'hcpgestao',
 		'solicitante',
 		'numeroMP',
 		'ordem',
@@ -24,6 +25,7 @@ class MP extends Model
 		'data_prevista',
 		'concluida',
 		'aprovada',
+		'inativa',
 		'acessorh3',
 		'usuario_acessorh3',
 		'created_at',

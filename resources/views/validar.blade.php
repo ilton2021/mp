@@ -877,9 +877,9 @@
                  <td> <p><center> {{ "R$ ".number_format($pla->valor_pago_plantao, 2,',','.') }} </center> </p>  </td>
                  <td>
                  <input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($pla->solicitante, 0, 8); ?>" title="<?php echo $pla->solicitante; ?>" style="width: 70px" /> <br>
-                 <?php $qtdPl = sizeof($aprovacaoPl); for($pl = 0; $pl < $qtdPl; $pl++) { ?>
-                 @if($aprovacaoPl[$pl]->mp_id == $pla->mp_id)
-                  <?php $idG = $aprovacaoPl[$pl]->gestor_anterior; ?> 
+                 <?php $qtdPl = sizeof($aprovacaoPla); for($pl = 0; $pl < $qtdPl; $pl++) { ?>
+                 @if($aprovacaoPla[$pl]->mp_id == $pla->mp_id)
+                  <?php $idG = $aprovacaoPla[$pl]->gestor_anterior; ?> 
                   @foreach($gestores as $g)
                       @if($g->id == $idG)
                         <input readonly="true" type="text" id="gestor" name="gestor" value="<?php echo substr($g->nome, 0, 8); ?>" title="<?php echo $g->nome; ?>" style="width: 70px" /> <br>

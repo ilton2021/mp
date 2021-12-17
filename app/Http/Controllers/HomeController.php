@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Unidade;
 use App\Model\MP;
+use App\Model\Vaga;
 use App\Model\Gestor;
 use App\Model\Admissao;
 use App\Model\Demissao;
@@ -17,6 +18,7 @@ use App\Model\CentroCusto;
 use App\Model\Justificativa;
 use App\Model\JustificativaN_Autorizada;
 use App\Model\Aprovacao;
+use App\Model\Loggers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -183,21 +185,21 @@ class HomeController extends Controller
 	public function graphics3()
     {
 		if(Auth::user()->id == 5){
-			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',3)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 160){
-			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',4)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 167){
-			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',5)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 155){
-			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',6)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 60){
-			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',7)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 61){
-			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',8)->where('aprovada',1)->where('concluida',1)->get();
 		} else if(Auth::user()->id == 59){
-			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get();
-		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			$row5 = MP::where('unidade_id',0)->where('aprovada',1)->where('concluida',1)->get();
+			$row5 = MP::where('unidade_id',2)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('unidade_id',1)->where('aprovada',1)->where('concluida',1)->get();
 		}
 		$qtd = sizeof($row5);
 		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
@@ -208,8 +210,16 @@ class HomeController extends Controller
 			$totalSal 		   += $admissao[$a]->salario;
 			$totalOutrasVerbas += $admissao[$a]->outras_verbas;
 		} 
+		if($qtdAd > 0) {
+			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)
+							->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
+													DB::raw('count(`centro_custo`) as qtd'))
+							->groupby('centro_custo')->get();
+		} else {
+			$centro_custo = DB::table('admissao')->where('unidade_id',0)->get();
+		}
 		$unidades   = Unidade::all();
-		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades','admissao'));
+		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades','admissao','centro_custo'));
     }
 	
 	public function pesquisarGrafico3(Request $request)
@@ -220,7 +230,7 @@ class HomeController extends Controller
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
 			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
+				$row5 = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('aprovada',1)->where('concluida',1)->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
@@ -240,7 +250,7 @@ class HomeController extends Controller
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
-		$qtd = sizeof($row5);
+		$qtd = sizeof($row5); 
 		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
 		$admissao = Admissao::whereIn('mp_id',$ids)->get(); $qtdAd = sizeof($admissao);
 		$totalSal = 0; $totalOutrasVerbas = 0;
@@ -248,9 +258,17 @@ class HomeController extends Controller
 		{
 			$totalSal 		   += $admissao[$a]->salario;
 			$totalOutrasVerbas += $admissao[$a]->outras_verbas;
+		} 
+		if($qtdAd > 0) {
+			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',$idU)
+							->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
+													DB::raw('count(`centro_custo`) as qtd'))
+							->groupby('centro_custo')->get();				
+		} else {
+			$centro_custo = DB::statement('SELECT * FROM admissao WHERE id = 0');
 		}
-		$unidades   = Unidade::all();
-		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades','admissao'));
+		$unidades = Unidade::all(); 
+		return view('/graphics/graphics3', compact('row5','qtd','qtdAd','totalSal','totalOutrasVerbas','unidades','admissao','centro_custo'));
     }
 	
 	public function graphics4()
@@ -281,8 +299,19 @@ class HomeController extends Controller
 			$totalAltSA += $alteracaoF[$c]->salario_atual;
 			$totalAltSN += $alteracaoF[$c]->salario_novo;
 		}
+
+		if($qtdAlt > 0){
+			$centro_custo2 = DB::table('alteracao_funcional')
+			->whereIn('mp_id',$ids)
+			->select('centro_custo_novo', DB::raw('sum(salario_novo + salario_atual) as soma'), 
+			   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
+			->groupby('centro_custo_novo')->get();
+		} else {
+			$centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0');
+		}
+
 		$unidades = Unidade::all();
-		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades','alteracaoF'));
+		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades','alteracaoF','centro_custo2'));
     }
 	
 	public function pesquisarGrafico4(Request $request)
@@ -310,7 +339,7 @@ class HomeController extends Controller
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
 		$qtd = sizeof($row5);
@@ -322,8 +351,19 @@ class HomeController extends Controller
 			$totalAltSA += $alteracaoF[$c]->salario_atual;
 			$totalAltSN += $alteracaoF[$c]->salario_novo;
 		}
+
+		if($qtdAlt > 0){
+			$centro_custo2 = DB::table('alteracao_funcional')
+			->whereIn('mp_id',$ids)
+			->select('centro_custo_novo', DB::raw('sum(salario_novo + salario_atual) as soma'), 
+			   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
+			->groupby('centro_custo_novo')->get();
+		} else {
+			$centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0');
+		}
+		
 		$unidades = Unidade::all();
-		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades','alteracaoF'));
+		return view('/graphics/graphics4', compact('row5','qtd','qtdAlt','totalAltSA','totalAltSN','unidades','alteracaoF','centro_custo2'));
     }
 	
 	public function graphics5()
@@ -348,13 +388,14 @@ class HomeController extends Controller
 		$qtd = sizeof($row5);
 		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
 		$demissao = Demissao::whereIn('mp_id',$ids)->get(); $qtdDem = sizeof($demissao);
-		$totalDem = 0;
+		$totalDem = 0; $totalSal = 0;
 		for($b = 0; $b < $qtdDem; $b++)
 		{
 			$totalDem += $demissao[$b]->custo_recisao;
+			$totalSal += $demissao[$b]->salario_bruto;
 		}
 		$unidades = Unidade::all();
-		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','unidades','demissao'));
+		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','totalSal','unidades','demissao'));
     }
 	
 	public function pesquisarGrafico5(Request $request)
@@ -368,34 +409,35 @@ class HomeController extends Controller
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
 				$data_i = "1970-01-01";
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
 		$qtd = sizeof($row5);
 		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
 		$demissao = Demissao::whereIn('mp_id',$ids)->get();
 		$qtdDem   = sizeof($demissao);
-		$totalDem = 0;
+		$totalDem = 0; $totalSal = 0;
 		for($b = 0; $b < $qtdDem; $b++)
 		{
 			$totalDem += $demissao[$b]->custo_recisao;
+			$totalSal += $demissao[$b]->salario_bruto;
 		}
 		$unidades = Unidade::all();
-		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','unidades','demissao'));
+		return view('/graphics/graphics5', compact('row5','qtd','qtdDem','totalDem','totalSal','unidades','demissao'));
     }
 	
 	public function graphics6()
@@ -423,12 +465,12 @@ class HomeController extends Controller
 		if($qtdAdm > 0) {
 			if($idUnd == 0) {
 				$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',0)
-					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+					->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
 											  DB::raw('count(`centro_custo`) as qtd'))
 					->groupby('centro_custo')->get();
 			} else {
 				$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',$idUnd)
-					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+					->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
 											  DB::raw('count(`centro_custo`) as qtd'))
 					->groupby('centro_custo')->get();
 			}
@@ -452,17 +494,13 @@ class HomeController extends Controller
 				$admissao = Admissao::all();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
-				$row5 	= MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)
-					->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
+				$row5 	= MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)
-					->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
-				$row5 = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)
-					->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
+				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
-															  ->where('unidade_id',$idU)->get();
+				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)->where('unidade_id',$idU)->get();
 			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 	= MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
@@ -480,13 +518,13 @@ class HomeController extends Controller
 		if($idU == 0){
 			$admissao = Admissao::whereIN('mp_id',$ids)->get();
 			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)
-					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+					->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
 							  DB::raw('count(`centro_custo`) as qtd'))
 					->groupby('centro_custo')->get();
 		} else {
 			$admissao = Admissao::whereIN('mp_id',$ids)->get();
 			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',$idU)
-					->select('centro_custo', DB::raw('sum(salario - outras_verbas) as soma'),
+					->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
 							  DB::raw('count(`centro_custo`) as qtd'))
 					->groupby('centro_custo')->get();
 		}
@@ -544,115 +582,46 @@ class HomeController extends Controller
 		$idU    = $input['unidade_id'];
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
-		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
 			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
-				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);		
 			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now')); 
-				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
+				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);      	
 			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+  			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+    		} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_i = date('Y-m-d', strtotime('2020-01-01')); $data_f = date('Y-m-d', strtotime('now'));  
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)->where('unidade_id',$idU)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+    		} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
 				$data_f = date('Y-m-d', strtotime('now')); 
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)->where('unidade_id',$idU)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+  			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF);
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)->where('unidade_id',$idU)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get();
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+   			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-        		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
-				$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF); 
-				if($qtdMP > 0){
-				   $centro_custo2 = DB::table('alteracao_funcional')
-				     ->whereIn('mp_id',$ids)->where('unidade_id',$idU)
-					 ->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
-					   DB::raw('COUNT(`centro_custo_novo`) as qtd'))
-					 ->groupby('centro_custo_novo')->get(); 
-				} else {
-				   $centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
-				}
+     		}
+		}
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }	
+		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdMP = sizeof($alteracaoF); 
+		if($qtdMP > 0){
+			if($idU == 0) {
+				$centro_custo2 = DB::table('alteracao_funcional')
+					->whereIn('mp_id',$ids)->whereIn('unidade_id',[1,2,3,4,5,6,7,8])
+					->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
+					DB::raw('COUNT(`centro_custo_novo`) as qtd'))
+					->groupby('centro_custo_novo')->get(); 
+			} else {
+				$centro_custo2 = DB::table('alteracao_funcional')
+					->whereIn('mp_id',$ids)->where('unidade_id',$idU)
+					->select('centro_custo_novo', DB::raw('sum(salario_novo - salario_atual) as soma'), 
+					DB::raw('COUNT(`centro_custo_novo`) as qtd'))
+					->groupby('centro_custo_novo')->get(); 
 			}
+		} else {
+			$centro_custo2 = DB::select('SELECT * FROM alteracao_funcional WHERE id = 0'); 		
 		}
 		$qtd  	  = sizeof($centro_custo2);
 		$unidades = Unidade::all();
@@ -872,6 +841,253 @@ class HomeController extends Controller
 		$unidades = Unidade::all();
 		return view('/graphics/graphics9', compact('row5','qtd','qtdAlt','totalRPA_SAL','totalRPA_OV','unidades','rpa2','rpa'));
     }
+
+	public function graphics10()
+	{
+	    if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('hcpgestao','SIM')->where('aprovada',1)->where('concluida',1)->get();
+		}
+		$qtd  = sizeof($row5);
+		for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } 
+		$admHCP = AdmissaoHCP::whereIn('mp_id',$ids)->get(); $qtdAdmHCP = sizeof($admHCP); 
+		for($a = 0; $a < $qtdAdmHCP; $a++){ $ids[] = $admHCP[$a]->id; }  
+		$admSalUnds = AdmissaoSalariosUnidades::whereIn('admissao_hcp_id',$ids)->get(); 
+		$qtdSalUnds = sizeof($admSalUnds); 
+		if($qtdAdmHCP > 0){
+			$rpa2 = DB::table('admissao_hcp')->whereIn('admissao_hcp.id',$ids)
+			  ->join('admissao_salarios_unidades','admissao_salarios_unidades.admissao_hcp_id','=','admissao_hcp.id')
+			  ->join('mp','mp.id','=','admissao_hcp.mp_id')
+		      ->select('admissao_hcp.motivo as motivo','admissao_salarios_unidades.unidade_id','mp.numeroMP',
+			  		   'admissao_salarios_unidades.centro_custo','admissao_salarios_unidades.cargo','admissao_hcp.mp_id',
+					   'admissao_salarios_unidades.salario','admissao_salarios_unidades.outras_verbas',
+					DB::raw('sum(salario + outras_verbas) as soma'), 
+					DB::raw('COUNT(`centro_custo`) as qtd'))
+			  ->groupby('admissao_salarios_unidades.centro_custo','motivo','unidade_id','numeroMP','cargo','salario','outras_verbas','mp_id')
+			  ->orderby('admissao_salarios_unidades.centro_custo')->get();	 
+		} else {
+			$rpa2 = DB::select('SELECT * FROM admissao_salarios_unidades WHERE id = 0');
+		}
+		$total_SAL = 0; $total_OV = 0;
+		for($c = 0; $c < $qtdSalUnds; $c++)
+		{
+			$total_SAL += $admSalUnds[$c]->salario;
+			$total_OV  += $admSalUnds[$c]->outras_verbas;
+		}
+		$unidades = Unidade::all();
+		$centro_custo = CentroCusto::all();
+		return view('/graphics/graphics10', compact('row5','qtd','qtdAdmHCP','admSalUnds','total_SAL','total_OV','admHCP','unidades','rpa2','centro_custo'));
+	}
+
+	public function pesquisarGrafico10(Request $request)
+	{
+
+	}
+
+	public function graphics11()
+	{
+		if(Auth::user()->id == 5){
+			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 160){
+			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 167){
+			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 155){
+			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 60){
+			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 61){
+			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 59){
+			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
+		}
+		$qtd  = sizeof($row5);
+		for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } 
+		$plantao = Plantao::whereIn('mp_id',$ids)->get(); $qtdPla = sizeof($plantao);
+
+		$total_PAGO = 0; 
+		for($c = 0; $c < $qtdPla; $c++)
+		{
+			$total_PAGO += $plantao[$c]->valor_pago_plantao;
+		}
+
+		$plantao2 = DB::table('plantao')->whereIn('mp_id',$ids)
+				->select('centro_custo_plantao', DB::raw('sum(quantidade_plantao * valor_plantao) as soma'), 
+				DB::raw('COUNT(`centro_custo_plantao`) as qtd'))
+				->groupby('centro_custo_plantao')->get();
+
+		$unidades = Unidade::all();
+		return view('/graphics/graphics11', compact('row5','qtd','qtdPla','plantao','plantao2','unidades','total_PAGO'));
+	}
+
+	public function graphics12()
+	{
+		if(Auth::user()->id == 5){
+			$row5 = MP::where('unidade_id', 3)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 160){
+			$row5 = MP::where('unidade_id', 4)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 167){
+			$row5 = MP::where('unidade_id', 5)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 155){
+			$row5 = MP::where('unidade_id', 6)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 60){
+			$row5 = MP::where('unidade_id', 7)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 61){
+			$row5 = MP::where('unidade_id', 8)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 59){
+			$row5 = MP::where('unidade_id', 2)->where('aprovada',1)->where('concluida',1)->get();
+		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
+		}
+		$qtdMP  = sizeof($row5); 
+		for($a = 0; $a < $qtdMP; $a++){ $ids[] = $row5[$a]->id; } 
+		$admissao   = Admissao::whereIn('mp_id',$ids)->get(); $qtdAdm = sizeof($admissao); 
+		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdAlt = sizeof($alteracaoF);
+		$demissao   = Demissao::whereIn('mp_id',$ids)->get(); $qtdDem = sizeof($demissao);
+		$total_SAL_ad = 0; $total_OV_ad = 0; $total_SAL = 0; $total_OV = 0; $total_DES = 0;
+		for($c = 0; $c < $qtdAdm; $c++)
+		{
+			$total_SAL_ad += $admissao[$c]->salario;
+			$total_OV_ad  += $admissao[$c]->outras_verbas;
+		}
+		$totalAdm = $total_SAL_ad + $total_OV_ad;
+		$total_SAL_alt = 0; $total_OV_alt = 0;
+		for($c = 0; $c < $qtdAlt; $c++)
+		{
+			$total_SAL_alt += $alteracaoF[$c]->salario_novo - $alteracaoF[$c]->salario_atual;
+			$total_OV_alt  += $alteracaoF[$c]->outras_verbas;
+		}
+		$totalAlt = $total_SAL_alt + $total_OV_alt;
+		$totalCusto = 0; $totalSalarios = 0;
+		for($c = 0; $c < $qtdDem; $c++)
+		{
+			$totalCusto    += $demissao[$c]->custo_recisao;
+			$totalSalarios += $demissao[$c]->salario_bruto;
+		}
+		$totalDem = $totalCusto - $totalSalarios;
+		$total_SAL += ($total_SAL_ad + $total_OV_ad) + ($total_SAL_alt + $total_OV_alt) + ($totalCusto - $totalSalarios);
+		$total_DES += ($total_SAL_ad + $total_OV_ad) + ($total_SAL_alt + $total_OV_alt) - ($totalCusto - $totalSalarios);
+		$unidades = Unidade::all();
+		$centro_custo = CentroCusto::all();
+		return view('/graphics/graphics12', compact('row5','qtdMP','centro_custo','admissao','alteracaoF','demissao','total_SAL','total_DES','total_OV','total_SAL_ad','total_OV_ad','total_SAL_alt','total_OV_alt','totalCusto','totalSalarios','totalAdm','totalAlt','totalDem','unidades'));
+	}
+
+	public function pesquisarGrafico12(Request $request)
+	{
+		$input = $request->all();
+		$idU   = $input['unidade_id'];
+		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+		$data_f = date('Y-m-d', strtotime($input['data_fim']));
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+				$data_i = "1970-01-01";
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			}
+		} 
+		$qtdMP  = sizeof($row5); 
+		for($a = 0; $a < $qtdMP; $a++){ $ids[] = $row5[$a]->id; } 
+		$admissao   = Admissao::whereIn('mp_id',$ids)->get(); $qtdAdm = sizeof($admissao); 
+		$alteracaoF = Alteracao_Funcional::whereIn('mp_id',$ids)->get(); $qtdAlt = sizeof($alteracaoF);
+		$demissao   = Demissao::whereIn('mp_id',$ids)->get(); $qtdDem = sizeof($demissao);
+		$total_SAL_ad = 0; $total_OV_ad = 0; $total_SAL = 0; $total_OV = 0; $total_DES = 0;
+		for($c = 0; $c < $qtdAdm; $c++)
+		{
+			$total_SAL_ad += $admissao[$c]->salario;
+			$total_OV_ad  += $admissao[$c]->outras_verbas;
+		}
+		$totalAdm = $total_SAL_ad + $total_OV_ad;
+		$total_SAL_alt = 0; $total_OV_alt = 0;
+		for($c = 0; $c < $qtdAlt; $c++)
+		{
+			$total_SAL_alt += $alteracaoF[$c]->salario_novo - $alteracaoF[$c]->salario_atual;
+			$total_OV_alt  += $alteracaoF[$c]->outras_verbas;
+		}
+		$totalAlt = $total_SAL_alt + $total_OV_alt;
+		$totalCusto = 0; $totalSalarios = 0;
+		for($c = 0; $c < $qtdDem; $c++)
+		{
+			$totalCusto    += $demissao[$c]->custo_recisao;
+			$totalSalarios += $demissao[$c]->salario_bruto;
+		}
+		$totalDem = $totalCusto - $totalSalarios;
+		$total_SAL += ($total_SAL_ad + $total_OV_ad) + ($total_SAL_alt + $total_OV_alt) + ($totalCusto - $totalSalarios);
+		$total_DES += ($total_SAL_ad + $total_OV_ad) + ($total_SAL_alt + $total_OV_alt) - ($totalCusto - $totalSalarios);
+		$unidades = Unidade::all();
+		$centro_custo = CentroCusto::all();
+		return view('/graphics/graphics12', compact('row5','qtdMP','centro_custo','admissao','alteracaoF','demissao','total_SAL','total_DES','total_OV','total_SAL_ad','total_OV_ad','total_SAL_alt','total_OV_alt','totalCusto','totalSalarios','totalAdm','totalAlt','totalDem','unidades'));
+	}
+
+	public function pesquisarGrafico11(Request $request)
+	{
+		$input = $request->all();
+		$idU   = $input['unidade_id'];
+		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
+		$data_f = date('Y-m-d', strtotime($input['data_fim']));
+		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
+			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+				$data_i = "1970-01-01";
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->get();
+			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+				$data_f = date('Y-m-d', strtotime('now'));
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
+			}
+		} 
+		$qtd  = sizeof($row5);
+		if($qtd > 0) { for($a = 0; $a < $qtd; $a++){ $ids[] = $row5[$a]->id; } } else { $ids[] = 0; }
+		$plantao = Plantao::whereIn('mp_id',$ids)->get(); $qtdPla = sizeof($plantao); 
+		if($qtdPla > 0){
+			if($idU == 0) {
+				$plantao2 = DB::table('plantao')->whereIn('mp_id',$ids)
+					->select('centro_custo_plantao', DB::raw('sum(quantidade_plantao * valor_plantao) as soma'), 
+					DB::raw('COUNT(`centro_custo_plantao`) as qtd'))
+					->groupby('centro_custo_plantao')->get();
+			} else {
+				$plantao2 = DB::table('plantao')->whereIn('mp_id',$ids)->where('unidade_id',$idU)
+					->select('centro_custo_plantao', DB::raw('sum(quantidade_plantao * valor_plantao) as soma'), 
+					DB::raw('COUNT(`centro_custo_plantao`) as qtd'))
+					->groupby('centro_custo_plantao')->get();
+			}
+		} else {
+			$plantao2 = DB::select('SELECT * FROM admissao WHERE id = 0');
+		}
+		$total_PAGO = 0; 
+		for($c = 0; $c < $qtdPla; $c++)
+		{
+			$total_PAGO += $plantao[$c]->valor_pago_plantao;
+		}
+		$unidades = Unidade::all();
+		return view('/graphics/graphics11', compact('row5','qtd','qtdPla','unidades','plantao','plantao2','total_PAGO'));
+	}
 	
 	public function visualizarMPs()
 	{
@@ -889,11 +1105,13 @@ class HomeController extends Controller
 		$und = explode(",",$und); 
 		$funcao    = Auth::user()->funcao;
 		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador"){
-			$mps = MP::where('solicitante',Auth::user()->name)->where('concluida',0)->get();
-		} else {
-			$mps = DB::table('mp')->whereIn('unidade_id',$und)
+			$mps = MP::where('solicitante',Auth::user()->name)->where('concluida',0)->where('inativa',0)->get();
+		} else if (Auth::user()->id == 30 || Auth::user()->id == 198 || Auth::user()->id == 200 || Auth::user()->funcao == "Diretoria") {
+			$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('inativa',0)
 			->where('concluida',0)->orderby('mp.unidade_id', 'ASC')->get();
-		} 
+		} else {
+			$mps = DB::table('mp')->where('id',0)->get();
+		}
 		$aprovacao = Aprovacao::all();
 		$gestores  = Gestor::all();
 		return view('criadasMPs', compact('unidades','mps','aprovacao','gestores'));
@@ -907,10 +1125,10 @@ class HomeController extends Controller
 		$funcao    = Auth::user()->funcao; 
 		$nome      = Auth::user()->name;
 		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador"){
-			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)
-					 ->where('aprovada',1)->get();
+			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)->where('inativa',0)
+					 ->where('aprovada',1)->paginate(20);
 		} else {
-			$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',1)
+			$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',1)->where('inativa',0)
 			->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
 		} 
 		$aprovacao = Aprovacao::all();
@@ -926,10 +1144,10 @@ class HomeController extends Controller
 		$funcao    = Auth::user()->funcao; 
 		$nome      = Auth::user()->name;
 		if($funcao == "Gestor" || $funcao == "Gestor Imediato"){
-			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)
-					 ->where('aprovada',0)->get();
+			$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)->where('inativa',0)
+					 ->where('aprovada',0)->paginate(20);
 		} else {
-			$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',0)
+			$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',0)->where('inativa',0)
 			->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
 		} 		
 		$aprovacao = Aprovacao::all();
@@ -980,82 +1198,84 @@ class HomeController extends Controller
 				} 
 				if($unidade_id != 0){
 					if($pesq2 != "") {
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('solicitante',Auth::user()->name)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('solicitante',Auth::user()->name)->where('inativa',0)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)->get();	  
 					} else {
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('inativa',0)
 						->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();	  
 					}
 				} else { 
 					if($pesq2 != ""){
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)->where('inativa',0)
 						 ->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
 					} else {
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)->where('inativa',0)
 						->where('solicitante',Auth::user()->name)->get();
 					}
 				}
 			} else {
 				if($unidade_id != 0){
 					if($pesq != ""){
-						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)->where('inativa',0)
 						->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
 					} else {
-						$mps = DB::table('mp')->where('concluida', 0)
+						$mps = DB::table('mp')->where('concluida', 0)->where('inativa',0)
 						->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
 					}
 				} else {
 					if($pesq != ""){
-						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)->where('inativa',0)
 						->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
 					} else {
-						$mps = DB::table('mp')->where('concluida', 0)->where('unidade_id',$und)
+						$mps = DB::table('mp')->where('concluida', 0)->where('unidade_id',$und)->where('inativa',0)
 						->where('solicitante',Auth::user()->name)->get();
 					}
 				}
 			}
-		} else {
+		} else if (Auth::user()->id == 30 || Auth::user()->id == 198 || Auth::user()->id == 200 || Auth::user()->funcao == "Diretoria") {
 			if($qtd > 0) {
 				for($a = 0; $a < $qtd; $a++){
 					$ids[] = $pesquisa[$a]->mp_id; 
 				} 
 				if($unidade_id != 0){
 					if($pesq2 != ""){
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('inativa',0)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
 						->where('unidade_id',$unidade_id)->get();	  
 					} else {
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('inativa',0)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->get();	  
 					}
 				} else {
 					if($pesq2 != ""){
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->whereIn('unidade_id',$und)->where('inativa',0)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->get();
 					} else {
-						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$und)
+						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',0)->where('unidade_id',$und)->where('inativa',0)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->get();
 					}
 				}
 			} else { 
 				if($unidade_id != 0){
 					if($pesq2 != ""){
-						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)->where('inativa',0)
 						->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->get();
 					} else {
-						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida', 0)
+						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida', 0)->where('inativa',0)
 						->where('unidade_id',$unidade_id)->get();
 					}
 				} else {
 					if($pesq2 != ""){
-						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)
+						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida', 0)->where('inativa',0)
 						->where('unidade_id',$und)->get();
 					} else {
-						$mps = DB::table('mp')->where('concluida', 0)->whereIn('unidade_id',$und)
+						$mps = DB::table('mp')->where('concluida', 0)->whereIn('unidade_id',$und)->where('inativa',0)
 						->orderBy('unidade_id','ASC')->get();
 					}
 				}
 			}
+		} else {
+			$mps = DB::table('mp')->where('id',0)->get();
 		}
 		return view('criadasMPs', compact('unidades','mps','aprovacao','gestores'));
 	}
@@ -1094,7 +1314,7 @@ class HomeController extends Controller
 			$qtd = sizeof($pesquisa);
 		} else { $qtd = 0; } 
 		
-		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador") {	
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato") {	
 			if($qtd > 0) {
 				for($a = 0; $a < $qtd; $a++){
 					$ids[] = $pesquisa[$a]->mp_id; 
@@ -1103,18 +1323,18 @@ class HomeController extends Controller
 					if($pesq2 != "") {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('solicitante',Auth::user()->name)
 						->where('aprovada',1)->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
-						->where('unidade_id',$unidade_id)->get();	  
+						->where('unidade_id',$unidade_id)->paginate(50);	  
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();	  
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->paginate(50);	  
 					}
 				} else { 
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->paginate(50);
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->get();
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->paginate(50);
 					}
 				}
 			} else {
@@ -1126,29 +1346,29 @@ class HomeController extends Controller
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
 								->where('mp.unidade_id',$unidade_id)
-								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->get();
+								->where('mp.aprovada',1)->select('mp.*')->orderby('mp.id')->distinct()->paginate(50);
 					}else { 
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.solicitante',Auth::user()->name)
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
-								->where('mp.aprovada',1)->select('mp.*')->groupby('mp.id')->orderby('mp.id')->get();
+								->where('mp.aprovada',1)->select('mp.*')->groupby('mp.id')->orderby('mp.id')->paginate(50);
 					}
 				} else if($unidade_id != 0){
 					if($pesq != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)->where('unidade_id',$unidade_id)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->paginate(50);
 					} else {
 						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$unidade_id)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->paginate(50);
 					}
 				} else {
 					if($pesq != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->paginate(50);
 					} else {
 						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$und)
-						->where('aprovada',1)->where('solicitante',Auth::user()->name)->get();
+						->where('aprovada',1)->where('solicitante',Auth::user()->name)->paginate(50);
 					}
 				}
 			}
@@ -1210,7 +1430,7 @@ class HomeController extends Controller
 				}
 			}
 		}
-		return view('aprovadasMPs', compact('unidades','mps','pesq2','pesq'));
+		return view('aprovadasMPs', compact('unidades','mps','unidade_id','pesq2','pesq'));
 	}
 	
 	public function pesquisaMPsRe(Request $request)
@@ -1246,7 +1466,7 @@ class HomeController extends Controller
 			$qtd = sizeof($pesquisa); 
 		} else { $qtd = 0; } 
 		
-		if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador") {	
+		if($funcao == "Gestor" || $funcao == "Gestor Imediato") {	
 			if($qtd > 0) {
 				for($a = 0; $a < $qtd; $a++){
 					$ids[] = $pesquisa[$a]->mp_id; 
@@ -1255,36 +1475,36 @@ class HomeController extends Controller
 					if($pesq2 != "") {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('solicitante',Auth::user()->name)
 						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
-						->where('unidade_id',$unidade_id)->get();	  
+						->where('unidade_id',$unidade_id)->paginate(20);	  
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->get();	  
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->whereIn('unidade_id',$und)->paginate(20);	  
 					}
 				} else { 
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('mp.numeroMP','like','%'.$pesq.'%')->paginate(20);
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->get();
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->paginate(20);
 					}
 				}
 			} else {
 				if($unidade_id != 0){
 					if($pesq != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)->where('unidade_id',$unidade_id)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->paginate(20);
 					} else {
 						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$unidade_id)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->paginate(20);
 					}
 				} else {
 					if($pesq != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->get();
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->where('unidade_id',$und)->paginate(20);
 					} else {
 						$mps = DB::table('mp')->where('concluida',1)->where('unidade_id',$und)
-						->where('aprovada',0)->where('solicitante',Auth::user()->name)->get();
+						->where('aprovada',0)->where('solicitante',Auth::user()->name)->paginate(20);
 					}
 				}
 			}
@@ -1297,18 +1517,18 @@ class HomeController extends Controller
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
 						->where('mp.numeroMP','like','%'.$pesq.'%')->whereIn('unidade_id',$und)
-						->where('aprovada',0)->where('unidade_id',$unidade_id)->get();	  
+						->where('aprovada',0)->where('unidade_id',$unidade_id)->paginate(20);	  
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)
-						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->get();	  
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->where('unidade_id',$und)->paginate(20);	  
 					}
 				} else {
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->paginate(20);
 					} else {
 						$mps = DB::table('mp')->whereIn('id',$ids)->where('concluida',1)->where('unidade_id',$und)
-						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->get();
+						->where('aprovada',0)->where('mp.numeroMP','like','%'.$pesq.'%')->paginate(20);
 					}
 				}
 			} else { 
@@ -1320,64 +1540,93 @@ class HomeController extends Controller
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
 								->where('mp.unidade_id',$unidade_id)
-								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->distinct()->get();
+								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->distinct()->paginate(20);
 					}else {
 						$mps = DB::table('mp')->join('aprovacao','mp.id','=','aprovacao.mp_id')
 								->whereBetween('aprovacao.data_aprovacao',[$data_i,$data_f])
 								->where('mp.concluida',1)->whereIn('mp.unidade_id',$und)
-								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->distinct()->get();
+								->where('mp.aprovada',0)->select('mp.*')->orderBy('mp.id')->distinct()->paginate(20);
 					}
 				} else if($unidade_id != 0){
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
-						->where('aprovada',0)->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->get();
+						->where('aprovada',0)->whereIn('unidade_id',$und)->where('unidade_id',$unidade_id)->paginate(20);
 					} else {
 						$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('concluida',1)
-						->where('aprovada',0)->where('unidade_id',$unidade_id)->get();
+						->where('aprovada',0)->where('unidade_id',$unidade_id)->paginate(20);
 					}
 				} else {
 					if($pesq2 != ""){
 						$mps = DB::table('mp')->where($pesq2,'like','%'.$pesq.'%')->where('concluida',1)
-						->where('aprovada',0)->whereIn('unidade_id',$und)->get();
+						->where('aprovada',0)->whereIn('unidade_id',$und)->paginate(20);
 					} else {
 						$mps = DB::table('mp')->where('concluida',1)->whereIn('unidade_id',$und)
-						->where('aprovada',0)->orderBy('unidade_id','ASC')->get();
+						->where('aprovada',0)->orderBy('unidade_id','ASC')->paginate(20);
 					}
 				}
 			}
 		}
-		return view('reprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
+		return view('reprovadasMPs', compact('unidades','mps','aprovacao','gestores','unidade_id','pesq2','pesq'));
 	}
 	
 	public function indexValida()
 	{
 		$idG = Auth::user()->id;
 		$mps 	   = MP::all();
-		$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','admissao.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdAd = sizeof($admissao);
-		$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','demissao.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdDe = sizeof($demissao);
-		$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
-		$qtdAl = sizeof($alteracF);
-		$plantao   = DB::table('mp')->join('plantao','plantao.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','plantao.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdPla = sizeof($plantao);
-		$admissaoHCP = DB::table('mp')->join('admissao_hcp','admissao_hcp.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','admissao_hcp.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdAdmHCP = sizeof($admissaoHCP);
+		if($idG == 61){ 
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdAd = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','demissao.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdDe = sizeof($demissao);
+			$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get(); 
+			$qtdAl = sizeof($alteracF);
+			$plantao   = DB::table('mp')->join('plantao','plantao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','plantao.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdPla = sizeof($plantao);
+			$admissaoHCP = DB::table('mp')->join('admissao_hcp','admissao_hcp.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao_hcp.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdAdmHCP = sizeof($admissaoHCP);
+		} else {
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdAd = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','demissao.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdDe = sizeof($demissao);
+			$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
+			$qtdAl = sizeof($alteracF);
+			$plantao   = DB::table('mp')->join('plantao','plantao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','plantao.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdPla = sizeof($plantao);
+			$admissaoHCP = DB::table('mp')->join('admissao_hcp','admissao_hcp.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao_hcp.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdAdmHCP = sizeof($admissaoHCP);
+		}
+		
 		if($qtdAd > 0){
 			for($a = 0; $a < $qtdAd; $a++){
 				$ids[] = $admissao[$a]->mp_id; 
@@ -1400,9 +1649,9 @@ class HomeController extends Controller
 			for($a = 0; $a < $qtdPla; $a++){
 				$ids[] = $plantao[$a]->mp_id;
 			}
-			$aprovacaoPl = Aprovacao::whereIn('mp_id',$ids)->get();
+			$aprovacaoPla = Aprovacao::whereIn('mp_id',$ids)->get();
 		} else {
-			$aprovacaoPl = NULL; }
+			$aprovacaoPla = NULL; }
 		if($qtdAdmHCP > 0) {
 			for($a = 0; $a < $qtdAdmHCP; $a++){
 				$ids[] = $admissaoHCP[$a]->mp_id;
@@ -1411,7 +1660,7 @@ class HomeController extends Controller
 		} else {
 			$aprovacaoAdmHCP = NULL; }
 		$gestores  = Gestor::all();
-		return view('validar', compact('mps','aprovacaoAd','aprovacaoDe','aprovacaoAl','aprovacaoPl','aprovacaoAdmHCP','gestores','admissao','demissao','alteracF','plantao','admissaoHCP'));	
+		return view('validar', compact('mps','aprovacaoAd','aprovacaoDe','aprovacaoAl','aprovacaoPla','aprovacaoAdmHCP','gestores','admissao','demissao','alteracF','plantao','admissaoHCP'));	
 	}
 	
 	public function validarMP($id)
@@ -1459,7 +1708,7 @@ class HomeController extends Controller
 		$data_aprovacao = $mps[0]->created_at; 	
 		for($i = 0; $i < $qtdA; $i++) {
 			$idU = $aprovacao[$i]->gestor_anterior;
-			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 34 || $idU == 55){ 
+			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 34 || $idU == 55 || $idU == 5){ 
 			    $funcao = "Gestor Imediato"; 
 			} else {
 			    $funcao = User::where('id', $idU)->get(); 
@@ -1610,16 +1859,7 @@ class HomeController extends Controller
     				} else {
     				    $gestorData = ""; 
     				}
-			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Gestor Imediato"){
-			    $data_gestor_imediato = $aprovacao[$i]->data_aprovacao;
-				$gestorA = $aprovacao[$i]->gestor_anterior;  
-    				if($gestorA != ""){
-    				    $gestorData = Gestor::where('id', $gestorA)->get('nome');
-						$gestorDataId = Gestor::where('id', $gestorA)->get('id');
-    				} else {
-    				    $gestorData = ""; 
-    				}
-			}
+			} 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "RH"){
 				$data_rec_humanos = $aprovacao[$i]->data_aprovacao;
 				if($aprovacao[$i]->gestor_anterior == 30){
@@ -1654,18 +1894,8 @@ class HomeController extends Controller
     			} else {
     			    $diretoriaT = ""; 
     			}
-			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Tecnica") {
-				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
-				    $gestorC = $aprovacao[$i]->gestor_anterior;   
-				}
-    			if($gestorC != ""){
-    			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
-					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
-    			} else {
-    			    $diretoriaT = ""; 
-    			}
-			}
+			} 
+
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Financeira"){
 				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao;
 				if($aprovacao[$i]->gestor_anterior == 174){
@@ -1677,18 +1907,8 @@ class HomeController extends Controller
 				} else {
 					$diretoriaF = "";
 				}
-			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Financeira"){
-				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 174){
-					$gestorC2 = $aprovacao[$i]->gestor_anterior;
-				}
-				if($gestorC2 != ""){
-					$diretoriaF   = Gestor::where('id',$gestorC2)->get('nome');
-					$diretoriaFId = Gestor::where('id',$gestorC2)->get('id');
-				} else {
-					$diretoriaF = "";
-				}
-			}
+			} 
+
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
@@ -1700,20 +1920,11 @@ class HomeController extends Controller
     				$diretoria = Gestor::where('id', $gestorD)->get('nome'); 
 					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
 				}
-			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria") {
-				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
-				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 
-				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 42){
-					$gestorD = $aprovacao[$i]->gestor_anterior;
-				}
-				if($gestorD != ""){
-    			    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    			}	
-			}
-			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia"){
+			} 
+
+			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia" || $aprovacao[$i]->resposta == 3 && $idU == 61){
 				$data_superintendencia = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 62){
+				if($aprovacao[$i]->gestor_anterior == 62 || $aprovacao[$i]->gestor_anterior == 61){
 					$gestorE = $aprovacao[$i]->gestor_anterior;
 				}
 				if($gestorE != ""){
@@ -1722,7 +1933,7 @@ class HomeController extends Controller
     			} else {
     			    $super = ""; 
     			}		    
-			}
+			} 
 		} 
 		
 		if($qtdAdm > 0){
@@ -1743,31 +1954,59 @@ class HomeController extends Controller
 		$input = $request->all();
 		$idG = Auth::user()->id;
 		$mps 	   = MP::all();
-		$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','admissao.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdAdm = sizeof($admissao);
-		$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','demissao.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdDem = sizeof($demissao);
-		$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
-		$qtdAlt = sizeof($alteracF);
-		$plantao = DB::table('mp')->join('plantao','plantao.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','plantao.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdPla = sizeof($plantao);
-		$admissaoHCP = DB::table('mp')->join('admissao_hcp','admissao_hcp.mp_id','=','mp.id')
-		->join('justificativa','justificativa.mp_id','=','mp.id')
-		->select('mp.*','justificativa.descricao as just','admissao_hcp.*')
-		->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
-		$qtdAdmHCP = sizeof($admissaoHCP);
+		if($idG == 61){ 
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdAdm = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','demissao.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdDem = sizeof($demissao);
+			$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get(); 
+			$qtdAlt = sizeof($alteracF);
+			$plantao   = DB::table('mp')->join('plantao','plantao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','plantao.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdPla = sizeof($plantao);
+			$admissaoHCP = DB::table('mp')->join('admissao_hcp','admissao_hcp.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao_hcp.*')
+			->where('mp.concluida',0)->whereIn('mp.gestor_id',[61,62])->get();
+			$qtdAdmHCP = sizeof($admissaoHCP);
+		} else {
+			$admissao  = DB::table('mp')->join('admissao','admissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdAdm = sizeof($admissao);
+			$demissao  = DB::table('mp')->join('demissao','demissao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','demissao.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdDem = sizeof($demissao);
+			$alteracF  = DB::table('mp')->join('alteracao_funcional','alteracao_funcional.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','alteracao_funcional.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get(); 
+			$qtdAlt = sizeof($alteracF);
+			$plantao   = DB::table('mp')->join('plantao','plantao.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','plantao.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdPla = sizeof($plantao);
+			$admissaoHCP = DB::table('mp')->join('admissao_hcp','admissao_hcp.mp_id','=','mp.id')
+			->join('justificativa','justificativa.mp_id','=','mp.id')
+			->select('mp.*','justificativa.descricao as just','admissao_hcp.*')
+			->where('mp.concluida',0)->where('mp.gestor_id',$idG)->get();
+			$qtdAdmHCP = sizeof($admissaoHCP);
+		}
 		if($qtdAdm > 0){
 			for($a = 0; $a < $qtdAdm; $a++){
 				$ids[] = $admissao[$a]->mp_id; 
@@ -1850,29 +2089,33 @@ class HomeController extends Controller
 
 		for($d = 1; $d <= $qtdPla; $d++) {
 			if(!empty($input['check4_'.$d])){
-				$id_mp = $input['id_mp4_'.$d];
-				if(Auth::user()->id == 30) {
-					$idG = $input['gestor_id4_'.$d];
-					HomeController::aprovar($id_mp,$idG);
-				} else {
-					$idG = 0;
-					HomeController::aprovar($id_mp,$idG);
+			   if($input['check4_'.$d] == "on") {
+					$id_mp = $input['id_mp4_'.$d];
+					if(Auth::user()->id == 30) {
+						$idG = $input['gestor_id4_'.$d];
+						HomeController::aprovar($id_mp,$idG);
+					} else {
+						$idG = 0;
+						HomeController::aprovar($id_mp,$idG);
+					}
+					$ap += 1;
 				}
-				$ap += 1;
 			}
 		}
 
 		for($e = 1; $e <= $qtdAdmHCP; $e++){
 			if(!empty($input['check5_'.$e])){
-				$id_mp = $input['id_mp5_'.$e];
-				if(Auth::user()->id == 30){
-					$idG = $input['gestor_id5_'.$e];
-					HomeController::aprovar($id_mp,$idG);
-				} else {
-					$idG = 0;
-					HomeController::aprovar($id_mp,$idG);
+			  if($input['check5_'.$e] == "on") {	
+					$id_mp = $input['id_mp5_'.$e];
+					if(Auth::user()->id == 30){
+						$idG = $input['gestor_id5_'.$e];
+						HomeController::aprovar($id_mp,$idG);
+					} else {
+						$idG = 0;
+						HomeController::aprovar($id_mp,$idG);
+					}
+					$ap += 1;
 				}
-				$ap += 1;
 			}
 		}
 
@@ -1951,7 +2194,7 @@ class HomeController extends Controller
 		$mp    = MP::where('id',$id_mp)->get();
 		$id	   = $mp[0]->id;
 		$a = 0;
-		if($mp[0]->unidade_id == 1){
+		if($mp[0]->hcpgestao == "SIM"){
 			$admissaoHCP = AdmissaoHCP::where('mp_id',$id)->get();
 			$qtdAdmHCP = sizeof($admissaoHCP);
 			if($qtdAdmHCP > 0){
@@ -1968,6 +2211,16 @@ class HomeController extends Controller
 			}
 		}
 
+		$alteracaoF = Alteracao_Funcional::where('mp_id',$id)->get();
+		$qtdAlt = sizeof($alteracaoF);
+		if($qtdAlt > 0) {
+			if($alteracaoF[0]->salario_atual == $alteracaoF[0]->salario_novo){
+				if(Auth::user()->id == 30) {
+					$a = 2;
+				}
+			}
+		}
+
 		if($a == 0) {
 			if(Auth::user()->name == $mp[0]->solicitante){
 				$idG 	 = Auth::user()->id; 
@@ -1978,18 +2231,25 @@ class HomeController extends Controller
 				DB::statement('UPDATE mp SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
 			} 
 		}
-		if(Auth::user()->funcao == "Superintendencia"){
+		if(Auth::user()->funcao == "Superintendencia" || (Auth::user()->id == 61 && $mp[0]->unidade_id != 1)){
 				$input['resposta'] = 3;
 				DB::statement('UPDATE mp SET concluida = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE mp SET aprovada  = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE mp SET gestor_id = 30 WHERE id = '.$id.';');
 				$input['gestor_id'] = 30;
 				$idG = 30;
-		} else if (Auth::user()->funcao == "RH") {
+		} else if (Auth::user()->funcao == "RH" && ($a != 2 && $a != 1)) {
 				$input['resposta']  = 1; 
 				$input['gestor_id'] = $idG;
 				DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id  = '.$id.';');
 				DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
+		} else if(Auth::user()->funcao == "RH" && $a == 2) {
+				$input['resposta'] = 3;
+				DB::statement('UPDATE mp SET concluida = 1 WHERE id  = '.$id.';');
+				DB::statement('UPDATE mp SET aprovada  = 1 WHERE id  = '.$id.';');
+				DB::statement('UPDATE mp SET gestor_id = 30 WHERE id = '.$id.';');
+				$input['gestor_id'] = 30;
+				$idG = 30;
 		} else {
 				$input['resposta'] = 1;
 				$idMP = $mp[0]->id;
@@ -2058,7 +2318,6 @@ class HomeController extends Controller
 			$sol = Gestor::where('nome', $solicitante)->get();
 			$email2 = $sol[0]->email;
 			$email3 = 'janaina.lima@hcpgestao.org.br';
-			$email4 = 'rogerio.reis@hcpgestao.org.br';
 			$motivo  = $input['motivo'];
 			$tipo = "";
 			$admissao  = DB::table('admissao')->where('mp_id',$mp[0]->id)->get();
@@ -2126,21 +2385,31 @@ class HomeController extends Controller
 			}
 			$numeroMP = $mp[0]->numeroMP;
 			if(Auth::user()->funcao == "Superintendencia"){
-				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
+				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-					$m->cc($email2); $m->cc($email3); $m->cc($email4);  
+					$m->cc($email2); $m->cc($email3);  
 					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
 				});*/
 			} else {
-				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
-					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-					$m->subject('MP - '.$numeroMP.' Autorizada!');
-					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
-					$m->to($email);
-				});*/
+				if($email == 'filipe.bitu@hcpgestao.org.br'){
+					$email4 = 'luciana.venancio@hcpgestao.org.br';
+					Mail::send([], [], function($m) use ($email,$email4,$motivo,$numeroMP) {
+						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+						$m->subject('MP - '.$numeroMP.' Autorizada!');
+						$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+						$m->to($email); $m->cc($email4);
+					});
+				} else {
+					Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+						$m->subject('MP - '.$numeroMP.' Autorizada!');
+						$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+						$m->to($email);
+					});
+				}
 			}
 	}
 	
@@ -2170,11 +2439,11 @@ class HomeController extends Controller
 	}
 	
 	public function storeAutMP($id, Request $request)
-	{
+	{ 
 		$mp = MP::where('id', $id)->get();
-		$idU = $mp[0]->unidade_id;
+		$idU  = $mp[0]->unidade_id;
 		$idMP = $id;
-		$unidade = Unidade::where('id',$idU)->get();
+		$unidade  = Unidade::where('id',$idU)->get();
 		$gestores = Gestor::all();
 		$gestoresUnd = Gestor::where('unidade_id', $idU)->orderby('nome','ASC')->get();
 		$input = $request->all();
@@ -2194,6 +2463,18 @@ class HomeController extends Controller
 			} else {
 				$input['resposta'] = 1;	
 			}
+			
+			$admissaoHCP = AdmissaoHCP::where('mp_id',$id)->get();
+			$qtd = sizeof($admissaoHCP);
+
+			if((Auth::user()->id == 61 || Auth::user()->id == 30) && $qtd > 0) {
+				$input['resposta'] = 1;	
+			} else if(Auth::user()->id == 62 && $qtd > 0) {
+				$input['resposta'] = 3;
+				DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
+				DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
+			}
+		
 			$input['data_aprovacao'] = date('Y-m-d',(strtotime('now')));
 			$idG = $input['gestor_id'];
 			DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id = '.$id.';');
@@ -2206,7 +2487,6 @@ class HomeController extends Controller
 			$sol = Gestor::where('nome', $solicitante)->get();
 			$email2 = $sol[0]->email;
 			$email3 = 'janaina.lima@hcpgestao.org.br';
-			$email4 = 'rogerio.reis@hcpgestao.org.br';
 			$email7 = '';
 			$tipo = "";
 			$admissao  = DB::table('admissao')->where('mp_id',$mp[0]->id)->get();
@@ -2275,21 +2555,31 @@ class HomeController extends Controller
 			$motivo   = $input['motivo'];
 			$numeroMP = $mp[0]->numeroMP;
 			if(Auth::user()->funcao == "Superintendencia"){
-				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$email4,$motivo,$numeroMP) {
+				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$motivo,$numeroMP) {
 					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 					$m->subject('MP - '.$numeroMP.' Tipo: '.$tipo.' foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
-					$m->cc($email2); $m->cc($email3); $m->cc($email4);
+					$m->cc($email2); $m->cc($email3); 
 					$m->cc($email5); $m->cc($email6); $m->cc($email7);
 				});*/
 			} else {
-				/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
-					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-					$m->subject('MP - '.$numeroMP.' Autorizada!');
-					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
-					$m->to($email);
-				});*/
+				if($email == 'filipe.bitu@hcpgestao.org.br'){
+					/*$email4 = 'luciana.venancio@hcpgestao.org.br';
+					Mail::send([], [], function($m) use ($email,$email4,$motivo,$numeroMP) {
+						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+						$m->subject('MP - '.$numeroMP.' Autorizada!');
+						$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+						$m->to($email); $m->cc($email4);
+					});
+				} else {
+					Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+						$m->subject('MP - '.$numeroMP.' Autorizada!');
+						$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
+						$m->to($email);
+					});*/
+				}
 			}
 			$a = 0;
 			return view('home', compact('unidade','idG','idMP','a'));
@@ -2544,46 +2834,50 @@ class HomeController extends Controller
 			->orderby('mp.unidade_id')->get();
 			$qtdAlt = sizeof($alteracao); 			
 		}
-
 		return view('minhasMPs', compact('unidades','admissao','qtdAdm','demissao','qtdDem','alteracao','qtdAlt'));
 	}
-
-	public function inativasMPs(){
-		$unidades  = Unidade::all();
-		$mps 	   = MP::orderBy('unidade_id', 'ASC')->get();
-		$aprovacao = Aprovacao::all();
-		$gestores  = Gestor::all();
-		return view('inativasMPs', compact('unidades','mps','aprovacao','gestores'));
-	}
 	
-	public function inativarMPs($id){
-		$mps  = MP::where('id', $id)->get();
-		$idU = $mps[0]->unidade_id;
+	public function inativarMPs($id) {
+		$mps     = MP::where('id', $id)->get();
+		$idU     = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$idU)->get();
-		$idG = $mps[0]->solicitante;
-		$gestor = Gestor::where('nome',$idG)->get();
+		$idG     = $mps[0]->solicitante;
+		$gestor  = Gestor::where('nome',$idG)->get();
 		return view('inativandoMPs', compact('mps','unidade','gestor'));
 	}
 	
-	public function inativandoMPs($id, Request $request){
+	public function inativandoMPs($id, Request $request) {
 		$input 		= $request->all();
 		$unidades  	= Unidade::all();
 		$mps 		= MP::where('id',$id)->get();
-		$inativa 	= $input['inativa'];
-		if($input['inativa'] == '0'){
-			$mps = MP::all();
-			$gestores  = Gestor::all();
-			$unidades  = Unidade::all();
-			return view('inativandoMPs', compact('mps','unidade','gestor'));
-		}else{
-			$mps 	   = MP::where('id',$id)->get();
-			$gestores  = Gestor::all();
-			$aprovacao = Aprovacao::all();
-			$unidades  = Unidade::all();
-			DB::statement('UPDATE mp SET inativa = '.$inativa.' WHERE id = '.$id.';');
-			$mps = MP::all();
-			return view('criadasMPs', compact('unidades','mps','aprovacao','gestores'));
-		}
-			
+		DB::statement('UPDATE mp SET inativa = 1 WHERE id = '.$id.';');
+		$mps 	    = MP::where('id',0)->get();
+		$loggers    = Loggers::create($input);
+		$validator  = 'MP Inativada com sucesso!!';
+		return view('excluirMPs', compact('unidades','mps'))
+				->withErrors($validator)
+                ->withInput(session()->flashInput($request->input()));
+	}
+
+	public function inativarVagas($id) {
+		$vagas   = Vaga::where('id', $id)->get();
+		$idU     = $vagas[0]->unidade_id;
+		$unidade = Unidade::where('id',$idU)->get();
+		$idG     = $vagas[0]->solicitante;
+		$gestor  = Gestor::where('nome',$idG)->get();
+		return view('inativandoVagas', compact('vagas','unidade','gestor'));
+	}
+	
+	public function inativandoVagas($id, Request $request) {
+		$input 		= $request->all();
+		$unidades  	= Unidade::all();
+		$vagas 		= Vaga::where('id',$id)->get();
+		DB::statement('UPDATE vaga SET inativa = 1 WHERE id = '.$id.';');
+		$vagas      = Vaga::where('id',0)->get();
+		$loggers    = Loggers::create($input);
+		$validator  = 'Vaga Inativada com sucesso!!';
+		return view('excluirVagas', compact('unidades','vagas'))
+				->withErrors($validator)
+                ->withInput(session()->flashInput($request->input()));
 	}
 }

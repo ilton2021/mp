@@ -122,7 +122,7 @@
 		  <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		    <tr>
-			 <td rowspan="7" width="150"><center><h5>Admissão HCP</h5><input type="checkbox" disabled id="tipo_mov5" name="tipo_mov5" checked /></center>
+			 <td rowspan="8" width="150"><center><h5>Admissão HCP</h5><input type="checkbox" disabled id="tipo_mov5" name="tipo_mov5" checked /></center>
 			 </td> 
 			</tr>
 			<tr> 
@@ -467,7 +467,8 @@
 			<input type="checkbox" checked id="aviso_previo" name="aviso_previo" value="dispensado" disabled="true" /> Dispensado </td>
 		    @endif
 			<td width="50">Último dia Trabalhado: <br> <input class="form-control" type="date" id="ultimo_dia" name="ultimo_dia" value="<?php echo $dem->ultimo_dia; ?>" disabled="true" /> 
-			<br><br> Custo da Recisão: <input type="text" class="form-control" id="custo_recisao" name="custo_recisao" value="<?php echo "R$ ".number_format($dem->custo_recisao, 2,',','.'); ?>" disabled="true" /> </td>
+			<br> Custo da Recisão: <input type="text" class="form-control" id="custo_recisao" name="custo_recisao" value="<?php echo "R$ ".number_format($dem->custo_recisao, 2,',','.'); ?>" disabled="true" />
+			<br> Salário Bruto: <input type="text" class="form-control" id="salario_bruto" name="salario_bruto" value="<?php echo "R$ ".number_format($dem->salario_bruto, 2,',','.'); ?>" disabled="true" /> </td>
 		   </tr>
 		  </table>
 		  </center>
@@ -497,6 +498,9 @@
 		    <td>Salário Atual: <input class="form-control" type="text" id="salario_atual" name="salario_atual" value="<?php echo "R$ ".number_format($altF->salario_atual, 2,',','.'); ?>" disabled="true" /></td>
 			<td width="300">Salário Proposto: <input class="form-control" type="text" id="salario_novo" name="salario_novo" value="<?php echo "R$ ".number_format($altF->salario_novo, 2,',','.'); ?>" disabled="true" /></td>
 			<td>Novo Centro de Custo: <input class="form-control" type="text" id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $altF->centro_custo_novo; ?>" disabled="true" /></td>
+		   </tr>
+		   <tr>
+			<td>Gratificações: <input class="form-control" type="text" id="gratificacoes" name="gratificacoes" value="<?php echo "R$ ".number_format($altF->gratificacoes, 2,',','.'); ?>" disabled="true" /></td>
 		   </tr>
 		   <tr>
 			<td colspan="3">Motivo: <br><br> 
@@ -868,7 +872,7 @@
 		   <tr>
 		   @if(!empty($data_superintendencia))
 			<td>Superintendência</td>
-			<td><?php if($super == ""){ echo "FILIPE BITU"; } else { echo "FILIPE BITU"; } ?></td>
+			<td><?php if($super == ""){ echo "FILIPE BITU"; } else { echo $super[0]->nome; } ?></td>
 			<td><input readonly="true" type="text" id="data_superintendencia" name="data_superintendencia" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_superintendencia))); ?>" /></td>
 			<td>
 			@if(!empty($superId))	
@@ -885,7 +889,7 @@
 		    <td><input readonly="true" type="date" id="data_superintendencia" name="data_superintendencia" class="form-control" value="" /></td>   
 			<td>
 			@if(!empty($superId))
-			@foreach($aprovacao as $ap) <?php var_dump($superId[0]->id); exit(); ?>
+			@foreach($aprovacao as $ap) 
 			  @if($ap->mp_id == $mps[0]->id && $superId[0]->id == $ap->gestor_anterior)
 				 <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $ap->id; ?>" > 
 			     Mensagem

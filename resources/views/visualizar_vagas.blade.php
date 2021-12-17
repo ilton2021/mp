@@ -711,7 +711,7 @@
 		   <tr>
 		   @if(!empty($data_superintendencia))
 			<td>Superintendência</td>
-			<td><?php if($super == ""){ echo "FILIPE BITU"; } else { echo "FILIPE BITU"; } ?></td>
+			<td><?php if($super == ""){ echo ""; } else { echo $super[0]->nome; } ?></td>
 			<td><input readonly="true" type="text" id="data_superintendencia" name="data_superintendencia" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_superintendencia))); ?>" /></td>
 			<td>
 			@if(!empty($superId))	
@@ -751,7 +751,7 @@
 		    <td><input readonly="true" type="date" id="data_superintendencia" name="data_superintendencia" class="form-control" value="" /></td>   
 			<td>
 			@if(!empty($superId))
-			@foreach($aprovacao as $ap) <?php var_dump($superId[0]->id); exit(); ?>
+			@foreach($aprovacao as $ap)
 			  @if($ap->vaga_id == $vagas[0]->id && $superId[0]->id == $ap->gestor_anterior)
 				 <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $ap->id; ?>" > 
 			     Mensagem
@@ -818,7 +818,7 @@
 			  <a href="{{ route('salvarVaga', array($vagas[0]->id,$gId)) }}" type="button" class="btn btn-success btn-sm" > Concluir <i class="fas fa-times-circle"></i> </a>
 			@elseif(Auth::user()->id == 104 && $vagas[0]->gestor_id == 25)
 				
-			@elseif(Auth::user()->funcao != "Gestor" && Auth::user()->funcao != "Administrador")
+			@elseif($vagas[0]->gestor_id == Auth::user()->id && $vagas[0]->concluida == 0 && $vagas[0]->aprovada == 0)
 				
 			 @if(empty($aprovacao))
 			  <a href="{{ route('n_autorizarVaga', $vagas[0]->id) }}" type="button" class="btn btn-danger btn-sm" > Não Autorizar <i class="fas fa-times-circle"></i> </a>

@@ -141,7 +141,7 @@
 		  </td>
 		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		  @foreach($vagas as $vaga)
-		   @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104))
+		   @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61))
 			<td>
 			  <img style="margin-left: 360px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
 				<div class="card-body text-center">

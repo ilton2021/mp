@@ -101,8 +101,8 @@
 		<div class="container d-flex justify-content-between">
         <div class="row ">
             @foreach($unidades as $unidade)
-            @if((!isset($unidade->cnes) || $unidade->cnes === null) && $unidade->id != 8)
-            <div class="col-sm-4" style="width: 150px;">
+            @if((!isset($unidade->cnes) || $unidade->cnes === null) && $unidade->id != 1 && $unidade->id != 8)
+            <div class="col-sm-4" style="width: 180px;">
                 <div id="img-body"  class="sborder-0 text-white text-center">
                     <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="...">
                     <div class="card-body text-center">

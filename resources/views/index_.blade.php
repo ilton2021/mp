@@ -508,7 +508,8 @@
 			<input type="checkbox" checked id="aviso_previo" name="aviso_previo" value="dispensado" disabled="true" /> Dispensado </td>
 		    @endif
 			<td width="50">Último dia Trabalhado: <br> <input class="form-control" type="date" id="ultimo_dia" name="ultimo_dia" value="<?php echo $dem->ultimo_dia; ?>" disabled="true" /> 
-			<br><br> Custo da Recisão: <input type="text" class="form-control" id="custo_recisao" name="custo_recisao" value="<?php echo "R$ ".number_format($dem->custo_recisao, 2,',','.'); ?>" disabled="true" /> </td>
+			<br> Custo da Recisão: <input type="text" class="form-control" id="custo_recisao" name="custo_recisao" value="<?php echo "R$ ".number_format($dem->custo_recisao, 2,',','.'); ?>" disabled="true" />
+			<br> Salário Bruto: <input type="text" class="form-control" id="salario_bruto" name="salario_bruto" value="<?php echo "R$ ".number_format($dem->salario_bruto, 2,',','.'); ?>" disabled="true" /> </td>
 		   </tr>
 		  </table>
 		  </center>
@@ -552,6 +553,9 @@
 		    <td>Salário Atual: <input class="form-control" type="text" id="salario_atual" name="salario_atual" value="<?php echo "R$ ".number_format($altF->salario_atual, 2,',','.'); ?>" disabled="true" /></td>
 			<td width="300">Salário Proposto: <input class="form-control" type="text" id="salario_novo" name="salario_novo" value="<?php echo "R$ ".number_format($altF->salario_novo, 2,',','.'); ?>" disabled="true" /></td>
 			<td>Novo Centro de Custo: <input class="form-control" type="text" id="centro_custo_novo" name="centro_custo_novo" value="<?php echo $altF->centro_custo_novo; ?>" disabled="true" /></td>
+		   </tr>
+		   <tr>
+			<td>Gratificações: <input class="form-control" type="text" id="gratificacoes" name="gratificacoes" value="<?php echo "R$ ".number_format($altF->gratificacoes, 2,',','.'); ?>" disabled="true" /></td>
 		   </tr>
 		   <tr>
 			<td colspan="3">Motivo: <br><br> 

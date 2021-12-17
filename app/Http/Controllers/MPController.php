@@ -15,6 +15,7 @@ use App\Model\Justificativa;
 use App\Model\Plantao;
 use App\Model\AdmissaoHCP;
 use App\Model\AdmissaoSalariosUnidades;
+use App\Model\Loggers;
 use App\Model\MP;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -71,6 +72,15 @@ class MPController extends Controller
 				$gestores = Gestor::where('id',$idI)->get();
 			}
 		}
+		if($idG == 30) {
+		    if($id_unidade == 2) {
+		        $idI = 174;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    } else {
+		        $idI = 62;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    }
+		}
 		$cargos = Cargos::orderBy('nome','ASC')->get();
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
@@ -126,12 +136,21 @@ class MPController extends Controller
 				$gestores = Gestor::where('id',$idI)->get();
 			}
 		}
+		if($idG == 30) {
+		    if($id_unidade == 2) {
+		        $idI = 174;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    } else {
+		        $idI = 62;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    }
+		}
 		$unidades 		 = Unidade::all();
 		$cargos   		 = Cargos::all();
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
-		
+	
 		if(strtotime($dataEmissao) == strtotime($dataPrevista)){
 			$validator = "Data Prevista não pode ser Igual a Data de Emissão!";
 			return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
@@ -216,6 +235,7 @@ class MPController extends Controller
 						$input['motivo2'] = $input['motivo6'];
 					}
 				}
+				$input['qtd_mes'] = 0;
 				if($input['tipo'] == "rpa")
 				{
 					$periodo_inicio = date('m/Y', strtotime($input['mes_ano']));
@@ -229,7 +249,7 @@ class MPController extends Controller
 					$a1 = ($ano2 - $ano1)*12;
 					$m1 = ($mes2 - $mes1)+1;
 					$m3 = ($m1 + $a1);
-
+					$input['qtd_mes'] = $m3;
 					if(strtotime($periodo_inicio) > strtotime($periodo_fim)) {
 						$validator = "Datas de RPA Inválidas!";
 						return view('index', compact('unidade','gestores','tipo_mp','unidades','cargos','centro_custos','setores','centro_custo_nv'))
@@ -305,6 +325,19 @@ class MPController extends Controller
 					}
 					$input['acessorh3'] = 0;
 					$input['usuario_acessorh3'] = '';
+
+					if($tipo_mp == 1) {
+						if($input['hcpgestao'] == "SIM") {
+							if($input['gestor_id'] == 61) {
+								$input['gestor_id'] = 30;
+							} else {
+								$input['gestor_id'] = 61;
+							}
+						} 
+					} else {
+						$input['hcpgestao'] = "NAO";
+					}
+
 					$mp 			= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -405,6 +438,17 @@ class MPController extends Controller
 					}
 					$input['acessorh3'] = 0;
 					$input['usuario_acessorh3'] = '';
+					if($tipo_mp == 1) {
+						if($input['hcpgestao'] == "SIM") {
+							if($input['gestor_id'] == 61) {
+								$input['gestor_id'] = 30;
+							} else {
+								$input['gestor_id'] = 61;
+							}
+						} 
+					} else {
+						$input['hcpgestao'] = "NAO";
+					}
 					$mp 			= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -504,6 +548,17 @@ class MPController extends Controller
 					}
 					$input['acessorh3'] = 0;
 					$input['usuario_acessorh3'] = '';
+					if($tipo_mp == 1) {
+						if($input['hcpgestao'] == "SIM") {
+							if($input['gestor_id'] == 61) {
+								$input['gestor_id'] = 30;
+							} else {
+								$input['gestor_id'] = 61;
+							}
+						} 
+					} else {
+						$input['hcpgestao'] = "NAO";
+					}
 					$mp 		 	= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -604,6 +659,17 @@ class MPController extends Controller
 					}
 					$input['acessorh3'] = 0;
 					$input['usuario_acessorh3'] = '';
+					if($tipo_mp == 1) {
+						if($input['hcpgestao'] == "SIM") {
+							if($input['gestor_id'] == 61) {
+								$input['gestor_id'] = 30;
+							} else {
+								$input['gestor_id'] = 61;
+							}
+						} 
+					} else {
+						$input['hcpgestao'] = "NAO";
+					}	
 					$mp 		 	= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -612,7 +678,7 @@ class MPController extends Controller
 					$input['gestor_criador_mp'] = Auth::user()->id;
 					$mps  			= MP::where('numeroMP', $numeroMP)->get();
 					$idMP 			= $mps[0]->id;
-					$input['mp_id'] = $idMP;	
+					$input['mp_id'] = $idMP;
 					$plantao = Plantao::create($input);
 					$unidade 	    = Unidade::where('id', $id_unidade)->get();
 					$justificativa  = Justificativa::create($input);
@@ -694,6 +760,17 @@ class MPController extends Controller
 					$input['gestor_id'] = 61;
 					$input['acessorh3'] = 0;
 					$input['usuario_acessorh3'] = '';
+					if($tipo_mp == 1) {
+						if($input['hcpgestao'] == "SIM") {
+							if($input['gestor_id'] == 61) {
+								$input['gestor_id'] = 30;
+							} else {
+								$input['gestor_id'] = 61;
+							}
+						} 
+					} else {
+						$input['hcpgestao'] = "NAO";
+					}
 					$mp 		 	= MP::create($input);
 					$nome 		 	= $input['nome'];
 					$unidade_id  	= $input['unidade_id'];
@@ -924,18 +1001,18 @@ class MPController extends Controller
 	
 	// Alterar MP de Alteração //
 	public function updateMPAlteracao($id, $id_alt, Request $request){
-		$input = $request->all(); 
-		$mps = MP::where('id',$id)->get();
+		$input   = $request->all(); 
+		$mps     = MP::where('id',$id)->get();
 		$unidade = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$unidade)->get();
-		$cargos = Cargos::all();
+		$cargos  = Cargos::all();
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 		$dataE = $input['data_emissao'];
 		$dataP = $input['data_prevista'];
-		$dataEmissao  = date('d-m-Y', strtotime($dataE));
-		$dataPrevista = date('d-m-Y', strtotime($dataP));
+		$dataEmissao   = date('d-m-Y', strtotime($dataE));
+		$dataPrevista  = date('d-m-Y', strtotime($dataP));
 		$gestores 	   = Gestor::all();
 		$unidades 	   = Unidade::all();
 		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
@@ -975,6 +1052,11 @@ class MPController extends Controller
 		} else {
 			$input['acesssorh3'] = 0;
 			$input['usuario_acessorh3'] = '';
+			if(!empty($input['sim_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'sim';
+			} else if (!empty($input['nao_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'nao';
+			}
 			$alteracaoF    = Alteracao_Funcional::find($id_alt);
 			$alteracaoF->update($input);
 			$mp 		   = MP::find($id);
@@ -1067,6 +1149,11 @@ class MPController extends Controller
 		} else {
 			$input['acesssorh3'] = 0;
 			$input['usuario_acessorh3'] = '';
+			if(!empty($input['sim_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'sim';
+			} else if (!empty($input['nao_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'nao';
+			}
 			$demissao 	   = Demissao::find($id_dem);
 			$demissao->update($input);
 			$mp			   = MP::find($id);
@@ -1198,40 +1285,45 @@ class MPController extends Controller
 						$result = "";
 					}
 					$input['gratificacoes'] = $result;
+
+					$periodo_inicio = date('m/Y', strtotime($input['mes_ano']));
+					$periodo_fim	= date('m/Y', strtotime($input['mes_ano2']));
+					$arr  = explode('/',$periodo_inicio);
+					$arr2 = explode('/',$periodo_fim);
+					$mes1 = $arr[0];	
+					$ano1 = $arr[1];
+					$mes2 = $arr2[0];
+					$ano2 = $arr2[1];
+					$a1 = ($ano2 - $ano1)*12;
+					$m1 = ($mes2 - $mes1)+1;
+					$m3 = ($m1 + $a1); 
+
+					if($m3 < 0) {
+						$validator = "Datas de RPA Inválidas!";
+						return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+							->withErrors($validator)
+							->withInput(session()->flashInput($request->input()));
+					} else {
+						if($m3 > 3) {
+							$validator = "Máximo 3 meses de RPA!";
+							return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
+								->withErrors($validator)
+								->withInput(session()->flashInput($request->input()));
+						}
+					}
+					$input['periodo_inicio'] = $periodo_inicio;
+					$input['periodo_fim'] 	 = $periodo_fim;
 				} else {
 					$input['gratificacoes'] = 0;
 				}
 			$input['acesssorh3'] = 0;
 			$input['usuario_acessorh3'] = '';	
 
-			$periodo_inicio = date('m/Y', strtotime($input['mes_ano']));
-			$periodo_fim	= date('m/Y', strtotime($input['mes_ano2']));
-			$arr  = explode('/',$periodo_inicio);
-			$arr2 = explode('/',$periodo_fim);
-			$mes1 = $arr[0];	
-			$ano1 = $arr[1];
-			$mes2 = $arr2[0];
-			$ano2 = $arr2[1];
-			$a1 = ($ano2 - $ano1)*12;
-			$m1 = ($mes2 - $mes1)+1;
-			$m3 = ($m1 + $a1); 
-			
-			if($m3 < 0) {
-				$validator = "Datas de RPA Inválidas!";
-				return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
-			} else {
-				if($m3 > 3) {
-					$validator = "Máximo 3 meses de RPA!";
-					return view('alterarMPAdmissao', compact('unidade','gestores','unidades','mps','admissao','idA','idMP','aprovacao','justificativa','gestor','solicitante'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));
-				}
+			if(!empty($input['sim_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'sim';
+			} else if (!empty($input['nao_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'nao';
 			}
-
-			$input['periodo_inicio'] = $periodo_inicio;
-			$input['periodo_fim'] 	 = $periodo_fim;
 
 			$admissao 	   = Admissao::find($id_adm);
 			$admissao->update($input);
@@ -1563,6 +1655,11 @@ class MPController extends Controller
 				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
 				$admissao_usuarios->update($input);
 			}
+			if(!empty($input['sim_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'sim';
+			} else if (!empty($input['nao_impacto']) == "on") {
+				$input['impacto_financeiro'] = 'nao';
+			}
 			$input['unidade_id'] = 1;
 			$input['gestor_id'] = 61;
 			$admissaoHCP   = AdmissaoHCP::find($id_adm_hcp);
@@ -1616,7 +1713,7 @@ class MPController extends Controller
 
 	public function excluirMPs()
 	{
-		$mps = MP::where('id',0)->get();
+		$mps = MP::where('id',0)->where('inativa',0)->paginate(20);
 		return view('excluirMPs', compact('mps'));
 	}
 
@@ -1641,33 +1738,33 @@ class MPController extends Controller
 		$pesq2      = $input['pesq2'];
 		if($pesq2 == "numero") {
 			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')->get();
+				$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
 			} else {
-				$mps = DB::table('mp')->where('mp.numeroMP', 'like', '%' . $pesq . '%')
-				->where('mp.unidade_id',$unidade_id)->get();
+				$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)
+				->where('mp.unidade_id',$unidade_id)->paginate(20);
 			}
 		} else if($pesq2 == "funcionario"){
 			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')->get();
+				$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
 			} else {
-				$mps = DB::table('mp')->where('mp.nome', 'like', '%' . $pesq . '%')
-				->where('mp.unidade_id',$unidade_id)->get();
+				$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)
+				->where('mp.unidade_id',$unidade_id)->paginate(20);
 			}
 		} else if($pesq2 == "solicitante"){
 			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')->get();
+				$mps = DB::table('mp')->where('mp.solicitante','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
 			} else {
-				$mps = DB::table('mp')->where('mp.solicitante', 'like', '%' . $pesq . '%')
-				->where('mp.unidade_id',$unidade_id)->get();
+				$mps = DB::table('mp')->where('mp.solicitante','like','%'.$pesq.'%')->where('inativa',0)
+				->where('mp.unidade_id',$unidade_id)->paginate(20);
 			}
 		} else if($pesq2 == ""){
 			if($unidade_id == "0"){
-				$mps = MP::where('id',0)->get();
+				$mps = MP::where('id',0)->where('inativa',0)->paginate(20);
 			} else {
-				$mps = MP::where('unidade_id',$unidade_id)->get();
+				$mps = MP::where('unidade_id',$unidade_id)->where('inativa',0)->paginate(20);
 			}
 		}
-		return view('excluirMPs', compact('mps'));
+		return view('excluirMPs', compact('mps','unidade_id','pesq2','pesq'));
 	}
 
 	public function deleteMP($id, Request $request)
@@ -1700,9 +1797,25 @@ class MPController extends Controller
 		if($qtdDem > 0){
 			DB::statement('delete from demissao where mp_id = '.$idMP);
 		}
+		$admissao_hcp = AdmissaoHCP::where('mp_id',$idMP)->get();
+		$qtdAdmHCP    = sizeof($admissao_hcp);
+		$admUnidadesSalarios = AdmissaoSalariosUnidades::where('admissao_hcp_id',$admissao_hcp[0]->id)->get();
+		$qtdAdmUndSal        = sizeof($admUnidadesSalarios);
+		if($qtdAdmUndSal > 0){
+			DB::statement('delete from admissao_salarios_unidades where admissao_hcp_id = '.$admissao_hcp[0]->id);
+		}
+		if($qtdAdmHCP > 0){
+			DB::statement('delete from admissao_hcp where mp_id = '.$idMP);
+		}
+		$plantao = Plantao::where('mp_id',$idMP)->get();
+		$qtdPla  = sizeof($plantao);
+		if($qtdPla > 0){
+			DB::statement('delete from plantao where mp_id = '.$idMP);
+		} 
 		DB::statement('delete from mp where id = '.$idMP);
 		$mps = MP::where('id',0)->get();
-		$validator 	   = "MP Excluída com sucesso!";
+		$loggers   = Loggers::create($input);
+		$validator = "MP Excluída com sucesso!";
 		return view('excluirMPs', compact('mps'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));

@@ -1763,7 +1763,7 @@ class HomeController extends Controller
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao;
 				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 42 
-				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 167){
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 165){
 				    $gestorD = $aprovacao[$i]->gestor_anterior;  
 				}
 			    if($gestorD != ""){
@@ -2456,7 +2456,7 @@ class HomeController extends Controller
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
-			if(Auth::user()->funcao == "Superintendencia") {
+			if(Auth::user()->funcao == "Superintendencia" || Auth::user()->id == 61) {
 				$input['resposta'] = 3;
 				DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
 				DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
@@ -2473,6 +2473,18 @@ class HomeController extends Controller
 				$input['resposta'] = 3;
 				DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
 				DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
+			}
+
+			$alteracaoF = Alteracao_Funcional::where('mp_id',$id)->get();
+			$qtdAlt = sizeof($alteracaoF);
+			if($qtdAlt > 0) {
+				if($alteracaoF[0]->salario_atual == $alteracaoF[0]->salario_novo){
+					if(Auth::user()->id == 30) {
+						$input['resposta'] = 3;
+						DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
+						DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
+					}
+				}
 			}
 		
 			$input['data_aprovacao'] = date('Y-m-d',(strtotime('now')));

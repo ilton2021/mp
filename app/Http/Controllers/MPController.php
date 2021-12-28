@@ -27,6 +27,7 @@ use Validator;
 
 class MPController extends Controller
 {
+	//Tela Inicial da MP
 	public function inicioMP(){
 		$unidades  = Unidade::all();
 		$mps 	   = MP::all();
@@ -944,6 +945,7 @@ class MPController extends Controller
 		return view('alterarMPAlteracao', compact('unidade','gestores','unidades','mps','alteracaoF','idA','idMP','centro_custos','setores','centro_custo_nv','cargos','justificativa','gestor'));
 	}
 	
+	//GErar PDF
 	public function mpPDF($idG, $idMP)
 	{
 		$unidades = Unidade::all();
@@ -1084,10 +1086,11 @@ class MPController extends Controller
 		}
 	}
 	
+	//Voltar para o fluxo
 	public function salvarMPAlteracao($id, $idG, Request $request){
 		$input 	  = $request->all();
 		$mp 	  = MP::where('id',$id)->get();
-		$idMP 	  = $id;
+		$idMP 	  = $id;  
 		$idU      = $mp[0]->unidade_id;
 		$unidade  = Unidade::where('id', $idU)->get();
 		$numeroMP = $mp[0]->numeroMP;
@@ -1185,12 +1188,12 @@ class MPController extends Controller
 		$input 	  = $request->all();
 		$mp 	  = MP::where('id',$id)->get();
 		$idMP 	  = $id;
-		$idU      = $mp[0]->unidade_id;
+		$idU      = $mp[0]->unidade_id; 
 		$unidade  = Unidade::where('id', $idU)->get();
 		$numeroMP = $mp[0]->numeroMP;
 		$gestor   = Gestor::where('id', $idG)->get();
 		$nome     = $mp[0]->solicitante;
-		$email 	  = $gestor[0]->email;
+		$email 	  = $gestor[0]->email; 
 		DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 		Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
 			$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
@@ -1380,16 +1383,16 @@ class MPController extends Controller
 		$unidades = Unidade::all();
 		$mps = MP::where('id',$id)->get();
 		$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
-		$solicitante = $mps[0]->solicitante;
+		$solicitante   = $mps[0]->solicitante;
 		$solic   = Gestor::where('nome',$solicitante)->get();
 		$gestor  = $solic[0]->gestor_imediato;
 		$gestor  = Gestor::where('nome', $gestor)->get();
 		$unidade = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$unidade)->get();
 		$plantao = Plantao::where('mp_id',$mps[0]->id)->get();
-		$idA = $id_plan;
-		$idMP = $id;
-		$cargos = Cargos::all();
+		$idA 	 = $id_plan;
+		$idMP 	 = $id;
+		$cargos  = Cargos::all();
 		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 		$setores 	   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->orderBy('nome','ASC')->get();
 		return view('alterarMPPlantao', compact('unidade','gestores','unidades','mps','plantao','idA','idMP','justificativa','gestor','cargos','centro_custos','setores'));

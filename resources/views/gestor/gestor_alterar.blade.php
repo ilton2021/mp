@@ -119,11 +119,19 @@
 						   </td>
 						 </tr>
 						 <tr>
+						   <td> Gestor Imediato: </td>
+						   <td>
+						     <input class="form-control" style="width: 400px" type="text" id="gestor_imediato" name="gestor_imediato" required value="<?php echo $gestor[0]->gestor_imediato; ?>" />
+						   </td>
+						 </tr>
+						 <tr>
 						   <td> Função: </td>
 						   <td> 
 						     <select class="form-control" id="funcao" name="funcao">
 							  @if($gestor[0]->funcao == "Gestor")
 							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
+							  @elseif($gestor[0]->funcao == "Gestor Imediato")
+							  <option id="funcao" name="funcao" value="RH">Gestor Imediato</option>
 						      @elseif($gestor[0]->funcao == "RH")
 							  <option id="funcao" name="funcao" value="RH">RH</option>
 							  @elseif($gestor[0]->funcao == "Diretoria Tecnica")

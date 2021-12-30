@@ -77,6 +77,16 @@
 					 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 					  <option id="gestor_id" name="gestor_id" value="30"></option>   
 					 </select>
+					@elseif(Auth::user()->id == 182)
+					 @if($qtdAp == 0)
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
+					 </select>  
+					 @else
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
+					   <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>
+					 </select> 
+					 @endif
 					@else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
 				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
@@ -146,7 +156,8 @@
 				  @elseif($vaga[0]->unidade_id == 5)
 				  <option id="gestor_id" name="gestor_id" value="167">COORDENADOR UNIDADE - ADRIANA CAVALCANTI BEZERRA</option>
 				  @elseif($vaga[0]->unidade_id == 6)
-				  <option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+				  <option id="gestor_id" name="gestor_id" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
+				  <!--option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
 				  @elseif($vaga[0]->unidade_id == 7)
 				  <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option>   
 				  @elseif($vaga[0]->unidade_id == 8)

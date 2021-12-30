@@ -1762,7 +1762,7 @@ class HomeController extends Controller
 			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 42 
+				if($aprovacao[$i]->gestor_anterior == 59 || $aprovacao[$i]->gestor_anterior == 60 || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 42 || $aprovacao[$i]->gestor_anterior == 182 
 				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 165){
 				    $gestorD = $aprovacao[$i]->gestor_anterior;  
 				}
@@ -1911,7 +1911,7 @@ class HomeController extends Controller
 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
-				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
+				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 182 
 				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
 				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
 					$gestorD = $aprovacao[$i]->gestor_anterior;
@@ -2230,15 +2230,15 @@ class HomeController extends Controller
 				$idGI    = $gestorI[0]->id;
 				DB::statement('UPDATE mp SET gestor_id = '.$idGI.' WHERE id = '.$id.';');
 			} 
-		}
-		if(Auth::user()->funcao == "Superintendencia" || (Auth::user()->id == 61 && $mp[0]->unidade_id != 1)){
+		} 
+		if(Auth::user()->funcao == "Superintendencia" || (Auth::user()->id == 61 && $mp[0]->tipo_mp != 1)){
 				$input['resposta'] = 3;
 				DB::statement('UPDATE mp SET concluida = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE mp SET aprovada  = 1 WHERE id  = '.$id.';');
 				DB::statement('UPDATE mp SET gestor_id = 30 WHERE id = '.$id.';');
 				$input['gestor_id'] = 30;
 				$idG = 30;
-		} else if (Auth::user()->funcao == "RH" && ($a != 2 && $a != 1)) {
+		} else if (Auth::user()->funcao == "RH" && $a != 2) {
 				$input['resposta']  = 1; 
 				$input['gestor_id'] = $idG;
 				DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id  = '.$id.';');
@@ -2279,6 +2279,12 @@ class HomeController extends Controller
 						} else {
 							$idG = 30;
 						}
+					} else if($idG == 182) {
+						if($idA == 30) {
+							$idG = 62;
+						} else {
+							$idG = 30;
+						}
 					} else if($idG == 163){ 
 						if($idA == 30){
 							$idG = 61;
@@ -2304,7 +2310,7 @@ class HomeController extends Controller
 				$input['gestor_id'] = $idG;
 				DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id  = '.$id.';');
 				DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
-		}
+		} 
 			$input['data_aprovacao']  = date('Y-m-d',(strtotime('now')));
 			$input['gestor_anterior'] = Auth::user()->id;
 			$input['unidade_id'] 	  = $mp[0]->unidade_id;
@@ -2347,6 +2353,8 @@ class HomeController extends Controller
 				if($tipo == 'RPA'){
 					$email5 = 'angela.hermida@hcpgestao.org.br';
 					$email6 = 'ana.soares@hcpgestao.org.br';
+					$email8 = 'jesse.araujo@hcpgestao.org.br';
+					$email9 = 'rita.tavares@hcpgestao.org.br';
 				} else if($tipo == 'PONTO') {
 					$email5 = 'tatiana.silva@hcpgestao.org.br';
 					$email6 = 'mylena.silva@hcpgestao.org.br';
@@ -2356,6 +2364,8 @@ class HomeController extends Controller
 						$email5 = 'ana.soares@hcpgestao.org.br';
 						$email6 = 'laura.lopes@hcpgestao.org.br';
 						$email7 = 'mylena.silva@hcpgestao.org.br'; 
+						$email8 = 'jesse.araujo@hcpgestao.org.br';
+						$email9 = 'rita.tavares@hcpgestao.org.br';
 					} else if($qtdDE > 0){
 						$email5 = 'ana.soares@hcpgestao.org.br';
 						$email6 = 'laura.lopes@hcpgestao.org.br';
@@ -2384,31 +2394,42 @@ class HomeController extends Controller
 				$email6 = 'rayonara.bento@hcpgestao.org.br';
 			}
 			$numeroMP = $mp[0]->numeroMP;
-			if(Auth::user()->funcao == "Superintendencia"){
-				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
-					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
-					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
-					$m->to($email);
-					$m->cc($email2); $m->cc($email3);  
-					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
-				});*/
+			if($input['resposta'] == 3){
+				/*if($email8 != '' && $email9 != ''){
+			        Mail::send([], [], function($m) use ($email,$email2,$email3,$email5,$email6,$email7,$email8,$email9,$motivo,$numeroMP,$tipo) {
+    					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+    					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
+    					$m->setBody($motivo .'! Acesse o portal da MP: https://hcpgestao.org.br/mpRH/public/');
+    					$m->to($email);
+    					$m->cc($email2); $m->cc($email3);   
+    					$m->cc($email5); $m->cc($email6); $m->cc($email7); $m->cc($email8); $m->cc($email9);
+				    });
+			    } else {
+			        Mail::send([], [], function($m) use ($email,$email2,$email3,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
+    					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+    					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
+    					$m->setBody($motivo .'! Acesse o portal da MP: https://hcpgestao.org.br/mpRH/public/');
+    					$m->to($email);
+    					$m->cc($email2); $m->cc($email3);   
+    					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
+				    });
+			    }*/
 			} else {
 				if($email == 'filipe.bitu@hcpgestao.org.br'){
 					$email4 = 'luciana.venancio@hcpgestao.org.br';
-					Mail::send([], [], function($m) use ($email,$email4,$motivo,$numeroMP) {
+					/*Mail::send([], [], function($m) use ($email,$email4,$motivo,$numeroMP) {
 						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 						$m->subject('MP - '.$numeroMP.' Autorizada!');
 						$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 						$m->to($email); $m->cc($email4);
-					});
+					});*/
 				} else {
-					Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
+					/*Mail::send([], [], function($m) use ($email,$motivo,$numeroMP) {
 						$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 						$m->subject('MP - '.$numeroMP.' Autorizada!');
 						$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 						$m->to($email);
-					});
+					});*/
 				}
 			}
 	}
@@ -2456,7 +2477,7 @@ class HomeController extends Controller
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} else {
-			if(Auth::user()->funcao == "Superintendencia" || Auth::user()->id == 61) {
+			if(Auth::user()->funcao == "Superintendencia" || (Auth::user()->id == 61 && $mp[0]->tipo_mp != 1)){
 				$input['resposta'] = 3;
 				DB::statement('UPDATE mp SET concluida = 1 WHERE id = '.$id.';');
 				DB::statement('UPDATE mp SET aprovada = 1 WHERE id = '.$id.';');
@@ -2499,7 +2520,7 @@ class HomeController extends Controller
 			$sol = Gestor::where('nome', $solicitante)->get();
 			$email2 = $sol[0]->email;
 			$email3 = 'janaina.lima@hcpgestao.org.br';
-			$email7 = '';
+			$email7 = ''; $email8 = ''; $email9 = '';
 			$tipo = "";
 			$admissao  = DB::table('admissao')->where('mp_id',$mp[0]->id)->get();
 			$qtdAD 	   = sizeof($admissao);
@@ -2528,6 +2549,8 @@ class HomeController extends Controller
 				if($tipo == 'RPA'){
 					$email5 = 'angela.hermida@hcpgestao.org.br';
 					$email6 = 'ana.soares@hcpgestao.org.br';
+					$email8 = 'jesse.araujo@hcpgestao.org.br';
+					$email9 = 'rita.tavares@hcpgestao.org.br';
 				} else if($tipo == 'PONTO') {
 					$email5 = 'tatiana.silva@hcpgestao.org.br';
 					$email6 = 'mylena.silva@hcpgestao.org.br';
@@ -2536,7 +2559,9 @@ class HomeController extends Controller
 					if($qtdAD > 0){
 						$email5 = 'ana.soares@hcpgestao.org.br';
 						$email6 = 'laura.lopes@hcpgestao.org.br';
-						$email7 = 'mylena.silva@hcpgestao.org.br'; 
+						$email7 = 'mylena.silva@hcpgestao.org.br';
+						$email8 = 'jesse.araujo@hcpgestao.org.br';
+						$email9 = 'rita.tavares@hcpgestao.org.br'; 
 					} else if($qtdDE > 0){
 						$email5 = 'ana.soares@hcpgestao.org.br';
 						$email6 = 'laura.lopes@hcpgestao.org.br';
@@ -2566,15 +2591,26 @@ class HomeController extends Controller
 			}
 			$motivo   = $input['motivo'];
 			$numeroMP = $mp[0]->numeroMP;
-			if(Auth::user()->funcao == "Superintendencia"){
-				/*Mail::send([], [], function($m) use ($email,$email2,$email3,$motivo,$numeroMP) {
-					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
-					$m->subject('MP - '.$numeroMP.' Tipo: '.$tipo.' foi Assinada e está Concluída!!');
-					$m->setBody($motivo .'! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
-					$m->to($email);
-					$m->cc($email2); $m->cc($email3); 
-					$m->cc($email5); $m->cc($email6); $m->cc($email7);
-				});*/
+			if($input['resposta'] == 3){
+				/*if($email8 != '' && $email9 != ''){
+			        Mail::send([], [], function($m) use ($email,$email2,$email3,$email5,$email6,$email7,$email8,$email9,$motivo,$numeroMP,$tipo) {
+    					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+    					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
+    					$m->setBody($motivo .'! Acesse o portal da MP: https://hcpgestao.org.br/mpRH/public/');
+    					$m->to($email);
+    					$m->cc($email2); $m->cc($email3);   
+    					$m->cc($email5); $m->cc($email6); $m->cc($email7); $m->cc($email8); $m->cc($email9);
+				    });
+			    } else {
+			        Mail::send([], [], function($m) use ($email,$email2,$email3,$email5,$email6,$email7,$motivo,$numeroMP,$tipo) {
+    					$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
+    					$m->subject('MP - '.$numeroMP.' do Tipo: '.$tipo.' foi Assinada e está Concluída!!');
+    					$m->setBody($motivo .'! Acesse o portal da MP: https://hcpgestao.org.br/mpRH/public/');
+    					$m->to($email);
+    					$m->cc($email2); $m->cc($email3);   
+    					$m->cc($email5); $m->cc($email6); $m->cc($email7); 
+				    });
+			    }*/
 			} else {
 				if($email == 'filipe.bitu@hcpgestao.org.br'){
 					/*$email4 = 'luciana.venancio@hcpgestao.org.br';

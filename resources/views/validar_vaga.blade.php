@@ -231,7 +231,8 @@
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
+                    <!--option id="gestor_id_" name="gestor_id_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
                     @elseif($vaga->unidade_id == 7)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 7)

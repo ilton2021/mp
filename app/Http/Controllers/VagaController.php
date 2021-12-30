@@ -596,6 +596,12 @@ class VagaController extends Controller
 					} else {
 						$idG = 30;
 					}
+				} else if($idG == 182) {
+					if($idA == 30) {
+						$idG = 62;
+					} else {
+						$idG = 30;
+					}
 				} else if($idG == 163){ 
 					if($idA == 30){
 						$idG = 61;
@@ -738,21 +744,10 @@ class VagaController extends Controller
     			} else {
     			    $diretoriaT = ""; 
     			}
-			} else if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Tecnica") {
-				$data_diretoria_tecnica = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 65 || $aprovacao[$i]->gestor_anterior == 163 || $aprovacao[$i]->gestor_anterior == 93){
-				    $gestorC = $aprovacao[$i]->gestor_anterior;   
-				}
-    			if($gestorC != ""){
-    			    $diretoriaT = Gestor::where('id', $gestorC)->get('nome'); 
-					$diretoriaTId = Gestor::where('id', $gestorC)->get('id'); 
-    			} else {
-    			    $diretoriaT = ""; 
-    			}
-			}
+			} 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
-				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
+				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 182
 				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
 				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
 					$gestorD = $aprovacao[$i]->gestor_anterior;
@@ -761,18 +756,7 @@ class VagaController extends Controller
     				$diretoria = Gestor::where('id', $gestorD)->get('nome'); 
 					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
 				}
-			} else if ($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria") {
-				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
-				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
-				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
-				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
-					$gestorD = $aprovacao[$i]->gestor_anterior;
-				}
-				if($gestorD != ""){
-    			    $diretoria = Gestor::where('id', $gestorD)->get('nome'); 
-					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
-    			}	
-			}
+			} 
 			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia"){
 				$data_superintendencia = $aprovacao[$i]->data_aprovacao;
 				if($aprovacao[$i]->gestor_anterior == 62){

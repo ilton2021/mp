@@ -763,7 +763,7 @@ class MPController extends Controller
 					$input['usuario_acessorh3'] = '';
 					if($tipo_mp == 1) {
 						if($input['hcpgestao'] == "SIM") {
-							if($input['gestor_id'] == 61) {
+							if(Auth::user()->id == 61) {
 								$input['gestor_id'] = 30;
 							} else {
 								$input['gestor_id'] = 61;
@@ -879,16 +879,7 @@ class MPController extends Controller
 						}
 					}
 
-					if($input['gestor_id'] == 25){
-					    $idG = 61;   
-					} else if($input['gestor_id'] == 15) {
-					    $idG = 65;   
-					} else if($input['gestor_id'] == 43) {
-					    $idG = 60;
-					} else {
-					    $idG = $input['gestor_id'];   
-					}
-					$idG 	= $input['gestor_id'];
+					$idG 	= 61;
 					$gestor = Gestor::where('id', $idG)->get();
 					$email  = $gestor[0]->email; /*
 					Mail::send('email.emailMP', array($email), function($m) use ($email) {

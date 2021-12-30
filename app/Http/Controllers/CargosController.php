@@ -39,7 +39,9 @@ class CargosController extends Controller
 			'nome'  => 'required|max:255',
 		]);
 		if ($validator->fails()) {
-					return view('cargos/cargos_novo', compact('text'));
+			return view('cargos/cargos_novo')
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} else {
 			$cargo   = Cargos::create($input);
 			$loggers = Loggers::create($input);
@@ -55,7 +57,7 @@ class CargosController extends Controller
 	{
 		$cargos = Cargos::where('id',$id)->get();
 		return view('cargos/cargos_alterar', compact('cargos'));
-	}
+	}	
 	
 	public function updateCargo(Request $request, $id) {   
 		$input = $request->all(); 

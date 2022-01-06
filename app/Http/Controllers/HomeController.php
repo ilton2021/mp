@@ -2752,8 +2752,9 @@ class HomeController extends Controller
 		if($qtdDem > 0 || $qtdAdm > 0 || $qtdAlt > 0) { 
 			return view('minhasMPs', compact('unidades','admissao','qtdAdm','demissao','qtdDem','alteracao','qtdAlt'));
 		} else {
+			$mps = MP::where('id',0)->get();
 			$validator = 'Você nunca fez nenhuma MP!';
-			return view('minhasMPs', compact('unidades','mps'))
+			return view('minhasMPs', compact('unidades','mps','admissao','qtdAdm','demissao','qtdDem','alteracao','qtdAlt'))
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		} 
@@ -2891,7 +2892,15 @@ class HomeController extends Controller
 		$unidade = Unidade::where('id',$idU)->get();
 		$idG     = $mps[0]->solicitante;
 		$gestor  = Gestor::where('nome',$idG)->get();
-		return view('inativandoMPs', compact('mps','unidade','gestor'));
+		if($mps[0]->solicitante != Auth::user()->name){
+			$validator = "Você não tem Permissão!";
+			$mps      = MP::where('solicitante', Auth::user()->nome)->paginate(20);
+			$unidades = Unidade::all();
+			return view('excluirMPs', compact('unidades','mps'))
+				->withErrors($validator);
+		} else {
+			return view('inativandoMPs', compact('mps','unidade','gestor'));
+		}
 	}
 	
 	public function inativandoMPs($id, Request $request) {
@@ -2899,7 +2908,8 @@ class HomeController extends Controller
 		$unidades  	= Unidade::all();
 		$mps 		= MP::where('id',$id)->get();
 		DB::statement('UPDATE mp SET inativa = 1 WHERE id = '.$id.';');
-		$mps 	    = MP::where('id',0)->get();
+		$mps 	    = MP::where('id',0)->paginate(20);
+		$input['acao'] = $input['acao'].$id;
 		$loggers    = Loggers::create($input);
 		$validator  = 'MP Inativada com sucesso!!';
 		return view('excluirMPs', compact('unidades','mps'))
@@ -2913,7 +2923,15 @@ class HomeController extends Controller
 		$unidade = Unidade::where('id',$idU)->get();
 		$idG     = $vagas[0]->solicitante;
 		$gestor  = Gestor::where('nome',$idG)->get();
-		return view('inativandoVagas', compact('vagas','unidade','gestor'));
+		if($vagas[0]->solicitante != Auth::user()->name){
+			$validator = "Você não tem Permissão!";
+			$vagas     = Vaga::where('solicitante', Auth::user()->nome)->paginate(20);
+			$unidades  = Unidade::all();
+			return view('excluirVagas', compact('unidades','vagas'))
+				->withErrors($validator);
+		} else {
+			return view('inativandoVagas', compact('vagas','unidade','gestor'));
+		}
 	}
 	
 	public function inativandoVagas($id, Request $request) {
@@ -2921,7 +2939,8 @@ class HomeController extends Controller
 		$unidades  	= Unidade::all();
 		$vagas 		= Vaga::where('id',$id)->get();
 		DB::statement('UPDATE vaga SET inativa = 1 WHERE id = '.$id.';');
-		$vagas      = Vaga::where('id',0)->get();
+		$vagas      = Vaga::where('id',0)->paginate(20);
+		$input['acao'] = $input['acao'].$id;
 		$loggers    = Loggers::create($input);
 		$validator  = 'Vaga Inativada com sucesso!!';
 		return view('excluirVagas', compact('unidades','vagas'))

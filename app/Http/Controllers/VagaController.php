@@ -674,12 +674,14 @@ class VagaController extends Controller
 		$data_gestor_imediato 	= null;
 		$data_rec_humanos 		= null;
 		$data_diretoria_tecnica = null;
+		$data_diretoria_financeira = null;
 		$data_diretoria 		= null;
 		$data_superintendencia  = null;
 		$solicitante = $vagas[0]->solicitante;
 		$gestorData   = ""; $gestorDataId = "";
 		$rh           = ""; $rhId    	  = "";
 		$diretoriaT   = ""; $diretoriaTId = "";
+		$diretoriaF   = ""; $diretoriaFId = "";
 		$diretoria    = ""; $diretoriaId  = "";
 		$super        = ""; $superId      = "";
 		$data_aprovacao = $vagas[0]->created_at; 	
@@ -745,6 +747,16 @@ class VagaController extends Controller
     			    $diretoriaT = ""; 
     			}
 			} 
+			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 174) {
+					$gestorF = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorF != ""){
+    				$diretoriaF = Gestor::where('id', $gestorF)->get('nome'); 
+					$diretoriaFId = Gestor::where('id', $gestorF)->get('id'); 
+				}
+			} 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 182
@@ -771,8 +783,8 @@ class VagaController extends Controller
 			}
 		}
 		$comportamental = Comportamental::where('vaga_id', $id)->get();
-		$competencias   = Competencias::where('vaga_id', $id)->get();
-		return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor','comportamental','competencias'));
+		$competencias   = Competencias::where('vaga_id', $id)->get();	
+		return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor','comportamental','competencias'));
 	}
 	
 	public function visualizarVaga($id)
@@ -794,17 +806,19 @@ class VagaController extends Controller
 		$data_gestor_imediato 	= null;
 		$data_rec_humanos 		= null;
 		$data_diretoria_tecnica = null;
+		$data_diretoria_financeira = null;
 		$data_diretoria 		= null;
 		$data_superintendencia  = null;
 		$gestorData   = ""; $gestorDataId = "";
 		$rh           = ""; $rhId    	  = "";
 		$diretoriaT   = ""; $diretoriaTId = "";
+		$diretoriaF   = ""; $diretoriaFId = "";
 		$diretoria    = ""; $diretoriaId  = "";
 		$super        = ""; $superId      = "";
 		$data_aprovacao = $vagas[0]->created_at;		
 		for($i = 0; $i < $qtdA; $i++) {
 			$idU = $aprovacao[$i]->gestor_anterior;
-			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 5 || $idU == 34){ 
+			if($idU == 48 || $idU == 1 || $idU == 116 || $idU == 34){ 
 			    $funcao = "Gestor Imediato"; 
 			} else {
 			    $funcao = User::where('id', $idU)->get(); 
@@ -855,10 +869,20 @@ class VagaController extends Controller
     			    $diretoriaT = ""; 
     			}
 			} 
+			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 174) {
+					$gestorF = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorF != ""){
+    				$diretoriaF = Gestor::where('id', $gestorF)->get('nome'); 
+					$diretoriaFId = Gestor::where('id', $gestorF)->get('id'); 
+				}
+			} 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
-				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 165
+				|| $aprovacao[$i]->gestor_anterior == 155 || $aprovacao[$i]->gestor_anterior == 160 || $aprovacao[$i]->gestor_anterior == 5
 				|| $aprovacao[$i]->gestor_anterior == 167 || $aprovacao[$i]->gestor_anterior == 42) {
 					$gestorD = $aprovacao[$i]->gestor_anterior;
 				}
@@ -882,7 +906,7 @@ class VagaController extends Controller
 		}
 		$comportamental = Comportamental::where('vaga_id', $idVaga)->get();
 		$competencias   = Competencias::where('vaga_id', $idVaga)->get();
-		return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaId','superId','gestor','comportamental','competencias'));
+		return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','data_diretoria_financeira','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor','comportamental','competencias'));
 	}
 	
 	public function autorizarVaga($id)
@@ -1640,7 +1664,7 @@ class VagaController extends Controller
 
    public function excluirVagas()
    {
-	   $vagas = Vaga::where('inativa',0)->get();
+	   $vagas = Vaga::where('solicitante',Auth::user()->name)->where('inativa',0)->get();
 	   return view ('excluirVagas', compact('vagas'));
    }
 
@@ -1653,25 +1677,61 @@ class VagaController extends Controller
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
-		if($pesq2 == "vaga") {
-			if($unidade_id == "0"){
-				$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->where('inativa',0)->get();
-			} else {
-				$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->where('inativa',0)
-					->where('vaga.unidade_id',$unidade_id)->get();
+		$funcao = Auth::user()->funcao;
+		if($funcao == "Administrador") {
+			if($pesq2 == "vaga") {
+				if($unidade_id == "0"){
+					$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->where('inativa',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->where('inativa',0)
+						->where('vaga.unidade_id',$unidade_id)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id == "0"){
+					$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')->where('inativa',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')->where('inativa',0)
+						->where('mp.unidade_id',$unidade_id)->get();
+				}
+			} else if($pesq2 == ""){
+				if($unidade_id == "0"){
+					$vagas = Vaga::where('inativa',0)->get();
+				} else {
+					$vagas = Vaga::where('unidade_id',$unidade_id)->where('inativa',0)->get();
+				}
 			}
-		} else if($pesq2 == "solicitante"){
-			if($unidade_id == "0"){
-				$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')->where('inativa',0)->get();
-			} else {
-				$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')->where('inativa',0)
-					->where('mp.unidade_id',$unidade_id)->get();
-			}
-		} else if($pesq2 == ""){
-			if($unidade_id == "0"){
-				$vagas = Vaga::where('id',0)->where('inativa',0)->get();
-			} else {
-				$vagas = Vaga::where('unidade_id',$unidade_id)->where('inativa',0)->get();
+		} else {
+			if($pesq2 == "vaga") {
+				if($unidade_id == "0"){
+					$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')
+						->where('solicitante',Auth::user()->name)->where('inativa',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->where('inativa',0)
+						->where('solicitante',Auth::user()->name)->where('vaga.unidade_id',$unidade_id)->get();
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id == "0"){
+					$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')
+							->where('solicitante',Auth::user()->name)->where('inativa',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga.solicitante','like','%'.$pesq.'%')->where('inativa',0)
+						->where('solicitante',Auth::user()->name)->where('mp.unidade_id',$unidade_id)->get();
+				}
+			} else if($pesq2 == "numeroVaga") {
+				if($unidade_id == "0"){
+					$vagas = DB::table('vaga')->where('vaga.numeroVaga','like','%'.$pesq.'%')
+							->where('solicitante',Auth::user()->name)->where('inativa',0)->get();
+				} else {
+					$vagas = DB::table('vaga')->where('vaga.numeroVaga','like','%'.$pesq.'%')->where('inativa',0)
+						->where('solicitante',Auth::user()->name)->where('mp.unidade_id',$unidade_id)->get();
+				}
+			} else if($pesq2 == ""){
+				if($unidade_id == "0"){
+					$vagas = Vaga::where('solicitante',Auth::user()->name)->where('inativa',0)->get();
+				} else {
+					$vagas = Vaga::where('unidade_id',$unidade_id)
+						->where('solicitante',Auth::user()->name)->where('inativa',0)->get();
+				}
 			}
 		}
 		return view('excluirVagas', compact('vagas'));

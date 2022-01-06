@@ -634,6 +634,83 @@
 		   @endif	
 		   </tr>
 		   <tr>
+		   @if($vagas[0]->unidade_id == 2)
+		   @if(!empty($data_diretoria_financeira))
+			<td>Diretoria Financeira</td>
+			<td><?php if($diretoria == ""){ echo ""; } else { echo $diretoriaF[0]->nome; } ?></td>
+			<td><input readonly="true" type="text" id="data_diretoria_financeira" name="data_diretoria_financeira" class="form-control" value="<?php echo date('d-m-Y',(strtotime($data_diretoria_financeira))); ?>" /></td>
+			<td>
+			@if(!empty($diretoriaFId[0]->id))
+			@foreach($aprovacao as $ap) 
+			  @if($ap->vaga_id == $vagas[0]->id && $diretoriaFId[0]->id == $ap->gestor_anterior)
+				 <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $ap->id; ?>" > 
+			     Mensagem
+				 </button>
+				 <div class="modal fade" id='exampleModal<?php echo $ap->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class='modal-content'>
+						  <div class='modal-header'>
+							<h5 class='modal-title' align="left"></h5>
+							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+						  </div>
+						  <div class='modal-body'>
+							<div class='panel panel-default'>
+							 <div class='panel-heading'><b>Mensagem:</b> </div>
+							 <div class='panel-body'>
+								<p align="justify">{{ $ap->motivo }}</a>
+							 </div>
+							</div>
+						  </div>
+						  <div class='modal-footer'>
+							<span class='codigo'></span>
+						  </div>
+					   </div>
+					 </div>
+				 </div></center>
+			  @endif
+			@endforeach
+			@endif
+			</td>
+		   @else
+		    <td>Diretoria Financeira</td>
+			<td></td>
+			<td><input readonly="true" type="date" id="data_diretoria_financeira" name="data_diretoria_financeira" class="form-control" value="" /></td>   
+			<td>
+			@if(!empty($diretoriaFId))
+			@foreach($aprovacao as $ap) 
+			  @if($ap->vaga_id == $vagas[0]->id && $diretoriaFId[0]->id == $ap->gestor_anterior)
+				 <center><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal<?php echo $ap->id; ?>" > 
+			     Mensagem
+				 </button>
+				 <div class="modal fade" id='exampleModal<?php echo $ap->id; ?>' role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+						<div class='modal-content'>
+						  <div class='modal-header'>
+							<h5 class='modal-title' align="left"></h5>
+							<button type='button' class='close' data-dismiss='modal'>&times;</button>
+						  </div>
+						  <div class='modal-body'>
+							<div class='panel panel-default'>
+							 <div class='panel-heading'><b>Mensagem:</b> </div>
+							 <div class='panel-body'>
+								<p align="justify">{{ $ap->motivo }}</a>
+							 </div>
+							</div>
+						  </div>
+						  <div class='modal-footer'>
+							<span class='codigo'></span>
+						  </div>
+					   </div>
+					 </div>
+				 </div></center>
+			  @endif
+			@endforeach
+			@endif
+			@endif
+			</td>
+		   @endif
+		   </tr>
+		   <tr>
 		   @if(!empty($data_diretoria))
 			<td>Diretoria</td>
 			<td><?php if($diretoria == ""){ echo ""; } else { echo $diretoria[0]->nome; } ?></td>

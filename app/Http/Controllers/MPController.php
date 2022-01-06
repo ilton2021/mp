@@ -1707,55 +1707,84 @@ class MPController extends Controller
 
 	public function excluirMPs()
 	{
-		$mps = MP::where('id',0)->where('inativa',0)->paginate(20);
+		$mps = MP::where('solicitante',Auth::user()->name)->where('inativa',0)->paginate(20);
 		return view('excluirMPs', compact('mps'));
 	}
 
 	public function excluirMP($id)
 	{
-		$mps  = MP::where('id', $id)->get();
-		$idU = $mps[0]->unidade_id;
+		$mps     = MP::where('id', $id)->get();
+		$idU     = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id',$idU)->get();
-		$idG = $mps[0]->solicitante;
-		$gestor = Gestor::where('nome',$idG)->get();
+		$idG     = $mps[0]->solicitante;
+		$gestor  = Gestor::where('nome',$idG)->get();
 		return view('excluirMP', compact('mps','unidade','gestor'));
 	}
 
 	public function pesquisaMPsExclusao(Request $request)
 	{
 		$input = $request->all();
+		$solicitante = Auth::user()->name;
 		if(empty($input['unidade_id'])){ $input['unidade_id'] = 0;  }
 		if(empty($input['pesq'])) { $input['pesq'] = ""; }
 		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
 		$unidade_id = $input['unidade_id'];
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
-		if($pesq2 == "numero") {
-			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
-			} else {
-				$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)
-				->where('mp.unidade_id',$unidade_id)->paginate(20);
+		$funcao = Auth::user()->funcao;
+		if($funcao == "Administrador") {
+			if($pesq2 == "numero") {
+				if($unidade_id == "0"){
+					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
+				} else {
+					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)
+								->where('mp.unidade_id',$unidade_id)->paginate(20);
+				}
+			} else if($pesq2 == "funcionario"){
+				if($unidade_id == "0"){
+					$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
+				} else {
+					$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)
+								->where('mp.unidade_id',$unidade_id)->paginate(20);
+				}
+			} else if($pesq2 == "solicitante"){
+				if($unidade_id == "0"){
+					$mps = DB::table('mp')->where('mp.solicitante','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
+				} else {
+					$mps = DB::table('mp')->where('mp.solicitante','like','%'.$pesq.'%')->where('inativa',0)
+								->where('mp.unidade_id',$unidade_id)->paginate(20);
+				}
+			} else if($pesq2 == ""){
+				if($unidade_id == "0"){
+					$mps = MP::where('inativa',0)->paginate(20);
+				} else {
+					$mps = MP::where('unidade_id',$unidade_id)->where('inativa',0)->paginate(20);
+				}
 			}
-		} else if($pesq2 == "funcionario"){
-			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
-			} else {
-				$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)
-				->where('mp.unidade_id',$unidade_id)->paginate(20);
-			}
-		} else if($pesq2 == "solicitante"){
-			if($unidade_id == "0"){
-				$mps = DB::table('mp')->where('mp.solicitante','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
-			} else {
-				$mps = DB::table('mp')->where('mp.solicitante','like','%'.$pesq.'%')->where('inativa',0)
-				->where('mp.unidade_id',$unidade_id)->paginate(20);
-			}
-		} else if($pesq2 == ""){
-			if($unidade_id == "0"){
-				$mps = MP::where('id',0)->where('inativa',0)->paginate(20);
-			} else {
-				$mps = MP::where('unidade_id',$unidade_id)->where('inativa',0)->paginate(20);
+		} else {
+			if($pesq2 == "numero") {
+				if($unidade_id == "0"){
+					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')
+						->where('solicitante',$solicitante)->where('inativa',0)->paginate(20);
+				} else {
+					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)
+					->where('solicitante',$solicitante)->where('mp.unidade_id',$unidade_id)->paginate(20);
+				}
+			} else if($pesq2 == "funcionario"){
+				if($unidade_id == "0"){
+					$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')
+						->where('solicitante',$solicitante)->where('inativa',0)->paginate(20);
+				} else {
+					$mps = DB::table('mp')->where('mp.nome','like','%'.$pesq.'%')->where('inativa',0)
+						->where('solicitante',$solicitante)->where('mp.unidade_id',$unidade_id)->paginate(20);
+				}
+			} else if($pesq2 == ""){
+				if($unidade_id == "0"){
+					$mps = MP::where('inativa',0)->where('solicitante',$solicitante)->paginate(20);
+				} else {
+					$mps = MP::where('unidade_id',$unidade_id)->where('solicitante',$solicitante)
+						->where('inativa',0)->paginate(20);
+				}
 			}
 		}
 		return view('excluirMPs', compact('mps','unidade_id','pesq2','pesq'));

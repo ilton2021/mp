@@ -60,7 +60,10 @@
 			<select class="form-control" id="pesq2" name="pesq2">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
 			  <option id="pesq2" name="pesq2" value="vaga">NOME DA VAGA</option>	
+			  <option id="pesq2" name="pesq2" value="numeroVaga">NÚMERO DA VAGA</option>
+			  @if(Auth::user()->funcao == "Administrador")
 			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
+			  @endif
 			</select>	
 		</td> 
 		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
@@ -76,9 +79,13 @@
 			  </tr>
 			  <tr>
 			   <td><center>NOME DA VAGA</center></td>
+			   <td><center>NÚMERO DA VAGA</center></td>
 			   <td><center>SOLICITANTE</center></td>
+			   @if(Auth::user()->funcao == "Administrador")
 			   <td><center>EXCLUIR</center></td>
+			   @endif
 			   <td><center>INATIVAR</center></td>
+			   <td><center>STATUS</center></td>
 			  </tr>
 			 </thead>
 			 <?php $qtd = sizeof($vagas); ?>
@@ -87,9 +94,19 @@
 			 <tbody>
 			  <tr>  
 			   <td><center>{{ $vaga->vaga }}</center></td>
+			   <td><center>{{ $vaga->numeroVaga }}</center></td>
 			   <td><center>{{ $vaga->solicitante }}</center></td>   
+			   @if(Auth::user()->funcao == "Administrador")
 			   <td><center><a href="{{ route('excluirVaga', $vaga->id) }}" class="btn-danger btn">EXCLUIR</center></a></td>
+			   @endif
 			   <td><center><a href="{{ route('inativarVagas', $vaga->id) }}" class="btn-info btn">INATIVAR</center></a></td>
+			   @if($vaga->concluida == 0 && $vaga->aprovada == 0)
+			   <td><center><font color="blue"><b>{{ 'NO FLUXO' }}</b></font></center></td>
+			   @elseif($vaga->concluida == 1 && $vaga->aprovada == 0)
+			   <td><center><font color="red"><b>{{ 'REPROVADA' }}</b></font></center></td>
+			   @elseif($vaga->concluida == 1 && $vaga->aprovada == 1)
+			   <td><center><font color="green"><b>{{ 'APROVADA' }}</b></font></center></td>
+			   @endif
 			  </tr>
 			 </tbody>
 			 @endforeach

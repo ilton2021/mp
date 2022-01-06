@@ -83,13 +83,14 @@
             </div>
         </div>
     </div>
-	@if(Auth::user()->funcao == "Administrador")
+	
 	<section id="unidade">
-	<div class="container" style="margin-top:30px; margin-bottom:20px;">
+	<div class="container" style="margin-top:5px; margin-bottom:-10px;">
         <div class="row">
             <div class="col-12 text-center">
                 <table>
 				 <tr>
+                    @if(Auth::user()->funcao == "Administrador")
                     <td>
                         <div class="dropdown">
                             <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -106,13 +107,17 @@
                     </td>
                     <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
 				    <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MP'S</a></td>
+                    @else
+                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
+				    <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MP'S</a></td>
+                    @endif
 				 </tr>
 				</table>
             </div>
         </div>
     </div>
 	</section>
-	@endif
+	
     <section id="unidades">
     <div class="container" style="margin-top:30px; margin-bottom:20px;">
 	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
@@ -153,7 +158,7 @@
 				  <span class="font-weight-bold"></span>
 			    </div>
 			</td>
-			<?php break; ?>
+			@break
 		   @endif
 		  @endforeach
 		 </tr>

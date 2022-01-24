@@ -140,7 +140,7 @@
 			  @if(Auth::user()->funcao == "RH")
 				 
 				 @if(!empty($alteracaoF))
-				  @if($alteracaoF[0]->salario_atual == $alteracaoF[0]->salario_novo) <?php $b = 1; ?>
+				  @if($alteracaoF[0]->salario_atual == $alteracaoF[0]->salario_novo && $mp[0]->impacto_financeiro == "nao") <?php $b = 1; ?>
 				  <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 					<option id="gestor_id" name="gestor_id" value="30"></option>   
 				  </select>
@@ -153,7 +153,7 @@
 				  @foreach($gestoresUnd as $gestor)
 				   <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id; ?>"> {{ $gestor->nome }}</option>   
 				  @endforeach
-				  <option id="gestor_id" name="gestor_id" value="12">ANALICE MARIA DE MENDONCA FERNANDES SILVA</option>
+				  <option id="gestor_id" name="gestor_id" value="12">GERENTE - ANALICE MARIA DE MENDONCA FERNANDES SILVA</option>
 				  @if($mp[0]->unidade_id == 2)
 				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
 				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>  
@@ -172,6 +172,8 @@
 				  <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
 				  <option id="gestor_id" name="gestor_id" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
 				  <option id="gestor_id" name="gestor_id" value="173">DIRETORIA TÉCNICA - SORAIA DO CARMO CUNHA XIMENES</option>   
+				  @elseif($mp[0]->unidade_id == 9)
+				  <option id="gestor_id" name="gestor_id" value="183">DIRETORIA - THALYTA SANTOS</option>   
 				  @endif
 			      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
 				 </select>

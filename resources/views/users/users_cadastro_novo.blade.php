@@ -81,7 +81,8 @@
 					   <input type='checkbox' id="unidade_5" name="unidade_5" /> UPAE ARRUDA &nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_6" name="unidade_6" /> UPAE CARUARU &nbsp;&nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_7" name="unidade_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					   <input type='checkbox' id="unidade_8" name="unidade_8" /> HCA
+					   <input type='checkbox' id="unidade_8" name="unidade_8" /> HCA &nbsp;&nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_9" name="unidade_9" /> UPAE IGARASSU
 					  </td>
 					</tr>
 					<tr>
@@ -94,7 +95,8 @@
 					   <input type='checkbox' id="unidade_abertura_5" name="unidade_abertura_5" /> UPAE ARRUDA &nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_abertura_6" name="unidade_abertura_6" /> UPAE CARUARU &nbsp;&nbsp;&nbsp;
 					   <input type='checkbox' id="unidade_abertura_7" name="unidade_abertura_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" /> HCA
+					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" /> HCA &nbsp;&nbsp;&nbsp;
+					   <input type='checkbox' id="unidade_abertura_9" name="unidade_abertura_9" /> UPAE IGARASSU
 					  </td>
 					</tr>
 					<tr>

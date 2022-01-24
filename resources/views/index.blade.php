@@ -45,8 +45,8 @@
 			m5  = Number(document.getElementById("salario_4").value);
 			m6  = Number(document.getElementById("outras_verbas_4").value);
 			m7  = Number(document.getElementById("salario_5").value);
-			m8 = Number(document.getElementById("outras_verbas_5").value);
-			m9 = Number(document.getElementById("salario_6").value);
+			m8  = Number(document.getElementById("outras_verbas_5").value);
+			m9  = Number(document.getElementById("salario_6").value);
 			m10 = Number(document.getElementById("outras_verbas_6").value);
 			m11 = Number(document.getElementById("salario_7").value);
 			m12 = Number(document.getElementById("outras_verbas_7").value);
@@ -399,13 +399,15 @@
 		}
 		
 		function desabilitarRPA(valor) {
-		  var status = document.getElementById('tipo5').checked;
+		  var status = document.getElementById('tipo5').checked; 
 		  if (status == true) {
+			document.getElementById('table-rpa').hidden  = false;
 			document.getElementById('mes_rpa').disabled  = false;
 			document.getElementById('ano_rpa').disabled  = false;
 			document.getElementById('mes2_rpa').disabled = false;
 			document.getElementById('ano2_rpa').disabled = false;
 		  } else {
+			document.getElementById('table-rpa').hidden  = true;
 			document.getElementById('mes_rpa').disabled  = true;
 			document.getElementById('ano_rpa').disabled  = true;
 			document.getElementById('mes2_rpa').disabled = true;
@@ -1235,6 +1237,32 @@
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />
 			 Remuneração Total:
 			 <input class="form-control" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
+			 <table id="table-rpa" name="table-rpa" hidden>
+			  <tr>
+				<td> <input type='checkbox' id="g_1" name="g_1" /> </td>
+				<td>&nbsp;Gratificação</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_2" name="g_2" /> </td>
+				<td>&nbsp;Insalubridade</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_3" name="g_3" /> </td>
+				<td>&nbsp;Periculosidade</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_4" name="g_4" /> </td>
+				<td>&nbsp;VA</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_5" name="g_5" /> </td>
+				<td>&nbsp;VT</td>
+			  </tr>	
+			  <tr>
+				<td> <input type='checkbox' id="g_6" name="g_6" /> </td>
+				<td>&nbsp;Nenhuma das Respostas</td>
+			  </tr>		
+			 </table>
 			 @else
 			 Salário <br>
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" required="true" id="salario" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" />
@@ -1242,6 +1270,32 @@
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />	 
 			 Remuneração Total:
 			 <input class="form-control" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
+			 <table id="table-rpa" name="table-rpa" hidden>
+			  <tr>
+				<td> <input type='checkbox' id="g_1" name="g_1" /> </td>
+				<td>&nbsp;Gratificação</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_2" name="g_2" /> </td>
+				<td>&nbsp;Insalubridade</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_3" name="g_3" /> </td>
+				<td>&nbsp;Periculosidade</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_4" name="g_4" /> </td>
+				<td>&nbsp;VA</td>
+			  </tr>
+			  <tr>
+				<td> <input type='checkbox' id="g_5" name="g_5" /> </td>
+				<td>&nbsp;VT</td>
+			  </tr>	
+			  <tr>
+				<td> <input type='checkbox' id="g_6" name="g_6" /> </td>
+				<td>&nbsp;Nenhuma das Respostas</td>
+			  </tr>		
+			 </table>
 			 @endif	
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
@@ -2171,7 +2225,7 @@
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
 			<td width="40"><strong><h5>Justificativa/Observações:</h5></strong></td>
-			<td><textarea required type="text" id="descricao" name="descricao" class="form-control" required="true" rows="3" cols="60" maxlength="200">  </textarea></td>
+			<td><textarea required type="text" id="descricao" name="descricao" class="form-control" required="true" rows="3" cols="60" maxlength="200"> {{ old('descricao') }} </textarea></td>
 		   </tr>
 		  </table>
 		  </center>

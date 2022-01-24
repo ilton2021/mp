@@ -480,7 +480,7 @@ class VagaController extends Controller
 			$vagas  = DB::table('vaga')
 				->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
 				->select('vaga.*','justificativa_vaga.descricao as just')
-				->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+				->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();	
 		}
 		$qtdVagas = sizeof($vagas);
 		$ap = 0;
@@ -769,9 +769,9 @@ class VagaController extends Controller
 					$diretoriaId = Gestor::where('id', $gestorD)->get('id'); 
 				}
 			} 
-			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia"){
+			if($aprovacao[$i]->resposta == 3 && $funcao == "Superintendencia" || $aprovacao[$i]->resposta == 3 && $idU == 61){
 				$data_superintendencia = $aprovacao[$i]->data_aprovacao;
-				if($aprovacao[$i]->gestor_anterior == 62){
+				if($aprovacao[$i]->gestor_anterior == 62 || $aprovacao[$i]->gestor_anterior == 61){
 					$gestorE = $aprovacao[$i]->gestor_anterior;
 				}
 				if($gestorE != ""){
@@ -1678,7 +1678,7 @@ class VagaController extends Controller
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
 		$funcao = Auth::user()->funcao;
-		if($funcao == "Administrador") {
+		if($funcao == "Administrador" || Auth::user()->id == 198) {
 			if($pesq2 == "vaga") {
 				if($unidade_id == "0"){
 					$vagas = DB::table('vaga')->where('vaga.vaga','like','%'.$pesq.'%')->where('inativa',0)->get();
@@ -1695,7 +1695,7 @@ class VagaController extends Controller
 				}
 			} else if($pesq2 == ""){
 				if($unidade_id == "0"){
-					$vagas = Vaga::where('inativa',0)->get();
+					$vagas = Vaga::where('inativa',0)->orderby('unidade_id','ASC')->get();
 				} else {
 					$vagas = Vaga::where('unidade_id',$unidade_id)->where('inativa',0)->get();
 				}
@@ -1727,7 +1727,7 @@ class VagaController extends Controller
 				}
 			} else if($pesq2 == ""){
 				if($unidade_id == "0"){
-					$vagas = Vaga::where('solicitante',Auth::user()->name)->where('inativa',0)->get();
+					$vagas = Vaga::where('solicitante',Auth::user()->name)->where('inativa',0)->orderby('unidade_id','ASC')->get();
 				} else {
 					$vagas = Vaga::where('unidade_id',$unidade_id)
 						->where('solicitante',Auth::user()->name)->where('inativa',0)->get();

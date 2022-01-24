@@ -895,7 +895,7 @@
 			  <a href="{{ route('salvarVaga', array($vagas[0]->id,$gId)) }}" type="button" class="btn btn-success btn-sm" > Concluir <i class="fas fa-times-circle"></i> </a>
 			@elseif(Auth::user()->id == 104 && $vagas[0]->gestor_id == 25)
 				
-			@elseif($vagas[0]->gestor_id == Auth::user()->id && $vagas[0]->concluida == 0 && $vagas[0]->aprovada == 0)
+			@elseif($vagas[0]->gestor_id == Auth::user()->id || $vagas[0]->gestor_id == 62 && Auth::user()->id == 61 && $vagas[0]->concluida == 0 && $vagas[0]->aprovada == 0)
 				
 			 @if(empty($aprovacao))
 			  <a href="{{ route('n_autorizarVaga', $vagas[0]->id) }}" type="button" class="btn btn-danger btn-sm" > Não Autorizar <i class="fas fa-times-circle"></i> </a>

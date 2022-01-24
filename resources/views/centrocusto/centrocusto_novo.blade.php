@@ -66,6 +66,7 @@
                               <p align="left"><input type="checkbox" id="unidade_6" name="unidade_6" /> UPAE CARUARU </p>
                               <p align="left"><input type="checkbox" id="unidade_7" name="unidade_7" /> HSS </p>
                               <p align="left"><input type="checkbox" id="unidade_8" name="unidade_8" /> HCA </p>
+							  <p align="left"><input type="checkbox" id="unidade_9" name="unidade_9" /> UPA IGARASSU </p>
                             </td>
 						  <td> 
 						  <p style="margin-top: 260px; margin-right: -45px;"> 

@@ -3,20 +3,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-			@if(Session::has('mensagem'))
-				 @if($text == true)
-				   <div class="container">
-					 <div class="alert alert-danger {{ Session::get ('mensagem')['class'] }} ">
-						  {{ Session::get ('mensagem')['msg'] }}
-					 </div>
-				   </div>
-				  @endif
-			@endif
             <div class="card">
                 <div class="card-header">{{ __('Cadastrar Usuário') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('store') }}">
+                    <form method="POST" action="{{ \Request::route('store') }}">
                         @csrf
 
                         <div class="form-group row">

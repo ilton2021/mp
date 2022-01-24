@@ -75,7 +75,8 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/unidade/mp/{id}/{i}/', 'MPController@storeMP')->name('storeMP');
 		Route::get('/pdf/{idG}/{idMP}','MPController@mpPDF')->name('mpPDF');
 		Route::get('/home/excluir/mp','MPController@excluirMPs')->name('excluirMPs');
-		Route::post('/home/excluir/mp/','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
+		Route::get('/home/excluir/mp/pesquisa','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
+		Route::post('/home/excluir/mp/pesquisa','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
 		Route::get('/home/excluir/mp/{id}','MPController@excluirMP')->name('excluirMP');
 		Route::post('/home/excluir/mp/{id}','MPController@deleteMP')->name('deleteMP');
 		Route::get('/home/visualizarMPS/minhasMPS', 'HomeController@minhasMPS')->name('minhasMPS');
@@ -252,6 +253,9 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/home/graphics12','HomeController@graphics12')->name('graphics12');
 		Route::post('/home/graphics12','HomeController@graphics12')->name('graphics12');
 		Route::post('/home/graphics12','HomeController@pesquisarGrafico12')->name('pesquisarGrafico12');
+		Route::get('/home/graphics13','HomeController@graphics13')->name('graphics13');
+		Route::post('/home/graphics13','HomeController@graphics13')->name('graphics13');
+		Route::post('/home/graphics13','HomeController@pesquisarGrafico13')->name('pesquisarGrafico13');
 		Route::get('/homeVaga/graphicsVagaIndex','VagaController@graphicsVagaIndex')->name('graphicsVagaIndex');
 		Route::get('/homeVaga/graphicsVaga','VagaController@graphicsVaga')->name('graphicsVaga');
 		Route::get('/homeVaga/graphicsVaga2','VagaController@graphicsVaga2')->name('graphicsVaga2');

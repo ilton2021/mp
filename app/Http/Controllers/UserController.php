@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\User;
-use App\Model\Auth;
 use App\Model\Unidade;
 use App\Model\AlterarSenha;
 use App\Model\Loggers;
 use Spatie\Permission\Models\Role;
 use DB;
+use Auth;
 use Str;
 use Hash;
 use Validator;
@@ -224,63 +224,90 @@ class UserController extends Controller
 	}
 	
     public function store(Request $request)
-    {
+    { 
 		$input = $request->all();
-		$validator = Validator::make($request->all(), [
-			'name'     		   => 'required',
-            'email'    		   => 'required|email|unique:users,email',
-            'password' 		   => 'required|same:password_confirmation',
-			'password_confirmation' => 'required',
-			'funcao' => 'required'
-    	]);			 
-		if ($validator->fails()) {
-			return view('users/users_cadastro_novo')
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));						
-		} else {
-			$missing = array();
-			$missing2 = array();
-			for($a = 1; $a <= 8; $a++){
-				if(!empty($input['unidade_'.$a])){
-					$missing[] = $a;
-				}
-				if(!empty($input['unidade_abertura_'.$a])){
-					$missing2[] = $a;
-				}
-			}
-			if( is_array($missing) && count($missing) > 0 ) {
-				$result = '';
-				$total = count($missing) - 1;
-				for($i = 0; $i <= $total; $i++){ 
-					$result .= $missing[$i];
-					if($i < $total)
-						$result .= ", ";
-				}
+		if(Auth::user()){
+			$validator = Validator::make($request->all(), [
+				'name'     		   => 'required',
+				'email'    		   => 'required|email|unique:users,email',
+				'password' 		   => 'required|same:password_confirmation',
+				'password_confirmation' => 'required',
+				'funcao' => 'required'
+			]);			 
+			if ($validator->fails()) {
+				return view('users/users_cadastro_novo')
+						  ->withErrors($validator)
+						  ->withInput(session()->flashInput($request->input()));						
 			} else {
-				$result = "";
-			}
-			if( is_array($missing2) && count($missing2) > 0 ) {
-				$result2 = '';
-				$total2 = count($missing2) - 1;
-				for($i = 0; $i <= $total2; $i++){ 
-					$result2 .= $missing2[$i];
-					if($i < $total2)
-						$result2 .= ", ";
+				$missing = array();
+				$missing2 = array();
+				for($a = 1; $a <= 9; $a++){
+					if(!empty($input['unidade_'.$a])){
+						$missing[] = $a;
+					}
+					if(!empty($input['unidade_abertura_'.$a])){
+						$missing2[] = $a;
+					}
 				}
+				if( is_array($missing) && count($missing) > 0 ) {
+					$result = '';
+					$total = count($missing) - 1;
+					for($i = 0; $i <= $total; $i++){ 
+						$result .= $missing[$i];
+						if($i < $total)
+							$result .= ", ";
+					}
+				} else {
+					$result = "";
+				}
+				if( is_array($missing2) && count($missing2) > 0 ) {
+					$result2 = '';
+					$total2 = count($missing2) - 1;
+					for($i = 0; $i <= $total2; $i++){ 
+						$result2 .= $missing2[$i];
+						if($i < $total2)
+							$result2 .= ", ";
+					}
+				} else {
+					$result2 = "";
+				}
+				$input['unidade']  		   = $result;
+				$input['unidade_abertura'] = $result2; 
+				$input['password'] = Hash::make($input['password']);
+				$user = User::create($input);
+				if(Auth::check()){
+					$loggers = Loggers::create($input);
+				}
+				$validator = 'Usuário cadastrado com sucesso!';
+				$unidades  = Unidade::all();
+				$users     = User::all();
+				return view('users/users_cadastro', compact('users'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));	
+			}	
+		}else {
+			$validator = Validator::make($request->all(), [
+				'name'     		   => 'required',
+				'email'    		   => 'required|email|unique:users,email',
+				'password' 		   => 'required|same:password_confirmation',
+				'password_confirmation' => 'required'
+			]);			 
+			if ($validator->fails()) {
+				return view('auth.register')
+						  ->withErrors($validator)
+						  ->withInput(session()->flashInput($request->input()));						
 			} else {
-				$result2 = "";
+				$input['unidade'] 		   = "";
+				$input['unidade_abertura'] = "";
+				$input['password'] 		   = Hash::make($input['password']);
+				$user = User::create($input);
+				$validator = 'Usuário cadastrado com sucesso!';
+				$unidades  = Unidade::all();
+				$users     = User::all();
+				return view('auth.login', compact('users'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
 			}
-			$input['unidade']  		   = $result;
-			$input['unidade_abertura'] = $result2; 
-			$input['password'] = Hash::make($input['password']);
-			$user = User::create($input);
-			$loggers = Loggers::create($input);
-			$validator = 'Usuário cadastrado com sucesso!';
-			$unidades  = Unidade::all();
-			$users     = User::all();
-			return view('users/users_cadastro', compact('users'))
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));						
 		}
     }
 
@@ -314,7 +341,7 @@ class UserController extends Controller
 		} else {
 			$missing = array();
 			$missing2 = array();
-			for($a = 1; $a <= 8; $a++){
+			for($a = 1; $a <= 9; $a++){
 				if(!empty($input['unidade_'.$a])){
 					$missing[] = $a;
 				}
@@ -325,7 +352,7 @@ class UserController extends Controller
 			if( is_array($missing) && count($missing) > 0 ) {
 				$result = '';
 				$total = count($missing) - 1;
-				for($i = 0; $i <= $total; $i++){ 
+				for($i = 1; $i <= $total; $i++){ 
 					$result .= $missing[$i];
 					if($i < $total)
 						$result .= ", ";
@@ -336,7 +363,7 @@ class UserController extends Controller
 			if( is_array($missing2) && count($missing2) > 0 ) {
 				$result2 = '';
 				$total2 = count($missing2) - 1;
-				for($i = 0; $i <= $total2; $i++){ 
+				for($i = 1; $i <= $total2; $i++){ 
 					$result2 .= $missing2[$i];
 					if($i < $total2)
 						$result2 .= ", ";

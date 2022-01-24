@@ -66,7 +66,7 @@
                             <?php $q6 = $centrocustos[0]->unidade; $r6 = "6"; $s6 = str_contains($q6, $r6); ?>
                             <?php $q7 = $centrocustos[0]->unidade; $r7 = "7"; $s7 = str_contains($q7, $r7); ?>
                             <?php $q8 = $centrocustos[0]->unidade; $r8 = "8"; $s8 = str_contains($q8, $r8); ?>
-
+                            <?php $q9 = $centrocustos[0]->unidade; $r9 = "9"; $s9 = str_contains($q9, $r9); ?>
                             @if($s1 == true)
                               <p align="left"><input type="checkbox" id="unidade_1" name="unidade_1" checked /> HCP GESTÃO <br></p>
                             @else
@@ -106,6 +106,11 @@
                               <p align="left"><input type="checkbox" id="unidade_8" name="unidade_8" checked /> HCA </p>
                             @else
                               <p align="left"><input type="checkbox" id="unidade_8" name="unidade_8" /> HCA </p>   
+                            @endif
+                            @if($s9 == true)  
+                              <p align="left"><input type="checkbox" id="unidade_9" name="unidade_9" checked /> UPAE IGARASSU </p>
+                            @else
+                              <p align="left"><input type="checkbox" id="unidade_9" name="unidade_9" /> UPAE IGARASSU </p>   
                             @endif
                             </td>
 						              <td> 

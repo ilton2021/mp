@@ -45,7 +45,7 @@ class CentroCustoController extends Controller
                       ->withInput(session()->flashInput($request->input()));
 		} else {
 			$missing = array();
-			for($a = 1; $a <= 8; $a++){
+			for($a = 1; $a <= 9; $a++){
 				if(!empty($input['unidade_'.$a])){
 					$missing[] = $a;
 				}
@@ -54,7 +54,7 @@ class CentroCustoController extends Controller
 			{
 				$result = '';
 				$total = count($missing) - 1;
-				for($i = 0; $i <= $total; $i++)
+				for($i = 1; $i <= $total; $i++)
 				{ 
 					$result .= $missing[$i];
 
@@ -92,7 +92,7 @@ class CentroCustoController extends Controller
                       ->withInput(session()->flashInput($request->input()));
 		} else {
 			$missing = array();
-			for($a = 1; $a <= 8; $a++){
+			for($a = 1; $a <= 9; $a++){
 				if(!empty($input['unidade_'.$a])){
 					$missing[] = $a;
 				}
@@ -101,7 +101,7 @@ class CentroCustoController extends Controller
 			{
 				$result = '';
 				$total = count($missing) - 1;
-				for($i = 0; $i <= $total; $i++)
+				for($i = 1; $i <= $total; $i++)
 				{ 
 					$result .= $missing[$i];
 					if($i < $total)

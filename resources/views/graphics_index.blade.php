@@ -70,6 +70,9 @@
                   <br> ALTERAÇÃO FUNCIONAL: <br>
 				  <a type="button" href="{{ route('graphics4') }}" class="btn btn-success btn-info">Gráfico Total de Salários - MP's Alteração Funcional</a>
                   <a type="button" href="{{ route('graphics7') }}" class="btn btn-success btn-info">Gráfico Total de Salário por Centro de Custo - MP's Alteração Funcional</a>
+                  @if(Auth::user()->id == 30 || Auth::user()->id == 71)
+                  <a type="button" href="{{ route('graphics13') }}" class="btn btn-success btn-info">Novo Gráfico</a>
+                  @endif
                   <br> DEMISSÃO: <br>
 				  <a type="button" href="{{ route('graphics5') }}" class="btn btn-success btn-info">Gráfico Total de Custo de Recisão - MP's Demissão</a>
  				  <br>ADMISSÃO HCP: <br>

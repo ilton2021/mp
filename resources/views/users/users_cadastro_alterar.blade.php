@@ -97,6 +97,14 @@
 							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
 							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
 							  <option id="funcao" name="funcao" value="Superintendencia" selected>Superintendência</option>
+							  @elseif($users[0]->funcao == "Administrador")
+							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
+							  <option id="funcao" name="funcao" value="RH">RH</option>
+							  <option id="funcao" name="funcao" value="DP">DP</option>
+							  <option id="funcao" name="funcao" value="Diretoria Técnica">Diretoria Técnica</option>
+							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
+							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
+							  <option id="funcao" name="funcao" value="Administrador" selected>Administrador</option>
 							 @endif 
 						   </select>
 						</td>
@@ -116,6 +124,7 @@
                        <?php $q6 = $users[0]->unidade; $r6 = "6"; $s6 = str_contains($q6, $r6); ?>
                        <?php $q7 = $users[0]->unidade; $r7 = "7"; $s7 = str_contains($q7, $r7); ?>
                        <?php $q8 = $users[0]->unidade; $r8 = "8"; $s8 = str_contains($q8, $r8); ?>  
+					   <?php $q9 = $users[0]->unidade; $r9 = "9"; $s9 = str_contains($q9, $r9); ?> 
 					   @if($s1 == true)
 					   <input type='checkbox' id="unidade_1" name="unidade_1" checked /> HCPGESTÃO &nbsp;&nbsp;&nbsp;
 					   @else
@@ -152,9 +161,14 @@
 					   <input type='checkbox' id="unidade_7" name="unidade_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					   @endif
 					   @if($s8 == true)
-					   <input type='checkbox' id="unidade_8" name="unidade_8" checked /> HCA
+					   <input type='checkbox' id="unidade_8" name="unidade_8" checked /> HCA &nbsp;&nbsp;&nbsp;
 					   @else
-					   <input type='checkbox' id="unidade_8" name="unidade_8" /> HCA
+					   <input type='checkbox' id="unidade_8" name="unidade_8" /> HCA &nbsp;&nbsp;&nbsp;
+					   @endif
+					   @if($s9 == true)
+					   <input type='checkbox' id="unidade_9" name="unidade_9" checked /> UPAE Igarassu
+					   @else
+					   <input type='checkbox' id="unidade_9" name="unidade_9" /> UPAE Igarassu
 					   @endif
 					  </td>
 					</tr>
@@ -168,7 +182,8 @@
                        <?php $q5 = $users[0]->unidade_abertura; $r5 = "5"; $s5 = str_contains($q5, $r5); ?>
                        <?php $q6 = $users[0]->unidade_abertura; $r6 = "6"; $s6 = str_contains($q6, $r6); ?>
                        <?php $q7 = $users[0]->unidade_abertura; $r7 = "7"; $s7 = str_contains($q7, $r7); ?>
-                       <?php $q8 = $users[0]->unidade_abertura; $r8 = "8"; $s8 = str_contains($q8, $r8); ?>  
+                       <?php $q8 = $users[0]->unidade_abertura; $r8 = "8"; $s8 = str_contains($q8, $r8); ?> 
+					   <?php $q9 = $users[0]->unidade_abertura; $r9 = "9"; $s9 = str_contains($q9, $r9); ?>  
 					   @if($s1 == true)
 					   <input type='checkbox' id="unidade_abertura_1" name="unidade_abertura_1" checked /> HCPGESTÃO &nbsp;&nbsp;&nbsp;
 					   @else
@@ -205,9 +220,14 @@
 					   <input type='checkbox' id="unidade_abertura_7" name="unidade_abertura_7" /> HSS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					   @endif
 					   @if($s8 == true)
-					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" checked /> HCA
+					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" checked /> HCA &nbsp;&nbsp;&nbsp;
 					   @else
-					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" /> HCA
+					   <input type='checkbox' id="unidade_abertura_8" name="unidade_abertura_8" /> HCA &nbsp;&nbsp;&nbsp;
+					   @endif  
+					   @if($s9 == true)
+					   <input type='checkbox' id="unidade_abertura_9" name="unidade_abertura_9" checked /> UPAE Igarassu
+					   @else
+					   <input type='checkbox' id="unidade_abertura_9" name="unidade_abertura_9" /> UPAE Igarassu
 					   @endif
 					  </td>
 					</tr>

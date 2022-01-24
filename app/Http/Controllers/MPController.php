@@ -107,7 +107,7 @@ class MPController extends Controller
 		$dataEmissao  = date('d-m-Y', strtotime('now'));
 		$dataP 		  = $input['data_prevista'];
 		$dataPrevista = date('d-m-Y', strtotime($dataP));
-		$idG 	  = Auth::user()->id;
+		$idG  = Auth::user()->id;
 		$gest = Gestor::where('id',$idG)->get(); 
 		$gIm  = $gest[0]->gestor_imediato; 
 		if($gIm == "LUCIANA MELO DA SILVA"){
@@ -1732,7 +1732,7 @@ class MPController extends Controller
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
 		$funcao = Auth::user()->funcao;
-		if($funcao == "Administrador") {
+		if($funcao == "Administrador" || Auth::user()->id == 198) {
 			if($pesq2 == "numero") {
 				if($unidade_id == "0"){
 					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);
@@ -1756,7 +1756,7 @@ class MPController extends Controller
 				}
 			} else if($pesq2 == ""){
 				if($unidade_id == "0"){
-					$mps = MP::where('inativa',0)->paginate(20);
+					$mps = MP::where('inativa',0)->orderby('unidade_id','ASC')->paginate(20);
 				} else {
 					$mps = MP::where('unidade_id',$unidade_id)->where('inativa',0)->paginate(20);
 				}
@@ -1786,7 +1786,7 @@ class MPController extends Controller
 						->where('inativa',0)->paginate(20);
 				}
 			}
-		}
+		} 
 		return view('excluirMPs', compact('mps','unidade_id','pesq2','pesq'));
 	}
 

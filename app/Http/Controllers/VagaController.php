@@ -514,7 +514,7 @@ class VagaController extends Controller
 					->select('vaga.*','justificativa_vaga.descricao as just')
 					->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
 			}
-			$qtdVagas = sizeof($vagas);
+			$qtdVagas  = sizeof($vagas);
 			$aprovacao = AprovacaoVaga::all();
 			$gestores  = Gestor::all();
 			$validator = 'Aprovação Realizada com Sucesso!';

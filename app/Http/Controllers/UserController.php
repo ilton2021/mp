@@ -44,13 +44,17 @@ class UserController extends Controller
 
 	public function cadastroUsuarioNovo()
 	{
-		return view('users/users_cadastro_novo');
+		$unidades = unidade::all();
+		return view('users/users_cadastro_novo', compact('unidades'));
 	}
 
 	public function cadastroUsuarioAlterar($id)
 	{
-		$users = User::where('id',$id)->get();
-		return view('users/users_cadastro_alterar', compact('users')); 
+		$users = User::where('id', $id)->get();
+		$und_visual = explode(',', $users[0]->unidade);
+		$und_cadast = explode(',', $users[0]->unidade_abertura); 
+		$unidade = Unidade::all();
+		return view('users/users_cadastro_alterar', compact('users', 'unidade', 'und_visual', 'und_cadast'));
 	}
 
 	public function cadastroUsuarioExcluir($id)
@@ -226,6 +230,7 @@ class UserController extends Controller
     public function store(Request $request)
     { 
 		$input = $request->all();
+		$unidades  = Unidade::all();
 		if(Auth::user()){
 			$validator = Validator::make($request->all(), [
 				'name'     		   => 'required',
@@ -235,49 +240,29 @@ class UserController extends Controller
 				'funcao' => 'required'
 			]);			 
 			if ($validator->fails()) {
-				return view('users/users_cadastro_novo')
+				return view('users/users_cadastro_novo', compact('unidades'))
 						  ->withErrors($validator)
 						  ->withInput(session()->flashInput($request->input()));						
 			} else {
-				$missing = array();
-				$missing2 = array();
-				for($a = 1; $a <= 9; $a++){
-					if(!empty($input['unidade_'.$a])){
-						$missing[] = $a;
-					}
-					if(!empty($input['unidade_abertura_'.$a])){
-						$missing2[] = $a;
-					}
-				}
-				if( is_array($missing) && count($missing) > 0 ) {
-					$result = '';
-					$total = count($missing) - 1;
-					for($i = 0; $i <= $total; $i++){ 
-						$result .= $missing[$i];
-						if($i < $total)
-							$result .= ", ";
-					}
+				$Und_visual = isset($input['unidade']);
+				if ($Und_visual == true) {
+					$unidades_visual = implode(',', $input['unidade']);
 				} else {
-					$result = "";
+					$unidades_visual = "";
 				}
-				if( is_array($missing2) && count($missing2) > 0 ) {
-					$result2 = '';
-					$total2 = count($missing2) - 1;
-					for($i = 0; $i <= $total2; $i++){ 
-						$result2 .= $missing2[$i];
-						if($i < $total2)
-							$result2 .= ", ";
-					}
+				$Und_cadast = isset($input['unidade_abertura']);
+				if ($Und_cadast == true) {
+					$unidades_cadast = implode(',', $input['unidade_abertura']);
 				} else {
-					$result2 = "";
+					$unidades_cadast = "";
 				}
-				$input['unidade']  		   = $result;
-				$input['unidade_abertura'] = $result2; 
+				$input['unidade']  		   = $unidades_visual;
+				$input['unidade_abertura'] = $unidades_cadast;
 				$input['password'] = Hash::make($input['password']);
 				$user = User::create($input);
-				if(Auth::check()){
-					$loggers = Loggers::create($input);
-				}
+				$input['user_id'] = Auth::user()->id;
+				$input['acao'] = "cadastrar_novo_usuario";
+				$loggers = Loggers::create($input);
 				$validator = 'Usuário cadastrado com sucesso!';
 				$unidades  = Unidade::all();
 				$users     = User::all();
@@ -339,43 +324,25 @@ class UserController extends Controller
 			->withErrors($validator)
 			->withInput(session()->flashInput($request->input()));						
 		} else {
-			$missing = array();
-			$missing2 = array();
-			for($a = 1; $a <= 9; $a++){
-				if(!empty($input['unidade_'.$a])){
-					$missing[] = $a;
-				}
-				if(!empty($input['unidade_abertura_'.$a])){
-					$missing2[] = $a;
-				}
-			}
-			if( is_array($missing) && count($missing) > 0 ) {
-				$result = '';
-				$total = count($missing) - 1;
-				for($i = 1; $i <= $total; $i++){ 
-					$result .= $missing[$i];
-					if($i < $total)
-						$result .= ", ";
-				}
+			$Und_visual = isset($input['unidade']);
+			if ($Und_visual == true) {
+				$unidades_visual = implode(',', $input['unidade']);	
 			} else {
-				$result = "";
+				$unidades_visual = "";
 			}
-			if( is_array($missing2) && count($missing2) > 0 ) {
-				$result2 = '';
-				$total2 = count($missing2) - 1;
-				for($i = 1; $i <= $total2; $i++){ 
-					$result2 .= $missing2[$i];
-					if($i < $total2)
-						$result2 .= ", ";
-				}
+			$Und_cadast = isset($input['unidade_abertura']);
+			if ($Und_cadast == true) {
+				$unidades_cadast = implode(',', $input['unidade_abertura']);
 			} else {
-				$result2 = "";
+				$unidades_cadast = "";
 			}
-			$input['unidade']  		   = $result;
-			$input['unidade_abertura'] = $result2; 
+			$input['unidade']  		   = $unidades_visual;
+			$input['unidade_abertura'] = $unidades_cadast;
 			$user = User::find($id);
 			$user->update($input);
 			$users = User::all();
+			$input['user_id'] = Auth::user()->id;
+			$input['acao']    = "alterar_usuario";
 			$loggers = Loggers::create($input);
 			$validator = "Usuário alterado com sucesso!!";
 			return view('users/users_cadastro', compact('users'))
@@ -389,7 +356,6 @@ class UserController extends Controller
 		$input = $request->all();
 		$id    = $input['id'];
 		$pesq  = $input['pesq'];
-		
 		if($id == 1) {
 			$users = DB::table('users')->where('users.name','like','%'.$pesq.'%')->get();
 		} 

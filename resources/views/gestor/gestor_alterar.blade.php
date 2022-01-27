@@ -1,164 +1,209 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
-        <title>MP RH</title>
-		<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/style.css')}}">
-        <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
-        <style>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="{{asset('img/favico.png')}}">
+	<title>MP RH</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+	<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+	<link rel="stylesheet" href="{{asset('css/style.css')}}">
+	<script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
+	<style>
 		.navbar .dropdown-menu .form-control {
 			width: 300px;
 		}
-        </style>
-    </head>
+	</style>
+</head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
-  	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
-			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
-			</span>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
+		<img src="{{asset('img/Imagem1.png')}}" height="50" class="d-inline-block align-top" alt="">
+		<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
+			<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
+		</span>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
+			<ul class="navbar-nav mr-auto">
+			</ul>
 
-                    <ul class="navbar-nav ml-auto">
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+			<ul class="navbar-nav ml-auto">
+				@guest
+				<li class="nav-item">
+					<a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
+				</li>
+				@if (Route::has('register'))
+				<li class="nav-item">
+					<a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
+				</li>
+				@endif
+				@else
+				<li class="nav-item dropdown">
+					<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+						{{ Auth::user()->name }} <span class="caret"></span>
+					</a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('telaReset') }}"
-                                       onclick="event.preventDefault();
+					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ route('telaReset') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form1').submit();">
-                                        {{ __('Trocar Senha') }}
-                                    </a>
+							{{ __('Trocar Senha') }}
+						</a>
 
-                                    <form id="logout-form1" action="{{ route('telaReset') }}" method="GET" style="display: none;">
-                                        
-                                    </form>
-									
-									<a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+						<form id="logout-form1" action="{{ route('telaReset') }}" method="GET" style="display: none;">
+
+						</form>
+
+						<a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form2').submit();">
-                                        {{ __('Sair') }}
-                                    </a>
+							{{ __('Sair') }}
+						</a>
 
-                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-    </nav>
+						<form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
+							@csrf
+						</form>
+					</div>
+				</li>
+				@endguest
+			</ul>
+		</div>
+	</nav>
 	<div class="container-fluid">
-	<div class="row" style="margin-top: 25px;">
-		<div class="col-md-12 text-center">
-			<h3 style="font-size: 18px;">ALTERAR GESTOR:</h3>
+		<div class="row" style="margin-top: 15px;">
+			<div class="col-md-12 text-center">
+				<h3 style="font-size: 18px;">ALTERAR GESTOR:</h3>
+			</div>
 		</div>
-	</div>
-	@if ($errors->any())
+		@if ($errors->any())
 		<div class="alert alert-danger">
-		  <ul>
-		    @foreach ($errors->all() as $error)
-		      <li>{{ $error }}</li>
-			@endforeach
-		  </ul>
+			<ul>
+				@foreach ($errors->all() as $error)
+				<li>{{ $error }}</li>
+				@endforeach
+			</ul>
 		</div>
-	@endif
-	<div class="row" style="margin-top: 25px;">
-		<div class="col-md-2 col-sm-0"></div>
-		<div class="col-md-8 col-sm-12 text-center">
-		 <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
-                        Gestor: <i class="fas fa-check-circle"></i>
-                    </a>
-                </div>	
-					 <form action="{{\Request::route('updateGestor')}}" method="post">
-					 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+		@endif
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-md-2 col-sm-0"></div>
+			<div class="col-md-8 col-sm-12 text-center">
+				<div class="accordion" id="accordionExample">
+					<div class="card">
+						<a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
+							Gestor: <i class="fas fa-check-circle"></i>
+						</a>
+					</div>
+					<form action="{{\Request::route('updateGestor')}}" method="post">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<table border="0" class="table-sm" style="line-height: 1.5;">
-						 <tr>
-							<td> Nome: </td>
-							<td>
-								<input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $gestor[0]->nome; ?>" />
-							</td>
-						 </tr>
-						 <tr>
-							<td> E-mail: </td>
-							<td> 
-							  <input class="form-control" style="width: 400px" type="text" id="email" name="email" value="<?php echo $gestor[0]->email; ?>" /> 
-							</td>
-						 </tr>
-						 <tr>
-						   <td> CPF: </td>
-						   <td>
-						     <input class="form-control" style="width: 400px" type="text" id="cpf" name="cpf" required value="<?php echo $gestor[0]->cpf; ?>" />
-						   </td>
-						 </tr>
-						 <tr>
-						   <td> Cargo: </td>
-						   <td>
-						     <input class="form-control" style="width: 400px" type="text" id="cargo" name="cargo" required value="<?php echo $gestor[0]->cargo; ?>" />
-						   </td>
-						 </tr>
-						 <tr>
-						   <td> Gestor Imediato: </td>
-						   <td>
-						     <input class="form-control" style="width: 400px" type="text" id="gestor_imediato" name="gestor_imediato" required value="<?php echo $gestor[0]->gestor_imediato; ?>" />
-						   </td>
-						 </tr>
-						 <tr>
-						   <td> Função: </td>
-						   <td> 
-						     <select class="form-control" id="funcao" name="funcao">
-							  @if($gestor[0]->funcao == "Gestor")
-							  <option id="funcao" name="funcao" value="Gestor">Gestor</option>
-							  @elseif($gestor[0]->funcao == "Gestor Imediato")
-							  <option id="funcao" name="funcao" value="RH">Gestor Imediato</option>
-						      @elseif($gestor[0]->funcao == "RH")
-							  <option id="funcao" name="funcao" value="RH">RH</option>
-							  @elseif($gestor[0]->funcao == "Diretoria Tecnica")
-							  <option id="funcao" name="funcao" value="Diretoria Tecnica">Diretoria Técnica</option>
-							  @elseif($gestor[0]->funcao == "Diretoria")
-							  <option id="funcao" name="funcao" value="Diretoria">Diretoria</option>
-							  @elseif($gestor[0]->funcao == "Superintendencia")
-							  <option id="funcao" name="funcao" value="Superintendencia">Superintendência</option>
-							  @endif
-							 </select>
-						   </td>
-						 </tr>
+							<tr>
+								<td> Nome: </td>
+								<td>
+									<input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $gestor[0]->nome; ?>" />
+								</td>
+							</tr>
+							<tr>
+								<td> E-mail: </td>
+								<td>
+									<input class="form-control" style="width: 400px" type="text" id="email" name="email" value="<?php echo $gestor[0]->email; ?>" />
+								</td>
+							</tr>
+							<tr>
+								<td> CPF: </td>
+								<td>
+									<input class="form-control" style="width: 400px" type="text" id="cpf" name="cpf" required value="<?php echo $gestor[0]->cpf; ?>" />
+								</td>
+							</tr>
+							<tr>
+								<td>Cargo:</td>
+								<td>
+									<select class="form-control" id="cargo" name="cargo">
+										@foreach($cargos as $cargo)
+										<?php
+										$selected = '';
+										if ($cargo->nome == $gestor[0]->cargo)
+											$selected = 'selected';
+										?>
+										<option id="cargo" name="cargo" <?php echo $selected; ?> value="{{$cargo->nome}}">{{ $cargo->nome }}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>Gestor Imediato:</td>
+								<td>
+									<select class="form-control" id="gestor_imediato" name="gestor_imediato">
+										@foreach($gestor_imediat as $gestor_i)
+										<?php
+										$selected = '';
+										if ($gestor_i->nome == $gestor[0]->gestor_imediato)
+											$selected = 'selected';
+										?>
+										<option id="gestor_imediato" name="gestor_imediato" <?php echo $selected; ?> value="<?php echo $gestor_i->nome; ?>">{{ $gestor_i->nome }}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td> Gestor: </td>
+								<td>
+									<select class="form-control" id="gestor_sim" name="gestor_sim">
+										@foreach($gestor as $g)
+										<?php
+										$selected_0 = '';
+										$selected_1 = '';
+										if ($g->gestor_sim == "0") {
+											$selected_0 = 'selected';
+										} else {
+											$selected_1 = 'selected';
+										}
+										?>
+										<option id="gestor_sim" name="gestor_sim" <?php echo $selected_0; ?> value="0">Gestor</option>
+										<option id="gestor_sim" name="gestor_sim" <?php echo $selected_1; ?> value="1">Gestor Imediato</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td> Função: </td>
+								<td>
+									<select class="form-control" id="funcao" name="funcao">
+										<option id="funcao" <?php if($gestor[0]->funcao == 'Gestor')echo "selected"?> name="funcao" value="Gestor">Gestor</option>
+										<option id="funcao" <?php if($gestor[0]->funcao == 'RH')echo "selected"?> name="funcao" value="RH">RH</option>
+										<option id="funcao" <?php if($gestor[0]->funcao == 'Diretoria Tecnica')echo "selected"?> name="funcao" value="Diretoria Tecnica">Diretoria Técnica</option>
+										<option id="funcao" <?php if($gestor[0]->funcao == 'Diretoria')echo "selected"?> name="funcao" value="Diretoria">Diretoria</option>
+										<option id="funcao" <?php if($gestor[0]->funcao == 'Superintendencia')echo "selected"?> name="funcao" value="Superintendencia">Superintendência</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td> Unidade: </td>
+								<td>
+									<select class="form-control" id="unidade_id" name="unidade_id">
+										@foreach($unidades as $unidade)
+										<?php
+										$selected = '';
+										if ($unidade->id == $gestor[0]->unidade_id)
+											$selected = 'selected';
+										?>
+										<option id="unidade_id" name="unidade_id" <?php echo $selected; ?> value="<?php echo $unidade->id; ?>">{{ $unidade->nome }}</option>
+										@endforeach
+									</select>
+								</td>
+							</tr>
 						</table>
 						<table>
-						<tr>
-						  <td> <input hidden type="text" id="acao" name="acao" value="alterar_gestor" class="form-control" /> </td>
-						  <td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
-						</tr>
+							<tr>
+								<td> <input hidden type="text" id="acao" name="acao" value="alterar_gestor" class="form-control" /> </td>
+								<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+							</tr>
 						</table>
 						<table>
-						 <tr>
-						  <td> <br /> <a href="{{ route('cadastroGestor') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a> </td>
-						  <td> <br /> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Salvar" id="Salvar" name="Salvar" /> </td>
-						 </tr>
+							<tr>
+								<td> <br /> <a href="{{ route('cadastroGestor') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-bottom:30px;margin-top: 5px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a> </td>
+								<td> <br /> <input type="submit" class="btn btn-success btn-sm" style="margin-bottom:30px;margin-top: 5px;" value="Salvar" id="Salvar" name="Salvar" /> </td>
+							</tr>
 						</table>
-				</form>
+					</form>
+				</div>
+			</div>
 		</div>
-    </div>
-</div>
 </body>

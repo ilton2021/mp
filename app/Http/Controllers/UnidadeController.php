@@ -52,7 +52,7 @@ class UnidadeController extends Controller
 					'sigla' => 'required|max:10'
 				]);
 				if ($validator->fails()) {
-					return view('unidade.unidade_novo', compact('text'))
+					return view('unidade.unidade_novo')
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {

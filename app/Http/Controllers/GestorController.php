@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Model\Gestor;
 use App\Model\Unidade;
+use App\Model\Cargos;
 use App\Model\Loggers;
 use DB;
 use Validator;
@@ -39,9 +40,11 @@ class GestorController extends Controller
 	}
 	
 	public function gestorNovo()
-	{
+	{	
 		$unidades = Unidade::all();
-		return view('gestor.gestor_novo', compact('unidades'));
+		$cargos = Cargos::all();
+		$gestor_imediat = Gestor::where('gestor_sim','1')->get();
+		return view('gestor.gestor_novo', compact('unidades','gestor_imediat','cargos'));
 	}
 	
 	public function storeGestor(Request $request)
@@ -73,8 +76,12 @@ class GestorController extends Controller
 	
 	public function gestorAlterar($id)
 	{
-		$gestor = Gestor::where('id',$id)->get();
-		return view('gestor.gestor_alterar', compact('gestor'));
+		$unidades = unidade::all();
+		$cargos   = Cargos::all();
+		$gestor   = Gestor::where('id',$id)->get();
+		$gestor_imediat = Gestor::where('gestor_sim','1')->get();
+		
+		return view('gestor.gestor_alterar', compact('gestor','unidades','cargos','gestor_imediat'));
 	}
 	
 	public function updateGestor($id, Request $request)

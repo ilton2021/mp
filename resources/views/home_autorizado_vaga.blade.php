@@ -77,19 +77,9 @@
 					 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 					  <option id="gestor_id" name="gestor_id" value="30"></option>   
 					 </select>
-					@elseif(Auth::user()->id == 182)
-					 @if($qtdAp == 0)
-					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
-					 </select>  
-					 @else
-					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>
-					 </select> 
-					 @endif
 					@else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
-				       <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+				       <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
 					 </select>  
 					@endif
 				   @endif

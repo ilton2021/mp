@@ -2372,7 +2372,7 @@ class HomeController extends Controller
 							$idG = 30;
 						}
 					} else if($idG == 183) {
-						$idG = 62;
+						$idG = 61;
 					} else if($idG == 182) {
 						if($idA == 30) {
 							$idG = 62;

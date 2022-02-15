@@ -77,6 +77,9 @@ class MPController extends Controller
 		    if($id_unidade == 2) {
 		        $idI = 174;
 		        $gestores = Gestor::where('id',$idI)->get();
+		    } else if($id_unidade == 9) {
+		        $idI = 183;
+		        $gestores = Gestor::where('id',$idI)->get();
 		    } else {
 		        $idI = 62;
 		        $gestores = Gestor::where('id',$idI)->get();
@@ -140,6 +143,9 @@ class MPController extends Controller
 		if($idG == 30) {
 		    if($id_unidade == 2) {
 		        $idI = 174;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    } else if($id_unidade == 9) {
+		        $idI = 183;
 		        $gestores = Gestor::where('id',$idI)->get();
 		    } else {
 		        $idI = 62;

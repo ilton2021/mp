@@ -638,7 +638,7 @@ class ProgramaDegrauController extends Controller
 	}
 
 	function aprovar($id_vaga, $idG)
-	{
+	{ 
 		$vaga = VagaInterna::where('id',$id_vaga)->get();
 		$id	  = $vaga[0]->id;
 		$idU  = Auth::user()->id;
@@ -651,12 +651,26 @@ class ProgramaDegrauController extends Controller
 			DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
 		} else {
 			if($idU == 198){
-				$input['resposta']  = 1; 
-				$input['gestor_id'] = 198;
-				$email = 'janaina.lima@hcpgestao.org.br';
-				DB::statement('UPDATE vaga_interna SET gestor_id = 198 WHERE id = '.$id.';');
+				$input['resposta']  = 1; 	
+				$input['gestor_id'] = $idG;	
+				if($idG == 59){
+					$email = 'isabela.coutinho@hmr.org.br';
+				} else if($idG == 60) {
+					$email = 'luciana.melo@hss.org.br';
+				} else if($idG == 61) {
+					$email = 'luciana.venancio@hcpgestao.org.br';
+				} else if($idG == 155) {
+					$email = 'joao.peixoto@upaecaruaru.org.br';
+				} else if($idG == 160) {
+					$email = 'luiz.gonzaga@upaearcoverde.org.br';
+				} else if($idG == 5) { 
+					$email = 'alexandra.silvestre@upaebelojardim.org.br';
+				} else if($idG == 167) {
+					$email = 'adriana.bezerra@upaearruda.org.br';
+				}
+				DB::statement('UPDATE vaga_interna SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 				DB::statement('UPDATE aprovacao_vaga_interna SET ativo = 0 WHERE vaga_interna_id  = '.$id.';');
-			} else if($idU == 59 || $idU == 60 || $idU == 61 || $idU == 155 || $idU == 160 || $idU == 5 || $idU == 166) {
+			} else if($idU == 59 || $idU == 60 || $idU == 61 || $idU == 155 || $idU == 160 || $idU == 5 || $idU == 167) {
 				$input['resposta'] = 3;
 				$email = 'janaina.lima@hcpgestao.org.br';
 				DB::statement('UPDATE vaga_interna SET concluida = 1 WHERE id  = '.$id.';');
@@ -674,11 +688,13 @@ class ProgramaDegrauController extends Controller
 		$input['motivo'] 	  	  = "Autorizado";
 		$input['ativo'] 	  	  = 1;
 		$aprovacao = AprovacaoVagaInterna::create($input);
+		$email2 = 'leonardo.silva@hcpgestao.org.br';
 		$vaga = $vaga[0]->vaga;
-		Mail::send('email.emailPD', array($email), function($m) use ($email,$vaga) {
+		Mail::send('email.emailPD', array($email,$email2), function($m) use ($email,$email2,$vaga) {
 			$m->from('portal@hcpgestao.org.br', 'Program Degrau');
 			$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Aprovada!');
 			$m->to($email);	
+			$m->cc($email2);
 		});
 	}
 
@@ -822,11 +838,11 @@ class ProgramaDegrauController extends Controller
 			$sol = Gestor::where('nome', $solicitante)->get();
 			$email = $sol[0]->email;
 			$email3 = 'janaina.lima@hcpgestao.org.br';
-			$email4 = 'rogerio.reis@hcpgestao.org.br';
+			$email4 = 'leonadro.silva@hcpgestao.org.br';
 			$motivo   = $input['motivo'];
 			$vaga = $pd[0]->vaga;
 			if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) {
-				Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+				Mail::send([], [], function($m) use ($email,$email3,$email4,$motivo,$vaga) {
 					$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
 					$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Assinada e está Concluída!!');
 					$m->setBody($motivo .'! Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
@@ -835,11 +851,12 @@ class ProgramaDegrauController extends Controller
 					$m->cc($email4);
 				});
 			} else {
-				Mail::send([], [], function($m) use ($email,$motivo,$vaga) {
+				Mail::send([], [], function($m) use ($email,$email4,$motivo,$vaga) {
 					$m->from('portal@hcpgestao.org.br', 'Programa Degrau');
 					$m->subject('A Vaga: '.$vaga.' do Programa Degrau foi Autorizada!');
 					$m->setBody($motivo .'! Acesse o portal do Programa Degrau: www.hcpgestao-mprh.hcpgestao.org.br');
 					$m->to($email);
+					$m->cc($email4);
 				});
 			}
 			$unidades = Unidade::all();

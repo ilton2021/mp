@@ -85,6 +85,10 @@ class MPController extends Controller
 		        $gestores = Gestor::where('id',$idI)->get();
 		    }
 		}
+		if($idG == 65) {
+			$idI = 30;
+		    $gestores = Gestor::where('id',$idI)->get();
+		}
 		$cargos = Cargos::orderBy('nome','ASC')->get();
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
@@ -151,6 +155,10 @@ class MPController extends Controller
 		        $idI = 62;
 		        $gestores = Gestor::where('id',$idI)->get();
 		    }
+		}
+		if($idG == 65) {
+			$idI = 30;
+		    $gestores = Gestor::where('id',$idI)->get();
 		}
 		$unidades 		 = Unidade::all();
 		$cargos   		 = Cargos::all();

@@ -99,24 +99,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::all();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -229,24 +229,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -258,7 +258,7 @@ class HomeController extends Controller
 		{
 			$totalSal 		   += $admissao[$a]->salario;
 			$totalOutrasVerbas += $admissao[$a]->outras_verbas;
-		} 
+		}  
 		if($qtdAd > 0) {
 			$centro_custo = DB::table('admissao')->whereIn('mp_id',$ids)->where('unidade_id',$idU)
 							->select('centro_custo', DB::raw('sum(salario + outras_verbas) as soma'),
@@ -321,24 +321,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -405,24 +405,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -489,26 +489,26 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 	  = MP::whereIn('unidade_id',[1,2,3,4,5,6,7,8])->where('concluida',1)->where('aprovada',1)->get();
 				$admissao = Admissao::all();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 	= MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('concluida',1)->where('aprovada',1)->whereBetween('data_emissao', [$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)->where('unidade_id',$idU)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 	= MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
 				  ->where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
 					->where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->where('concluida',1)->where('aprovada',1)
 					->where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->get();
 			}
@@ -583,24 +583,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);		
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now')); 
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);      	
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-  			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+  			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-    		} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+    		} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_i = date('Y-m-d', strtotime('2020-01-01')); $data_f = date('Y-m-d', strtotime('now'));  
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-    		} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+    		} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now')); 
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-  			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+  			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-   			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+   			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
      		}
 		}
@@ -679,24 +679,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
 			}
 		} 
@@ -784,24 +784,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -980,24 +980,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -1041,24 +1041,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
-				$data_i = "1970-01-01";
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
+				$data_i = "1969-12-31";
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao',[$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now'));
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
-			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id', $idU)->where('aprovada',1)->where('concluida',1)->whereBetween('data_emissao',[$data_i,$data_f])->get();
 			}
 		} 
@@ -1140,24 +1140,24 @@ class HomeController extends Controller
 		$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 		$data_f = date('Y-m-d', strtotime($input['data_fim']));
 		if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 13){
-			if($idU == "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+			if($idU == "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$row5 = MP::where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);		
-			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now')); 
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);      	
-			} else if ($idU == "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+			} else if ($idU == "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-  			} else if ($idU == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+  			} else if ($idU == "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-    		} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f == "1970-01-01")) {
+    		} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_i = date('Y-m-d', strtotime('2020-01-01')); $data_f = date('Y-m-d', strtotime('now'));  
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-    		} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")) {
+    		} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f == "1969-12-31")) {
 				$data_f = date('Y-m-d', strtotime('now')); 
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-  			} else if ($idU != "0" && ($data_i == "1970-01-01" && $data_f != "1970-01-01")) {
+  			} else if ($idU != "0" && ($data_i == "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
-   			} else if ($idU != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")) {
+   			} else if ($idU != "0" && ($data_i != "1969-12-31" && $data_f != "1969-12-31")) {
 				$row5 = MP::where('unidade_id',$idU)->whereBetween('data_emissao', [$data_i,$data_f])->where('aprovada',1)->where('concluida',1)->get();  $qtd = sizeof($row5);
      		}
 		}

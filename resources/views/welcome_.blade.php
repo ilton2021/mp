@@ -78,7 +78,7 @@
         </div>
     </div>
     <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
+    <div class="container" style="margin-top:20px; margin-bottom:20px;">
 		<p align="right"><a href="{{ url('/homeMP') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
         <div class="row" style="margin-top: -50px;">
             <div class="col-12 text-center">
@@ -102,9 +102,9 @@
         <div class="row ">
             @foreach($unidades as $unidade)
             @if((!isset($unidade->cnes) || $unidade->cnes === null) && $unidade->id != 1 && $unidade->id != 8)
-            <div class="col-sm-4" style="width: 180px;">
+            <div class="col-sm-4" style="width: 150px; margin-top: 08px;">
                 <div id="img-body"  class="sborder-0 text-white text-center">
-                    <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="...">
+                    <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="..." style="width:200px">
                     <div class="card-body text-center">
                      @foreach($unidades2 as $g)
                       @if($g->id == $unidade->id) 

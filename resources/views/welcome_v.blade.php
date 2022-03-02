@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
+ <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
@@ -14,8 +14,8 @@
 			width: 300px;
 		}
         </style>
-    </head>
-    <body>
+ </head>
+<body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
   	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
@@ -79,7 +79,7 @@
         </div>
     </div>
     <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
+    <div class="container" style="margin-top:20px; margin-bottom:20px;">
 		<p align="right"><a href="{{ url('/homeVaga') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
         <div class="row" style="margin-top: -50px;">
             <div class="col-12 text-center">
@@ -100,12 +100,12 @@
             </div>
         </div>
 		<div class="container d-flex justify-content-between">
-        <div class="row ">
+         <div class="row">
             @foreach($unidades as $unidade)
-            @if((!isset($unidade->cnes) || $unidade->cnes === null) && $unidade->id != 8)
-            <div class="col-sm-4" style="width: 150px;">
+             @if((!isset($unidade->cnes) || $unidade->cnes === null) && $unidade->id != 8)
+              <div class="col-sm-4" style="width: 150px; margin-top: 08px;">
                 <div id="img-body"  class="sborder-0 text-white text-center">
-                    <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="...">
+                    <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="..." style="width:200px">
                     <div class="card-body text-center">
                      @foreach($unidades2 as $g)
                       @if($g->id == $unidade->id)
@@ -115,17 +115,15 @@
                      <span class="font-weight-bold">{{$unidade->nome}}</span>
                     </div>
                 </div>
-            </div>  
-            @endif
+              </div>  
+             @endif
             @endforeach
+         </div>
         </div>
-    </div>
-    </div>
-    </section >
-    </footer>
-
+     </div>
+    </section>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    </body>
+</body>
 </html>

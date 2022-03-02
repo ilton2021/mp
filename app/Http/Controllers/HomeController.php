@@ -2027,17 +2027,48 @@ class HomeController extends Controller
     			}		    
 			} 
 		} 
-		
-		if($qtdAdm > 0){
-			return view('visualizar', compact('mps','gestores','unidades','unidade','admissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
-		} else if($qtdDem > 0) {
-			return view('visualizar', compact('mps','gestores','unidades','unidade','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
-		} else if($qtdAlt > 0) {
-		    return view('visualizar', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
-		} else if($qtdPla > 0) {
-			return view('visualizar', compact('mps','gestores','unidades','unidade','plantao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
-		} else if($qtdAdmHCP > 0) {
-			return view('visualizar', compact('mps','gestores','unidades','unidade','admissaoHCP','admissaoSalUnd','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+		if($mps[0]->id == 3258){
+			if(Auth::user()->id == 30){
+				if($qtdAdm > 0){
+					return view('visualizar', compact('mps','gestores','unidades','unidade','admissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+				} else if($qtdDem > 0) {
+					return view('visualizar', compact('mps','gestores','unidades','unidade','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+				} else if($qtdAlt > 0) {
+					return view('visualizar', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+				} else if($qtdPla > 0) {
+					return view('visualizar', compact('mps','gestores','unidades','unidade','plantao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+				} else if($qtdAdmHCP > 0) {
+					return view('visualizar', compact('mps','gestores','unidades','unidade','admissaoHCP','admissaoSalUnd','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+				}
+			} else {
+				$unidades  = Unidade::all();
+				$und 	   = Auth::user()->unidade; 
+				$und 	   = explode(",",$und);
+				$funcao    = Auth::user()->funcao; 
+				$nome      = Auth::user()->name;
+				if($funcao == "Gestor" || $funcao == "Gestor Imediato" || $funcao == "Administrador"){
+					$mps = MP::where('solicitante',$nome)->orderBy('unidade_id', 'ASC')->where('concluida',1)->where('inativa',0)
+							->where('aprovada',1)->paginate(20);
+				} else {
+					$mps = DB::table('mp')->whereIn('unidade_id', $und)->where('aprovada',1)->where('inativa',0)
+					->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
+				} 
+				$aprovacao = Aprovacao::all();
+				$gestores  = Gestor::all();
+				return view('aprovadasMPs', compact('unidades','mps','aprovacao','gestores'));
+			}
+		} else {
+			if($qtdAdm > 0){
+				return view('visualizar', compact('mps','gestores','unidades','unidade','admissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria_financeira','data_diretoria','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+			} else if($qtdDem > 0) {
+				return view('visualizar', compact('mps','gestores','unidades','unidade','demissao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+			} else if($qtdAlt > 0) {
+				return view('visualizar', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+			} else if($qtdPla > 0) {
+				return view('visualizar', compact('mps','gestores','unidades','unidade','plantao','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+			} else if($qtdAdmHCP > 0) {
+				return view('visualizar', compact('mps','gestores','unidades','unidade','admissaoHCP','admissaoSalUnd','justificativa','data_aprovacao','data_gestor_imediato','data_rec_humanos','data_diretoria_tecnica','data_diretoria','data_diretoria_financeira','data_superintendencia','aprovacao','solicitante','gestorData','rh','diretoriaT','diretoriaF','diretoria','super','gestorDataId','rhId','diretoriaTId','diretoriaFId','diretoriaId','superId','gestor'));
+			}
 		}
 	}
 	

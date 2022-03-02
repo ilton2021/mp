@@ -84,8 +84,8 @@
         </div>
     </div>
     <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
-	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
+    <div class="container" style="margin-top:12px; margin-bottom:20px;">
+	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -20px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
         <div class="row" style="margin-top: -40px;">
             <div class="col-12 text-center">
                 <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
@@ -144,7 +144,7 @@
                             <span class="font-weight-bold"></span>
                         </div>
                 </td>
-                <?php break; ?>
+                @break
                 @endif
               @endforeach
 		 </tr>

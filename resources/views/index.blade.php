@@ -466,15 +466,18 @@
 
 		function funcaoCargoSalario(valor){
 			var x = document.getElementById('cargo'); 
+			var u = document.getElementById('unidade').value;
 			var y = x.options[x.selectedIndex].text; 
-			if(y == "ENFERMEIRO(A) 24H"){
-				document.getElementById('salario').value = "2369.99";
-			} else if(y == "ENFERMEIRO(A) 30H"){
-				document.getElementById('salario').value = "2369.99";
-			} else if(y == "ENFERMEIRO(A) 40H"){
-				document.getElementById('salario').value = "3159.60";
-			} else {
-				document.getElementById('salario').value = "";
+			if(u == "Hospital da Mulher do Recife" || u == "UPAE Arruda"){
+				if(y == "ENFERMEIRO(A) 24H"){
+					document.getElementById('salario').value = "2369.99";
+				} else if(y == "ENFERMEIRO(A) 30H"){
+					document.getElementById('salario').value = "2369.99";
+				} else if(y == "ENFERMEIRO(A) 40H"){
+					document.getElementById('salario').value = "3159.60";
+				} else {
+					document.getElementById('salario').value = "";
+				}
 			}
 		}
     </script>

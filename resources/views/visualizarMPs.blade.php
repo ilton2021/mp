@@ -84,67 +84,44 @@
         </div>
     </div>
 	
-    <span class="font-weight-bold"></span>
-    <a href="{{url('/homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF; margin-left:1170px;"> Voltar <i class="fas fa-undo-alt"></i> </a>
-    <section id="unidades">
-    <div class="container" style="margin-top:10px; margin-bottom:20px;">
-        <div class="row">
-            <div class="col-12 text-center">
-                <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
-            </div>
-        </div>
-		<div class="row">
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-2 text-center"></div>
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
+    <div class="container">
+     <div class="row">
+        <div class="col align-self-start">
+           <a href="{{ route('inicioMP') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+         </div>
+       </div>
+    </div>
+
+    <div class="container">
+    <div class="row justify-content">
+      <div class="col-12"> <Center>
+        <span><h3 style="color:#65b345; margin-bottom:0px;"><u>Escolha uma opção:</u></h3></span> </Center>
+      </div>
+    </div> <br><br>
+    <div class="row">
+        <div class="col align-self-start">
+          <img id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
+           <a style="margin-left: 95px;" href="{{ route('criadasMPs') }}" class="btn btn-outline-info">MP'S CRIADAS</a>
+         </div>
+        <div class="col align-self-end">
+         <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+         <a style="margin-left: 70px;" href="{{ route('aprovadasMPs') }}" class="btn btn-outline-success">MP'S APROVADAS</a>
+	    </div>
+        <div class="col align-self-center">
+     	 <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+         <a style="margin-left: 70px;" href="{{ route('reprovadasMPs') }}" class="btn btn-outline-danger">MP'S REPROVADAS</a>
         </div>
     </div>
-    </section>
 	
-	<table>
-		 <tr>
-		  <td>
-			<img style="margin-left: 140px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 140px;" href="{{ route('criadasMPs') }}" class="btn btn-outline-info">MP'S CRIADAS</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  <td>
-			<img style="margin-left: 90px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 90px;" href="{{ route('aprovadasMPs') }}" class="btn btn-outline-success">MP'S APROVADAS</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  <td>
-			<img style="margin-left: 85px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 85px;" href="{{ route('reprovadasMPs') }}" class="btn btn-outline-danger">MP'S REPROVADAS</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		</tr>
-	</table><br><br>
-    
-	<div class="card-body text-center">
-         <a href="{{ route('minhasMPS') }}" class="btn btn-outline-warning">HISTÓRICO MP'S</a>    
+	<br><br><br><br><br>
+    <div class="card-body text-center">
+         <a href="{{ route('minhasMPS') }}" class="btn btn-outline-warning">HISTÓRICO MP'S</a>   &nbsp;&nbsp; 
          @if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59 || Auth::user()->id == 13)
          <a href="{{ route('graphicsIndex') }}" class="btn btn-outline-info">GRÁFICOS MP</a>
 		 <span class="font-weight-bold"></span>
-         @endif
-	</div>
-	</footer>
+         @endif 
+    </div>
+
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>

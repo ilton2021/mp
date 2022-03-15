@@ -83,97 +83,53 @@
             </div>
         </div>
     </div>
-	
-	<section id="unidade">
-	<div class="container" style="margin-top:5px; margin-bottom:5px;">
-        <div class="row">
-            <div class="col-12 text-center">
-                <table>
-                    @if(Auth::user()->funcao == "Administrador")
-                    <td>
-                        <div class="dropdown">
-                            <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                CADASTRAR
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
-                                <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
-                            </div>
-                        </div>
-                    </td>
-                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
-				    <td><a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a></td>		 
-                    @else
-                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
-				    <td><a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a></td>
-                    @endif
-				</table>
-            </div>
-        </div>
+
+    <div class="container">
+     <div class="row">
+        <div class="col align-self-start">
+          @if(Auth::user()->funcao == "Administrador")
+          <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            CADASTRAR
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
+            <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
+          </div>
+          <a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a>
+          @else
+          <a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a>
+          @endif
+          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+         </div>
+       </div>
     </div>
-	</section>
-    <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
-	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
-        <div class="row" style="margin-top: -40px;">
-            <div class="col-12 text-center">
-                <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-2 text-center"></div>
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div>
-		<table>
-		 <tr>
-		  <td>
-			<img style="margin-left: 80px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 80px;" href="{{ route('indexVaga2') }}" class="btn btn-outline-success">CADASTRAR NOVA VAGA</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  @foreach($vagas as $vaga)
-		   @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61))
-			<td>
-			  <img style="margin-left: 360px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-				<div class="card-body text-center">
-				  <a style="margin-left: 360px;" href="{{ route('indexValidaVaga') }}" class="btn btn-outline-dark">VALIDAR VAGA</a>
-				  <span class="font-weight-bold"></span>
-			    </div>
-			</td>
-			@break
-		   @endif
-		  @endforeach
-		 </tr>
-		</table>
+	<br><br>
+    <div class="container">
+    <div class="row justify-content">
+      <div class="col-12"> <Center>
+        <span><h3 style="color:#65b345; margin-bottom:0px;"><u>Escolha uma opção:</u></h3></span> </Center>
+      </div>
+    </div> <br><br>
+    <div class="row">
+        <div class="col align-self-start" style="margin-top: 10px;">
+          <img id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
+           <a style="margin-left: 40px;" href="{{ route('indexVaga2') }}" class="btn btn-outline-success">CADASTRAR NOVA VAGA</a>
+         </div>
+        <div class="col align-self-end" style="margin-top: 20px;">
+         <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+         <a style="margin-left: 70px;" href="{{ route('visualizarVagas') }}" class="btn btn-outline-info">VISUALIZAR VAGAS</a>
+	    </div>
+        <div class="col align-self-center">
+         @foreach($vagas as $vaga)
+		  @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61))
+		   <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+		   <a style="margin-left: 80px;" href="{{ route('indexValidaVaga') }}" class="btn btn-outline-dark">VALIDAR VAGA</a>
+          @endif
+          @break
+		 @endforeach
+       </div>
     </div>
-    </div>
-    </section>
-	<center>
-	<table>
-	 <tr>
-	  <td>
-	   <img style="margin-top: -100px; margin-left: 30px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-		 <div class="card-body text-center">
-			<a href="{{ route('visualizarVagas') }}" class="btn btn-outline-info">VISUALIZAR VAGAS</a>
-			  <span class="font-weight-bold"></span>
-		 </div>
-	  </td>
-	 </tr>
-	</table>
-	</center>
-	</footer>
+
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>

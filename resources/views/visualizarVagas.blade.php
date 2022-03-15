@@ -82,57 +82,35 @@
             </div>
         </div>
     </div>
-	<p style="margin-left: 1170px"> <a href="{{url('/homeVaga')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
-    <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
-        <div class="row">
-            <div class="col-12 text-center">
-                <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
-            </div>
+	<div class="container">
+     <div class="row">
+        <div class="col align-self-start">
+           <a href="{{ route('inicioVaga') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+         </div>
+       </div>
+    </div>
+
+	<div class="container">
+    <div class="row justify-content">
+      <div class="col-12"> <Center>
+        <span><h3 style="color:#65b345; margin-bottom:0px;"><u>Escolha uma opção:</u></h3></span> </Center>
+      </div>
+    </div> <br><br>
+    <div class="row">
+        <div class="col align-self-start">
+          <img id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
+          <a style="margin-left: 80px;" href="{{ route('criadasVagas') }}" class="btn btn-outline-info">VAGAS CRIADAS</a>
         </div>
-		<div class="row">
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-2 text-center"></div>
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
+        <div class="col align-self-end">
+          <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+          <a style="margin-left: 70px;" href="{{ route('aprovadasVagas') }}" class="btn btn-outline-success">VAGAS APROVADAS</a>
+	    </div>
+        <div class="col align-self-center">
+     	  <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+          <a style="margin-left: 60px;" href="{{ route('reprovadasVagas') }}" class="btn btn-outline-danger">VAGAS REPROVADAS</a>
         </div>
     </div>
-    </section>
 	
-	<table>
-		 <tr>
-		  <td>
-			<img style="margin-left: 140px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 140px;" href="{{ route('criadasVagas') }}" class="btn btn-outline-info">VAGAS CRIADAS</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  <td>
-			<img style="margin-left: 90px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 90px;" href="{{ route('aprovadasVagas') }}" class="btn btn-outline-success">VAGAS APROVADAS</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  <td>
-			<img style="margin-left: 85px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 85px;" href="{{ route('reprovadasVagas') }}" class="btn btn-outline-danger">VAGAS REPROVADAS</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		</tr>
-	</table>
 	<br><br>
 	
 	<div class="card-body text-center">

@@ -84,113 +84,57 @@
         </div>
     </div>
 	
-	<section id="unidade">
-	<div class="container" style="margin-top:5px; margin-bottom:-10px;">
-        <div class="row">
-            <div class="col-12 text-center">
-                <table>
-				 <tr>
-                    @if(Auth::user()->funcao == "Administrador")
-                    <td>
-                        <div class="dropdown">
-                            <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                CADASTRAR
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
-                                <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
-                                <a class="dropdown-item" href="{{ route('cadastroCargo') }}">Cargo</a>
-                                <a class="dropdown-item" href="{{ route('cadastroCentrocusto') }}">Centro de Custo</a>
-                                <a class="dropdown-item" href="{{ route('cadastroUsuario') }}">Usuário</a>    
-                            </div>
-                        </div>
-                    </td>
-                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
-				    <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MP'S</a></td>
-                    @else
-                    <td> &nbsp; &nbsp; </td><td><h4 style="color:#65b345; margin-bottom:0px;"></h4></td>
-				    <td><a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MP'S</a></td>
-                    @endif
-				 </tr>
-				</table>
-            </div>
-        </div>
+    <div class="container">
+     <div class="row">
+        <div class="col align-self-start">
+          @if(Auth::user()->funcao == "Administrador")
+          <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            CADASTRAR
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
+            <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
+            <a class="dropdown-item" href="{{ route('cadastroCargo') }}">Cargo</a>
+            <a class="dropdown-item" href="{{ route('cadastroCentrocusto') }}">Centro de Custo</a>
+            <a class="dropdown-item" href="{{ route('cadastroUsuario') }}">Usuário</a>  
+          </div>
+          <a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MPS</a>
+          @else
+          <a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MPS</a>
+          @endif
+          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+         </div>
+       </div>
     </div>
-	</section>
-	
-    <section id="unidades">
-    <div class="container" style="margin-top:30px; margin-bottom:20px;">
-	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -50px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
-        <div class="row" style="margin-top: -40px;">
-            <div class="col-12 text-center">
-                <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
-            </div>
+    <br><br>
+    <div class="container">
+    <div class="row justify-content">
+      <div class="col-12"> <Center>
+        <span><h3 style="color:#65b345; margin-bottom:0px;"><u>Escolha uma opção:</u></h3></span> </Center>
+      </div>
+    </div> <br><br>
+    <div class="row">
+        <div class="col align-self-start">
+          <img id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
+          <a style="margin-left: 50px;" href="{{ route('index2') }}" class="btn btn-outline-success">CADASTRAR NOVA MP</a>
+          <span class="font-weight-bold"></span>
         </div>
-        <div class="row">
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-2 text-center"></div>
-            <div class="col-5">
-                <div class="progress" style="height: 3px;">
-                    <div  class="progress-bar" role="progressbar" style="width: 100%; background-color: #65b345;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-        </div>
-		<table>
-		 <tr>
-		  <td>
-			<img style="margin-left: 80px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-              <div class="card-body text-center">
-                <a style="margin-left: 80px;" href="{{ route('index2') }}" class="btn btn-outline-success">CADASTRAR NOVA MP</a>
-                <span class="font-weight-bold"></span>
-              </div>
-		  </td>
-		  <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-		  @foreach($mps as $mp)
-		   @if($mp->gestor_id == Auth::user()->id && $mp->concluida == 0 || ($mp->gestor_id == 61 && Auth::user()->id == 104) || ($mp->gestor_id == 62 && Auth::user()->id == 61))
-			<td>
-			  <img style="margin-left: 360px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-				<div class="card-body text-center">
-				  <a style="margin-left: 360px;" href="{{ route('indexValida') }}" class="btn btn-outline-dark">VALIDAR MP</a>
-				  <span class="font-weight-bold"></span>
-			    </div>
-			</td>
-			@break
-		   @endif
-		  @endforeach
-		 </tr>
-		</table>
+        <div class="col align-self-end" style="margin-top: 20px;">
+         <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+       	 <a style="margin-left: 70px;" href="{{ route('visualizarMPs') }}" class="btn btn-outline-info">VISUALIZAR MP'S</a>
+	   </div>
+        <div class="col align-self-center">
+          @foreach($mps as $mp)
+            @if($mp->gestor_id == Auth::user()->id && $mp->concluida == 0 || ($mp->gestor_id == 61 && Auth::user()->id == 104) || ($mp->gestor_id == 62 && Auth::user()->id == 61))
+        	  <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+			  <a style="margin-left: 80px;" href="{{ route('indexValida') }}" class="btn btn-outline-dark">VALIDAR MP</a>
+            @break
+            @endif
+          @endforeach
+       </div>
     </div>
-    </div>
-    </section>
-	
-	<center>
-	<table>
-	 <tr>
-	  <td>
-	   <img style="margin-top: -100px; margin-left: 30px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-		 <div class="card-body text-center">
-			<a href="{{ route('visualizarMPs') }}" class="btn btn-outline-info">VISUALIZAR MP'S</a>
-			  <span class="font-weight-bold"></span>
-		 </div>
-	  </td>
-	 </tr>
-	</table>
-	</center>
-		 
-		  </td>
-		 </tr>
-		 </table>
-	   </td>
-	 </tr>
-	</table>
-	</center>
-	</footer>
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    </body>
+</body>
 </html>

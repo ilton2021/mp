@@ -2403,7 +2403,11 @@ class HomeController extends Controller
 							$idG = 30;
 						}
 					} else if($idG == 183) {
-						$idG = 61;
+						if($mp[0]->solicitante == "ANA AMÉRICA OLIVEIRA DE ARRUDA"){
+							$idG = 61;
+						} else {
+							$idG = 30;
+						}
 					} else if($idG == 182) {
 						if($idA == 30) {
 							$idG = 62;
@@ -2430,7 +2434,11 @@ class HomeController extends Controller
 					    $idG = 30;
 					}
 				} else {
-					$idG = 30;
+					if($mp[0]->solicitante == "ANA AMÉRICA OLIVEIRA DE ARRUDA" && $mp[0]->unidade_id == 9){
+						$idG = 61;
+					} else {
+						$idG = 30;
+					}
 				}
 				$input['gestor_id'] = $idG;
 				DB::statement('UPDATE aprovacao SET ativo = 0 WHERE mp_id  = '.$id.';');

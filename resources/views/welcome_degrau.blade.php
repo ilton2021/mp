@@ -136,7 +136,7 @@
 			</td>
             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
               @foreach($pd as $pd)
-                @if($pd->gestor_id == Auth::user()->id && $pd->concluida == 0)
+                @if($pd->gestor_id == Auth::user()->id || Auth::user()->id == 30 && $pd->concluida == 0)
                 <td>
                     <img style="margin-left: 340px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
                         <div class="card-body text-center" style="margin-left: 20px;" >

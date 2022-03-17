@@ -109,7 +109,7 @@
                      @foreach($gestor as $g)
                       @if($g->unidade_id == $unidade->id)
 						<a href="{{ route('cadastroPD', $unidade->id) }}"  class="btn btn-outline-success">Clique Aqui</a>
-                      @elseif($g->id == 13 || $g->id == 12 || $g->id == 26 || $g->id == 71 || $g->id == 29 || $g->id == 61 || $g->id == 198 || $g->id == 23 || $g->id == 63 || $g->id == 10 || $g->id == 64 || $g->id == 32 || $g->id == 24)
+                      @elseif($g->id == 13 || $g->id == 12 || $g->id == 26 || $g->id == 71 || $g->id == 29 || $g->id == 61 || $g->id == 198 || $g->id == 23 || $g->id == 63 || $g->id == 10 || $g->id == 64 || $g->id == 32 || $g->id == 24 || $g->id == 30)
 						<a href="{{ route('cadastroPD', $unidade->id) }}"  class="btn btn-outline-success">Clique Aqui</a>
                       @endif
                      @endforeach 

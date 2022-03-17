@@ -48,7 +48,7 @@
 		   <tr>
 		    <td>Próxima Etapa: </td> <?php $qtdAp = sizeof($aprovacao); ?>
 			<td>
-			   @if(Auth::user()->name == "JANAINA GLAYCE PEREIRA LIMA")
+			   @if(Auth::user()->name == "JANAINA GLAYCE PEREIRA LIMA" || Auth::user()->name == "ANA AMÉRICA OLIVEIRA DE ARRUDA")
 			   	 @if($pd[0]->unidade_id == 2)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
 					   <option id="gestor_id" name="gestor_id" value="59">ISABELA CRISTINA COUTINHO DE ALBUQUERQUE NEIVA COELHO</option>
@@ -77,10 +77,14 @@
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
 				       <option id="gestor_id" name="gestor_id" value="61">LUCIANA VENANCIO SANTOS SOUZA</option> 
 					 </select>  
+				 @elseif($pd[0]->unidade_id == 9)
+					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
+				       <option id="gestor_id" name="gestor_id" value="183">THALYTA MARYAH DOS SANTOS</option> 
+					 </select>
 				 @endif
     		   @endif
 
-			   @if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167) 
+			   @if(Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 167 || Auth::user()->id == 183) 
 				 <select hidden type="text" id="gestor_id" name="gestor_id" class="form-control"> 
 			       <option id="gestor_id" name="gestor_id" value="198"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
 				 </select>

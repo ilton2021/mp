@@ -144,6 +144,7 @@
                       @elseif($vaga->unidade_id == 6) <?php echo "CARUARU"; ?>  
                       @elseif($vaga->unidade_id == 7) <?php echo "HSS"; ?>  
                       @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?>  
+                      @elseif($vaga->unidade_id == 9) <?php echo "IGARASSU"; ?> 
                       @endif </b> </center> </td>
                  <td title="<?php echo $vaga->vaga; ?>"> <p><center> {{ substr($vaga->vaga, 0, 30) }} </center> </p>  </td>
                  <td title="<?php echo $vaga->departamento; ?>"> <p><center> {{ $vaga->departamento }} </center> </p>  </td>
@@ -185,7 +186,7 @@
                 </div> </center> </td>
                  <td> <p><center> <a href="{{ route('visualizarVagaPD', $vaga->id) }}" class="btn btn-dark btn-sm">Visualizar</a> </center></p></td>
                  <input hidden type="text" id="id_vaga_<?php echo $a ?>" name="id_vaga_<?php echo $a ?>" value="<?php echo $vaga->id; ?>" /> 
-                 @if(Auth::user()->id == 198)
+                 @if(Auth::user()->id == 198 || Auth::user()->id == 30)
                  <td>
                   <center>
                   <select type="text" id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" class="form-control" style="width: 200px;"> 
@@ -204,7 +205,9 @@
                     @elseif($vaga->unidade_id == 7)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
                     @elseif($vaga->unidade_id == 8)
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option> 
+                    @elseif($vaga->unidade_id == 9)
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="183">DIRETORIA - THALYTA MARYAH DOS SANTOS</option>   
                     @endif 
                   </select>
                   </center>	 

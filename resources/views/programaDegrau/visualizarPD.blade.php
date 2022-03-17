@@ -108,6 +108,7 @@
 			 <option id="unidade_id" name="unidade_id" value="6">UPAE CARUARU</option>
 			 <option id="unidade_id" name="unidade_id" value="7">HSS</option>
 			 <option id="unidade_id" name="unidade_id" value="8">HPR</option>
+			 <option id="unidade_id" name="unidade_id" value="9">UPA IGARASSU</option>
 		 </select>
 		</td>
 		<td align="right"> 
@@ -142,7 +143,7 @@
 			 </thead>
 			 <?php $b = 0; ?>
 			 @foreach($pd as $pd)
-			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 198 || Auth::user()->id == 71))
+			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30))
 			 <?php $b = 1; ?>
 			 <tbody>
 			  <tr>  

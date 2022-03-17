@@ -548,7 +548,7 @@
 			<td>Gerente de RH</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 198)
+			  @if($ap->gestor_anterior == 198 || $ap->gestor_anterior == 30)
 			  <input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  @endif
 			 @endforeach
@@ -558,7 +558,7 @@
 			<td>Gestor de Unidade</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if(($ap->gestor_anterior == 59 || $ap->gestor_anterior == 60 || $ap->gestor_anterior == 61 || $ap->gestor_anterior == 155 || $ap->gestor_anterior == 165 || $ap->gestor_anterior == 166) && $ap->vaga_interna_id == $pd[0]->id)
+			  @if(($ap->gestor_anterior == 59 || $ap->gestor_anterior == 60 || $ap->gestor_anterior == 61 || $ap->gestor_anterior == 155 || $ap->gestor_anterior == 165 || $ap->gestor_anterior == 166 || $ap->gestor_anterior == 183) && $ap->vaga_interna_id == $pd[0]->id)
 			  <input readonly="true" type="text" id="data_diretoria_tecnica" name="data_diretoria_tecnica" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  @endif
 			 @endforeach

@@ -572,7 +572,7 @@
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
 		    <td align="right"> 
-			 <a href="{{url('/homeVaga')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+			 <a href="{{url('/homeProgramaDegrau')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
 			 <input type="submit" onclick="validar()" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Concluir" id="Salvar" name="Salvar" /> 
 			</td>
 		   </tr>

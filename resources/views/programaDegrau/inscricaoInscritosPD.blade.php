@@ -101,7 +101,7 @@
          <div class="row"> 
          <form action="{{ \Request::route('validarPDs') }}" method="post">
 	     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-         @if(Auth::user()->id == 198 || Auth::user()->id == 71)
+         @if(Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30)
           <table class="table table-sm table-bordered" style="font-size: 12px;">
             <?php $qtdVagas = sizeof($vagas); ?>
               @if($qtdVagas > 0) 
@@ -126,7 +126,8 @@
                       @elseif($vaga->unidade_id == 5) <?php echo "ARRUDA"; ?>  
                       @elseif($vaga->unidade_id == 6) <?php echo "CARUARU"; ?>  
                       @elseif($vaga->unidade_id == 7) <?php echo "HSS"; ?>  
-                      @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?>  
+                      @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?>
+                      @elseif($vaga->unidade_id == 9) <?php echo "IGARASSU"; ?>  
                       @endif </b> </center> </td>
                  <td><p><center> {{ $vaga->NomeVaga }} </center></td>
                  @foreach($gestores as $gestor)     

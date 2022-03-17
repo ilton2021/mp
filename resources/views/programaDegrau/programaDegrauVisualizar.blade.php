@@ -51,7 +51,11 @@
 			  <td> Código da Vaga: <input class="form-control" type="text" id="codigo_vaga" name="codigo_vaga" value="<?php echo $pd[0]->codigo_vaga; ?>" readonly="true" /> </td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" disabled="true">
-			    <option id="gestor_id" name="gestor_id" value="73">{{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>
+				@foreach($gestores as $gestor)
+				 @if($gestor->id == $pd[0]->gestor_id)
+			      <option id="gestor_id" name="gestor_id" value="<?php echo $gestor->id; ?>">{{ $gestor->nome }}</option>
+				 @endif
+				@endforeach
 			  </select>
 			</tr>
 			<tr>
@@ -62,7 +66,7 @@
 		   </table>
 		  </center> 
 		  <?php $a = 0; ?>
-		  @if(Auth::user()->id != 198 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166)
+		  @if(Auth::user()->id != 198 && Auth::user()->id != 59 && Auth::user()->id != 60 && Auth::user()->id != 61 && Auth::user()->id != 155 && Auth::user()->id != 160 && Auth::user()->id != 5 && Auth::user()->id != 166 && Auth::user()->id != 183 && Auth::user()->id != 30)
 			@if(empty($aprovacao))
 			      <a style="margin-left: 180px;" class="btn btn-primary" href="{{ route('alterarPD', $pd[0]->id) }}">Alterar</a></td>
 			@else 
@@ -445,7 +449,7 @@
 			<td>Gerente de RH</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 198)
+			  @if($ap->gestor_anterior == 198 || $ap->gestor_anterior == 30)
 			  <input readonly="true" type="text" id="data_rec_humanos" name="data_rec_humanos" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  <input readonly="true" type="text" id="justificativa" name="justificativa" class="form-control" value="<?php echo $ap->motivo; ?>" />
 			  @endif
@@ -459,7 +463,7 @@
 			<td>Gestor de Unidade</td>
 			<td>
 			 @foreach($aprovacao as $ap)
-			  @if($ap->gestor_anterior == 59 || $ap->gestor_anterior == 60 || $ap->gestor_anterior == 61 || $ap->gestor_anterior == 155 || $ap->gestor_anterior == 165 || $ap->gestor_anterior == 166)
+			  @if($ap->gestor_anterior == 59 || $ap->gestor_anterior == 60 || $ap->gestor_anterior == 61 || $ap->gestor_anterior == 155 || $ap->gestor_anterior == 165 || $ap->gestor_anterior == 166 || $ap->gestor_anterior == 183)
 			  <input readonly="true" type="text" id="data_diretoria_tecnica" name="data_diretoria_tecnica" class="form-control" value="<?php echo date('d-m-Y', strtotime($ap->data_aprovacao)); ?>" />
 			  <input readonly="true" type="text" id="justificativa" name="justificativa" class="form-control" value="<?php echo $ap->motivo; ?>" />
 			  @endif
@@ -474,7 +478,7 @@
 		   <tr>
 		    <td align="right"> 
 			 <a href="javascript:history.back();" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
-			 @if(Auth::user()->id == 73 || Auth::user()->id == 198 || Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 166)
+			 @if(Auth::user()->id == 73 || Auth::user()->id == 198 || Auth::user()->id == 30 || Auth::user()->id == 59 || Auth::user()->id == 60 || Auth::user()->id == 61 || Auth::user()->id == 155 || Auth::user()->id == 160 || Auth::user()->id == 5 || Auth::user()->id == 166 || Auth::user()->id == 183)
 			 <a href="{{ route('n_autorizarPD', $pd[0]->id) }}" type="button" class="btn btn-danger btn-sm" > Não Autorizar <i class="fas fa-times-circle"></i> </a>
 			 <a href="{{ route('autorizarPD', $pd[0]->id) }}" type="button" class="btn btn-success btn-sm" > Autorizar <i class="fas fa-times-circle"></i> </a>
 			 @endif

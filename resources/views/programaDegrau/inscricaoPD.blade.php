@@ -113,7 +113,7 @@
                 <td><center>SALÁRIO</center></td>
                 <td><center>CENTRO DE CUSTO</center></td>
                 <td><center>VISUALIZAR</center></td>
-                @if(Auth::user()->id != 198 && Auth::user()->id != 71)
+                @if(Auth::user()->id != 198 && Auth::user()->id != 71 && Auth::user()->id != 30)
                 <td><center>INSCRIÇÃO</center></td>
                 @else
                 <td><center>INSCRITOS</center></td>
@@ -129,7 +129,8 @@
                       @elseif($vaga->unidade_id == 5) <?php echo "ARRUDA"; ?>  
                       @elseif($vaga->unidade_id == 6) <?php echo "CARUARU"; ?>  
                       @elseif($vaga->unidade_id == 7) <?php echo "HSS"; ?>  
-                      @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?>  
+                      @elseif($vaga->unidade_id == 8) <?php echo "HPR"; ?> 
+                      @elseif($vaga->unidade_id == 9) <?php echo "IGARASSU"; ?>  
                       @endif </b> </center> </td>
                  <td title="<?php echo $vaga->vaga; ?>"> <p><center> {{ substr($vaga->vaga, 0, 30) }} </center> </p>  </td>
                  <td title="<?php echo $vaga->departamento; ?>"> <p><center> {{ $vaga->departamento }} </center> </p>  </td>
@@ -137,7 +138,7 @@
                  <td> <p><center> {{ "R$ ".number_format($vaga->salario, 2,',','.') }} </center> </p> </td>
                  <td> <br> <center> {{ $vaga->centro_custo }} </center> </td>
                  <td> <p><center> <a href="{{ route('visualizarVagaPD', $vaga->id) }}" class="btn btn-dark btn-sm">VISUALIZAR</a> </center></p></td>
-                 @if(Auth::user()->id != 198 && Auth::user()->id != 71)
+                 @if(Auth::user()->id != 198 && Auth::user()->id != 71 && Auth::user()->id != 30)
                  <td> <p><center> <a href="{{ route('inscricaoPDs', $vaga->id) }}" class="btn btn-success btn-sm">INSCRIÇÃO</a> </center></p></td>
                  @else  
                  <td> <p><center> <a href="{{ route('inscricaoInscritosPD', $vaga->id) }}" class="btn btn-info btn-sm">INSCRITOS</a> </center></p></td>

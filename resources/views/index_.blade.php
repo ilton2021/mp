@@ -73,10 +73,10 @@
 			  <td>Matrícula: <input class="form-control" type="text" id="matricula" name="matricula" value="<?php echo $mp->matricula; ?>" title="{{ $mp->matricula }}" required readonly="true" /></td>
 			  <td>Gestor Imediato: 
 			  <select id="gestor_id" name="gestor_id" class="form-control" readonly="true" disabled="true">
+			  <?php $gId = $gestor[0]->id; ?> 
 			  @if($mp->tipo_mp == 0)
 			   @if(Auth::user()->name == $mp->solicitante)
 				<option id="gestor_id" name="gestor_id" value="<?php echo $gestor[0]->id ?>" title="{{ $gestor[0]->nome }}">{{ $gestor[0]->nome }}</option>  
-				<?php $gId = $gestor[0]->id; ?>
 			   @else
 				  @if(!empty($gestores))
 				   @foreach($gestores as $gestor)
@@ -390,15 +390,32 @@
 				  </select>
 			   </td>			
 			  @endif
+			  @if($admSal->unidade_id == 9)	<?php $salarios += $admSal->salario; ?> <?php $outras_verbas += $admSal->outras_verbas; ?>
+			   <td width="370">
+				Igarassu: 
+				 Salário <br>
+				  <input class="form-control" placeholder="Salário IGARASSU" type="text" disabled id="salario_8" name="salario_8" value="<?php echo "R$ ".number_format($admSal->salario, 2,',','.'); ?>" />
+				 Outras Verbas
+				  <input class="form-control" placeholder="Outr. Verbas" type="text" disabled id="outras_verbas_8" name="outras_verbas_8" value="<?php echo "R$ ".number_format($admSal->outras_verbas, 2,',','.'); ?>" />
+				 Centro de Custo: 
+				  <select id="centro_custo_8" name="centro_custo_8" class="form-control" readonly>
+				  	<option id="centro_custo_8" name="centro_custo_8">{{ $admSal->centro_custo }}</option>
+				  </select>
+				 Cargo:
+				  <select class="form-control" id="cargo_8" name="cargo_8" readonly>
+				  	<option id="cargo_8" name="cargo_8">{{ $admSal->cargo }}</option>	  
+				  </select>
+			   </td>			
+			  @endif
 			@endforeach	
 			</tr>
 			<tr>
-			 <td colspan="6"><b>Soma Total de Salários e Outras Verbas: </b>
+			 <td colspan="7"><b>Soma Total de Salários e Outras Verbas: </b>
 			  <input class="form-control" style="width: 200px;" readonly="true" placeholder="ex: 2500 ou 2580,21" type="text" id="total" name="total" value="<?php echo "R$ ".number_format($salarios + $outras_verbas, 2,',','.'); ?>" />	
 			 </td>	
 			</tr>
 			<tr>
-			 <td colspan="6">Jornada:
+			 <td colspan="7">Jornada:
 				@if($admissaoHCP[0]->jornada == "diarista")	
 			  	<input type="text" id="jornada" name="jornada" style="width: 200px;" class="form-control" readonly value="Diarista" />
 				@elseif($admissaoHCP[0]->jornada == "plantao_par")	
@@ -411,7 +428,7 @@
 			 </td>	  
 			</tr>
 			<tr>
-			 <td colspan="6">Tipo: <br> 
+			 <td colspan="7">Tipo: <br> 
 			 @if($admissaoHCP[0]->tipo == "efetivo")
 			 <input checked type="checkbox" id="tipohcp_1" disabled name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
 			 @elseif($admissaoHCP[0]->tipo == "estagiario")

@@ -197,6 +197,23 @@
 				  </select>
 			   </td>			
 			  @endif
+			  @if($admSal->unidade_id == 9)	<?php $salarios += $admSal->salario; ?> <?php $outras_verbas += $admSal->outras_verbas; ?>
+			   <td width="370">
+				HSS: <br>
+				 Salário <br>
+				  <input class="form-control" required placeholder="Salário IGARASSU" type="number" step="00.01" id="salario_8" name="salario_8" value="<?php echo $admSal->salario; ?>" />
+				 Outras Verbas
+				  <input class="form-control" required placeholder="Outr. Verbas" type="number" step="00.01" id="outras_verbas_8" name="outras_verbas_8" value="<?php echo $admSal->outras_verbas; ?>" />
+				 Centro de Custo: 
+				  <select id="centro_custo_8" name="centro_custo_8" class="form-control">
+				  	<option id="centro_custo_8" name="centro_custo_8">{{ $admSal->centro_custo }}</option>
+				  </select>
+				 Cargo:
+				  <select class="form-control" id="cargo_8" name="cargo_8">
+				  	<option id="cargo_8" name="cargo_8">{{ $admSal->cargo }}</option>	  
+				  </select>
+			   </td>			
+			  @endif
 			@endforeach	
 			</tr>
 			<tr>
@@ -205,7 +222,7 @@
 			 </td>	
 			</tr>
 			<tr>
-			 <td colspan="6">Jornada:
+			 <td colspan="7">Jornada:
 			 <select class="form-control" id="jornadahcp" name="jornadahcp" required style="width: 200px;">
 				 <option id="jornadahcp" name="jornadahcp" value="">Selecione...</option>
 				 @if($admissaoHCP[0]->jornada == "diarista")
@@ -233,7 +250,7 @@
 			 </td>	  
 			</tr>
 			<tr>
-			 <td colspan="6">Tipo: <br> 
+			 <td colspan="7">Tipo: <br> 
 			 @if($admissaoHCP[0]->tipo == "efetivo")
 			 <input checked type="checkbox" id="tipohcp" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipohcp" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
@@ -273,7 +290,7 @@
 			 </td>
 			</tr>
 			<tr>
-			 <td colspan="6">Motivo: <br> 
+			 <td colspan="7">Motivo: <br> 
 			 @if($admissaoHCP[0]->motivo == "aumento_quadro")
 			 <input checked type="checkbox" id="motivohcp" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
 			 <input type="checkbox" id="motivohcp" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
@@ -302,7 +319,7 @@
 			 </td>
 			</tr>
 			<tr>
-			 <td colspan="6">Possibilidade de Contratação de Deficiente:<br> 
+			 <td colspan="7">Possibilidade de Contratação de Deficiente:<br> 
 			 @if($admissaoHCP[0]->possibilidade_contratacao == "sim")
 			 <input checked type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
 			 <input type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não
@@ -313,7 +330,7 @@
 			 </td>
 			</tr>
 			<tr>
-			 <td colspan="6">Necessidade de conta de e-mail:<br> 
+			 <td colspan="7">Necessidade de conta de e-mail:<br> 
 			 @if($admissaoHCP[0]->necessidade_email == "sim")
 			 <input checked type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
 			 <input type="checkbox" id="necessidade_email2hcp_2" name="necessidade_email" value="nao" /> Não

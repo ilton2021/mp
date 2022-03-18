@@ -893,6 +893,19 @@ class MPController extends Controller
 						}
 					}
 
+					if(!empty($input['und7'])){
+						if($input['und7'] == "on"){
+							$input['gestor']          = $input['nome'];
+							$input['unidade_id']      = 9;
+							$input['salario'] 	      = $input['salario_8'];
+							$input['outras_verbas']   = $input['outras_verbas_8'];
+							$input['cargo'] 		  = $input['cargo_8'];
+							$input['centro_custo']    = $input['centro_custo_8'];
+							$input['admissao_hcp_id'] = $idAdHCP; 
+							$admissao_usuarios = AdmissaoSalariosUnidades::create($input);
+						}
+					}
+
 					$idG 	= 61;
 					$gestor = Gestor::where('id', $idG)->get();
 					$email  = $gestor[0]->email; /*
@@ -1102,12 +1115,12 @@ class MPController extends Controller
 		$gestor   = Gestor::where('id', $idG)->get();
 		$email 	  = $gestor[0]->email;
 		DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
-		Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
+		/*Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
 			$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 			$m->subject('MP - '.$numeroMP.' Alterada!');
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
-		});
+		});*/
 		$a = 0;
 		return view('home', compact('unidade','idMP','idG','a'));
 	}
@@ -1200,12 +1213,12 @@ class MPController extends Controller
 		$nome     = $mp[0]->solicitante;
 		$email 	  = $gestor[0]->email; 
 		DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
-		Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
+		/*Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
 			$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 			$m->subject('MP - '.$numeroMP.' Alterada!');
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
-		});
+		});*/
 		$a = 0;
 		return view('home', compact('unidade','idMP','idG','a'));
 	}
@@ -1372,12 +1385,12 @@ class MPController extends Controller
 		$nome     = $mp[0]->solicitante;
 		$email 	  = $gestor[0]->email;
 		DB::statement('UPDATE mp SET gestor_id = '.$idG.' WHERE id = '.$id.';');
-		Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
+		/*Mail::send([], [], function($m) use ($email,$numeroMP,$nome) {
 			$m->from('portal@hcpgestao.org.br', 'Movimentação de Pessoal');
 			$m->subject('MP - '.$numeroMP.' Alterada!');
 			$m->setBody('A MP: '. $numeroMP.' foi alterada por: '.$nome.' e precisa da sua validação! Acesse o portal da MP: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
-		});
+		});*/
 		$a = 0;
 		return view('home', compact('unidade','idMP','idG','a'));
 	}
@@ -1663,6 +1676,20 @@ class MPController extends Controller
 				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
 				$admissao_usuarios->update($input);
 			}
+
+			if(!empty($input['salario_8'])){
+				$input['gestor']          = $input['nome'];
+				$input['unidade_id']      = 9;
+				$input['salario'] 	      = $input['salario_8'];
+				$input['outras_verbas']   = $input['outras_verbas_8'];
+				$input['cargo'] 		  = $input['cargo_8'];
+				$input['centro_custo']    = $input['centro_custo_8'];
+				$input['admissao_hcp_id'] = $id_adm_hcp; 
+				$idASU = AdmissaoSalariosUnidades::where('admissao_hcp_id',$id_adm_hcp)
+												 	 ->where('unidade_id',9)->get();
+				$admissao_usuarios = AdmissaoSalariosUnidades::find($idASU[0]->id);
+				$admissao_usuarios->update($input);
+			}
 			if(!empty($input['sim_impacto']) == "on") {
 				$input['impacto_financeiro'] = 'sim';
 			} else if (!empty($input['nao_impacto']) == "on") {
@@ -1856,5 +1883,10 @@ class MPController extends Controller
 		return view('excluirMPs', compact('mps'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
+	}
+
+	public function duvidas()
+	{
+		return view('duvidas');
 	}
 }

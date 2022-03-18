@@ -365,7 +365,16 @@
 				      @foreach($admissaoHCP as $admHCP)
               	<tr> 
                  <td> <br><center> <input type="checkbox" id="check5_<?php echo $e ?>" name="check5_<?php echo $e ?>"  /> </center> </td>
-				         <td> <br><center> <b> @if($admHCP->unidade_id == 1) <?php echo "HCP GESTÃO"; ?>  @endif </b> </center> </td>
+				         <td> <br><center> <b> 
+                   @if($admHCP->unidade_id == 1) <?php echo "HCP GESTÃO"; ?> 
+                   @elseif($admHCP->unidade_id == 2) <?php echo "HMR"; ?> 
+                   @elseif($admHCP->unidade_id == 3) <?php echo "UPAE BELO JARDIM"; ?> 
+                   @elseif($admHCP->unidade_id == 4) <?php echo "UPAE ARCOVERDE"; ?> 
+                   @elseif($admHCP->unidade_id == 5) <?php echo "UPAE ARRUDA"; ?> 
+                   @elseif($admHCP->unidade_id == 6) <?php echo "UPAE CARUARU"; ?> 
+                   @elseif($admHCP->unidade_id == 7) <?php echo "HSS"; ?> 
+                   @elseif($admHCP->unidade_id == 9) <?php echo "UPA IGARASSU"; ?> 
+                   @endif </b> </center> </td>
                  <td title="<?php echo $admHCP->numeroMP; ?>"> <p><center>  {{ $admHCP->numeroMP }} </center></p></td> 
                  <td title="<?php echo $admHCP->nome; ?>"> <p><center> {{ substr($admHCP->nome, 0, 30) }} </center> </p>  </td>
                  <td> <p><center> <?php if($admHCP->tipo == "efetivo"){ ?>

@@ -229,15 +229,32 @@
 				  </select>
 			   </td>			
 			  @endif
+			  @if($admSal->unidade_id == 9)	<?php $salarios += $admSal->salario; ?> <?php $outras_verbas += $admSal->outras_verbas; ?>
+			   <td width="370">
+				Igarassu: 
+				 Salário <br>
+				  <input class="form-control" placeholder="Salário IGARASSU" type="text" disabled id="salario_8" name="salario_8" value="<?php echo "R$ ".number_format($admSal->salario, 2,',','.'); ?>" />
+				 Outras Verbas
+				  <input class="form-control" placeholder="Outr. Verbas" type="text" disabled id="outras_verbas_8" name="outras_verbas_8" value="<?php echo "R$ ".number_format($admSal->outras_verbas, 2,',','.'); ?>" />
+				 Centro de Custo: 
+				  <select id="centro_custo_8" name="centro_custo_8" class="form-control" readonly>
+				  	<option id="centro_custo_8" name="centro_custo_8">{{ $admSal->centro_custo }}</option>
+				  </select>
+				 Cargo:
+				  <select class="form-control" id="cargo_8" name="cargo_8" readonly>
+				  	<option id="cargo_8" name="cargo_8">{{ $admSal->cargo }}</option>	  
+				  </select>
+			   </td>			
+			  @endif
 			@endforeach	
 			</tr>
 			<tr>
-			 <td colspan="6"><b>Soma Total de Salários e Outras Verbas: </b>
+			 <td colspan="7"><b>Soma Total de Salários e Outras Verbas: </b>
 			  <input class="form-control" style="width: 200px;" readonly="true" placeholder="ex: 2500 ou 2580,21" type="text" id="total" name="total" value="<?php echo "R$ ".number_format($salarios + $outras_verbas, 2,',','.'); ?>" />	
 			 </td>	
 			</tr>
 			<tr>
-			 <td colspan="6">Jornada:
+			 <td colspan="7">Jornada:
 				@if($admissaoHCP[0]->jornada == "diarista")	
 			  	<input type="text" id="jornada" name="jornada" style="width: 200px;" class="form-control" readonly value="Diarista" />
 				@elseif($admissaoHCP[0]->jornada == "plantao_par")	
@@ -250,7 +267,7 @@
 			 </td>	  
 			</tr>
 			<tr>
-			 <td colspan="6">Tipo: <br> 
+			 <td colspan="7">Tipo: <br> 
 			 @if($admissaoHCP[0]->tipo == "efetivo")
 			 <input checked type="checkbox" id="tipohcp_1" disabled name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
 			 @elseif($admissaoHCP[0]->tipo == "estagiario")
@@ -266,7 +283,7 @@
 			 </td>
 			</tr>
 			<tr>
-			 <td colspan="6">Motivo: <br> 
+			 <td colspan="7">Motivo: <br> 
 			 @if($admissaoHCP[0]->motivo == "aumento_quadro")
 			 <input checked type="checkbox" disabled id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
 			 @elseif($admissaoHCP[0]->motivo == "substituicao_temporaria")
@@ -280,7 +297,7 @@
 			 </td>
 			</tr>
 			<tr>
-			 <td colspan="6">Possibilidade de Contratação de Deficiente:<br> 
+			 <td colspan="7">Possibilidade de Contratação de Deficiente:<br> 
 			 @if($admissaoHCP[0]->possibilidade_contratacao == "sim")
 			 <input checked type="checkbox" disabled id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
 			 @elseif($admissaoHCP[0]->possibilidade_contratacao == "nao")
@@ -289,7 +306,7 @@
 			 </td>
 			</tr>
 			<tr> 
-			 <td colspan="6">Necessidade de conta de e-mail:<br> 
+			 <td colspan="7">Necessidade de conta de e-mail:<br> 
 			 @if($admissaoHCP[0]->necessidade_email == "sim")
 			 <input checked type="checkbox" disabled id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
 			 @elseif($admissaoHCP[0]->necessidade_email == "nao")

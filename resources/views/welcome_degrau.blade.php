@@ -85,7 +85,8 @@
     </div>
     <section id="unidades">
     <div class="container" style="margin-top:12px; margin-bottom:20px;">
-	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -20px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
+    <p align="left"><a href="{{ url('/duvidasPD') }}" class="btn btn-success btn" style="color: #FFFFFF;"> DÚVIDAS </a></p>
+	<p align="right"><a href="{{ url('/home') }}" class="btn btn-warning btn-sm" style="margin-top: -20px; color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a></p>
         <div class="row" style="margin-top: -40px;">
             <div class="col-12 text-center">
                 <span><h3 style="color:#65b345; margin-bottom:0px;">Escolha uma opção:</h3></span>
@@ -107,9 +108,9 @@
 		<table>
 		 <tr>
 		  <td>
-			<img style="margin-left: 80px;" id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
+			<img style="margin-left: -80px;" id="img-unity" src="{{asset('img/mp.png')}}" width="30px" class="rounded-sm" alt="...">
               <div class="card-body text-center">
-                <a style="margin-left: 60px;" href="{{ route('index3') }}" class="btn btn-outline-success">CADASTRAR NOVA VAGA</a>
+                <a style="margin-left: -80px;" href="{{ route('index3') }}" class="btn btn-outline-success"><font size="2">CADASTRAR NOVA VAGA</font></a>
                 <span class="font-weight-bold"></span>
               </div>
 		  </td>
@@ -117,20 +118,19 @@
           @foreach($aprovacao as $ap)
           @if($ap->ativo == 1 && $ap->resposta == 3)
           <td>
-            <img style="margin-left: 340px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+            <img style="margin-left: 10px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" width="10px" class="rounded-sm" alt="...">
                 <div class="card-body text-center" style="margin-left: 20px;" >
-                    <a style="margin-left: 320px;" href="{{ route('inscricaoPD') }}" class="btn btn-outline-dark">INSCRIÇÃO VAGA</a>
+                    <a style="margin-left: 10px;" href="{{ route('inscricaoPD') }}" class="btn btn-outline-dark"><font size="2">INSCRIÇÃO VAGA</font></a>
                     <span class="font-weight-bold"></span>
                 </div>
 	      </td>
+          @break
           @endif
           @endforeach
-         </tr>
-         <tr>
             <td>
-			  <img style="margin-left: 80px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+			  <img style="margin-left: 10px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" width="10" class="rounded-sm" alt="...">
 				<div class="card-body text-center">
-				  <a style="margin-left: 60px;" href="{{ route('visualizarVagasPD') }}" class="btn btn-outline-info">VISUALIZAR VAGA</a>
+				  <a style="margin-left: 10px;" href="{{ route('visualizarVagasPD') }}" class="btn btn-outline-info"><font size="2">VISUALIZAR VAGA</font></a>
 				  <span class="font-weight-bold"></span>
 			    </div>
 			</td>
@@ -138,9 +138,9 @@
               @foreach($pd as $pd)
                 @if($pd->gestor_id == Auth::user()->id || Auth::user()->id == 30 && $pd->concluida == 0)
                 <td>
-                    <img style="margin-left: 340px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
+                    <img style="margin-left: 10px;" id="img-unity" src="{{asset('img/mpVisualizar.png')}}" width="30px" class="rounded-sm" alt="...">
                         <div class="card-body text-center" style="margin-left: 20px;" >
-                            <a style="margin-left: 320px;" href="{{ route('validarPD') }}" class="btn btn-outline-dark">VALIDAR VAGA</a>
+                            <a style="margin-left: 10px;" href="{{ route('validarPD') }}" class="btn btn-outline-dark"><font size="2">VALIDAR VAGA</font></a>
                             <span class="font-weight-bold"></span>
                         </div>
                 </td>

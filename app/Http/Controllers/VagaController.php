@@ -1302,12 +1302,12 @@ class VagaController extends Controller
 		$gestor   = Gestor::where('id', $idG)->get();
 		$email 	  = $gestor[0]->email;
 		DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
-		Mail::send([], [], function($m) use ($email,$vaga) {
+		/*Mail::send([], [], function($m) use ($email,$vaga) {
 			$m->from('portal@hcpgestao.org.br', 'Solicitação de Vaga');
 			$m->subject('Vaga - '.$vaga.' Alterada!');
 			$m->setBody('A Vaga: '. $vaga.' foi alterada e precisa da sua validação! Acesse o portal da Solicitação de Vaga: www.hcpgestao-mprh.hcpgestao.org.br');
 			$m->to($email);
-		});
+		});*/
 		return view('home_vaga', compact('unidade','idVaga','idG'));
 	}
 	
@@ -1780,4 +1780,9 @@ class VagaController extends Controller
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
    }
+
+   public function duvidasVagas()
+	{
+		return view('duvidas_vagas');
+	}
 }

@@ -102,7 +102,8 @@
           @else
           <a href="{{ route('excluirMPs') }}" class="btn-danger btn">EXCLUIR MPS</a>
           @endif
-          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+          <a href="{{ url('/duvidas') }}" class="btn btn-success btn" style="color: #FFFFFF;"> DÚVIDAS </a>
+          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
          </div>
        </div>
     </div>

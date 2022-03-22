@@ -104,7 +104,7 @@
             @if((!isset($unidade->cnes) || $unidade->cnes === null) && $unidade->id != 8)
             <div class="col-sm-4" style="width: 150px;">
                 <div id="img-body"  class="sborder-0 text-white text-center">
-                    <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="...">
+                    <img id="img-unity" src="{{asset('img')}}/{{$unidade->caminho}}" class="rounded-sm" alt="..." style="width:200px">
                     <div class="card-body text-center">
                      @foreach($gestor as $g)
                       @if($g->unidade_id == $unidade->id)

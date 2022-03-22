@@ -1035,4 +1035,9 @@ class ProgramaDegrauController extends Controller
 	   		->withErrors($validator)
 			->withInput(session()->flashInput($request->input()));
    }
+
+   public function duvidasPD()
+   {
+	   return view('programaDegrau/duvidasPD');
+   }
 }

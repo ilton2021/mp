@@ -99,7 +99,8 @@
           @else
           <a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a>
           @endif
-          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
+          <a href="{{ url('/duvidasVagas') }}" class="btn btn-success btn" style="color: #FFFFFF;"> DÚVIDAS </a>
+          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
          </div>
        </div>
     </div>
@@ -121,10 +122,8 @@
 	    </div>
         <div class="col align-self-center">
          @foreach($vagas as $vaga)
-		  @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61))
 		   <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
 		   <a style="margin-left: 80px;" href="{{ route('indexValidaVaga') }}" class="btn btn-outline-dark">VALIDAR VAGA</a>
-          @endif
           @break
 		 @endforeach
        </div>

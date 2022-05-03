@@ -969,14 +969,14 @@ class MPController extends Controller
 		$unidades = Unidade::all();
 		$admissao = Admissao::where('mp_id', $idMP)->get(); 
 		$demissao = Demissao::where('mp_id', $idMP)->get();
-		$alteracaoF = Alteracao_Funcional::where('mp_id', $idMP)->get();
+		$alteracaoF    = Alteracao_Funcional::where('mp_id', $idMP)->get();
 		$justificativa = Justificativa::where('mp_id', $idMP)->get();	
-		$aprovacao = Aprovacao::where('mp_id', $idMP)->get();		
-		$gestor = Gestor::where('id', $idG)->get();				
-		$mps = MP::where('id', $idMP)->get();
-		$idU = $mps[0]->unidade_id;
+		$aprovacao     = Aprovacao::where('mp_id', $idMP)->get();		
+		$gestor  = Gestor::where('id', $idG)->get();				
+		$mps     = MP::where('id', $idMP)->get();
+		$idU     = $mps[0]->unidade_id;
 		$unidade = Unidade::where('id', $idU)->get();
-		$pdf = PDF::loadView('pdf.mpdf', compact('mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao'));
+		$pdf     = PDF::loadView('pdf.mpdf', compact('mps','gestor','unidades','unidade','admissao','demissao','alteracaoF','justificativa','aprovacao'));
 		$pdf->setPaper('A4', 'landscape');
 		return $pdf->download('mp.pdf');
 	}
@@ -1097,7 +1097,12 @@ class MPController extends Controller
 			$alteracaoF    = Alteracao_Funcional::where('mp_id',$id)->get();
 			$justificativa = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
-			$validator 	   = "Alteração Funcional Alterada com sucesso!";
+			if(Auth::user()->id == 30) {
+				$input['acao']    = 'alterar_alteracao_funcional_mp_'.$id;
+				$input['user_id'] = Auth::user()->id;
+				$logger = Loggers::create($input);
+			}
+			$validator = "Alteração Funcional Alterada com sucesso!";
 			return view('index_', compact('mps','gestores','unidades','unidade','alteracaoF','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
@@ -1195,6 +1200,11 @@ class MPController extends Controller
 			$demissao 	   = Demissao::where('mp_id',$id)->get();
 			$justificativa = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
+			if(Auth::user()->id == 30) {
+				$input['acao']    = 'alterar_demissao_mp_'.$id;
+				$input['user_id'] = Auth::user()->id;
+				$logger = Loggers::create($input);
+			}
 			$validator 	   = "Demissão Alterada com sucesso!";
 			return view('index_', compact('mps','gestores','unidades','unidade','demissao','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
@@ -1367,6 +1377,11 @@ class MPController extends Controller
 			$admissao 	   = Admissao::where('mp_id',$id)->get();
 			$justificativa = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
+			if(Auth::user()->id == 30) {
+				$input['acao']    = 'alterar_admissao_mp_'.$id;
+				$input['user_id'] = Auth::user()->id;
+				$logger = Loggers::create($input);
+			}
 			$validator 	   = "Admissão Alterada com sucesso!";
 			return view('index_', compact('mps','gestores','unidades','unidade','admissao','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
@@ -1484,6 +1499,11 @@ class MPController extends Controller
 			$plantao 	   = Plantao::where('mp_id',$id)->get();
 			$justificativa = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
+			if(Auth::user()->id == 30) {
+				$input['acao']    = 'alterar_plantao_extra_mp_'.$id;
+				$input['user_id'] = Auth::user()->id;
+				$logger = Loggers::create($input);
+			}
 			$validator 	   = "Plantão Extra Alterado com sucesso!";
 			return view('index_', compact('mps','gestores','unidades','unidade','plantao','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
@@ -1718,6 +1738,11 @@ class MPController extends Controller
 			$admissaoSalUnd = AdmissaoSalariosUnidades::where('admissao_hcp_id',$admissaoHCP[0]->id)->get();
 			$justificativa  = Justificativa::where('mp_id', $id)->get();
 			$aprovacao 	    = Aprovacao::where('mp_id',$id)->get();
+			if(Auth::user()->id == 30) {
+				$input['acao']    = 'alterar_admissao_hcpgestao_mp_'.$id;
+				$input['user_id'] = Auth::user()->id;
+				$logger = Loggers::create($input);
+			}
 			$validator 	    = "Admissão HCPGESTÃO Alterado com sucesso!";
 			return view('index_', compact('mps','gestores','unidades','unidade','admissaoHCP','admissaoSalUnd','justificativa','aprovacao','gestor'))
 					  ->withErrors($validator)
@@ -1773,7 +1798,7 @@ class MPController extends Controller
 		$pesq 	    = $input['pesq'];
 		$pesq2      = $input['pesq2'];
 		$funcao = Auth::user()->funcao;
-		if($funcao == "Administrador" || Auth::user()->id == 198) {
+		if($funcao == "Administrador" || Auth::user()->id == 198 || Auth::user()->id == 30) {
 			if($pesq2 == "numero") {
 				if($unidade_id == "0"){
 					$mps = DB::table('mp')->where('mp.numeroMP','like','%'.$pesq.'%')->where('inativa',0)->paginate(20);

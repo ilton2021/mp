@@ -784,7 +784,6 @@
 			</td>
 		   @endif	
 		   </tr>
-		   @if($mps[0]->unidade_id == 2)
 		   <tr>
 		   @if(!empty($data_diretoria_financeira))
 			<td>Diretoria Financeira</td>
@@ -835,7 +834,6 @@
 			</td>
 		   @endif	
 		   </tr>
-		   @endif
 		   <tr>
 		   @if(!empty($data_diretoria))
 			<td>Diretoria</td>

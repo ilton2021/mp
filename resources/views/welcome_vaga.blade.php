@@ -122,9 +122,11 @@
 	    </div>
         <div class="col align-self-center">
          @foreach($vagas as $vaga)
+		  @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 && $vaga->inativa == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61 && $vaga->inativa == 0))
 		   <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
 		   <a style="margin-left: 80px;" href="{{ route('indexValidaVaga') }}" class="btn btn-outline-dark">VALIDAR VAGA</a>
           @break
+          @endif
 		 @endforeach
        </div>
     </div>

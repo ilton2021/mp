@@ -128,7 +128,7 @@
 			<select class="form-control" id="pesq2" name="pesq2" onchange="data('sim')">
 			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
 			  <option id="pesq2" name="pesq2" value="admissao">ADMISSÃO</option>
-			  <option id="pesq2" name="pesq2" value="admissao_hcp">ADMISSÂO HCP </option>
+			  <option id="pesq2" name="pesq2" value="admissao_hcp">ADMISSÃO HCP </option>
 			  <option id="pesq2" name="pesq2" value="alteracao">ALTERAÇÃO FUNCIONAL</option>
 			  <option id="pesq2" name="pesq2" value="demissao">DEMISSÃO</option>
 			  <option id="pesq2" name="pesq2" value="plantao">PLANTÃO EXTRA</option>
@@ -157,7 +157,7 @@
 			   <td colspan="4"><center><font color="green"><b>MP'S APROVADAS:</b></font><center></td>
 			  </tr>
 			  <tr>
-			   <td><center>NOME DA MP</center></td>
+			   <td><center>NÚMERO DA MP</center></td>
 			   <td><center>SOLICITANTE</center></td>
 			   <td><center>Visualizar</center></td>
 			   @if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH")
@@ -189,7 +189,7 @@
 		 </table><center>
 		 <table>
 			<tr>
-			  <td> {{ $mps->appends(['unidade_id' => isset($unidade_id) ? $unidade_id : 	'','pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
+			  <td> {{ $mps->appends(['unidade_id' => isset($unidade_id) ? $unidade_id : '','pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
 			</tr> 
 		 </table></center>
 	    </center>

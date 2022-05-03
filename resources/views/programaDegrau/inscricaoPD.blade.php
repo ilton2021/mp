@@ -113,12 +113,11 @@
                 <td><center>SALÁRIO</center></td>
                 <td><center>CENTRO DE CUSTO</center></td>
                 <td><center>VISUALIZAR</center></td>
-                @if(Auth::user()->id != 198 && Auth::user()->id != 71 && Auth::user()->id != 30)
-                <td><center>INSCRIÇÃO</center></td>
-                @else
+                @if(Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30)
                 <td><center>INSCRITOS</center></td>
-                <td><center>VINCULAR CANDIDATO/VAGA</center></td>
                 @endif
+                <td><center>INSCRIÇÃO</center></td>
+                <td><center>VINCULAR CANDIDATO/VAGA</center></td>
               </tr> <?php $a = 1; ?>
 				@foreach($vagas as $vaga)
               	<tr> 
@@ -138,16 +137,23 @@
                  <td> <p><center> {{ "R$ ".number_format($vaga->salario, 2,',','.') }} </center> </p> </td>
                  <td> <br> <center> {{ $vaga->centro_custo }} </center> </td>
                  <td> <p><center> <a href="{{ route('visualizarVagaPD', $vaga->id) }}" class="btn btn-dark btn-sm">VISUALIZAR</a> </center></p></td>
-                 @if(Auth::user()->id != 198 && Auth::user()->id != 71 && Auth::user()->id != 30)
-                 <td> <p><center> <a href="{{ route('inscricaoPDs', $vaga->id) }}" class="btn btn-success btn-sm">INSCRIÇÃO</a> </center></p></td>
-                 @else  
-                 <td> <p><center> <a href="{{ route('inscricaoInscritosPD', $vaga->id) }}" class="btn btn-info btn-sm">INSCRITOS</a> </center></p></td>
-                  @if($vaga->vinculo == '0')
-                   <td> <p><center> <a href="{{ route('vincularInscritosPD', $vaga->id) }}" class="btn btn-success btn-sm">VINCULAR</a> </center></p></td>
-                  @else
-                   <td> <p><center> {{ $vaga->vinculo }} </center></p></td> 
-                  @endif
+                 
+                 @if(Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30)
+                   <td> <p><center> <a href="{{ route('inscricaoInscritosPD', $vaga->id) }}" class="btn btn-info btn-sm">INSCRITOS</a> </center></p></td>
                  @endif
+                 
+                 @if($vaga->concluida == 1 && $vaga->aprovada == 1 && $vaga->vinculo == "0")
+                  <td> <p><center> <a href="{{ route('inscricaoPDs', $vaga->id) }}" class="btn btn-success btn-sm">INSCRIÇÃO</a> </center></p></td>  
+                 @else
+                  <td></td>
+                 @endif
+                 
+                 @if((Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30) && ($vaga->vinculo == "0"))
+                   <td> <p><center> <a href="{{ route('vincularInscritosPD', $vaga->id) }}" class="btn btn-success btn-sm">VINCULAR</a> </center></p></td>
+                 @else
+                   <td> <p><center> {{ $vaga->vinculo }} </center></p></td> 
+                 @endif
+                 
                 @endforeach
                @endif
                </tr>

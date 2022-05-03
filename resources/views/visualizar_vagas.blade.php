@@ -634,7 +634,6 @@
 		   @endif	
 		   </tr>
 		   <tr>
-		   @if($vagas[0]->unidade_id == 2)
 		   @if(!empty($data_diretoria_financeira))
 			<td>Diretoria Financeira</td>
 			<td><?php if($diretoria == ""){ echo ""; } else { echo $diretoriaF[0]->nome; } ?></td>
@@ -705,7 +704,6 @@
 				 </div></center>
 			  @endif
 			@endforeach
-			@endif
 			@endif
 			</td>
 		   @endif

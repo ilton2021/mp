@@ -52,11 +52,11 @@
 		   <tr>
 		    <td>Próxima Etapa: </td> <?php $qtdAp = sizeof($aprovacao); ?>
 			<td>
-			   @if(Auth::user()->funcao != "Superintendencia" && Auth::user()->funcao != "Diretoria Tecnica" && Auth::user()->funcao != "Diretoria" && Auth::user()->funcao != "RH")
+			   @if(Auth::user()->funcao != "Superintendencia" && Auth::user()->funcao != "Diretoria Tecnica" && Auth::user()->funcao != "Diretoria" && Auth::user()->funcao != "Diretoria Financeira" && Auth::user()->funcao != "RH")
 			    @foreach($gestores as $gestor)
 				 @if(Auth::user()->id == 55 || Auth::user()->id == 117 || Auth::user()->id == 111)
 				  <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'JANAINA GLAYCE PEREIRA LIMA' }}</option>   
+			       <option id="gestor_id" name="gestor_id" value="30"> {{ 'ANA AMÉRICA OLIVEIRA DE ARRUDA' }}</option>   
 				  </select>
 				 @else
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
@@ -79,7 +79,7 @@
 					 </select>
 					@else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
-				       <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
+					   <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
 					 </select>  
 					@endif
 				   @endif
@@ -91,33 +91,32 @@
 			      @if(Auth::user()->id == 65)
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	    
 					   <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-    			       <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>  
+    			       <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS COSTA</option>  
 					 </select>  
 				   @endif
 				  @elseif(Auth::user()->id == 163)
 				   @if($qtdAp == 0)
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
 					 <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	     
-				      <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
-				      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option> 
+					   <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
 					 </select>
 				  @endif
 				 @elseif(Auth::user()->id == 93)
 				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					</select>  
 				 @elseif(Auth::user()->id == 174)
 				   @if($qtdAp == 0)    
 				     <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
-					   <option id="gestor_id" name="gestor_id" value="30">RH - JANAINA GLAYCE PEREIRA LIMA</option>
+					   <option id="gestor_id" name="gestor_id" value="30">RH - ANA AMÉRICA OLIVEIRA DE ARRUDA</option>
 					 </select>  
 				   @else
 				    <select type="text" id="gestor_id" name="gestor_id" class="form-control">  	  
@@ -136,8 +135,8 @@
 				  @endforeach
 				  <option id="gestor_id" name="gestor_id" value="12">ANALICE MARIA DE MENDONCA FERNANDES SILVA</option>
 				  @if($vaga[0]->unidade_id == 2)
-				  <option id="gestor_id" name="gestor_id" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS VINICIUS COSTA SILVA</option>   
+				  <option id="gestor_id" name="gestor_id" value="215">DIRETORIA TÉCNICA - NICOLE VIANA LEAL</option>  
+				  <option id="gestor_id" name="gestor_id" value="174">DIRETORIA FINANCEIRA - MARCOS COSTA</option>   
 				  <option id="gestor_id" name="gestor_id" value="59">DIRETORIA - ISABELA COUTINHO</option>   
 				  @elseif($vaga[0]->unidade_id == 3)
 				  <option id="gestor_id" name="gestor_id" value="5">COORDENADOR UNIDADE - ALEXANDRA SILVESTRE AMARAL</option>   
@@ -146,19 +145,19 @@
 				  @elseif($vaga[0]->unidade_id == 5)
 				  <option id="gestor_id" name="gestor_id" value="167">COORDENADOR UNIDADE - ADRIANA CAVALCANTI BEZERRA</option>
 				  @elseif($vaga[0]->unidade_id == 6)
-				  <option id="gestor_id" name="gestor_id" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
-				  <!--option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
+				  <option id="gestor_id" name="gestor_id" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
 				  @elseif($vaga[0]->unidade_id == 7)
-				  <option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option>   
+				  <!--option id="gestor_id" name="gestor_id" value="60">DIRETORIA - LUCIANA MELO</option-->
+				  <option id="gestor_id" name="gestor_id" value="42">COORDENAÇÃO ADMINISTRATIVA - LUCAS QUEIROZ FERREIRA</option>   
 				  @elseif($vaga[0]->unidade_id == 8)
-				  <option id="gestor_id" name="gestor_id" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
+				  <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
 				  @endif
-			      <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
-				 </select>
+			      <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
+				  /select>
 				 @else
 				 <select type="text" id="gestor_id" name="gestor_id" class="form-control"> 
-			        <option id="gestor_id" name="gestor_id" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
-			     </select>	 
+			        <option id="gestor_id" name="gestor_id" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
+				/select>	 
 				 @endif
 			   @endif
 			</td>

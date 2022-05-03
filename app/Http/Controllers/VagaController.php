@@ -450,16 +450,16 @@ class VagaController extends Controller
 	public function indexValidaVaga()
 	{
 		$idG = Auth::user()->id;
-		if($idG == 61) {
+		if($idG == 174) {
 			$vagas  = DB::table('vaga')
 				->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
 				->select('vaga.*','justificativa_vaga.descricao as just')
-				->where('vaga.concluida',0)->whereIn('vaga.gestor_id',[62,61])->get();
+				->where('vaga.concluida',0)->where('inativa',0)->whereIn('vaga.gestor_id',[62,61,174])->get();
 		} else {
 			$vagas  = DB::table('vaga')
 				->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
 				->select('vaga.*','justificativa_vaga.descricao as just')
-				->where('vaga.concluida',0)->where('vaga.gestor_id',$idG)->get();
+				->where('vaga.concluida',0)->where('inativa',0)->where('vaga.gestor_id',$idG)->get();
 		}
 		
 		$aprovacao = AprovacaoVaga::all();
@@ -471,11 +471,11 @@ class VagaController extends Controller
 	{
 		$input = $request->all();
 		$idG   = Auth::user()->id;
-		if($idG == 61) {
+		if($idG == 174) {
 			$vagas  = DB::table('vaga')
 				->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
 				->select('vaga.*','justificativa_vaga.descricao as just')
-				->where('vaga.concluida',0)->whereIn('vaga.gestor_id',[61,62])->get();
+				->where('vaga.concluida',0)->whereIn('vaga.gestor_id',[61,62,174])->get();
 		} else {
 			$vagas  = DB::table('vaga')
 				->join('justificativa_vaga','justificativa_vaga.vaga_id','=','vaga.id')
@@ -586,7 +586,7 @@ class VagaController extends Controller
 				} else if($idG == 60 || $idG == 5 || $idG == 48 || $idG == 1 || $idG == 34 || $idG == 59 
 				|| $idG == 155 || $idG == 165 || $idG == 160 || $idG == 166){
 					if($idA == 30) {
-						$idG = 62;
+						$idG = 174;
 					} else {
 						$idG = 30;
 					}
@@ -757,6 +757,16 @@ class VagaController extends Controller
 					$diretoriaFId = Gestor::where('id', $gestorF)->get('id'); 
 				}
 			} 
+			if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 174) {
+					$gestorF = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorF != ""){
+    				$diretoriaF = Gestor::where('id', $gestorF)->get('nome'); 
+					$diretoriaFId = Gestor::where('id', $gestorF)->get('id'); 
+				}
+			}
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 || $aprovacao[$i]->gestor_anterior == 182
@@ -879,6 +889,16 @@ class VagaController extends Controller
 					$diretoriaFId = Gestor::where('id', $gestorF)->get('id'); 
 				}
 			} 
+			if($aprovacao[$i]->resposta == 3 && $funcao == "Diretoria Financeira"){
+				$data_diretoria_financeira = $aprovacao[$i]->data_aprovacao; 
+				if($aprovacao[$i]->gestor_anterior == 174) {
+					$gestorF = $aprovacao[$i]->gestor_anterior;
+				}
+				if($gestorF != ""){
+    				$diretoriaF = Gestor::where('id', $gestorF)->get('nome'); 
+					$diretoriaFId = Gestor::where('id', $gestorF)->get('id'); 
+				}
+			} 
 			if($aprovacao[$i]->resposta == 1 && $funcao == "Diretoria"){
 				$data_diretoria = $aprovacao[$i]->data_aprovacao; 
 				if($aprovacao[$i]->gestor_anterior == 59  || $aprovacao[$i]->gestor_anterior == 60  || $aprovacao[$i]->gestor_anterior == 61 
@@ -941,7 +961,7 @@ class VagaController extends Controller
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));	 
 		} else {
-			if(Auth::user()->funcao == "Superintendencia" || (Auth::user()->id == 61 && $vaga[0]->unidade_id != 8)) {
+			if(Auth::user()->funcao == "Superintendencia" || (Auth::user()->id == 61 && $vaga[0]->unidade_id != 8) || Auth::user()->id == 174) {
 			$input['resposta'] = 3;
 			DB::statement('UPDATE vaga SET concluida = 1 WHERE id = '.$id.';');
 			DB::statement('UPDATE vaga SET aprovada = 1 WHERE id = '.$id.';');
@@ -1466,6 +1486,11 @@ class VagaController extends Controller
 			$comportamental = Comportamental::where('vaga_id', $id)->get();
 			$competencias   = Competencias::where('vaga_id', $id)->get();
 			$tipo_vaga = 0;
+			if(Auth::user()->id == 30) {
+				$input['acao']    = 'alterar_vaga_'.$id;
+				$input['user_id'] = Auth::user()->id;
+				$logger = Loggers::create($input);
+			}
 			$validator = "Vaga Alterada com sucesso!";
 			return view('visualizar_vagas', compact('vagas','gestores','unidades','unidade','justificativa','aprovacao','gestor','competencias','comportamental','idVaga'))
 				->withErrors($validator)

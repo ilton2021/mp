@@ -54,6 +54,7 @@
 			 <option id="unidade_id" name="unidade_id" value="6">UPAE CARUARU</option>
 			 <option id="unidade_id" name="unidade_id" value="7">HSS</option>
 			 <option id="unidade_id" name="unidade_id" value="8">HPR</option>
+			 <option id="unidade_id" name="unidade_id" value="9">UPA IGARASSU</option>
 		 </select>
 		</td>
 		<td align="right"> 

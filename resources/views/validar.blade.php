@@ -28,7 +28,6 @@
                     }
                 <?php } ?>
             }
-
             function habilitar2(valor) {
 		        var status = document.getElementById('checkAll2').checked;  
                 <?php $qtdDem = sizeof($demissao);  
@@ -40,7 +39,6 @@
                     }
                 <?php } ?>
             }
-
             function habilitar3(valor) {
 		        var status = document.getElementById('checkAll3').checked;  
                 <?php $qtdAltF = sizeof($alteracF);  
@@ -52,7 +50,6 @@
                     }
                 <?php } ?>
             }
-
             function habilitar4(valor) {
 		        var status = document.getElementById('checkAll4').checked;  
                 <?php $qtdPla = sizeof($plantao);  
@@ -64,7 +61,6 @@
                     }
                 <?php } ?>
             }
-
             function habilitar5(valor) {
 		        var status = document.getElementById('checkAll5').checked;  
                 <?php $qtdAdmHCP = sizeof($admissaoHCP);  
@@ -264,62 +260,59 @@
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 2)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 2)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?><?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="174">DIRETOR FINANCEIRO - MARCOS COSTA</option>
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 3)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 3)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="165">COORDENADOR UNIDADE - ALEXANDRA AMARAL</option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 4)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 4)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 5)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 5)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="166">COORDENADOR UNIDADE - ADRIANA BEZERRA</option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 6)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 6 && $gestor->id != 48)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
-                    <!--option id="gestor_id_" name="gestor_id_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_" name="gestor_id_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 7)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 7)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="42">COORDENAÇÃO ADMINISTRATIVA - LUCAS QUEIROZ FERREIRA</option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
                     @elseif($adm->unidade_id == 8)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($adm->unidade_id == 9)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 9)
                     @if($gestor->id != 183)
@@ -328,12 +321,12 @@
                     @endif @endforeach
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="183">DIRETORIA - THALYTA SANTOS</option>   
-                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @endif
                   </select>
                   @else
                   <select type="text" id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" class="form-control"> 
-                      <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id_<?php echo $a ?>" name="gestor_id_<?php echo $a ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                   </select>
                   </center>	 
                   @endif
@@ -365,16 +358,16 @@
 				      @foreach($admissaoHCP as $admHCP)
               	<tr> 
                  <td> <br><center> <input type="checkbox" id="check5_<?php echo $e ?>" name="check5_<?php echo $e ?>"  /> </center> </td>
-				         <td> <br><center> <b> 
-                   @if($admHCP->unidade_id == 1) <?php echo "HCP GESTÃO"; ?> 
-                   @elseif($admHCP->unidade_id == 2) <?php echo "HMR"; ?> 
-                   @elseif($admHCP->unidade_id == 3) <?php echo "UPAE BELO JARDIM"; ?> 
-                   @elseif($admHCP->unidade_id == 4) <?php echo "UPAE ARCOVERDE"; ?> 
-                   @elseif($admHCP->unidade_id == 5) <?php echo "UPAE ARRUDA"; ?> 
-                   @elseif($admHCP->unidade_id == 6) <?php echo "UPAE CARUARU"; ?> 
-                   @elseif($admHCP->unidade_id == 7) <?php echo "HSS"; ?> 
-                   @elseif($admHCP->unidade_id == 9) <?php echo "UPA IGARASSU"; ?> 
-                   @endif </b> </center> </td>
+				         <td> <br><center> <b>
+				           @if($admHCP->unidade_id == 1) <?php echo "HCP GESTÃO"; ?> 
+                           @elseif($admHCP->unidade_id == 2) <?php echo "HMR"; ?> 
+                           @elseif($admHCP->unidade_id == 3) <?php echo "UPAE BELO JARDIM"; ?> 
+                           @elseif($admHCP->unidade_id == 4) <?php echo "UPAE ARCOVERDE"; ?> 
+                           @elseif($admHCP->unidade_id == 5) <?php echo "UPAE ARRUDA"; ?> 
+                           @elseif($admHCP->unidade_id == 6) <?php echo "UPAE CARUARU"; ?> 
+                           @elseif($admHCP->unidade_id == 7) <?php echo "HSS"; ?> 
+                           @elseif($admHCP->unidade_id == 9) <?php echo "UPA IGARASSU"; ?> 
+                           @endif </b> </center> </td>
                  <td title="<?php echo $admHCP->numeroMP; ?>"> <p><center>  {{ $admHCP->numeroMP }} </center></p></td> 
                  <td title="<?php echo $admHCP->nome; ?>"> <p><center> {{ substr($admHCP->nome, 0, 30) }} </center> </p>  </td>
                  <td> <p><center> <?php if($admHCP->tipo == "efetivo"){ ?>
@@ -448,7 +441,7 @@
                  <td>
                   <center>
                   <select type="text" id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" class="form-control" style="width: 200px;"> 
-                    <option id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id5_<?php echo $e ?>" name="gestor_id5_<?php echo $e ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                   </select>
                  </td>   
                  @endif
@@ -561,62 +554,59 @@
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
                     @elseif($dem->unidade_id == 2)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 2)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">DIRETOR FINANCEIRO - MARCOS COSTA</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
                     @elseif($dem->unidade_id == 3)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 3)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="165">COORDENADOR UNIDADE - ALEXANDRA AMARAL</option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($dem->unidade_id == 4)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 4)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option> 
                     @elseif($dem->unidade_id == 5)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 5)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="166">COORDENADOR UNIDADE - ADRIANA BEZERRA</option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($dem->unidade_id == 6)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 6 && $gestor->id != 48)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
-                    <!--option id="gestor_id2_" name="gestor_id2_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_" name="gestor_id2_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
                     @elseif($dem->unidade_id == 7)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 7)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="42">DIRETORIA - LUCAS QUEIROZ FERREIRA</option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="42">COORDENAÇÃO ADMINISTRATIVA - LUCAS QUEIROZ FERREIRA</option>
+                    <!--option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="60">DIRETORIA - LUCIANA MELO</option-->   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @elseif($dem->unidade_id == 8)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>     
                     @elseif($dem->unidade_id == 9)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 9)
                     @if($gestor->id != 183)
@@ -625,12 +615,12 @@
                     @endif @endforeach
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="183">DIRETORIA - THALYTA SANTOS</option>   
-                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                     @endif 
                   </select>
                   @else
                   <select type="text" id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" class="form-control"> 
-                      <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id2_<?php echo $b ?>" name="gestor_id2_<?php echo $b ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                   </select>
                   </center>	 
                   @endif
@@ -751,8 +741,7 @@
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                      @endif @endforeach
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
                     @elseif($altF->unidade_id == 2)
                     @if($alteracao_sal == 1)
                      @foreach($gestores as $gestor) @if($gestor->unidade_id == 2)
@@ -760,9 +749,8 @@
                      @endif @endforeach
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
                      @else 
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -773,7 +761,7 @@
                       @endif @endforeach
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="165">COORDENADOR UNIDADE - ALEXANDRA AMARAL</option>
-                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                      @else
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -784,7 +772,7 @@
                       @endif @endforeach
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
-                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>  
                      @else
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -795,7 +783,7 @@
                       @endif @endforeach
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="166">COORDENADOR UNIDADE - ADRIANA BEZERRA</option>
-                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                      @else
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -805,9 +793,8 @@
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                       @endif @endforeach
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
-                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
-                       <!--option id="gestor_id3_" name="gestor_id3_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
-                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                       <option id="gestor_id3_" name="gestor_id3_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                      @else
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -817,8 +804,9 @@
                        <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                       @endif @endforeach
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <!--option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="60">DIRETORIA - LUCIANA MELO</option-->   
+                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="42">COORDENAÇÃO ADMINISTRATIVA - LUCAS QUEIROZ FERREIRA </option>
+                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                      @else
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -829,8 +817,7 @@
                       @endif @endforeach
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="12">GERENTE - ANALICE MARIA </option>
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>    
                      @else
                       <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="30">FINALIZAR FLUXO</option>
                      @endif
@@ -851,7 +838,7 @@
                   </select>
                   @else
                   <select type="text" id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" class="form-control"> 
-                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id3_<?php echo $c ?>" name="gestor_id3_<?php echo $c ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
                   </select>
                   </center>	 
                   @endif
@@ -969,73 +956,70 @@
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
                     @elseif($pla->unidade_id == 2)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 2)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="65">DIRETORIA TÉCNICA - CINTHIA KOMURO</option>  
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="174">DIRETORIA TÉCNICA - MARCOS VINICIUS COSTA SILVA</option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="59">DIRETORIA - ISABELA COUTINHO</option>   
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
                     @elseif($pla->unidade_id == 3)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 3)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="165">COORDENADOR UNIDADE - ALEXANDRA AMARAL</option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
                     @elseif($pla->unidade_id == 4)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 4)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="160">COORDENADOR UNIDADE - LUIZ GONZAGA</option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option> 
                     @elseif($pla->unidade_id == 5)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 5)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="166">COORDENADOR UNIDADE - ADRIANA BEZERRA</option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
                     @elseif($pla->unidade_id == 6)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 6 && $gestor->id != 48)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="182">COORDENADOR UNIDADE - NIZAELLI RAISSA</option>
-                    <!--option id="gestor_id4_" name="gestor_id4_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option-->
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_" name="gestor_id4_" value="155">COORDENADOR UNIDADE - JOÃO PEIXOTO</option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
                     @elseif($pla->unidade_id == 7)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 7)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="60">DIRETORIA - LUCIANA MELO</option>   
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <!--option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="60">DIRETORIA - LUCIANA MELO</option--> 
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="42">COORDENAÇÃO ADMINISTRATIVA - LUCAS QUEIROZ FERREIRA </option>
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option> 
                     @elseif($pla->unidade_id == 8)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 8)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="163">DIRETORIA TÉCNICA - GUILHERME JORGE COSTA</option>
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>   
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">DIRETORIA - LUCIANA VENÂNCIO</option>
                     @elseif($pla->unidade_id == 9)
                     @foreach($gestores as $gestor) @if($gestor->unidade_id == 9)
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="<?php echo $gestor->id; ?>"> <?php echo "GESTOR - "; ?>  {{  $gestor->nome }}</option>   
                     @endif @endforeach
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="12">GERENTE - ANALICE MARIA </option>
                     <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="183">DIRETORIA - THALYTA SANTOS</option>   
-                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>   
+                    <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="61">SUPERINTENDÊNCIA - LUCIANA VENÂNCIO</option>
                     @endif 
                   </select>
                   @else
                   <select type="text" id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" class="form-control"> 
-                      <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="62">SUPERINTENDÊNCIA - FILIPE BITU</option>   
+                      <option id="gestor_id4_<?php echo $d ?>" name="gestor_id4_<?php echo $d ?>" value="174">DIRETOR FINANCEIRO - MARCOS COSTA</option>   
                   </select>
                   </center>	 
                   @endif

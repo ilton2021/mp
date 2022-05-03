@@ -45,7 +45,8 @@
           ['UPAE ARRUDA - <?php echo $qtd5 ?>',   <?php echo $qtd5 ?>],
           ['UPAE CARUARU - <?php echo $qtd6 ?>', <?php echo $qtd6 ?>],
 		  ['HSS - <?php echo $qtd7 ?>',   <?php echo $qtd7 ?>],
-          ['HPR - <?php echo $qtd8 ?>',   <?php echo $qtd8 ?>]
+          ['HPR - <?php echo $qtd8 ?>',   <?php echo $qtd8 ?>],
+          ['UPA IGARASSU - <?php echo $qtd9 ?>', <?php echo $qtd9 ?>]
         ]);
         var options = {
           title: 'Total de MPs por Unidade:',

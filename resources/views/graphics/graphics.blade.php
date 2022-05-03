@@ -40,7 +40,8 @@
 			  ['Elemento', 'Total'],
 			  ['Demissão - <?php echo $qtdDem ?>', <?php echo $qtdDem ?>],
 			  ['Admissão - <?php echo $qtdAd ?>', <?php echo $qtdAd ?>],
-			  ['Alteração Funcional - <?php echo $qtdAlt ?>', <?php echo $qtdAlt ?>]
+			  ['Alteração Funcional - <?php echo $qtdAlt ?>', <?php echo $qtdAlt ?>],
+			  ['Plantão - <?php echo $qtdPla ?>', <?php echo $qtdPla ?>]
 			]);
 			var options = {
 			  title: 'Total de MPs Criadas:',

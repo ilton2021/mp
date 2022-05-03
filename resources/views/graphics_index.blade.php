@@ -56,7 +56,7 @@
 			
               <div class="card-body text-center">
 			   <center>
-			   <table border="1" >
+			   <table border="1">
 			    <tr>
 				 <td rows="6"><img width="500px" id="img-unity" src="{{asset('img/graficos.jpg')}}" class="rounded-sm" alt="..."> </td>
 				 <td align="center">

@@ -1517,6 +1517,8 @@ class VagaController extends Controller
 			$row5 = Vaga::where('unidade_id', 7)->get();
 		} else if(Auth::user()->id == 61){
 			$row5 = Vaga::where('unidade_id', 8)->get();
+		} else if(Auth::user()->id == 183){
+			$row5 = Vaga::where('unidade_id', 9)->get();
 		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
 			$row5 = Vaga::all();
 		}
@@ -1539,11 +1541,13 @@ class VagaController extends Controller
 			$row5 = Vaga::where('unidade_id', 7)->get();
 		} else if(Auth::user()->id == 61){
 			$row5 = Vaga::where('unidade_id', 8)->get();
+		} else if(Auth::user()->id == 183){
+			$row5 = Vaga::where('unidade_id', 9)->get();
 		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
 			$row5 = Vaga::all();
 		}
 		$qtd  = sizeof($row5);
-		$qtd1=0;$qtd2=0;$qtd3=0;$qtd4=0;$qtd5=0;$qtd6=0;$qtd7=0;$qtd8=0;
+		$qtd1=0;$qtd2=0;$qtd3=0;$qtd4=0;$qtd5=0;$qtd6=0;$qtd7=0;$qtd8=0;$qtd9=0;
 		for($c = 0; $c < $qtd; $c++) {
 			if($row5[$c]->unidade_id == 1) {
 				$qtd1 += 1;	
@@ -1561,10 +1565,12 @@ class VagaController extends Controller
 				$qtd7 += 1;
 			} else if($row5[$c]->unidade_id == 8) {
 				$qtd8 += 1;
+			} else if($row5[$c]->unidade_id == 9) {
+				$qtd9 += 1;
 			}
 		}
 		$unidades = Unidade::all();
-		return view('graphics/graphics_vaga2', compact('row5','qtd','qtd1','qtd2','qtd3','qtd4','qtd5','qtd6','qtd7','qtd8','unidades'));
+		return view('graphics/graphics_vaga2', compact('row5','qtd','qtd1','qtd2','qtd3','qtd4','qtd5','qtd6','qtd7','qtd8','qtd9','unidades'));
    }
    
    public function pesquisarGrafico9(Request $request)
@@ -1597,7 +1603,7 @@ class VagaController extends Controller
 		}
 		$qtd  = sizeof($row5);
 		if($qtd > 0) {
-			$qtd1=0;$qtd2=0;$qtd3=0;$qtd4=0;$qtd5=0;$qtd6=0;$qtd7=0;$qtd8=0;
+			$qtd1=0;$qtd2=0;$qtd3=0;$qtd4=0;$qtd5=0;$qtd6=0;$qtd7=0;$qtd8=0;$qtd9=0;
 			for($c = 0; $c < $qtd; $c++) {
 				if($row5[$c]->unidade_id == 1) {
 					$qtd1 += 1;	
@@ -1615,13 +1621,15 @@ class VagaController extends Controller
 					$qtd7 += 1;
 				} else if($row5[$c]->unidade_id == 8) {
 					$qtd8 += 1;
+				} else if($row5[$c]->unidade_id == 9) {
+					$qtd9 += 1;
 				}
 			}
 		} else {
-			$qtd1=0;$qtd2=0;$qtd3=0;$qtd4=0;$qtd5=0;$qtd6=0;$qtd7=0;$qtd8=0;
+			$qtd1=0;$qtd2=0;$qtd3=0;$qtd4=0;$qtd5=0;$qtd6=0;$qtd7=0;$qtd8=0;$qtd9=0;
 		}
 		$unidades = Unidade::all();
-		return view('graphics/graphics_vaga2', compact('row5','qtd','qtd1','qtd2','qtd3','qtd4','qtd5','qtd6','qtd7','qtd8','unidades'));
+		return view('graphics/graphics_vaga2', compact('row5','qtd','qtd1','qtd2','qtd3','qtd4','qtd5','qtd6','qtd7','qtd8','qtd9','unidades'));
    }
    
    public function graphicsVaga3()
@@ -1638,6 +1646,8 @@ class VagaController extends Controller
 			$row5 = Vaga::where('unidade_id', 7)->get();
 		} else if(Auth::user()->id == 61){
 			$row5 = Vaga::where('unidade_id', 8)->get();
+		} else if(Auth::user()->id == 183){
+			$row5 = Vaga::where('unidade_id', 9)->get();
 		} else if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71){
 			$row5 = Vaga::all();
 		}

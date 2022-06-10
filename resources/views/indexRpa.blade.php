@@ -78,7 +78,7 @@
 		}
 
 		function funcaoCargoPlantao(valor) {
-			let x = document.getElementById('cargo_rpa_id'); 
+			let x = document.getElementById('cargos_rpa_id'); 
 			var y = x.options[x.selectedIndex].text;
 			let z = y.substr(y.indexOf("/") + 1);
 			
@@ -405,14 +405,14 @@
 							</tr>
 							<tr>
 							<td><b><font size="2">Profissional:</font></b> 
-							<select required class="form-control form-control-sm" id="cargo_rpa_id" name="cargo_rpa_id" onchange="funcaoCargoPlantao('sim')">
-								<option id="cargo_rpa_id" name="cargo_rpa_id" value="">Selecione...</option>
+							<select required class="form-control form-control-sm" id="cargos_rpa_id" name="cargos_rpa_id" onchange="funcaoCargoPlantao('sim')">
+								<option id="cargos_rpa_id" name="cargos_rpa_id" value="">Selecione...</option>
 								@if(!empty($cargos_rpa))	
 									@foreach($cargos_rpa as $cargoP)
-									@if(old('cargo_rpa_id') == $cargoP->id)
-										<option id="cargo_rpa_id" name="cargo_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>	
+									@if(old('cargos_rpa_id') == $cargoP->id)
+										<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>	
 									@else
-										<option id="cargo_rpa_id" name="cargo_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>  
+										<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>  
 									@endif					  
 									@endforeach
 								@endif

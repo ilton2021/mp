@@ -15,6 +15,111 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
   <script type="text/javascript">
+		function multiplicar(){
+			m1 = Number(document.getElementById("valor_plantao").value);
+			m2 = Number(document.getElementById("quantidade_plantao").value);
+			r = Number(m1*m2);
+			document.getElementById("valor_pago_plantao").value = r;
+		}
+
+		function somarSalarios(){
+			s1 = Number(document.getElementById("salario").value);
+			s2 = Number(document.getElementById("outras_verbas").value);
+			soma = Number(s1 + s2);
+			document.getElementById("remuneracao_total").value = soma;
+		}
+
+		function desabilitarOutra(valor) {
+		  var x = document.getElementById('escala_trabalho'); 
+	 	  var y = x.options[x.selectedIndex].text; 
+		  if (y == "Outra:") {
+			document.getElementById('escala_trabalho6').disabled = false;
+		  }else {
+			document.getElementById('escala_trabalho6').disabled = true;  
+		  }
+		}
+			
+		function desabilitarSubst(valor) {
+			var x = document.getElementById('motivo'); 
+			var y = x.options[x.selectedIndex].text; 
+		  if (y == "Substituição Definitiva") {
+			document.getElementById('motivo2').hidden = false;
+		  }else {
+			document.getElementById('motivo2').hidden = true;  
+		  }
+		}
+
+		function ativarOutra(valor){
+			var x = document.getElementById('horario_trabalho'); 
+			var y = x.options[x.selectedIndex].text;  
+			if(y == "Outro..."){
+				document.getElementById('horario_trabalho2').disabled = false;
+			} else {
+				document.getElementById('horario_trabalho2').disabled = true;
+			}
+		}
+
+		function funcaoCargoSalario(valor){
+			var x = document.getElementById('cargo'); 
+			var u = document.getElementById('unidade').value;
+			var y = x.options[x.selectedIndex].text; 
+			if(u == "Hospital da Mulher do Recife" || u == "UPAE Arruda"){
+				if(y == "ENFERMEIRO(A) 24H"){
+					document.getElementById('salario').value = "2369.99";
+				} else if(y == "ENFERMEIRO(A) 30H"){
+					document.getElementById('salario').value = "2369.99";
+				} else if(y == "ENFERMEIRO(A) 40H"){
+					document.getElementById('salario').value = "3159.60";
+				} else {
+					document.getElementById('salario').value = "";
+				}
+			}
+		}
+
+		function funcaoCargoPlantao(valor) {
+			let x = document.getElementById('cargos_rpa_id'); 
+			var y = x.options[x.selectedIndex].text;
+			let z = y.substr(y.indexOf("/") + 1);
+			
+			document.getElementById('valor_plantao').value = z;
+
+			multiplicar();
+		}
+
+		function handler(e){	
+			var a = 0;
+			if(document.getElementById('mes_ano').value != ''){
+				var periodo_inicio = new Date(document.getElementById('mes_ano').value);
+				var a = 1;
+			}
+			if(document.getElementById('mes_ano2').value != '') {
+				var periodo_fim    = new Date(document.getElementById('mes_ano2').value);
+				var a = 2;
+			}
+			var timeDiff = Math.abs(periodo_fim.getTime() - periodo_inicio.getTime());
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+			if(a == 2){ 
+			  if(periodo_fim > periodo_inicio) {
+				 
+				if(diffDays >= 31){
+					alert('Limite de 31 dias! Tente outro Período!');
+					document.getElementById('mes_ano').value = "";
+					document.getElementById('mes_ano2').value = "";
+					document.getElementById('qtdDias').value = "";
+				} else {
+					document.getElementById('qtdDias').value = diffDays + 1;
+				}
+	  		  } else if(periodo_fim < periodo_inicio) { 
+				alert('Data Inválida! Tente outro Período!');
+				document.getElementById('mes_ano').value = "";
+				document.getElementById('mes_ano2').value = "";
+				document.getElementById('qtdDias').value = '';
+			  } else {
+				document.getElementById('qtdDias').value = diffDays + 1;
+			  }
+			}
+		}
+
 		function handler2(e){
 			if(document.getElementById('data_prevista').value != ''){
 				var periodo_fim = new Date(document.getElementById('data_prevista').value);
@@ -287,17 +392,17 @@
 						</tr>
 						<tr>
 						<td><b><font size="2">Profissional:</font></b> 
-						<select required class="form-control form-control-sm" id="cargo_rpa_id" name="cargo_rpa_id" onchange="funcaoCargoPlantao('sim')">
-							<option id="cargo_rpa_id" name="cargo_rpa_id" value="">Selecione...</option>
-							@if(!empty($cargos_rpa))	
-								@foreach($cargos_rpa as $cargoP)
-								@if($adm->cargos_rpa_id == $cargoP->id) 
-									<option id="cargo_rpa_id" name="cargo_rpa_id" value="<?php echo $cargoP->cargo; ?>" selected>{{ $cargoP->cargo }}</option>	
-								@else
-									<option id="cargo_rpa_id" name="cargo_rpa_id" value="<?php echo $cargoP->cargo; ?>">{{ $cargoP->cargo }}</option>	
-								@endif					  
-								@endforeach
-							@endif
+						<select required class="form-control form-control-sm" id="cargos_rpa_id" name="cargos_rpa_id" onchange="funcaoCargoPlantao('sim')">
+						 <option id="cargos_rpa_id" name="cargos_rpa_id" value="">Selecione...</option>
+						 @if(!empty($cargos_rpa))	
+						  @foreach($cargos_rpa as $cargoP)
+						   @if($adm->cargos_rpa_id == $cargoP->id)
+							<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>	
+						   @else
+							<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>  
+						   @endif					  
+						  @endforeach
+						 @endif
 						</select>
 						</td>
 						<td><b><font size="2">Contratação de Deficiente:</font></b><br> 
@@ -465,7 +570,7 @@
 						</select>
 						</td>
 						<td><b><font size="2">Valor:</font></b>
-							<input class="form-control form-control-sm" type="text" id="valor_plantao" name="valor_plantao" value="<?php echo $adm->valor_plantao; ?>" />
+							<input class="form-control form-control-sm" type="text" id="valor_plantao" name="valor_plantao" value="<?php echo $adm->valor_plantao; ?>" onchange="multiplicar('sim')"/>
 						</td>
 						<td><b><font size="2">Valor a ser Pago:</font></b>
 							<input readonly class="form-control form-control-sm" title="(Quantidade * Valor)" type="text" id="valor_pago_plantao" name="valor_pago_plantao" value="<?php echo $adm->valor_pago_plantao; ?>" />	

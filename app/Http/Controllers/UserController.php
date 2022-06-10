@@ -38,7 +38,7 @@ class UserController extends Controller
 
 	public function cadastroUsuario()
 	{
-		$users = User::all();
+		$users = User::paginate(6);
 		return view('users/users_cadastro', compact('users'));
 	}
 
@@ -265,10 +265,8 @@ class UserController extends Controller
 				$loggers = Loggers::create($input);
 				$validator = 'Usuário cadastrado com sucesso!';
 				$unidades  = Unidade::all();
-				$users     = User::all();
-				return view('users/users_cadastro', compact('users'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));	
+				$users     = User::paginate(6);
+				return redirect()->route('cadastroUsuario')->withErrors($validator)->with('users');
 			}	
 		}else {
 			$validator = Validator::make($request->all(), [
@@ -340,26 +338,26 @@ class UserController extends Controller
 			$input['unidade_abertura'] = $unidades_cadast;
 			$user = User::find($id);
 			$user->update($input);
-			$users = User::all();
+			$users = User::paginate(4);
 			$input['user_id'] = Auth::user()->id;
 			$input['acao']    = "alterar_usuario";
 			$loggers = Loggers::create($input);
 			$validator = "Usuário alterado com sucesso!!";
-			return view('users/users_cadastro', compact('users'))
-				->withErrors($validator)
-				->withInput(session()->flashInput($request->input()));						
+			return redirect()->route('cadastroUsuario')->withErrors($validator)->with('users');
 		}
     }
 
 	public function pesquisarUsuario(Request $request)
 	{
 		$input = $request->all();
-		$id    = $input['id'];
-		$pesq  = $input['pesq'];
-		if($id == 1) {
-			$users = DB::table('users')->where('users.name','like','%'.$pesq.'%')->get();
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq 	     = $input['pesq'];
+		$pesq2       = $input['pesq2']; 
+		if($pesq2 == 1) {
+			$users = DB::table('users')->where('users.name','like','%'.$pesq.'%')->paginate(6);
 		} 
-		return view('users/users_cadastro', compact('users'));
+		return view('users/users_cadastro', compact('users','pesq2','pesq'));
 	}
 
 	public function updateSenha(Request $request, $id)
@@ -381,9 +379,7 @@ class UserController extends Controller
 			$users = User::where('id',$id)->get();
 			$loggers = Loggers::create($input);
 			$validator = "Senha alterada com sucesso!!";
-			return redirect()->route('alterarUsuario',[$id])
-					->withErrors($validator)
-					->with('users','validator');
+			return redirect()->route('alterarUsuario', $id)->withErrors($validator)->with('users');
 		}	
 	}
 
@@ -392,9 +388,8 @@ class UserController extends Controller
 		$input = $request->all(); 
         User::find($id)->delete();
 		$validator = "Usuário excluído com sucesso!!";
-		$users = User::all();
+		$users = User::paginate(4);
 		$loggers = Loggers::create($input);
-        return view('users/users_cadastro', compact('users'))
-					->withErrors($validator);
+        return redirect()->route('cadastroUsuario')->withErrors($validator)->with('users');
     }
 }

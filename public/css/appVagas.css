@@ -1,0 +1,92 @@
+body {
+    color: #000;
+    overflow-x: hidden;
+    height: auto;
+    width: auto;
+    background: linear-gradient(-45deg, #32CD32 50%, #EEEEEE 50%);
+    background-repeat: repeat;
+}
+
+.card {
+    background-color: #FFF;
+    border-radius: 25px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    padding: 40px;
+    width: 100%;
+    z-index: 0;
+}
+
+.radio {
+    display: inline-block;
+    border-radius: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #BDBDBD;
+    font-weight: 500;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    filter: grayscale(100%); 
+}
+
+.radio:hover {
+    border: 1px solid #F9A825;
+    box-shadow: 0px 8px 16px 0px #EEEEEE;
+    color: #32CD32 !important;
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    filter: grayscale(0%);
+}
+
+.radio.selected {
+    border: 1px solid #F9A825;
+    box-shadow: 0px 8px 16px 0px #EEEEEE;
+    color: #32CD32 !important;
+    -webkit-filter: grayscale(0%);
+    -moz-filter: grayscale(0%);
+    -o-filter: grayscale(0%);
+    -ms-filter: grayscale(0%);
+    filter: grayscale(0%);
+}
+
+.card-block {
+    border: 1px solid #CFD8DC;
+    width: 65%;
+    margin: 2.5%;
+    padding: 20px 25px 15px 25px;
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+}
+
+.image-icon {
+    width: 85px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+
+    .card {
+        background-color: #FFF;
+        border-radius: 25px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        padding: 40px;
+        width: 40%;
+        z-index: 0;
+        margin-left: 140px;
+    }
+
+    .card-block {
+        padding: 20px 20px 0px 20px;
+        height: 250px;
+    }
+}

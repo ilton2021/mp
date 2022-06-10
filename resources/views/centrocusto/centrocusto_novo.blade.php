@@ -1,54 +1,114 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
-        <title>MP RH</title>
-		<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/style.css')}}">
-        <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
-        <style>
-		.navbar .dropdown-menu .form-control {
-			width: 300px;
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Movimentação de Pessoal - Validação</title>
+  <link rel="stylesheet" href="{{ asset('css/appCadastros.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+		function selects_und() {
+			var ele = document.getElementsByClassName('unidade');
+			for (var i = 0; i < ele.length; i++) {
+				if (ele[i].type == 'checkbox')
+					ele[i].checked = true;
+			}
 		}
-        </style>
-    </head>
+
+		function deSelect_und() {
+			var ele = document.getElementsByClassName('unidade');
+			for (var i = 0; i < ele.length; i++) {
+				if (ele[i].type == 'checkbox')
+					ele[i].checked = false;
+			}
+		}
+  </script>
+</head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-2 mb-5 rounded fixed-top">
   	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
 				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
-</nav>
-	<div class="container-fluid">
-	<div class="row" style="margin-top: 25px;">
-		<div class="col-md-12 text-center">
-			<h3 style="font-size: 18px;">CADASTRAR CENTRO  DE CUSTO:</h3>
-		</div>
-	</div>
-	@if ($errors->any())
-		<div class="alert alert-success">
-		  <ul>
-		    @foreach ($errors->all() as $error)
-		      <li>{{ $error }}</li>
-			@endforeach
-		  </ul>
-		</div>
-	@endif
-	<div class="row" style="margin-top: 25px;">
-		<div class="col-md-2 col-sm-0"></div>
-		<div class="col-md-8 col-sm-12 text-center">
-		 <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <a class="card-header bg-success text-decoration-none text-white bg-success" type="button" data-toggle="collapse" data-target="#PESSOAL" aria-expanded="true" aria-controls="PESSOAL">
-                        Cargo: <i class="fas fa-check-circle"></i>
-                    </a>
-                </div>	
-					 <form action="{{\Request::route('storeCentrodecusto')}}" method="post" >
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                    </ul>
+
+                    <ul class="navbar-nav ml-auto">
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('telaLogin') }}">{{ __('Logar') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('telaRegistro') }}">{{ __('Cadastrar Usuário') }}</a>
+                                </li>
+                            @endif
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('telaReset') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form1').submit();">
+                                        {{ __('Trocar Senha') }}
+                                    </a>
+
+                                    <form id="logout-form1" action="{{ route('telaReset') }}" method="GET" style="display: none;">
+                                        
+                                    </form>
+									
+									<a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form2').submit();">
+                                        {{ __('Sair') }}
+                                    </a>
+
+                                    <form id="logout-form2" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        @endguest
+                    </ul>
+                </div>
+    </nav>
+  <div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-7">
+            <div class="card b-0">
+                <fieldset class="show">
+                    <div class="form-card">
+					<form action="{{\Request::route('storeCentrodecusto')}}" method="post" >
 					 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<table border="0" class="table bordered" style="line-height: 1.5;" >
+						<table class="table bordered">
+						 <tr>
+							<td colspan="2">
+							@if ($errors->any())
+							  <div class="alert alert-danger">
+								<ul>
+									@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							  </div>
+							@endif
+							</td>
+						 </tr>
+						 <tr>
+						    <td colspan="2"><h5 class="sub-heading">NOVO CENTRO DE CUSTO:</h5></td>
+						 </tr>
 						 <tr>
 							<td> Nome: </td>
 							<td>
@@ -56,30 +116,32 @@
 							</td>
                          </tr> 
                          <tr>
-                            <td> Unidade(s): </td>   
-                            <td> 
-                              <p align="left"><input type="checkbox" id="unidade_1" name="unidade_1" /> HCP GESTÃO <br></p>
-                              <p align="left"><input type="checkbox" id="unidade_2" name="unidade_2" /> HMR </p>
-                              <p align="left"><input type="checkbox" id="unidade_3" name="unidade_3" /> UPAE BELO JARDIM </p>
-                              <p align="left"><input type="checkbox" id="unidade_4" name="unidade_4" /> UPAE ARCOVERDE </p>
-                              <p align="left"><input type="checkbox" id="unidade_5" name="unidade_5" /> UPAE ARRUDA </p>
-                              <p align="left"><input type="checkbox" id="unidade_6" name="unidade_6" /> UPAE CARUARU </p>
-                              <p align="left"><input type="checkbox" id="unidade_7" name="unidade_7" /> HSS </p>
-                              <p align="left"><input type="checkbox" id="unidade_8" name="unidade_8" /> HCA </p>
-							  <p align="left"><input type="checkbox" id="unidade_9" name="unidade_9" /> UPA IGARASSU </p>
-                            </td>
-						  <td> 
-						  <p style="margin-top: 260px; margin-right: -45px;"> 
-                           <a href="{{ route('cadastroCentrocusto') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a> 
-						   <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Salvar" id="Salvar" name="Salvar" />
-                          </p> 
-                          </td>
-						  <td hidden> <input hidden type="text" id="acao" name="acao" value="cadastrar_novo_centrocusto" class="form-control" /> </td>
-						  <td hidden> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+								<td> Unidade(s): </td>
+								<td>
+									<li style="list-style: none;">
+										<input style="font-size: 12px;" class="btn btn-primary" type="button" onclick='selects_und()' value="Marcar todos" />
+										<input style="font-size: 12px;" class="btn btn-danger" type="button" onclick='deSelect_und()' value="Desmarcar todos" />
+									</li>
+									<li style="list-style: none;">
+										@foreach($unidades as $unidade)
+										 <input type='checkbox' id="unidade[]" class="unidade" name="unidade[]" value="<?php echo $unidade->id; ?>" />{{$unidade->sigla}}&nbsp;</input>
+										@endforeach
+									</li>
+								</td>
+								<td hidden> <input hidden type="text" id="acao" name="acao" value="cadastrar_novo_centrocusto" class="form-control" /> </td>
+								<td hidden> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+						  </tr>
+						  <tr>
+							<td colspan="2" align="right"> <a href="{{ route('cadastroCentrocusto') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-bottom:30px;margin-top: 5px;color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
+								 <input type="submit" class="btn btn-success btn-sm" style="margin-bottom:30px;margin-top: 5px;" value="SALVAR" id="Salvar" name="Salvar" /> </td>
 						 </tr>
 						</table>
-					 </form>
-		</div>
+					</form>
+                    </div>
+                </fieldset> 
+             </div>
+        </div>
     </div>
 </div>
 </body>
+</HTML>

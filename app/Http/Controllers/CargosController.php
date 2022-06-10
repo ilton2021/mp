@@ -12,7 +12,7 @@ class CargosController extends Controller
 {
     public function cadastroCargo()
 	{
-        $cargos = Cargos::All();
+        $cargos = Cargos::paginate(5);
 		return view('cargos/cargos_cadastro', compact('cargos'));
 	}
 	
@@ -24,13 +24,15 @@ class CargosController extends Controller
 	public function pesquisarCargo(Request $request)
 	{
 		$input = $request->all();
-		$id    = $input['id'];
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq2 = $input['pesq2'];
 		$pesq  = $input['pesq'];
 		
-		if($id == 1) {
-			$cargos = DB::table('cargos')->where('cargos.nome','like','%'.$pesq.'%')->get();
+		if($pesq2 == 1) {
+			$cargos = DB::table('cargos')->where('cargos.nome','like','%'.$pesq.'%')->paginate(6);
 		} 
-		return view('cargos/cargos_cadastro', compact('cargos'));
+		return view('cargos/cargos_cadastro', compact('cargos','pesq','pesq2'));
 	}
 	
 	public function storeCargo(Request $request){
@@ -45,11 +47,9 @@ class CargosController extends Controller
 		} else {
 			$cargo   = Cargos::create($input);
 			$loggers = Loggers::create($input);
-			$cargos  = Cargos::all();
+			$cargos  = Cargos::paginate(4);
 			$validator = 'Cargo Cadastrado com Sucesso!';
-			return view('cargos/cargos_cadastro', compact('cargos'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));
+			return redirect()->route('cadastroCargo')->withErrors($validator)->with('cargos');
 		}
 	}
 	
@@ -72,11 +72,9 @@ class CargosController extends Controller
 			$cargos = Cargos::find($id); 
 			$cargos->update($input);
 			$loggers = Loggers::create($input);
-			$cargos  = Cargos::all();
+			$cargos  = Cargos::paginate(4);
 			$validator = 'Cargo Alterado com Sucesso!';
-			return view('cargos/cargos_cadastro', compact('cargos'))
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
+			return redirect()->route('cadastroCargo')->withErrors($validator)->with('cargos');
 		}
 	}
 	
@@ -90,10 +88,8 @@ class CargosController extends Controller
 		Cargos::find($id)->delete();
 		$input   = $request->all();
 		$loggers = Loggers::create($input);
-		$cargos  = Cargos::all();
+		$cargos  = Cargos::paginate(4);
         $validator = 'Cargo excluído com sucesso!';
-		return view('cargos.cargos_cadastro', compact('cargos'))
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
+		return redirect()->route('cadastroCargo')->withErrors($validator)->with('cargos');
 	}
 }

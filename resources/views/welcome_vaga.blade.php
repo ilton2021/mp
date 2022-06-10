@@ -1,30 +1,25 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
-		<meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Abertura de Vaga</title>
-		<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/style.css')}}">
-        <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
-	    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
-		<style>
-		.navbar .dropdown-menu .form-control {
-			width: 300px;
-		}
-        </style>
-    </head>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Movimentação de Pessoal - Validação</title>
+  <link rel="stylesheet" href="{{ asset('css/app2.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
+</head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
-  	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
+  	    <img src="{{asset('img/Imagem1.png')}}" height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-				<h4 class="d-none d-sm-block">Solicitação de Abertura de Vaga</h4>
+				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
@@ -71,68 +66,74 @@
                         @endguest
                     </ul>
                 </div>
-    </nav>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-            </div>
-            <div class="col-sm-4">     
-            
-            </div>
-            <div class="col-sm-4">
-            </div>
+  </nav>
+  <div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-7">
+            <div class="card2 b-0">
+                <fieldset class="show">
+                    <div class="form-card2">
+                        <h5 class="sub-heading"><br><br>Escolha uma opção:</h5>
+
+                        <div class="row px-1 radio2-group">
+                            <div class="card2-block radio">
+							 <a href="{{ route('indexVaga2') }}">
+                                <div class="image2-icon">
+                                    <img class="icon2 icon1" src="{{asset('img/mp.png')}}">
+                                </div>
+                                <p class="sub-desc"><center>CADASTRAR NOVA VAGA</center></p> 
+							 </a>
+                            </div>
+                            
+                            <div class="card2-block radio">
+							 <a href="{{ route('visualizarVagas') }}">
+                                <div class="image2-icon">
+                                    <img class="icon2 icon1" src="{{asset('img/mpVisualizar.png')}}">
+                                </div>
+                                <p class="sub-desc"><center>VISUALIZAR VAGAS</center></p>
+							 </a>
+                            </div>
+
+                            @foreach($vagas as $vaga)
+                             @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 && $vaga->inativa == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61))
+                             <div class="card2-block radio">
+							  <a href="{{ route('indexValidaVaga') }}">
+                                <div class="image2-icon">
+                                    <img class="icon2 icon1" src="{{asset('img/mpVisualizar.png')}}">
+                                </div>
+                                <p class="sub-desc"><center>VALIDAR VAGA</center></p>
+                                </a>
+                             </div>
+                             @break
+                             @endif
+                            @endforeach
+                            
+                        </div>
+                    </div>
+                </fieldset> <br>
+                <div class="container">
+                <div class="row">
+                    <div class="col align-self-start">
+                    @if(Auth::user()->funcao == "Administrador")
+                    <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        CADASTRAR
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
+                        <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
+                    </div>
+                    <a href="{{ route('excluirVagas') }}" class="btn-danger btn btn-sm">EXCLUIR VAGAS</a>
+                    @else
+                    <a href="{{ route('excluirVagas') }}" class="btn-danger btn btn-sm">EXCLUIR VAGAS</a>
+                    @endif
+                    <a href="{{ url('/duvidasVagas') }}" class="btn btn-success btn btn-sm" style="color: #FFFFFF;"> DÚVIDAS </a>
+                    <a href="{{ url('/home') }}" class="btn btn-warning btn btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
+                    </div>
+                </div>
+                </div>
+             </div>
         </div>
     </div>
-
-    <div class="container">
-     <div class="row">
-        <div class="col align-self-start">
-          @if(Auth::user()->funcao == "Administrador")
-          <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            CADASTRAR
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
-            <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
-          </div>
-          <a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a>
-          @else
-          <a href="{{ route('excluirVagas') }}" class="btn-danger btn">EXCLUIR VAGAS</a>
-          @endif
-          <a href="{{ url('/duvidasVagas') }}" class="btn btn-success btn" style="color: #FFFFFF;"> DÚVIDAS </a>
-          <a href="{{ url('/home') }}" class="btn btn-warning btn" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
-         </div>
-       </div>
-    </div>
-	<br><br>
-    <div class="container">
-    <div class="row justify-content">
-      <div class="col-12"> <Center>
-        <span><h3 style="color:#65b345; margin-bottom:0px;"><u>Escolha uma opção:</u></h3></span> </Center>
-      </div>
-    </div> <br><br>
-    <div class="row">
-        <div class="col align-self-start" style="margin-top: 10px;">
-          <img id="img-unity" src="{{asset('img/mp.png')}}" class="rounded-sm" alt="...">
-           <a style="margin-left: 40px;" href="{{ route('indexVaga2') }}" class="btn btn-outline-success">CADASTRAR NOVA VAGA</a>
-         </div>
-        <div class="col align-self-end" style="margin-top: 20px;">
-         <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-         <a style="margin-left: 70px;" href="{{ route('visualizarVagas') }}" class="btn btn-outline-info">VISUALIZAR VAGAS</a>
-	    </div>
-        <div class="col align-self-center">
-         @foreach($vagas as $vaga)
-		  @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 && $vaga->inativa == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61 && $vaga->inativa == 0))
-		   <img id="img-unity" src="{{asset('img/mpVisualizar.png')}}" class="rounded-sm" alt="...">
-		   <a style="margin-left: 80px;" href="{{ route('indexValidaVaga') }}" class="btn btn-outline-dark">VALIDAR VAGA</a>
-          @break
-          @endif
-		 @endforeach
-       </div>
-    </div>
-
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    </body>
-</html>
+</div>
+</body>
+</HTML>

@@ -24,7 +24,7 @@ class AcessoRH3Controller extends Controller
 		$nome     = Auth::user()->name;
 		if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH") {
 			$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('aprovada',1)
-			  ->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
+			  ->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(6);
 			$qtd = sizeof($mps);
 			if($qtd == 0){
 			    $ids = NULL;
@@ -51,7 +51,7 @@ class AcessoRH3Controller extends Controller
 		$nome     = Auth::user()->name;
 		if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH") {
 			$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('aprovada',1)
-			  ->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
+			  ->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(8);
 			$qtd = sizeof($mps);
 			if($qtd == 0){
 			    $ids = NULL;
@@ -75,7 +75,7 @@ class AcessoRH3Controller extends Controller
 		}
 		if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH") {
 			$mps = DB::table('mp')->whereIn('unidade_id',$und)->where('aprovada',1)
-			  ->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(20);
+			  ->where('concluida',1)->orderby('mp.unidade_id', 'ASC')->paginate(8);
 			$qtd = sizeof($mps);
 			if($qtd == 0){
 			    $ids = NULL;

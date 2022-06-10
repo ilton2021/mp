@@ -1,48 +1,46 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="{{asset('img/favico.png')}}">
-		<meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Programa Degrau - RH</title>
-		<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-        <link rel="stylesheet" href="{{asset('css/style.css')}}">
-        <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
-	    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
-		<script type="text/javascript">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>Movimentação de Pessoal - Validação</title>
+  <link rel="stylesheet" href="{{ asset('css/appCadastros.css') }}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
+  <script type="text/javascript">
 			function data(value) {
 				var a = document.getElementById('pesq2').value;
 				if(a == "data") {
 					document.getElementById('linha').hidden       = false;
 					document.getElementById('data_inicio').hidden = false;
 					document.getElementById('data_fim').hidden    = false;
-					document.getElementById('txtInicio').hidden   = false;
-					document.getElementById('txtFim').hidden 	  = false;
+					document.getElementById('pesq').hidden		  = true;
 				} else {
 					document.getElementById('linha').hidden		  = true;
 					document.getElementById('data_inicio').hidden = true;
 					document.getElementById('data_fim').hidden    = true;
-					document.getElementById('txtInicio').hidden   = true;
-					document.getElementById('txtFim').hidden      = true;
+					document.getElementById('pesq').hidden		  = false;
 				}
 			}
-		</script>
-		<style>
+  </script>
+  <style>
 		.navbar .dropdown-menu .form-control {
 			width: 300px;
 		}
-        </style>
-    </head>
+  </style>
+</head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-2 mb-2 rounded fixed-top">
   	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
-				<h4 class="d-none d-sm-block">Programa Degrau - RH</h4>
+				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
@@ -90,77 +88,81 @@
                     </ul>
                 </div>
     </nav>
-	<p style="margin-left: 1170px"> <a href="{{url('homeProgramaDegrau')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a></p>
-	<center>
-	<form action="{{ route('pesquisaPD') }}" method="POST">
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	<table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid;"> 
-	 <tr>
-		<td align="right"> <p style="margin-top: 10px;"> Unidade: </p> </td>
-		<td> 
-		 <select class="form-control" id="unidade_id" name="unidade_id">
-		     <option id="unidade_id" name="unidade_id" value="0">Selecione...</option>
-			 <option id="unidade_id" name="unidade_id" value="1">HCP GESTÃO</option>
-			 <option id="unidade_id" name="unidade_id" value="2">HMR</option>
-			 <option id="unidade_id" name="unidade_id" value="3">UPAE BELO JARDIM</option>
-			 <option id="unidade_id" name="unidade_id" value="4">UPAE ARCOVERDE</option>
-			 <option id="unidade_id" name="unidade_id" value="5">UPAE ARRUDA</option>
-			 <option id="unidade_id" name="unidade_id" value="6">UPAE CARUARU</option>
-			 <option id="unidade_id" name="unidade_id" value="7">HSS</option>
-			 <option id="unidade_id" name="unidade_id" value="8">HPR</option>
-			 <option id="unidade_id" name="unidade_id" value="9">UPA IGARASSU</option>
-		 </select>
-		</td>
-		<td align="right"> 
-			<select class="form-control" id="pesq2" name="pesq2" onchange="data('sim')">
-			  <option id="pesq2" name="pesq2" value="">Selecione...</option>
-			  <option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
-			  <option id="pesq2" name="pesq2" value="data">DATA</option>
-			</select>	
-		</td> 
-		<td> <input class="form-control" type="text" id="pesq" name="pesq"> </td>
-		<td> <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Pesquisar" id="Salvar" name="Salvar" /> </td>
-	 </tr>
-	 <tr hidden id="linha">
-	 <td id="txtInicio" hidden><p align="center"> Data Início: </p></td>
-	 <td> <input hidden type="date" id="data_inicio" name="data_inicio" class="form-control" /> </td>
-	 <td id="txtFim" hidden><p align="center"> Data Fim: </p></td>
-	 <td> <input hidden type="date" id="data_fim" name="data_fim" class="form-control" /> </td>
-	 </tr>
-	</table>
-	</form>
-    <table class="table table-bordeared" style="WIDTH: 1000px; border-style:solid; border-color:blue;">
-		 <tr>
-		    <thead>
-			  <tr>
-			   <td colspan="4"><center><font color="blue"><b>VAGAS CRIADAS:</b></font><center></td>
-			  </tr>
-			  <tr>
-			   <td><center>NOME DA VAGA</center></td>
-			   <td><center>SOLICITANTE</center></td>
-			   <td><center>Visualizar</center></td>
-			  </tr>
-			 </thead>
-			 <?php $b = 0; ?>
-			 @foreach($pd as $pd)
-			 @if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30))
-			 <?php $b = 1; ?>
-			 <tbody>
-			  <tr>  
-			   <td><center>{{ $pd->vaga }}</center></td>
-			   <td><center>{{ $pd->solicitante }}</center></td>   
-			   <td><center><a href="{{ route('visualizarVagaPD', $pd->id) }}" class="btn-info btn">Visualizar</center></a></td>
-			  </tr>
-			 </tbody>
-			 @endif
-			 @endforeach
-		  </td>
-		 </tr>
-		 </table>
-	    </center>
-	</footer>
-    <script src="{{asset('js/jquery.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    </body>
-</html>
+  <div class="container-fluid px-1 py-5 mx-auto">
+    <div class="row d-flex justify-content-center">
+        <div class="col-xl-5 col-lg-6 col-md-7">
+            <div class="card b-0">
+
+                <fieldset class="show">
+                    <div class="form-card">
+					<form action="{{ route('pesquisaPD') }}" method="POST">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<table class="table table-sm" style="height: 10px"> 
+					<tr>
+						<td align="right"> Unidade: </td>
+						<td> 
+						<select class="form-control form-control-sm" id="unidade_id" name="unidade_id" required>
+							<option id="unidade_id" name="unidade_id" value="">Selecione...</option>
+							@foreach($unidades as $unidade)
+							<option id="unidade_id" name="unidade_id" value="<?php echo $unidade->id; ?>">{{ $unidade->sigla }}</option>
+							@endforeach
+						</select>
+						</td>
+						<td align="right"> 
+						  <select class="form-control form-control-sm" id="pesq2" name="pesq2" onchange="data('sim')">
+							<option id="pesq2" name="pesq2" value="">Selecione...</option>
+							<option id="pesq2" name="pesq2" value="solicitante">SOLICITANTE</option>
+							<option id="pesq2" name="pesq2" value="data">DATA</option>
+						  </select>	
+						</td> 
+						<td> <input class="form-control form-control-sm" type="text" id="pesq" name="pesq"> </td>
+						<td id="linha"> <input hidden type="date" id="data_inicio" name="data_inicio" class="form-control" /> </td>
+						<td id="linha"> <input hidden type="date" id="data_fim" name="data_fim" class="form-control" /> </td>
+						<td> <input type="submit" class="btn btn-success btn-sm" value="PESQUISAR" id="Salvar" name="Salvar" /> </td>
+					</tr>
+					</table>
+					</form>								
+						<table class="table table-sm">
+						<tr>
+							<thead>
+							<tr>
+							<td colspan="4"><center><font color="green"><b>VAGAS CRIADAS:</b></font><center></td>
+							</tr>
+							<tr>
+							<td><center>NOME DA VAGA</center></td>
+							<td><center>SOLICITANTE</center></td>   
+							<td><center>VISUALIZAR</center></td>
+							@if(Auth::user()->funcao == "DP" || Auth::user()->funcao == "RH")
+							 <td><center>RH3</center></td>
+							@endif
+							</tr>
+							</thead> <?php $b = 0; ?>
+							@foreach($pds as $pd)
+							@if(($pd->solicitante == Auth::user()->name || Auth::user()->id == 198 || Auth::user()->id == 71 || Auth::user()->id == 30))
+							<?php $b = 1; ?>
+							<tbody>
+							<tr>  
+							<td><center>{{ $pd->vaga }}</center></td>
+							<td><center>{{ $pd->solicitante }}</center></td>   
+							<td><center><a href="{{ route('visualizarVagaPD', $pd->id) }}" class="btn-info btn btn-sm">VISUALIZAR</center></a></td>
+							</tr>
+							</tbody>
+							@endif
+							@endforeach
+						</td>
+						</tr>
+						</table>
+						<table  style="margin-top: -10px" border="0">
+							<tr>
+							 <td style="width: 800px"> {{ $pds->appends(['unidade_id' => isset($unidade_id) ? $unidade_id : '','pesq2' => isset($pesq2) ? $pesq2 : '','pesq' => isset($pesq) ? $pesq : ''])->links() }} </td>
+							 <td> <a href="{{url('homeProgramaDegrau')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF; margin-top: -10px"> VOLTAR <i class="fas fa-undo-alt"></i> </a> </td>
+							</tr> 
+						</table>
+                    </div>
+                </fieldset> 
+             </div>
+        </div>
+    </div>
+</div>
+</body>
+</HTML>

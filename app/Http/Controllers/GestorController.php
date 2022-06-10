@@ -14,7 +14,7 @@ class GestorController extends Controller
 {
     public function cadastroGestor()
 	{
-		$gestores = Gestor::all();
+		$gestores = DB::table('gestor')->paginate(8);
 		$unidades = Unidade::all();
 		return view('gestor.gestor_cadastro', compact('gestores','unidades'));
 	}
@@ -22,21 +22,17 @@ class GestorController extends Controller
 	public function pesquisarGestor(Request $request)
 	{
 		$input = $request->all();
-		$id    = $input['id'];
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		$pesq2 = $input['pesq2'];
 		$pesq  = $input['pesq'];
-		
-		if($id == 1) {
-			$gestores = DB::table('gestor')->where('gestor.nome', 'like', '%' . $pesq . '%')->get();
-		} else if($id == 2) {
-			$gestores = DB::table('gestor')->where('gestor.email', 'like', '%' . $pesq . '%')->get();
-		} else if($id == 3) {
-		    $gestores = DB::table('gestor')->where('gestor.funcao', 'like', '%' . $pesq . '%')->get();
-		} else if($id == 4) {
-		    $gestores = DB::table('gestor')->join('unidade','unidade.id','=','gestor.unidade_id')
-			->where('unidade.nome', 'like', '%' . $pesq . '%')->get();
-		}
+		if($pesq2 == 1) {
+			$gestores = DB::table('gestor')->where('gestor.nome', 'like', '%' . $pesq . '%')->paginate(8);
+		} else if($pesq2 == 2) {
+			$gestores = DB::table('gestor')->where('gestor.email', 'like', '%' . $pesq . '%')->paginate(8);
+		} 
 		$unidades = Unidade::all();
-		return view('gestor.gestor_cadastro', compact('unidades','gestores'));
+		return view('gestor.gestor_cadastro', compact('unidades','gestores','pesq2','pesq'));
 	}
 	
 	public function gestorNovo()
@@ -63,14 +59,11 @@ class GestorController extends Controller
 				->withErrors($validator)
 				->withInput(session()->flashInput($request->input()));
 		}else {
-			$gestor   = Gestor::create($input);
-			$gestores = Gestor::all();
-			$unidades = Unidade::all();
-			$loggers = Loggers::create($input);
+			$gestor    = Gestor::create($input);
+			$gestores  = DB::table('gestor')->paginate(6);
+			$loggers   = Loggers::create($input);
 			$validator = 'Gestor Cadastrado com Sucesso!';
-			return view('gestor.gestor_cadastro', compact('gestores','unidades'))
-				->withErrors($validator)
-				->withInput(session()->flashInput($request->input()));
+			return redirect()->route('cadastroGestor')->withErrors($validator)->with('gestores');
 		}
 	}
 	
@@ -80,13 +73,16 @@ class GestorController extends Controller
 		$cargos   = Cargos::all();
 		$gestor   = Gestor::where('id',$id)->get();
 		$gestor_imediat = Gestor::where('gestor_sim','1')->get();
-		
 		return view('gestor.gestor_alterar', compact('gestor','unidades','cargos','gestor_imediat'));
 	}
 	
 	public function updateGestor($id, Request $request)
 	{
 		$input = $request->all();
+		$gestor = Gestor::where('id',$id)->get();
+		$cargos = Cargos::all();
+		$gestor_imediat = Gestor::where('gestor_sim','1')->get();
+		$unidades = unidade::all();
 		$validator = Validator::make($request->all(), [
 			'nome'   => 'required|max:255',
 			'email'  => 'required|email|max:255',
@@ -95,19 +91,16 @@ class GestorController extends Controller
 			'funcao' => 'required'
 		]);
 		if ($validator->fails()) {
-			return view('gestor.gestor_alterar')
+			return view('gestor.gestor_alterar', compact('gestor','cargos','gestor_imediat','unidades'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		}else {
 			$gestor = Gestor::find($id);
 			$gestor->update($input);
-			$gestores = Gestor::all();
+			$gestores = Gestor::paginate(6);
 			$loggers = Loggers::create($input);
 			$validator = 'Gestor Alterado com Sucesso!';
-			$unidades = Unidade::all();
-			return view('gestor.gestor_cadastro', compact('gestores','unidades'))
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
+			return redirect()->route('cadastroGestor')->withErrors($validator)->with('gestores');
 		}
 	}
 	
@@ -121,12 +114,9 @@ class GestorController extends Controller
 	{
 		Gestor::find($id)->delete();
 		$input = $request->all();
-		$gestores = Gestor::all();
+		$gestores = Gestor::paginate(6);
 		$loggers = Loggers::create($input);
         $validator = 'Gestor excluído com sucesso!';
-		$unidades = Unidade::all();
-		return view('gestor.gestor_cadastro', compact('gestores','unidades'))
-					->withErrors($validator)
-					->withInput(session()->flashInput($request->input()));
+		return redirect()->route('cadastroGestor')->withErrors($validator)->with('gestores');
 	}
 }

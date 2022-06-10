@@ -157,15 +157,13 @@ class ProgramaDegrauController extends Controller
 		    	$input['tipo'] = 'rpa';
 			}
 			if($input['motivo'] == "substituicao_definitiva") {
-			  if(!empty($input['motivo6'])){			
-				if($input['motivo6'] == ""){
+			  if(!empty($input['motivo2'])){			
+				if($input['motivo2'] == ""){
 					$validator = "Informe qual é o Funcionário que vai ser substituído!";
 				    return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
 				      ->withErrors($validator)
                       ->withInput(session()->flashInput($request->input()));
-				} else {
-					$input['motivo2'] = $input['motivo6'];
-				}
+				} 
 			  } else {
 				$validator = "Informe qual é o Funcionário que vai ser substituído!";
 				return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
@@ -242,7 +240,8 @@ class ProgramaDegrauController extends Controller
 			$gestor 	= Gestor::where('id',$usuario_id)->get();	
 			$idVI 	    = $id;
 			$idG  = Auth::user()->id;
-			return view('programaDegrau/home_vaga_degrau', compact('unidade','idVI','idG','gestor','unidades','unidade'));
+			$a = 1;
+			return view('programaDegrau/home_vaga_degrau', compact('unidade','idVI','idG','gestor','unidades','unidade','a'));
 		}
 	}
 
@@ -263,10 +262,10 @@ class ProgramaDegrauController extends Controller
 	public function visualizarVagasPD()
 	{
 		$unidades  = Unidade::all();
-		$pd        = VagaInterna::all();
+		$pds        = DB::table('vaga_interna')->paginate(8);
 		$aprovacao = AprovacaoVagaInterna::all();
 		$gestores  = Gestor::all();
-		return view('programaDegrau/visualizarPD', compact('unidades','pd','aprovacao','gestores'));
+		return view('programaDegrau/visualizarPD', compact('unidades','pds','aprovacao','gestores'));
 	}
 
 	public function visualizarVagaPD($id)
@@ -299,44 +298,38 @@ class ProgramaDegrauController extends Controller
 		$pesq2   = $input['pesq2'];
 		
 		if($pesq2 == "solicitante"){
-			if($unidade == "0"){
-				$pd = DB::table('vaga_interna')->where('solicitante', 'like', '%' . $pesq . '%')->get();
-			} else {
-				$pd = DB::table('vaga_interna')->where('solicitante', 'like', '%' . $pesq . '%')
-				->where('unidade_id',$unidade)->get();
-			}
+			$pds = DB::table('vaga_interna')->where('solicitante', 'like', '%' . $pesq . '%')
+				->where('unidade_id',$unidade)->paginate(8);
 		} else if($pesq2 == "data"){
 			$data_i = date('Y-m-d', strtotime($input['data_inicio']));
 			$data_f = date('Y-m-d', strtotime($input['data_fim']));   
 			if($unidade != "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
 				$data_f = date('Y-m-d', strtotime('now')); 
-				$pd = DB::table('vaga_interna')
+				$pds = DB::table('vaga_interna')
 							->whereBetween('vaga_interna.data_emissao',[$data_i,$data_f])
 							->where('vaga_interna.concluida',0)->where('vaga_interna.unidade_id',$unidade)
-							->select('vaga_interna.*')->orderBy('vaga_interna.id')->get();
+							->select('vaga_interna.*')->orderBy('vaga_interna.id')->paginate(8);
 			}else if($unidade != "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
-				$pd = DB::table('vaga_interna')
+				$pds = DB::table('vaga_interna')
 							->whereBetween('vaga_interna.data_emissao',[$data_i,$data_f])
 							->where('vaga_interna.concluida',0)->where('vaga_interna.unidade_id',$unidade)
-							->select('vaga_interna.*')->orderBy('vaga_interna.id')->get();  
+							->select('vaga_interna.*')->orderBy('vaga_interna.id')->paginate(8);  
 			}else if($unidade == "0" && ($data_i != "1970-01-01" && $data_f != "1970-01-01")){
-				$pd = DB::table('vaga_interna')
+				$pds = DB::table('vaga_interna')
 							->whereBetween('vaga_interna.data_emissao',[$data_i,$data_f])
 							->where('vaga_interna.concluida',0)
-							->select('vaga_interna.*')->orderBy('vaga_interna.id')->get();
+							->select('vaga_interna.*')->orderBy('vaga_interna.id')->paginate(8);
 			}else if($unidade == "0" && ($data_i != "1970-01-01" && $data_f == "1970-01-01")){
 				$data_f = date('Y-m-d', strtotime('now')); 
-				$pd = DB::table('vaga_interna')
+				$pds = DB::table('vaga_interna')
 							->whereBetween('vaga_interna.data_emissao',[$data_i,$data_f])
 							->where('vaga_interna.concluida',0)
-							->select('vaga_interna.*')->orderBy('vaga_interna.id')->get();
+							->select('vaga_interna.*')->orderBy('vaga_interna.id')->paginate(8);
 			} else if($data_i == "1970-01-01" && $data_f == "1970-01-01") {
-				$pd = VagaInterna::all();	
+				$pds = VagaInterna::all();	
 			}
-		} else if($unidade != "0" && $pesq2 == ""){
-			$pd = DB::table('vaga_interna')->where('unidade_id',$unidade)->get();
-		} else {
-			$pd = VagaInterna::all();
+		} else if($unidade != "0"){
+			$pds = DB::table('vaga_interna')->where('unidade_id',$unidade)->paginate(8);
 		}
 		$unidades   = Unidade::all();
 		$unidade    = Unidade::where('id',$unidade)->get();
@@ -345,7 +338,7 @@ class ProgramaDegrauController extends Controller
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade . '%')->orderBy('nome','ASC')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade . '%')->orderBy('nome','ASC')->get();
 		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade . '%')->orderBy('nome','ASC')->get();
-		return view('programaDegrau/visualizarPD', compact('unidades','unidade','pd','gestores','cargos','centro_custos','setores','centro_custo_nv'));
+		return view('programaDegrau/visualizarPD', compact('unidades','unidade','pds','gestores','cargos','centro_custos','setores','centro_custo_nv'));
 	}
 
 	public function validarPD()
@@ -903,10 +896,22 @@ class ProgramaDegrauController extends Controller
 		return view('programaDegrau/programaDegrauAlterar', compact('unidade','gestores','unidades','pd','idVaga','cargos','centro_custos','just_vaga','gestor','aprovacao','setores','comportamental','competencias'));
    }
 
-   public function alterarPDs($id, Request $request)
-   {
-	   $input = $request->all(); 
-	   $validator = Validator::make($request->all(), [
+    public function alterarPDs($id, Request $request)
+    {
+	    $input     = $request->all(); 
+	    $pd        = VagaInterna::where('id',$id)->get();
+	    $just_vaga = JustificativaVagaInterna::where('vaga_interna_id', $pd[0]->id)->get();
+	    $aprovacao = AprovacaoVagaInterna::where('vaga_interna_id',$id)->get();
+	    $competencias   = CompetenciasVagaInterna::where('vaga_interna_id',$id)->get(); 
+	    $comportamental = PerfilComportamentalVagaInterna::where('vaga_interna_id',$id)->get();
+	    $id_unidade     = $pd[0]->unidade_id;
+	    $unidade  = Unidade::where('id',$id_unidade)->get();	
+	    $unidades = Unidade::all();
+		$cargos   = Cargos::orderBy('nome','ASC')->get();
+		$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
+		$setores 	   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
+		$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
+	    $validator = Validator::make($request->all(), [
 			'vaga'                   => 'required|max:255',
 			'departamento' 			 => 'required|max:255',
 			'data_prevista'			 => 'required',
@@ -928,21 +933,75 @@ class ProgramaDegrauController extends Controller
 			'descricao'				 => 'required|max:3000'
 		]);
 		if ($validator->fails()) {
-			$pd = VagaInterna::where('id',$id)->get();
-			$just_vaga = JustificativaVagaInterna::where('vaga_interna_id', $pd[0]->id)->get();
-			$aprovacao = AprovacaoVagaInterna::where('vaga_interna_id',$id)->get();
-			$competencias   = CompetenciasVagaInterna::where('vaga_interna_id',$id)->get(); 
-			$comportamental = PerfilComportamentalVagaInterna::where('vaga_interna_id',$id)->get();
-			$id_unidade  = $pd[0]->unidade_id;
-			$unidade  = Unidade::where('id',$id_unidade)->get();	
-			$unidades = Unidade::all();
-			$cargos   = Cargos::orderBy('nome','ASC')->get();
-			$centro_custos = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
-			$setores 	  = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->orderBy('nome','ASC')->get();
 			return view('programaDegrau/programaDegrauAlterar', compact('unidade','pd','unidades','cargos','centro_custos','setores','just_vaga','aprovacao','competencias','comportamental'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		} else {
+			if($input['horario_trabalho'] == "0") {
+				if(!empty($input['horario_trabalho2'])){		
+				  if($input['horario_trabalho2'] == "0"){
+					  $validator = "Informe qual é o Horário de Trabalho!";
+					  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+						 ->withErrors($validator)
+					   ->withInput(session()->flashInput($request->input()));
+				  } else {
+					  $input['horario_trabalho'] = $input['horario_trabalho2'];
+				  }
+				} else {
+				  $validator = "Informe qual é o Horário de Trabalho!";
+				  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					 ->withErrors($validator)
+					 ->withInput(session()->flashInput($request->input()));
+				} 
+			}
+			if($input['escala_trabalho'] == "outra") { 
+				if(!empty($input['escala_trabalho6'])){	
+				  if($input['escala_trabalho6'] == ""){
+					  $validator = "Informe qual é a Escala de Trabalho!";
+					  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					   ->withErrors($validator)
+					   ->withInput(session()->flashInput($request->input()));
+				  } else {
+					  $input['escala_trabalho'] = $input['escala_trabalho6'];
+				  }
+				} else {
+				  $validator = "Informe qual é a Escala de Trabalho!";
+				  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+				   ->withErrors($validator)
+				   ->withInput(session()->flashInput($request->input()));
+				}
+			}
+			if($input['tipo'] == "rpa") {
+				if(!empty($input['periodo_contrato'])){		
+				  if($input['periodo_contrato'] == ""){
+					  $validator = "Informe qual é o Período do Contrato do RPA!";
+					  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+						->withErrors($validator)
+					   ->withInput(session()->flashInput($request->input()));
+				  }
+				} else {
+				  $validator = "Informe qual é o Período do Contrato do RPA!";
+				  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
+				} 
+				  $input['tipo'] = 'rpa';
+			}
+			if($input['motivo'] == "substituicao_definitiva") {
+				if(!empty($input['motivo2'])){			
+				  if($input['motivo2'] == ""){
+					  $validator = "Informe qual é o Funcionário que vai ser substituído!";
+					  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+						->withErrors($validator)
+						->withInput(session()->flashInput($request->input()));
+				  } 
+				} else {
+				  $validator = "Informe qual é o Funcionário que vai ser substituído!";
+				  return view('programaDegrau/programaDegrau', compact('unidade','unidades','cargos','centro_custos','setores','centro_custo_nv'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
+				}
+		    } 
 			$input['data_emissao']  = date('Y-m-d', strtotime($input['data_emissao']));
 			$input['data_prevista'] = date('Y-m-d', strtotime($input['data_prevista']));
 			$input['gestor_id'] = Auth::user()->id;

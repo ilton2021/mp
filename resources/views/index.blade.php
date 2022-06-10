@@ -511,11 +511,7 @@
           <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0"> 
 			<tr>
-			  <?php if($tipo_mp == 0){ ?>
-			  <td colspan="2"><center><strong><h3><br>Movimentação de Pessoal - ORDINÁRIO</h3></strong></center></td>
-			  <?php } else { ?>
-			  <td colspan="2"><center><strong><h3><br>Movimentação de Pessoal - NÃO ORDINÁRIO</h3></strong></center></td>
-			  <?php } ?>
+			  <td colspan="2"><center><strong><h3><br>Movimentação de Pessoal</h3></strong></center></td>
 			  <td><center><img width="250" id="img-unity" src="{{asset('img')}}/{{$unidade[0]->caminho}}" class="rounded-sm" alt="..."></center></td>
 			  <td hidden><input hidden class="form-control" type="text" id="mp_id" name="mp_id" value="" readonly="true" /></td>
 			  <td hidden><input hidden class="form-control" type="text" id="concluida" name="concluida" value="" readonly="true" /></td>
@@ -551,10 +547,10 @@
 			  <td hidden><input id="tipo_mp" name="tipo_mp" value="{{ $tipo_mp }}" /></td>
 			</tr>
 			<tr>
-			  @if($tipo_mp == 0)
+			  @if($tipo_mp == 1)
 			  <td colspan="2">Departamento: <input class="form-control" type="text" id="departamento" name="departamento" value="{{ old('departamento') }}" required /></td>
-			  @elseif($tipo_mp == 1) 
-			  <td>Departamento: <input class="form-control" type="text" id="departamento" name="departamento" value="{{ old('departamento') }}" required /></td> 
+			  @else
+			  <td>Departamento: <input class="form-control" type="text" id="departamento" name="departamento" value="{{ old('departamento') }}" required /></td>
 			  <td>HCPGESTÃO: <br>
 			  <select id="hcpgestao" name="hcpgestao" class="form-control" onchange="desabilitarTable('sim')"> 
 			   @if(old('hcpgestao') == "NAO")
@@ -599,687 +595,7 @@
 			  </tr>	
 			</table>
 		  </center>
-		  <br>	 
-		  		
-	      <center>
-		   <table hidden class="table table-bordered" style="width: 1000px;" cellspacing="0" id="table_hcpgestao" name="table_hcpgestao">
-		    <tr>
-			 <td rowspan="5" width="150"><center><h5>Admissão HCP </h5> 
-			 @if(old('tipo_mov5') == "on")
-			 <input type="checkbox" id="tipo_mov5" name="tipo_mov5" checked />
-		     @else
-			 <input disabled type="checkbox" onclick="desabilitar5('sim')" id="tipo_mov5" name="tipo_mov5" /> 
-			 @endif
-			 </center>
-			 </td> 
-			 <td colspan="4" width="300"><b>Soma Total de salários e outras verbas: </b>
-			  @if(old('tipo_mov5') == "on")
-				<input required class="form-control" readonly="true" placeholder="ex: 2500 ou 2580,21"  type="number" id="total" name="total" value="{{ old('total') }}" />	
-			  @else
-				<input required disabled="true"  readonly="true" class="form-control" placeholder="ex: 2500 ou 2580,21"  type="number" id="total" name="total"  />	
-			  @endif
-			 </td>
-			 <td width="450" colspan="3">Jornada:
-			   @if(old('tipo_mov5') == "on")
-			   <select class="form-control" id="jornadahcp" name="jornadahcp" required>
-				 <option id="jornadahcp" name="jornadahcp" value="">Selecione...</option>
-				 @if(old('jornadahcp') == "diarista")
-				 <option id="jornadahcp" name="jornadahcp" value="diarista" selected>Diarista</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
-				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
-				 @elseif(old('jornadahcp') == "plantao_par")
-				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_par" selected>Plantão Par</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
-				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
-				 @elseif(old('jornadahcp') == "plantao_impar")
-				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar" selected>Plantão Ímpar</option>
-				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
-				 @elseif(old('jornadahcp') == "outra")
-				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
-				 <option id="jornadahcp" name="jornadahcp" value="outra" selected>Outra</option>
-				 @endif
-			   </select>
-			   @else
-			   <select disabled="true" class="form-control" id="jornadahcp" name="jornadahcp" required>
-				 <option id="jornadahcp" name="jornadahcp" value="">Selecione...</option>
-				 <option id="jornadahcp" name="jornadahcp" value="diarista">Diarista</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_par">Plantão Par</option>
-				 <option id="jornadahcp" name="jornadahcp" value="plantao_impar">Plantão Ímpar</option>
-				 <option id="jornadahcp" name="jornadahcp" value="outra">Outra</option>
-			   </select>	
-			   @endif
-			 </td>
-			</tr>
-			<tr>	
-			 <td width="370">			 
-			    HMR: 
-				 @if(old('und') == "on")
-				 <input type="checkbox" onclick="desabilitarUnd1('sim')" id="und" name="und" checked /><br>
-				 @else
-				 <input type="checkbox" onclick="desabilitarUnd1('sim')" id="und" name="und" /><br>	
-				 @endif
-				 <input type="hidden" class="form-control" id="unidade_2" name="unidade_2" value="2" />
-				@if(old('tipo_mov5') == "on")
-				Salário <br>
-				<input class="form-control" required placeholder="Salário HMR" step="00.01" type="number" id="salario_2" onChange="multiplicar2();" name="salario_2" value="{{ old('salario_2') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_2" onChange="multiplicar2();" name="outras_verbas_2" value="{{ old('outras_verbas_2') }}" />
-				@else
-				Salário <br>
-				<input class="form-control" required placeholder="Salário HMR" step="00.01" disabled="true" type="number" id="salario_2" onChange="multiplicar2();" name="salario_2" value="{{ old('salario_2') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_2" onChange="multiplicar2();" name="outras_verbas_2" value="{{ old('outras_verbas_2') }}" />	 
-				@endif
-				Centro de Custo: 
-				 @if(old('tipo_mov5') == "on")
-				 <select id="centro_custo_2" name="centro_custo_2" class="form-control" required>
-				    <option id="centro_custo_2" name="centro_custo_2" value="">Selecione...</option>
-				    @if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					 @if(old('centro_custo_2') == $c_c->nome)
-					 <option id="centro_custo_2" name="centro_custo_2" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					 @else
-					 <option id="centro_custo_2" name="centro_custo_2" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					 @endif
-					 @endforeach
-					@endif
-				 </select>
-				 @else
-				 <select id="centro_custo_2" disabled="true" name="centro_custo_2" class="form-control" required>
-					<option id="centro_custo_2" name="centro_custo_2" value="">Selecione...</option>
-					 @if(!empty($centro_custos))
-					  @foreach($centro_custos as $c_c)
-					   <option id="centro_custo_2" name="centro_custo_2" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					  @endforeach
-					 @endif
-				 </select>	   
-				 @endif
-				 Cargo:
-				 @if(old('tipo_mov5') == "on")
-				 <select class="form-control" id="cargo_2" name="cargo_2" required>
-				  <option id="cargo_2" name="cargo_2" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-				      @if(old('cargo_2') == $cargo->nome)
-						<option id="cargo_2" name="cargo_2" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_2" name="cargo_2" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					@endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select class="form-control" id="cargo_2" name="cargo_2" disabled="" required>
-				  <option id="cargo_2" name="cargo_2" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-						<option id="cargo_2" name="cargo_2" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					@endforeach
-				  @endif
-				 </select>	
-				 @endif
-				</td>
-
-				<td width="370">
-				 Belo Jardim: 
-				 @if(old('und2') == "on")
-				 <input type="checkbox" onclick="desabilitarUnd2('sim')" id="und2" name="und2" checked /><br>
-				 @else
-				 <input type="checkbox" onclick="desabilitarUnd2('sim')" id="und2" name="und2" /><br>
-				 @endif
-
-				 <input type="hidden" class="form-control" id="unidade_3" name="unidade_3" value="3" />
-				 @if(old('und2') == "on")
-				 Salário <br>
-				 <input class="form-control" required placeholder="Salário BELO" step="00.01" type="number"  id="salario_3" onChange="multiplicar2();" name="salario_3" value="{{ old('salario_3') }}" />
-				 Outras Verbas
-				 <input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_3" onChange="multiplicar2();" name="outras_verbas_3" value="{{ old('outras_verbas_3') }}" />
-				 @else
-				 Salário <br>
-				 <input class="form-control" required placeholder="Salário BELO" step="00.01" disabled="true" type="number"  id="salario_3" onChange="multiplicar2();" name="salario_3" value="{{ old('salario_3') }}" />
-				 Outras Verbas
-				 <input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_3" onChange="multiplicar2();" name="outras_verbas_3" value="{{ old('outras_verbas_3') }}" />	 
-				 @endif
-				 Centro de Custo: 
-				 @if(old('und2') == "on")
-				 <select id="centro_custo_3" name="centro_custo_3" class="form-control" required>
-				 	<option id="centro_custo_3" name="centro_custo_3" value="">Selecione...</option>
-					@if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  @if(old('centro_custo_3') == $c_c->nome)
-					   <option id="centro_custo_3" name="centro_custo_3" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					  @else
-					   <option id="centro_custo_3" name="centro_custo_3" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					  @endif
-					 @endforeach
-					@endif
-					</select>
-				 @else
-				 <select id="centro_custo_3" disabled="true" name="centro_custo_3" class="form-control" required>
-				   <option id="centro_custo_3" name="centro_custo_3" value="">Selecione...</option>
-					@if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  <option id="centro_custo_3" name="centro_custo_3" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					 @endforeach
-					@endif
-				 </select>	   
-				 @endif
-				 Cargo:
-				 @if(old('und2') == "on")
-				 <select class="form-control" id="cargo_3" name="cargo_3" required>
-				  <option id="cargo_3" name="cargo_3" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-				      @if(old('cargo_3') == $cargo->nome)
-						<option id="cargo_3" name="cargo_3" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_3" name="cargo_3" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					@endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select class="form-control" id="cargo_3" name="cargo_3" disabled="" required>
-				  <option id="cargo_3" name="cargo_3" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-						<option id="cargo_3" name="cargo_3" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					@endforeach
-				  @endif
-				 </select>	
-				 @endif	
-				</td>
-				
-				<td width="370">
-				Arcoverde: 
-				@if(old('und3') == "on")
-				<input type="checkbox" onclick="desabilitarUnd3('sim')" id="und3" name="und3" checked /><br>
-				@else
-				<input type="checkbox" onclick="desabilitarUnd3('sim')" id="und3" name="und3" /><br>
-				@endif
-				<input type="hidden" class="form-control" id="unidade_4" name="unidade_4" value="6" />
-				@if(old('und3') == "on")
-				Salário <br>
-				<input class="form-control" required placeholder="Salário ARCO" step="00.01" type="number" id="salario_4" onChange="multiplicar2();" name="salario_4" value="{{ old('salario_4') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_4" onChange="multiplicar2();" name="outras_verbas_4" value="{{ old('outras_verbas_4') }}" />
-				@else
-				Salário <br>
-				<input class="form-control" required placeholder="Salário ARCO" step="00.01" disabled="true" type="number" id="salario_4" onChange="multiplicar2();" name="salario_4" value="{{ old('salario_4') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_4" onChange="multiplicar2();" name="outras_verbas_4" value="{{ old('outras_verbas_4') }}" />	 
-				@endif
-				Centro de Custo: 
-				 @if(old('und3') == "on")
-				 <select id="centro_custo_4" name="centro_custo_4" class="form-control" required>
-				 	<option id="centro_custo_4" name="centro_custo_4" value="">Selecione...</option>
-					@if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  @if(old('centro_custo_4') == $c_c->nome)
-					   <option id="centro_custo_4" name="centro_custo_4" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					  @else
-					   <option id="centro_custo_4" name="centro_custo_4" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					  @endif
-					 @endforeach
-					@endif
-					</select>
-				 @else
-					<select id="centro_custo_4" disabled="true" name="centro_custo_4" class="form-control" required>
-					 <option id="centro_custo_4" name="centro_custo_4" value="">Selecione...</option>
-					  @if(!empty($centro_custos))
-					   @foreach($centro_custos as $c_c)
-						<option id="centro_custo_4" name="centro_custo_4" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					   @endforeach
-					  @endif
-					</select>	   
-				 @endif
-				 Cargo:
-				 @if(old('und3') == "on")
-				 <select class="form-control" id="cargo_4" name="cargo_4" required>
-				  <option id="cargo_4" name="cargo_4" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-				      @if(old('cargo_4') == $cargo->nome)
-						<option id="cargo_4" name="cargo_4" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_4" name="cargo_4" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					@endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select class="form-control" id="cargo_4" name="cargo_4" disabled="" required>
-				  <option id="cargo_4" name="cargo_4" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-						<option id="cargo_4" name="cargo_4" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					@endforeach
-				  @endif
-				 </select>	
-				 @endif	
-				</td>
-				
-				<td width="370">
-				Arruda: 
-				@if(old('und4') == "on")
-				<input type="checkbox" onclick="desabilitarUnd4('sim')" id="und4" name="und4" checked /><br>
-				@else
-				<input type="checkbox" onclick="desabilitarUnd4('sim')" id="und4" name="und4" /><br>
-				@endif
-				<input type="hidden" class="form-control" id="unidade_5" name="unidade_5" value="5" />
-				@if(old('und4') == "on")
-				Salário <br>
-				<input class="form-control" required placeholder="Salário Arruda" step="00.01" type="number"  id="salario_5" onChange="multiplicar2();" name="salario_5" value="{{ old('salario_5') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_5" onChange="multiplicar2();" name="outras_verbas_5" value="{{ old('outras_verbas_5') }}" />
-				@else
-				Salário <br>
-				<input class="form-control" required placeholder="Salário Arruda" step="00.01" disabled="true" type="number"  id="salario_5" onChange="multiplicar2();" name="salario_5" value="{{ old('salario_5') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_5" onChange="multiplicar2();" name="outras_verbas_5" value="{{ old('outras_verbas_5') }}" />	 
-				@endif
-				Centro de Custo: 
-				 @if(old('und4') == "on")
-				 <select id="centro_custo_5" name="centro_custo_5" class="form-control" required>
-				 	<option id="centro_custo_5" name="centro_custo_5" value="">Selecione...</option>
-					@if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  @if(old('centro_custo_5') == $c_c->nome)
-					   <option id="centro_custo_5" name="centro_custo_5" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					  @else
-					   <option id="centro_custo_5" name="centro_custo_5" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					  @endif
-					 @endforeach
-					@endif
-					</select>
-					@else
-					<select id="centro_custo_5" disabled="true" name="centro_custo_5" class="form-control" required>
-					 <option id="centro_custo_5" name="centro_custo_5" value="">Selecione...</option>
-					  @if(!empty($centro_custos))
-						@foreach($centro_custos as $c_c)
-						 <option id="centro_custo_5" name="centro_custo_5" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-						@endforeach
-					  @endif
-					</select>	   
-					@endif
-					Cargo:
-				 	@if(old('und4') == "on")
-					<select class="form-control" id="cargo_5" name="cargo_5" required>
-					<option id="cargo_5" name="cargo_5" value="">Selecione...</option>
-					@if(!empty($cargos))	
-					 @foreach($cargos as $cargo)
-					  @if(old('cargo_5') == $cargo->nome)
-						<option id="cargo_5" name="cargo_5" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_5" name="cargo_5" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					 @endforeach
-					@endif
-					</select>
-					@else
-					<select class="form-control" id="cargo_5" name="cargo_5" disabled="" required>
-					 <option id="cargo_5" name="cargo_5" value="">Selecione...</option>
-					  @if(!empty($cargos))	
-						@foreach($cargos as $cargo)
-						 <option id="cargo_5" name="cargo_5" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-						@endforeach
-					  @endif
-					</select>	
-				 	@endif
-				</td>
-
-				<td width="370">
-				Caruaru: 
-				@if(old('und5') == "on")
-				<input type="checkbox" onclick="desabilitarUnd5('sim')" id="und5" name="und5" checked /><br>
-				@else
-				<input type="checkbox" onclick="desabilitarUnd5('sim')" id="und5" name="und5" /><br>
-				@endif
-				<input type="hidden" class="form-control" id="unidade_6" name="unidade_6" value="6" />
-				@if(old('und5') == "on")
-				Salário <br>
-				<input class="form-control" required placeholder="Salário Caruaru" step="00.01" type="number" id="salario_6" onChange="multiplicar2();" name="salario_6" value="{{ old('salario_6') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_6" onChange="multiplicar2();" name="outras_verbas_6" value="{{ old('outras_verbas_6') }}" />
-				@else
-				Salário <br>
-				<input class="form-control" required placeholder="Salário Caruaru" step="00.01" disabled="true" type="number"  id="salario_6" onChange="multiplicar2();" name="salario_6" value="{{ old('salario_6') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_6" onChange="multiplicar2();" name="outras_verbas_6" value="{{ old('outras_verbas_6') }}" />	 
-				@endif
-				Centro de Custo: 
-				 @if(old('und5') == "on")
-				 <select id="centro_custo_6" name="centro_custo_6" class="form-control" required>
-				 	<option id="centro_custo_6" name="centro_custo_6" value="">Selecione...</option>
-				    @if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  @if(old('centro_custo_6') == $c_c->nome)
-					   <option id="centro_custo_6" name="centro_custo_6" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					  @else
-					   <option id="centro_custo_6" name="centro_custo_6" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					  @endif
-					 @endforeach
-					@endif
-				 </select>
-				 @else
-				  <select id="centro_custo_6" disabled="true" name="centro_custo_6" class="form-control" required>
-					<option id="centro_custo_6" name="centro_custo_6" value="">Selecione...</option>
-					 @if(!empty($centro_custos))
-					  @foreach($centro_custos as $c_c)
-					   <option id="centro_custo_6" name="centro_custo_6" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					  @endforeach
-					 @endif
-				  </select>	   
-				 @endif
-				 Cargo:
-				 @if(old('und5') == "on")
-				 <select class="form-control" id="cargo_6" name="cargo_6" required>
-				  <option id="cargo_6" name="cargo_6" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-				      @if(old('cargo_6') == $cargo->nome)
-						<option id="cargo_6" name="cargo_6" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_6" name="cargo_6" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					@endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select class="form-control" id="cargo_6" name="cargo_6" disabled="" required>
-				  <option id="cargo_6" name="cargo_6" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-					 <option id="cargo_6" name="cargo_6" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					@endforeach
-				  @endif
-				 </select>	
-				 @endif
-				</td>
-
-				<td width="370">
-				HSS: 
-				@if(old('und6') == "on")
-				<input type="checkbox" onclick="desabilitarUnd6('sim')" id="und6" name="und6" checked /><br>
-				@else
-				<input type="checkbox" onclick="desabilitarUnd6('sim')" id="und6" name="und6" /><br>
-				@endif
-				<input type="hidden" class="form-control" id="unidade_7" name="unidade_7" value="7" />
-				@if(old('und6') == "on")
-				Salário <br>
-				<input class="form-control" required placeholder="Salário HSS" step="00.01" type="number" id="salario_7" onChange="multiplicar2();" name="salario_7" value="{{ old('salario_7') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_7" onChange="multiplicar2();" name="outras_verbas_7" value="{{ old('outras_verbas_7') }}" />
-				@else
-				Salário <br>
-				<input class="form-control" required placeholder="Salário HSS" step="00.01" disabled="true" type="number"  id="salario_7" onChange="multiplicar2();" name="salario_7" value="{{ old('salario_7') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_7" onChange="multiplicar2();" name="outras_verbas_7" value="{{ old('outras_verbas_7') }}" />	 
-				@endif
-				Centro de Custo: 
-				 @if(old('und6') == "on")
-				 <select id="centro_custo_7" name="centro_custo_7" class="form-control" required>
-				  <option id="centro_custo_7" name="centro_custo_7" value="">Selecione...</option>
-				  @if(!empty($centro_custos))
-				   @foreach($centro_custos as $c_c)
-					@if(old('centro_custo_7') == $c_c->nome)
-					 <option id="centro_custo_7" name="centro_custo_7" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					@else
-					 <option id="centro_custo_7" name="centro_custo_7" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					@endif
-				   @endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select id="centro_custo_7" disabled="true" name="centro_custo_7" class="form-control" required>
-				  <option id="centro_custo_7" name="centro_custo_7" value="">Selecione...</option>
-					@if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  <option id="centro_custo_7" name="centro_custo_7" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					 @endforeach
-					@endif
-				 </select>	   
-				 @endif
-				 Cargo:
-				 @if(old('und6') == "on")
-				 <select class="form-control" id="cargo_7" name="cargo_7" required>
-				  <option id="cargo_7" name="cargo_7" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-				      @if(old('cargo_7') == $cargo->nome)
-						<option id="cargo_7" name="cargo_7" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_7" name="cargo_7" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					@endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select class="form-control" id="cargo_7" name="cargo_7" disabled="" required>
-				  <option id="cargo_7" name="cargo_7" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-					 <option id="cargo_7" name="cargo_7" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					@endforeach
-				  @endif
-				 </select>	
-				 @endif
-				</td>	
-				
-				<td width="370">
-				Igarassu: 
-				@if(old('und7') == "on")
-				<input type="checkbox" onclick="desabilitarUnd7('sim')" id="und7" name="und7" checked /><br>
-				@else
-				<input type="checkbox" onclick="desabilitarUnd7('sim')" id="und7" name="und7" /><br>
-				@endif
-				<input type="hidden" class="form-control" id="unidade_8" name="unidade_8" value="8" />
-				@if(old('und7') == "on")
-				Salário <br>
-				<input class="form-control" required placeholder="Salário IGARASSU" step="00.01" type="number" id="salario_8" onChange="multiplicar2();" name="salario_8" value="{{ old('salario_8') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" type="number" id="outras_verbas_8" onChange="multiplicar2();" name="outras_verbas_8" value="{{ old('outras_verbas_8') }}" />
-				@else
-				Salário <br>
-				<input class="form-control" required placeholder="Salário IGARASSU" step="00.01" disabled="true" type="number"  id="salario_8" onChange="multiplicar2();" name="salario_8" value="{{ old('salario_8') }}" />
-				Outras Verbas
-				<input class="form-control" required placeholder="Outr. Verbas" step="00.01" disabled="true" type="number" id="outras_verbas_8" onChange="multiplicar2();" name="outras_verbas_8" value="{{ old('outras_verbas_8') }}" />	 
-				@endif
-				Centro de Custo: 
-				 @if(old('und7') == "on")
-				 <select id="centro_custo_8" name="centro_custo_8" class="form-control" required>
-				  <option id="centro_custo_8" name="centro_custo_8" value="">Selecione...</option>
-				  @if(!empty($centro_custos))
-				   @foreach($centro_custos as $c_c)
-					@if(old('centro_custo_8') == $c_c->nome)
-					 <option id="centro_custo_8" name="centro_custo_8" value="<?php echo $c_c->nome; ?>" selected>{{ $c_c->nome }}</option>
-					@else
-					 <option id="centro_custo_8" name="centro_custo_8" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					@endif
-				   @endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select id="centro_custo_8" disabled="true" name="centro_custo_8" class="form-control" required>
-				  <option id="centro_custo_8" name="centro_custo_8" value="">Selecione...</option>
-					@if(!empty($centro_custos))
-					 @foreach($centro_custos as $c_c)
-					  <option id="centro_custo_8" name="centro_custo_8" value="<?php echo $c_c->nome; ?>">{{ $c_c->nome }}</option>	  
-					 @endforeach
-					@endif
-				 </select>	   
-				 @endif
-				 Cargo:
-				 @if(old('und7') == "on")
-				 <select class="form-control" id="cargo_8" name="cargo_8" required>
-				  <option id="cargo_8" name="cargo_8" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-				      @if(old('cargo_8') == $cargo->nome)
-						<option id="cargo_8" name="cargo_8" selected value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					  @else
-						<option id="cargo_8" name="cargo_8" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	  
-					  @endif
-					@endforeach
-				  @endif
-				 </select>
-				 @else
-				 <select class="form-control" id="cargo_8" name="cargo_8" disabled="" required>
-				  <option id="cargo_8" name="cargo_8" value="">Selecione...</option>
-				  @if(!empty($cargos))	
-					@foreach($cargos as $cargo)
-					 <option id="cargo_8" name="cargo_8" value="<?php echo $cargo->nome; ?>">{{ $cargo->nome }}</option>	
-					@endforeach
-				  @endif
-				 </select>	
-				 @endif
-				</td>
-			</tr>
-			<tr>
-			 <td colspan="7">Tipo: <br> 
-			 @if(old('tipo_mov5') == "on")
-			 @if(old('tipohcp') == "efetivo")
-			 <input checked type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
-			 @elseif(old('tipohcp') == "estagiario")
-			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input checked type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
-			 @elseif(old('tipohcp') == "temporario")
-			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input checked type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
-			 @elseif(old('tipohcp') == "aprendiz")
-			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input checked type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 
-			 @elseif(old('tipohcp') == "rpa")
-			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input checked type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" value="{{ old('periodo_contratohcp') }}" /> 
-			 @else
-			 <input type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 	 
-			 @endif
-			 @else
-			 <input disabled="true" type="checkbox" id="tipohcp_1" name="tipohcp" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input disabled="true" type="checkbox" id="tipohcp_2" name="tipohcp" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input disabled="true" type="checkbox" id="tipohcp_3" name="tipohcp" value="temporario" class="checkgroup" /> Temporário 
-			 <input disabled="true" type="checkbox" id="tipohcp_4" name="tipohcp" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input disabled="true" type="checkbox" id="tipohcp_5" name="tipohcp" value="rpa" onclick="desabilitarRPA2('sim')" class="checkgroup" /> RPA - (Período do Contrato RPA): 
-			 <input disabled="true" type="text" id="periodo_contratohcp" name="periodo_contratohcp" style="width: 200px" /> 	 	 
-			 @endif
-			 </td>
-			</tr>
-			<tr>
-			 <td colspan="7">Motivo: <br> 
-			 @if(old('tipo_mov5') == "on")
-			 @if(old('motivohcp') == "aumento_quadro")
-			 <input checked type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
-			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
-			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
-			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
-			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6" /> 
-			 @elseif(old('motivohcp') == "substituicao_temporaria")
-			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
-			 <input checked type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
-			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
-			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
-			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6" /> 
-			 @elseif(old('motivohcp') == "segundo_vinculo")
-			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
-			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
-			 <input checked type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
-			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
-			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6" /> 
-			 @elseif(old('motivohcp') == "substituicao_definitiva")
-			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
-			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
-			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
-			 <input checked type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
-			 <input type="text" style="width: 220px;" id="motivo6hcp" name="motivo6hcp" value="{{ old('motivo6hcp') }}" /> 
-			 @else
-			 <input type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
-			 <input type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
-			 <input type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
-			 <input type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
-			 <input type="text" style="width: 220px;" id="motivo6hcp" name="motivo6hcp" /> 
-			 @endif
-			 @else
-			 <input disabled="true" type="checkbox" id="motivohcp_1" name="motivohcp" value="aumento_quadro" /> Aumento de Quadro 
-			 <input disabled="true" type="checkbox" id="motivohcp_2" name="motivohcp" value="substituicao_temporaria" /> Substituição temporária 
-			 <input disabled="true" type="checkbox" id="motivohcp_3" name="motivohcp" value="segundo_vinculo" /> Segundo Vínculo 
-			 <input disabled="true" type="checkbox" id="motivohcp_4" name="motivohcp" value="substituicao_definitiva" onclick="desabilitarSubst2('sim')" /> Substituição definitiva a: 
-			 <input disabled="true" type="text" style="width: 220px;" id="motivo6hcp" name="motivo6hcp" /> 	 
-			 @endif
-			 </td>
-			</tr>
-			<tr>
-			 <td colspan="4">Possibilidade de Contratação de Deficiente:<br> 
-			 @if(old('tipo_mov5') == "on")
-			 @if(old('possibilidade_contratacao') == "sim")
-			 <input checked type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
-			 <input type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não
-			 @elseif(old('possibilidade_contratacao') == "nao")
-			 <input type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
-			 <input checked type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não
-			 @else
-			 <input type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
-			 <input type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não	 
-			 @endif
-			 @else
-			 <input disabled="true" type="checkbox" id="possibilidade_contratacaohcp" name="possibilidade_contratacao" value="sim" /> Sim 
-			 <input disabled="true" type="checkbox" id="possibilidade_contratacaohcp_2" name="possibilidade_contratacao" value="nao" /> Não	 
-			 @endif
-			 </td>
-			 <td colspan="3">Necessidade de conta de e-mail:<br> 
-			 @if(old('tipo_mov5') == "on")
-			 @if(old('necessidade_email') == "sim")
-			 <input checked type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
-			 <input type="checkbox" id="necessidade_emailhcp_2" name="necessidade_email" value="nao" /> Não
-			 @elseif(old('necessidade_email') == "nao")
-			 <input type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
-			 <input checked type="checkbox" id="necessidade_email2hcp_2" name="necessidade_email" value="nao" /> Não
-			 @else
-			 <input type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
-			 <input type="checkbox" id="necessidade_emailhcp_2" name="necessidade_email" value="nao" /> Não
-			 @endif
-			 @else
-			 <input disabled="true" type="checkbox" id="necessidade_emailhcp" name="necessidade_email" value="sim" /> Sim 
-			 <input disabled="true" type="checkbox" id="necessidade_emailhcp_2" name="necessidade_email" value="nao" /> Não	 
-			 @endif
-			 </td>
-			</tr>
-		   </table>
-		  </center>
-		  <br>		
-
+		  
 	 	  <center>
 		   <table class="table table-bordered" style="width: 1000px;" cellspacing="0" id="table_unidades" name="table_unidades">
 		    </tr>
@@ -1324,32 +640,6 @@
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />
 			 Remuneração Total:
 			 <input class="form-control" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
-			 <table id="table-rpa" name="table-rpa" hidden>
-			  <tr>
-				<td> <input type='checkbox' id="g_1" name="g_1" /> </td>
-				<td>&nbsp;Gratificação</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_2" name="g_2" /> </td>
-				<td>&nbsp;Insalubridade</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_3" name="g_3" /> </td>
-				<td>&nbsp;Periculosidade</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_4" name="g_4" /> </td>
-				<td>&nbsp;VA</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_5" name="g_5" /> </td>
-				<td>&nbsp;VT</td>
-			  </tr>	
-			  <tr>
-				<td> <input type='checkbox' id="g_6" name="g_6" /> </td>
-				<td>&nbsp;Nenhuma das Respostas</td>
-			  </tr>		
-			 </table>
 			 @else
 			 Salário <br>
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" required="true" id="salario" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" />
@@ -1357,32 +647,6 @@
 			 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" disabled="true" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />	 
 			 Remuneração Total:
 			 <input class="form-control" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
-			 <table id="table-rpa" name="table-rpa" hidden>
-			  <tr>
-				<td> <input type='checkbox' id="g_1" name="g_1" /> </td>
-				<td>&nbsp;Gratificação</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_2" name="g_2" /> </td>
-				<td>&nbsp;Insalubridade</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_3" name="g_3" /> </td>
-				<td>&nbsp;Periculosidade</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_4" name="g_4" /> </td>
-				<td>&nbsp;VA</td>
-			  </tr>
-			  <tr>
-				<td> <input type='checkbox' id="g_5" name="g_5" /> </td>
-				<td>&nbsp;VT</td>
-			  </tr>	
-			  <tr>
-				<td> <input type='checkbox' id="g_6" name="g_6" /> </td>
-				<td>&nbsp;Nenhuma das Respostas</td>
-			  </tr>		
-			 </table>
 			 @endif	
 			 </td>
 			 <td width="200">Horário de Trabalho: <br>
@@ -1569,49 +833,26 @@
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
-			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
-			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "estagiario")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input checked type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
-			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
-			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "temporario")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input checked type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
-			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
-			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @elseif(old('tipo') == "aprendiz")
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input checked type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
-			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
-			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
-			 @elseif(old('tipo') == "rpa")
-			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
-			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
-			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
-			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input checked type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
-			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
-			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" />
 			 @else
 			 <input type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
 			 <input type="checkbox" id="tipo2" name="tipo" value="estagiario" class="checkgroup" /> Estagiário 
 			 <input type="checkbox" id="tipo3" name="tipo" value="temporario" class="checkgroup" /> Temporário 
 			 <input type="checkbox" id="tipo4" name="tipo" value="aprendiz" class="checkgroup" /> Aprendiz 
-			 <input type="checkbox" id="tipo5" name="tipo" value="rpa" onclick="desabilitarRPA('sim')" class="checkgroup" /> RPA (Período (Competência)): 
-			 <input type="month" id="mes_ano" name="mes_ano" style="width: 163px;" /> Até
-			 <input type="month" id="mes_ano2" name="mes_ano2" style="width: 163px;" /> 	 
 			 @endif
 			 @else
 			 <input disabled="true" type="checkbox" id="tipo" name="tipo" value="efetivo" class="checkgroup" /> Efetivo 
@@ -2178,11 +1419,13 @@
 		   </tr>
 		  </table>
 		</center>
+		@endif
 
+		@if($tipo_mp == 1)
 		<center>
 		<table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		  <tr>
-			<td width="130" rowspan="5"><center><h5>Outros</h5> 
+			<td width="130" rowspan="5"><center><h5>RPA</h5> 
 			@if(old('tipo_mov4') == "on")
 			<input type="checkbox" onclick="desabilitar4('sim')" checked id="tipo_mov4" name="tipo_mov4" />
 			@else
@@ -2210,7 +1453,7 @@
 			 </select>	 
 			 @endif
 			</td>
-			<td colspan="1">Cargo: 
+			<td colspan="1">Profissional: 
 			  @if(old('tipo_mov4') == "on")
 			  <select required class="form-control" id="cargo_plantao" name="cargo_plantao">
 			    <option id="cargo_plantao" name="cargo_plantao" value="">Selecione...</option>
@@ -2237,53 +1480,44 @@
 			</td>
 		   </tr>
 		   <tr>
-			<td width=" ">Motivo:
+			<td colspan="2">Substituto:
 			@if(old('tipo_mov4') == "on")
-			<input class="form-control" required style="width: 250px;" type="text" id="motivo_plantao" name="motivo_plantao" value="{{ old('motivo_plantao') }}" />
+			<input class="form-control" required style="width: 560px;" type="text" id="substituto" name="substituto" value="{{ old('substituto') }}" />
 			@else
-			<input disabled="true" class="form-control" style="width: 250px;" type="text" id="motivo_plantao" name="motivo_plantao" />	
+			<input disabled="true" class="form-control" style="width: 560px;" type="text" id="substituto" name="substituto" />	
 			@endif
 			</td>
-			<td width="50">Substituto:
-			@if(old('tipo_mov4') == "on")
-			<input class="form-control" required style="width: 250px;" type="text" id="substituto" name="substituto" value="{{ old('substituto') }}" />
-			@else
-			<input disabled="true" class="form-control" style="width: 250px;" type="text" id="substituto" name="substituto" />	
-			@endif
-			</td>
-			<td>Novo Centro de Custo: 
+			<td>Motivo: 
 			   @if(old('tipo_mov4') == "on")
-			   <select required name="centro_custo_plantao" id="centro_custo_plantao" class="form-control">	
-			   <option id="centro_custo_plantao" name="centro_custo_plantao" value="">Selecione...</option>
-				@foreach($centro_custo_nv as $cc_nv)
-				@if(old('centro_custo_plantao') == $cc_nv->nome)
-				 <option id="centro_custo_plantao" name="centro_custo_plantao" value="<?php echo $cc_nv->nome; ?>" selected>{{ $cc_nv->nome }}</option>
-				@else
-				 <option id="centro_custo_plantao" name="centro_custo_plantao" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>	
-				@endif
-				@endforeach
-			   </select>
+			   <select required  name="motivo_plantao" id="motivo_plantao" class="form-control">	
+			    <option id="motivo_plantao" name="motivo_plantao" value="">Selecione..</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Atestado Médico</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Férias</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Licença Maternidade</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Outras</option>
+				</select>
 			   @else
-			   <select required disabled="true" name="centro_custo_plantao" id="centro_custo_plantao" class="form-control">	
-			   <option id="centro_custo_plantao" name="centro_custo_plantao" value="">Selecione...</option>
-				@foreach($centro_custo_nv as $cc_nv)
-				<option id="centro_custo_plantao" name="centro_custo_plantao" value="<?php echo $cc_nv->nome; ?>">{{ $cc_nv->nome }}</option>
-				@endforeach
-			   </select>	   
+			   <select required disabled="true" name="motivo_plantao" id="motivo_plantao" class="form-control">	
+			    <option id="motivo_plantao" name="motivo_plantao" value="">Selecione..</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Atestado Médico</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Férias</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Licença Maternidade</option>
+				<option id="motivo_plantao" name="motivo_plantao" value="">Outras</option>
+				</select>  
 			   @endif
 			</td>
 		   </tr>
 		   <tr>
-			   <td width="50">Quantidade de Plantões:
+			   <td width="120">Plantões/Diárias:
 			   @if(old('tipo_mov4') == "on")
 			   <select disabled required="true" class="form-control" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
-				 @for($a = 1; $a < 11; $a++)  
+				 @for($a = 1; $a < 31; $a++)  
 				 <option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>
 				 @endfor
 			   </select>
 			   @else
 			   <select disabled required="true" class="form-control" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
-				 @for($a = 1; $a < 11; $a++)  
+				 @for($a = 1; $a < 31; $a++)  
 				 <option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>
 				 @endfor
 			   </select>
@@ -2306,6 +1540,7 @@
 		   </tr>
 		 </table>
 	  	</center>
+		@endif
 
 		  <br>
 		  <center>		
@@ -2321,7 +1556,7 @@
 		  <center>	
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
-			<td width="100" colspan="6"><strong>Aprovações (Carimbo e Assinatura):</strong></td>
+			<td width="100" colspan="6"><strong>Aprovações (Carimbo e Assinatura): 48h Úteis para aprovação</strong></td>
 		   </tr>
 		   <tr>
 			<td>Solicitante </td><td><input readonly="true" type="date" id="data_solicitante" name="data_solicitante" class="form-control" /></td>
@@ -2330,7 +1565,10 @@
 			<td>Gestor Imediato</td><td><input readonly="true" type="date" id="data_gestor_imediato" name="data_gestor_imediato" class="form-control" /></td>
 		   </tr>
 		   <tr>
-			<td>Rec. Humanos</td><td><input readonly="true" type="date" id="data_rec_humanos" name="data_rec_humanos" class="form-control" /></td>
+			<td>Departamento Pessoal / SESMT</td><td><input readonly="true" type="date" id="data_rec_humanos" name="data_rec_humanos" class="form-control" /></td>
+		   </tr>
+		   <tr>
+			<td>Recursos Humanos</td><td><input readonly="true" type="date" id="data_rec_humanos" name="data_rec_humanos" class="form-control" /></td>
 		   </tr>
 		   <tr>
 			<td>Diretoria Técnica</td><td><input readonly="true" type="date" id="data_diretoria_tecnica" name="data_diretoria_tecnica" class="form-control" /></td>
@@ -2348,8 +1586,8 @@
 		  <table class="table table-bordered" style="width: 1000px;" cellspacing="0">
 		   <tr>
 		    <td align="right"> 
-			 <a href="javascript:history.back();" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> Voltar <i class="fas fa-undo-alt"></i> </a>
-			 <input type="submit" onclick="validar()" class="btn btn-success btn-sm" style="margin-top: 10px;" value="Concluir" id="Salvar" name="Salvar" /> 
+			 <a href="javascript:history.back();" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
+			 <input type="submit" onclick="validar()" class="btn btn-success btn-sm" style="margin-top: 10px;" value="CONCLUIR" id="Salvar" name="Salvar" /> 
 			</td>
 		   </tr>
 		  </table>

@@ -34,7 +34,15 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeMP', 'MPController@inicioMP')->name('inicioMP');
 		Route::get('/home/unidade','HomeController@index2')->name('index2');
 		Route::get('/escolha/{id}/mp','HomeController@mp')->name('mp');
-		Route::get('/home/unidade/mp/{id}/{i}', 'MPController@cadastroMP')->name('cadastroMP');
+		Route::get('/home/unidade/mp/{id}/mp_admissao', 'MPController@cadastroMPAdmissao')->name('cadastroMPAdmissao');
+		Route::post('/home/unidade/mp/{id}/mp_admissao', 'MPController@storeAdmissaoMP')->name('storeAdmissaoMP');
+		Route::get('/home/unidade/mp/{id}/mp_demissao', 'MPController@cadastroMPDemissao')->name('cadastroMPDemissao');
+		Route::post('/home/unidade/mp/{id}/mp_demissao', 'MPController@storeDemissaoMP')->name('storeDemissaoMP');
+		Route::get('/home/unidade/mp/{id}/mp_alteracao', 'MPController@cadastroMPAlteracao')->name('cadastroMPAlteracao');
+		Route::post('/home/unidade/mp/{id}/mp_alteracao', 'MPController@storeAlteracaoMP')->name('storeAlteracaoMP');
+		Route::get('/home/unidade/mp/{id}/mp_rpa', 'MPController@cadastroMPRpa')->name('cadastroMPRpa');
+		Route::post('/home/unidade/mp/{id}/mp_rpa', 'MPController@storeRpaMP')->name('storeRpaMP');
+		Route::post('/home/unidade/mp/{id}/{i}/', 'MPController@storeMP')->name('storeMP');
 		Route::get('/home/validar', 'HomeController@indexValida')->name('indexValida');
 		Route::post('/home/validar/', 'HomeController@validarMPs')->name('validarMPs');
 		Route::get('/home/validar/{id}', 'HomeController@validarMP')->name('validarMP');
@@ -64,15 +72,15 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}/updem/{id_dem}', 'MPController@updateMPDemissao')->name('updateMPDemissao');
 		Route::get('/home/validar/{id}/upadm/{id_adm}', 'MPController@alterarMPAdmissao')->name('alterarMPAdmissao');
 		Route::post('/home/validar/{id}/upadm/{id_adm}', 'MPController@updateMPAdmissao')->name('updateMPAdmissao');
-		Route::get('/home/validar/{id}/uppla/{id_plan}', 'MPController@alterarMPPlantao')->name('alterarMPPlantao');
-		Route::post('/home/validar/{id}/uppla/{id_plan}', 'MPController@updateMPPlantao')->name('updateMPPlantao');
-		Route::get('/home/validar/{id}/upadm_hcp/{id_adm_hcp}', 'MPController@alterarMPAdmissaoHCP')->name('alterarMPAdmissaoHCP');
-		Route::post('/home/validar/{id}/upadm_hcp/{id_adm_hcp}', 'MPController@updateMPAdmissaoHCP')->name('updateMPAdmissaoHCP');
+		
+		Route::get('/home/validar/{id}/upadm_rpa/{id_adm_rpa}', 'MPController@alterarMPAdmissaoRPA')->name('alterarMPAdmissaoRPA');
+		Route::post('/home/validar/{id}/upadm_rpa/{id_adm_rpa}', 'MPController@updateMPAdmissaoRPA')->name('updateMPAdmissaoRPA');
+		
 		Route::get('/home/validar/{id}/autorizar', 'HomeController@autorizarMP')->name('autorizarMP');
 		Route::post('/home/validar/{id}/autorizar/store', 'HomeController@storeAutMP')->name('storeAutMP');
 		Route::get('/home/validar/{id}/n_autorizar', 'HomeController@n_autorizarMP')->name('n_autorizarMP');
 		Route::post('/home/validar/{id}/n_autorizar/', 'HomeController@storeNAutMP')->name('storeNAutMP');
-		Route::post('/home/unidade/mp/{id}/{i}/', 'MPController@storeMP')->name('storeMP');
+		
 		Route::get('/pdf/{idG}/{idMP}','MPController@mpPDF')->name('mpPDF');
 		Route::get('/home/excluir/mp','MPController@excluirMPs')->name('excluirMPs');
 		Route::get('/home/excluir/mp/pesquisa','MPController@pesquisaMPsExclusao')->name('pesquisaMPsExclusao');
@@ -161,7 +169,8 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroUnidade/unidadeAlterar/{id}/', 'UnidadeController@updateUnidade')->name('updateUnidade');
 		Route::get('cadastroUnidade/unidadeExcluir/{id}', 'UnidadeController@unidadeExcluir')->name('unidadeExcluir');
 		Route::post('cadastroUnidade/unidadeExcluir/{id}/', 'UnidadeController@destroyUnidade')->name('destroyUnidade');
-		Route::post('cadastroUnidade/pesquisarUnidade','UnidadeController@pesquisarUnidade')->name('pesquisarUnidade');
+		Route::get('cadastroUnidade/pesquisarUnidade','UnidadeController@pesquisarUnidade')->name('pesquisarUnidade');
+		Route::post('cadastroUnidade/pesquisarUnidade/','UnidadeController@pesquisarUnidade')->name('pesquisarUnidade');
 		////
 
 		//Cargos
@@ -172,17 +181,19 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroCargo/cargoAlterar/{id}/', 'CargosController@updateCargo')->name('updateCargo');
 		Route::get('cadastroCargo/cargoExcluir/{id}', 'CargosController@cargoExcluir')->name('cargoExcluir');
 		Route::post('cadastroCargo/cargoExcluir/{id}/', 'CargosController@destroyCargo')->name('destroyCargo');
+		Route::get('cadastroCargo/pesquisarCargo','CargosController@pesquisarCargo')->name('pesquisarCargo');
 		Route::post('cadastroCargo/pesquisarCargo','CargosController@pesquisarCargo')->name('pesquisarCargo');
 		////
 
 		//Centro de custo
-		Route::get	('cadastroCentrocusto', 'CentroCustoController@cadastroCentrocusto')->name('cadastroCentrocusto');
-		Route::get	('cadastroCentrocusto/centrocustoNovo', 'CentroCustoController@centrocustoNovo')->name('centrocustoNovo');
-		Route::post	('cadastroCentrocusto/centrocustoNovo/', 'CentroCustoController@storeCentrocusto')->name('storeCentrocusto');
-		Route::get	('cadastroCentrocusto/centrocustoAlterar/{id}', 'CentroCustoController@centrocustoAlterar')->name('centrocustoAlterar');
-		Route::post	('cadastroCentrocusto/centrocustoAlterar/{id}/', 'CentroCustoController@updateCentrocusto')->name('updateCentrocusto');
-		Route::get	('cadastroCentrocusto/centrocustoExcluir/{id}', 'CentroCustoController@centrocustoExcluir')->name('centrocustoExcluir');
-		Route::post	('cadastroCentrocusto/centrocustoExcluir/{id}/', 'CentroCustoController@destroyCentrocusto')->name('destroyCentrocusto');
+		Route::get('cadastroCentrocusto', 'CentroCustoController@cadastroCentrocusto')->name('cadastroCentrocusto');
+		Route::get('cadastroCentrocusto/centrocustoNovo', 'CentroCustoController@centrocustoNovo')->name('centrocustoNovo');
+		Route::post('cadastroCentrocusto/centrocustoNovo/', 'CentroCustoController@storeCentrocusto')->name('storeCentrocusto');
+		Route::get('cadastroCentrocusto/centrocustoAlterar/{id}', 'CentroCustoController@centrocustoAlterar')->name('centrocustoAlterar');
+		Route::post('cadastroCentrocusto/centrocustoAlterar/{id}/', 'CentroCustoController@updateCentrocusto')->name('updateCentrocusto');
+		Route::get('cadastroCentrocusto/centrocustoExcluir/{id}', 'CentroCustoController@centrocustoExcluir')->name('centrocustoExcluir');
+		Route::post('cadastroCentrocusto/centrocustoExcluir/{id}/', 'CentroCustoController@destroyCentrocusto')->name('destroyCentrocusto');
+		Route::get('cadastroCentroCusto/pesquisarCentroCusto','CentroCustoController@pesquisarCentroCusto')->name('pesquisarCentroCusto');
 		Route::post('cadastroCentroCusto/pesquisarCentroCusto','CentroCustoController@pesquisarCentroCusto')->name('pesquisarCentroCusto');
 		////
 		
@@ -194,14 +205,15 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroGestor/gestorAlterar/{id}','GestorController@updateGestor')->name('updateGestor');
 		Route::get('cadastroGestor/gestorExcluir/{id}','GestorController@gestorExcluir')->name('gestorExcluir');
 		Route::post('cadastroGestor/gestorExcluir/{id}','GestorController@destroyGestor')->name('destroyGestor');
+		Route::get('cadastroGestor/pesquisarGestor','GestorController@pesquisarGestor')->name('pesquisarGestor');
 		Route::post('cadastroGestor/pesquisarGestor','GestorController@pesquisarGestor')->name('pesquisarGestor');
 		////
 		
 		//Vaga
 		Route::get('/escolha/{id}','HomeController@escolha')->name('escolha');
 		Route::get('/escolha/{id}/vaga','VagaController@vaga')->name('vaga');
-		Route::get('/escolha/{id}/{i}/vaga','VagaController@cadastrarVaga')->name('cadastrarVaga');
-		Route::post('/escolha/{id}/{i}/vaga', 'VagaController@storeVaga')->name('storeVaga');
+		Route::get('/escolha/{id}/vaga/','VagaController@cadastrarVaga')->name('cadastrarVaga');
+		Route::post('/escolha/{id}/vaga/', 'VagaController@storeVaga')->name('storeVaga');
 		Route::get('/home/email/vaga/{i}', 'VagaController@homeVaga')->name('homeVaga');
 		Route::get('/pdf/vaga/{idG}/{idVaga}','VagaController@vagaPDF')->name('vagaPDF');
 		////
@@ -275,6 +287,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeMP/cadastro_usuario/alterar_senha/{id}','UserController@updateSenha')->name('updateSenha');
 		Route::get('/homeMP/cadastro_usuario/excluir/{id}','UserController@cadastroUsuarioExcluir')->name('cadastroUsuarioExcluir');
 		Route::post('/homeMP/cadastro_usuario/excluir/{id}','UserController@deleteUsuario')->name('deleteUsuario');	
+		Route::get('/homeMP/cadastro_usuario/pesquisarUsuario','UserController@pesquisarUsuario')->name('pesquisarUsuario');
 		Route::post('/homeMP/cadastro_usuario/pesquisarUsuario','UserController@pesquisarUsuario')->name('pesquisarUsuario');
 		////
 

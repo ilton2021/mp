@@ -13,8 +13,8 @@ class UnidadeController extends Controller
 {
 	public function cadastroUnidade()
 	{
-		$unidades = Unidade::all();
-		return view('unidade.unidade_cadastro', compact('unidades'));
+		$unidades = DB::table('unidade')->paginate(6);
+		return view('unidade/unidade_cadastro', compact('unidades'));
 	}
 	
 	public function unidadeNovo()
@@ -25,13 +25,16 @@ class UnidadeController extends Controller
 	public function pesquisarUnidade(Request $request)
 	{
 		$input = $request->all();
+		if(empty($input['id'])) { $input['id'] = ""; }
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
 		$id    = $input['id'];
 		$pesq  = $input['pesq'];
-		
 		if($id == 1) {
-			$unidades = DB::table('unidade')->where('unidade.nome','like','%'.$pesq.'%')->get();
+			$unidades = DB::table('unidade')->where('unidade.nome','like','%'.$pesq.'%')->paginate(6);
 		} else if($id == 2) {
-			$unidades = DB::table('unidade')->where('unidade.sigla','like','%'.$pesq.'%')->get();
+			$unidades = DB::table('unidade')->where('unidade.sigla','like','%'.$pesq.'%')->paginate(6);
+		} else {
+			$unidades = DB::table('unidade')->paginate(6);
 		}
 		return view('unidade/unidade_cadastro', compact('unidades'));
 	}
@@ -61,11 +64,9 @@ class UnidadeController extends Controller
 					$input['caminho'] = 'unidade/'.$nome; 
 					$unidade = Unidade::create($input);
 					$loggers = Loggers::create($input);
-					$unidades = Unidade::all();
+					$unidades = Unidade::paginate(6);
 					$validator = 'Unidade Cadastrada com Sucesso!';
-					return view('unidade.unidade_cadastro', compact('unidades'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));
+					return redirect()->route('cadastroUnidade')->withErrors($validator)->with('unidades');
 				}
 			} else {
 				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';		
@@ -104,7 +105,8 @@ class UnidadeController extends Controller
 					'sigla' => 'required|max:10'
 				]);
 				if ($validator->fails()) {
-					return view('unidade.unidade_novo')
+					$unidade = Unidade::where('id',$id)->get();
+					return view('unidade/unidade_alterar', compact('unidade'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}else {
@@ -116,11 +118,9 @@ class UnidadeController extends Controller
 					$unidade = Unidade::find($id); 
 					$unidade->update($input);
 					$loggers = Loggers::create($input);
-					$unidades = Unidade::all();
+					$unidades = Unidade::paginate(4);
 					$validator ='Unidade Alterada com Sucesso!';
-					return view('unidade.unidade_cadastro', compact('unidades'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));
+					return redirect()->route('cadastroUnidade')->withErrors($validator)->with('unidades');
 				}
 			} else {
 				$validator = 'Só é permitido imagens: .jpg, .jpeg ou .png!';
@@ -144,10 +144,8 @@ class UnidadeController extends Controller
 		$pasta = 'public/storage/unidade/'.$nome; 
 		Storage::delete($pasta);
 		$loggers = Loggers::create($input);
-		$unidades = Unidade::all();
+		$unidades = Unidade::paginate(4);
         $validator = 'Unidade excluída com sucesso!';
-		return view('unidade.unidade_cadastro', compact('unidades'))
-						->withErrors($validator)
-						->withInput(session()->flashInput($request->input()));
+		return redirect()->route('cadastroUnidade')->withErrors($validator)->with('unidades');
 	}
 }

@@ -31,6 +31,8 @@ class Vaga extends Model
 		'periodo_contrato',
 		'motivo',
 		'motivo2',
+		'salario_base',
+		'data_demissao',
 		'contratacao_deficiente',
 		'email',
 		'conhecimento_tecnico',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\CentroCusto;
+use App\Model\Unidade;
 use App\Model\Loggers;
 use Illuminate\Http\Request;
 use Validator;
@@ -12,25 +13,27 @@ class CentroCustoController extends Controller
 {
     public function cadastroCentrocusto()
 	{
-        $centrocustos = CentroCusto::All();
+        $centrocustos = CentroCusto::paginate(8);
 		return view('centrocusto/centrocusto_cadastro', compact('centrocustos'));
 	}
 	
 	public function centrocustoNovo()
 	{
-		return view('centrocusto/centrocusto_novo');
+		$unidades = Unidade::all();
+		return view('centrocusto/centrocusto_novo', compact('unidades'));
 	}
 
 	public function pesquisarCentroCusto(Request $request)
 	{
 		$input = $request->all();
-		$id    = $input['id'];
+		if(empty($input['pesq'])) { $input['pesq'] = ""; }
+		if(empty($input['pesq2'])) { $input['pesq2'] = ""; }
+		$pesq2 = $input['pesq2'];
 		$pesq  = $input['pesq'];
-		
-		if($id == 1) {
-			$centrocustos = DB::table('centro_custo')->where('centro_custo.nome','like','%'.$pesq.'%')->get();
+		if($pesq2 == 1) {
+			$centrocustos = DB::table('centro_custo')->where('centro_custo.nome','like','%'.$pesq.'%')->paginate(8);
 		} 
-		return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
+		return view('centrocusto/centrocusto_cadastro', compact('centrocustos','pesq2','pesq'))
 					->withInput(session()->flashInput($request->input()));
 	}
 	
@@ -38,88 +41,59 @@ class CentroCustoController extends Controller
 		$input = $request->all();
 		$validator = Validator::make($request->all(), [
 			'nome'  => 'required|max:255',
-        ]);
+		]);
 		if ($validator->fails()) {
 			return view('centrocusto/centrocusto_novo')
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} else {
-			$missing = array();
-			for($a = 1; $a <= 9; $a++){
-				if(!empty($input['unidade_'.$a])){
-					$missing[] = $a;
-				}
-			}
-			if( is_array($missing) && count($missing) > 0 )
-			{
-				$result = '';
-				$total = count($missing) - 1;
-				for($i = 1; $i <= $total; $i++)
-				{ 
-					$result .= $missing[$i];
-
-					if($i < $total)
-						$result .= ", ";
-				}
+			$Und = isset($input['unidade']);
+			if ($Und == true) {
+				$unidades = implode(',', $input['unidade']);
 			} else {
-				$result = "";
-			}	
-			$input['unidade'] = $result;
+				$unidades = "";
+			}
+			$input['unidade'] = $unidades;
 			$centrocustos = CentroCusto::create($input);
 			$loggers = Loggers::create($input);
-            $centrocustos = CentroCusto::All();
+			$centrocustos = CentroCusto::paginate(6);
 			$validator = 'Cargo Cadastrado com Sucesso!';
-			return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));
-		}	
+			return redirect()->route('cadastroCentrocusto')->withErrors($validator)->with('centrocustos');
+		}
 	}
 	
 	public function centrocustoAlterar($id)
 	{
 		$centrocustos = CentroCusto::where('id',$id)->get();
-		return view('centrocusto/centrocusto_alterar', compact('centrocustos'));
+		$und_atuais = explode(',', $centrocustos[0]->unidade);
+		$unidade = Unidade::all();
+		return view('centrocusto/centrocusto_alterar', compact('centrocustos','unidade','und_atuais'));
 	}
 	
 	public function updateCentrocusto(Request $request, $id) {   
-		$input = $request->all(); 
+		$input = $request->all();
 		$validator = Validator::make($request->all(), [
 			'nome'  => 'required|max:255',
 		]);
 		if ($validator->fails()) {
 			return view('centrocusto/centrocusto_novo', compact('centrocustos'))
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));
+				->withErrors($validator)
+				->withInput(session()->flashInput($request->input()));
 		} else {
-			$missing = array();
-			for($a = 1; $a <= 9; $a++){
-				if(!empty($input['unidade_'.$a])){
-					$missing[] = $a;
-				}
-			}
-			if( is_array($missing) && count($missing) > 0 )
-			{
-				$result = '';
-				$total = count($missing) - 1;
-				for($i = 1; $i <= $total; $i++)
-				{ 
-					$result .= $missing[$i];
-					if($i < $total)
-						$result .= ", ";
-				}
+			$Und = isset($input['unidade']);
+			if ($Und == true) {
+				$unidades = implode(',', $input['unidade']);
 			} else {
-				$result = "";
+				$unidades = "";
 			}
-			$input['unidade'] = $result;
-			$centrocustos = CentroCusto::find($id); 
-			$centrocustos ->update($input);
+			$input['unidade'] = $unidades;
+			$centrocustos = CentroCusto::find($id);
+			$centrocustos->update($input);
 			$loggers = Loggers::create($input);
-		 	$centrocustos = CentroCusto::all();
+			$centrocustos = CentroCusto::paginate(6);
 			$validator = 'Cargo Alterado com Sucesso!';
-			return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));
-		}		
+			return redirect()->route('cadastroCentrocusto')->withErrors($validator)->with('centrocustos');
+		}
 	}
 	
 	public function centrocustoExcluir($id)
@@ -132,10 +106,8 @@ class CentroCustoController extends Controller
 		CentroCusto::find($id)->delete();
 		$input = $request->all();
 		$loggers = Loggers::create($input);
-		$centrocustos = CentroCusto::all();
+		$centrocustos = CentroCusto::paginate(6);
         $validator = 'Cargo excluído com sucesso!';
-		return view('centrocusto/centrocusto_cadastro', compact('centrocustos'))
-					  ->withErrors($validator)
-                      ->withInput(session()->flashInput($request->input()));
+		return redirect()->route('cadastroCentrocusto')->withErrors($validator)->with('centrocustos');
 	}
 }

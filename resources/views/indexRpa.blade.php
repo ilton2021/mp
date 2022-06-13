@@ -80,11 +80,9 @@
 		function funcaoCargoPlantao(valor) {
 			let x = document.getElementById('cargos_rpa_id'); 
 			var y = x.options[x.selectedIndex].text;
-			let z = y.substr(y.indexOf("/") + 1);
+			let z = y.substr(y.indexOf("/") + 2);
 			
 			document.getElementById('valor_plantao').value = z;
-
-			multiplicar();
 		}
 
 		function handler(e){	
@@ -410,9 +408,17 @@
 								@if(!empty($cargos_rpa))	
 									@foreach($cargos_rpa as $cargoP)
 									@if(old('cargos_rpa_id') == $cargoP->id)
+									  @if($unidade[0]->id == 2)
 										<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>	
+									  @else
+									  <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / </option>	
+									  @endif
 									@else
+									  @if($unidade[0]->id == 2)	
 										<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>  
+							 		  @else
+										<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / </option>  
+									  @endif
 									@endif					  
 									@endforeach
 								@endif
@@ -579,10 +585,10 @@
 							</select>
 							</td>
 							<td><b><font size="2">Valor:</font></b>
-								<input required class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" type="text" id="valor_plantao" name="valor_plantao" onChange="multiplicar();"  value="{{ old('valor_plantao') }}" />
+								<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" />
 							</td>
 							<td><b><font size="2">Valor a ser Pago:</font></b>
-								<input required class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21"  type="text" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />	
+								<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />
 							</td>
 						</tr>
 						</table>

@@ -70,7 +70,7 @@
                                         
                                     </form>
 									
-									                  <a class="dropdown-item" href="{{ route('logout') }}"
+									<a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form2').submit();">
                                         {{ __('Sair') }}
@@ -84,82 +84,80 @@
                         @endguest
                     </ul>
                 </div>
-    </nav>
+  </nav>
   <div class="container-fluid px-1 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card b-0">
-            @if ($errors->any())
-              <div class="alert alert-danger">
-              <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-              </ul>
-              </div>
-            @endif
-            <fieldset class="show">
-             <div class="form-card">
-              <form action="{{\Request::route('updateCentrocusto', $centrocustos[0]->id)}}" method="post">
-					    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <table class="table bordered">
-                  <tr>
-                    <td colspan="2">
-                    @if ($errors->any())
-                     <div class="alert alert-danger">
-                      <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                      </ul>
-                     </div>
-                    @endif
-                    </td>
-                  </tr>
-                  <tr>
-                      <td colspan="2"><h5 class="sub-heading">ALTERAR CENTRO DE CUSTO:</h5></td>
-                  </tr>
-                  <tr>
-                    <td> Nome: </td>
-                    <td>
-                      <input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $centrocustos[0]->nome; ?>" />
-                    </td>
-                  </tr> 
-                  <tr>
-                <td> Unidade(s): </td>
-                <td>
-                  <li style="list-style: none;">
-                    <input style="font-size: 12px;" class="btn btn-primary" type="button" onclick='selects_und()' value="Marcar todos" />
-                    <input style="font-size: 12px;" class="btn btn-danger" type="button" onclick='deSelect_und()' value="Desmarcar todos" />
-                  </li>
-                  <li style="list-style: none;">
-                    @foreach($unidade as $und)
-                    <?php
-                    $marcado = '';
-                    if (in_array($und->id, $und_atuais))
-                      $marcado = 'checked';
-                    ?>
-                    <input type='checkbox' id="unidade[]" class="unidade" name="unidade[]" <?php echo $marcado; ?> value="<?php echo $und->id; ?>" />{{$und->sigla}}&nbsp;</input>
-                    @endforeach
-                  </li>
-                </td>
-                </tr>
-                <tr>
-                  <td colspan="2" align="right"> <br> <a href="{{ route('cadastroCentrocusto') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
-                        <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="SALVAR" id="Salvar" name="Salvar" /> </td>
-                </tr>
-						    </table>
-                <table>
-                <tr>
-                  <td> <input hidden type="text" id="acao" name="acao" value="alterar_centrocusto" class="form-control" /> </td>
-                  <td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
-                </tr>
-                </table>
-						  </form>
-            </div>
-          </fieldset> 
-         </div>
-       </div>
+                <fieldset class="show">
+                    <div class="form-card">
+					<form action="{{\Request::route('updateRPACargo', $cargos[0]->id)}}" method="post">
+					 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<table class="table table-bordered">
+						 <tr>
+							<td colspan="2">
+							@if ($errors->any())
+							  <div class="alert alert-danger">
+								<ul>
+									@foreach ($errors->all() as $error)
+									<li>{{ $error }}</li>
+									@endforeach
+								</ul>
+							  </div>
+							@endif
+							</td>
+						 </tr>
+						 <tr>
+						    <td colspan="2" height="20px"><h5 >ALTERAR CARGO RPA:</h5></td>
+						 </tr>
+						 <tr>
+                         <tr>
+							<td> NOME: </td>
+							<td>
+							 <input class="form-control" style="width: 400px" type="text" id="cargo" name="cargo" required value="<?php echo $cargos[0]->cargo; ?>" />
+							</td>
+						 </tr>
+                         <tr>
+							<td> VALOR: </td>
+							<td>
+							 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="valor" name="valor" required value="<?php echo $cargos[0]->valor; ?>" />
+							</td>
+						 </tr>
+                         <tr>
+							<td> Unidade(s): </td>
+							<td>
+                            <li style="list-style: none;">
+								<input style="font-size: 12px;" class="btn btn-primary" type="button" onclick='selects_und()' value="Marcar todos" />
+								<input style="font-size: 12px;" class="btn btn-danger" type="button" onclick='deSelect_und()' value="Desmarcar todos" />
+							</li>
+                            <li style="list-style: none;">
+                                @foreach($unidades as $und)
+                                <?php
+                                $marcado = '';
+                                if (in_array($und->id, $und_atuais))
+                                $marcado = 'checked';
+                                ?>
+                                <input type='checkbox' id="unidade[]" class="unidade" name="unidade[]" <?php echo $marcado; ?> value="<?php echo $und->id; ?>" />{{$und->sigla}}&nbsp;</input>
+                                @endforeach
+                            </li>
+							</td>
+                         </tr>
+						 </tr>
+						 <tr>
+						  <td colspan="2" align="right"> <a href="{{ route('cadastroRPACargo') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
+						       <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="SALVAR" id="Salvar" name="Salvar" /> </td>
+						 </tr>
+						</table>
+						 <tr>
+							<td> <input hidden type="text" id="acao" name="acao" value="alterar_cargo_rpa" class="form-control" /> </td>
+							<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
+						 </tr>
+						</table>
+						</form>
+                    </div>
+                </fieldset> 
+             </div>
+        </div>
     </div>
 </div>
 </body>

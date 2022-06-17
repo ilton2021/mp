@@ -579,16 +579,17 @@
 						<tr>
 							<td><b><font size="2">Quantidade:</font></b>
 								<select required class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
+								<option id="quantidade_plantao" name="quantidade_plantao" value="">Selecione...</option>
 								@for($a = 1; $a < 32; $a++)  
 								<option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>
 								@endfor
 							</select>
 							</td>
 							<td><b><font size="2">Valor:</font></b>
-								<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" />
+								<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" onChange="multiplicar();" />
 							</td>
 							<td><b><font size="2">Valor a ser Pago:</font></b>
-								<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />
+								<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly step="00.01" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />
 							</td>
 						</tr>
 						</table>

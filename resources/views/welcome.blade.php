@@ -123,10 +123,16 @@
                         <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
                         <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
                         <a class="dropdown-item" href="{{ route('cadastroCargo') }}">Cargo</a>
+                        <a class="dropdown-item" href="{{ route('cadastroRPACargo') }}">Cargos RPA</a>
                         <a class="dropdown-item" href="{{ route('cadastroCentrocusto') }}">Centro de Custo</a>
                         <a class="dropdown-item" href="{{ route('cadastroUsuario') }}">Usuário</a>  
                     </div>
                     <a href="{{ route('excluirMPs') }}" class="btn-danger btn btn-sm">EXCLUIR MPS</a>
+                    @elseif(Auth::user()->id == 30)
+                    <a href="{{ route('cadastroRPACargo') }}" class="btn btn-info btn btn-sm" style="color: #FFFFFF;"> CARGOS RPA </a>
+                    <a href="{{ route('excluirMPs') }}" class="btn-danger btn btn-sm">EXCLUIR MPS</a>
+                    @elseif(Auth::user()->id == 218)
+                    <a href="{{ route('cadastroRPACargo') }}" class="btn btn-info btn btn-sm" style="color: #FFFFFF;"> CARGOS RPA </a>
                     @else
                     <a href="{{ route('excluirMPs') }}" class="btn-danger btn btn-sm">EXCLUIR MPS</a>
                     @endif

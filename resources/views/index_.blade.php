@@ -494,6 +494,12 @@
 						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Substituição Temporária" disabled /> 
 						@elseif($adm->motivo == "segundo_vinculo")
 						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Segundo Vínculo" disabled /> 
+						@elseif($adm->motivo == "atestado")
+						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Atestado" disabled /> 
+						@elseif($adm->motivo == "ferias")
+						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Férias" disabled /> 
+						@elseif($adm->motivo == "licenca_maternidade")
+						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Licença Maternidade" disabled /> 
 						@elseif($adm->motivo == "substituicao_definitiva")
 						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Substituicao Definitiva a:" disabled /> 
 						<br><input class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="<?php echo $adm->motivo2; ?>" disabled /> </td>

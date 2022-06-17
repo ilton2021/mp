@@ -453,13 +453,12 @@
 						<input class="form-control form-control-sm" type="text" id="substituto" name="substituto" value="<?php echo $adm->substituto; ?>" />
 						</td>
 						<td><b><font size="2">Departamento:</font></b> 
-						<select  class="form-control form-control-sm" id="setor_plantao" name="setor_plantao" required>
-						<option id="setor_plantao" name="setor_plantao" value="">Selecione...</option>
+						<select  class="form-control form-control-sm" id="departamento" name="departamento" required>
 						@foreach($setores as $setor)
 							@if($adm->departamento == $setor->nome)
-							<option id="setor_plantao" name="setor_plantao" value="<?php echo $setor->nome; ?>" selected>{{ $setor->nome }}</option>
+							<option id="departamento" name="departamento" value="<?php echo $setor->nome; ?>" selected>{{ $setor->nome }}</option>
 							@else
-							<option id="setor_plantao" name="setor_plantao" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>   
+							<option id="departamento" name="departamento" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>   
 							@endif
 						@endforeach
 						</select>
@@ -578,7 +577,7 @@
 						</select>
 						</td>
 						<td><b><font size="2">Valor:</font></b>
-							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" />
+							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" onChange="multiplicar();" />
 						</td>
 						<td><b><font size="2">Valor a ser Pago:</font></b>
 							<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />

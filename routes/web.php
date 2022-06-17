@@ -185,6 +185,18 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('cadastroCargo/pesquisarCargo','CargosController@pesquisarCargo')->name('pesquisarCargo');
 		////
 
+		//CargosRPA
+		Route::get('cadastroRPACargo', 'CargosRPAController@cadastroRPACargo')->name('cadastroRPACargo');
+		Route::get('cadastroRPACargo/cargoRPANovo', 'CargosRPAController@cargoRPANovo')->name('cargoRPANovo');
+		Route::post('cadastroRPACargo/cargoRPANovo/', 'CargosRPAController@storeRPACargo')->name('storeRPACargo');
+		Route::get('cadastroRPACargo/cargoRPAAlterar/{id}', 'CargosRPAController@cargoRPAAlterar')->name('cargoRPAAlterar');
+		Route::post('cadastroRPACargo/cargoRPAAlterar/{id}/', 'CargosRPAController@updateRPACargo')->name('updateRPACargo');
+		Route::get('cadastroRPACargo/cargoRPAExcluir/{id}', 'CargosRPAController@cargoRPAExcluir')->name('cargoRPAExcluir');
+		Route::post('cadastroRPACargo/cargoRPAExcluir/{id}/', 'CargosRPAController@destroyRPACargo')->name('destroyRPACargo');
+		Route::get('cadastroRPACargo/pesquisarRPACargo','CargosRPAController@pesquisarRPACargo')->name('pesquisarRPACargo');
+		Route::post('cadastroRPACargo/pesquisarRPACargo','CargosRPAController@pesquisarRPACargo')->name('pesquisarRPACargo');
+		////
+
 		//Centro de custo
 		Route::get('cadastroCentrocusto', 'CentroCustoController@cadastroCentrocusto')->name('cadastroCentrocusto');
 		Route::get('cadastroCentrocusto/centrocustoNovo', 'CentroCustoController@centrocustoNovo')->name('centrocustoNovo');

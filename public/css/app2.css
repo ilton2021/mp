@@ -3,7 +3,7 @@ body {
     overflow-x: hidden;
     height: auto;
     background: linear-gradient(-45deg, #32CD32 50%, #EEEEEE 50%);
-    background-repeat: no-repeat;
+    background-repeat: repeat;
 }
 
 .card {

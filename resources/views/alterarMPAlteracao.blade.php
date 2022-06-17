@@ -93,7 +93,7 @@
 							</center>
 							</td>
 						<td><center><b><font size="2">Data Prevista:</font></b></center></td>
-						<td><input class="form-control form-control-sm" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $mp->data_prevista; ?>" /></td>
+						<td><input class="form-control form-control-sm" type="date" id="data_prevista" name="data_prevista" required value="<?php echo $mp->data_prevista; ?>" onchange="handler2(event);" /></td>
 						</tr>	
 						</table>
 					</center>

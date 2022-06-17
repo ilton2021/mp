@@ -667,7 +667,13 @@
                                                {{ 'Segundo Vínculo' }}
                                          <?php } else if($admRPA->motivo == "substituicao_definitiva") { ?>
                                                {{ 'Substituição Definitiva' }}
-                                         <?php } else { ?> {{ $motivo2 }}   <?php } ?> 
+                                         <?php } else if($admRPA->motivo == "atestado") { ?>
+                                               {{ 'Atestado' }}
+                                         <?php } else if($admRPA->motivo == "ferias") { ?>
+                                               {{ 'Férias' }}
+                                         <?php } else if($admRPA->motivo == "licenca_maternidade") { ?>
+                                               {{ 'Licença Maternidade' }}
+                                         <?php } ?> 
                                 </center> </p>  
                         </td>
                         <td> 

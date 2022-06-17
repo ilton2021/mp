@@ -412,11 +412,11 @@
 						    <option selected id="motivo" name="motivo" value="substituicao_definitiva"> Substituição Definitiva a: </option>
 						  @endif 
 						 </select>
-						@if($adm->motivo == "substituicao_definitiva")
-						<br><input type="text" class="form-control form-control-sm" id="motivo6" name="motivo6" value="<?php echo $adm->motivo2; ?>">
-						@else	
-						<br><input hidden type="text" class="form-control form-control-sm" id="motivo6" name="motivo6">
-						@endif
+						 @if($adm->motivo == "substituicao_definitiva")
+						 <br><input required type="text" class="form-control form-control-sm" id="motivo6" name="motivo6" value="<?php echo $adm->motivo2; ?>">
+						 @else
+						 <br><input disabled required type="text" class="form-control form-control-sm" id="motivo6" name="motivo6" value="<?php echo $adm->motivo2; ?>">
+						 @endif
 						</td>
 						<td>
 						 @if($adm->motivo == "substituicao_definitiva")

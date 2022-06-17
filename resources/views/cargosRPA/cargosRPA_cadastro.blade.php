@@ -14,24 +14,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
-  <script type="text/javascript">
-    function selects_und() {
-      var ele = document.getElementsByClassName('unidade');
-      for (var i = 0; i < ele.length; i++) {
-        if (ele[i].type == 'checkbox')
-          ele[i].checked = true;
-      }
-    }
-
-    function deSelect_und() {
-      var ele = document.getElementsByClassName('unidade');
-      for (var i = 0; i < ele.length; i++) {
-        if (ele[i].type == 'checkbox')
-          ele[i].checked = false;
-
-      }
-    }
-  </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-2 mb-5 rounded fixed-top">
@@ -70,7 +52,7 @@
                                         
                                     </form>
 									
-									                  <a class="dropdown-item" href="{{ route('logout') }}"
+									<a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form2').submit();">
                                         {{ __('Sair') }}
@@ -84,82 +66,74 @@
                         @endguest
                     </ul>
                 </div>
-    </nav>
+  </nav>
   <div class="container-fluid px-1 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card b-0">
-            @if ($errors->any())
-              <div class="alert alert-danger">
-              <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-              </ul>
-              </div>
-            @endif
-            <fieldset class="show">
-             <div class="form-card">
-              <form action="{{\Request::route('updateCentrocusto', $centrocustos[0]->id)}}" method="post">
-					    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <table class="table bordered">
-                  <tr>
-                    <td colspan="2">
-                    @if ($errors->any())
-                     <div class="alert alert-danger">
-                      <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                      </ul>
-                     </div>
-                    @endif
-                    </td>
-                  </tr>
-                  <tr>
-                      <td colspan="2"><h5 class="sub-heading">ALTERAR CENTRO DE CUSTO:</h5></td>
-                  </tr>
-                  <tr>
-                    <td> Nome: </td>
-                    <td>
-                      <input class="form-control" type="text" id="nome" name="nome" required value="<?php echo $centrocustos[0]->nome; ?>" />
-                    </td>
-                  </tr> 
-                  <tr>
-                <td> Unidade(s): </td>
-                <td>
-                  <li style="list-style: none;">
-                    <input style="font-size: 12px;" class="btn btn-primary" type="button" onclick='selects_und()' value="Marcar todos" />
-                    <input style="font-size: 12px;" class="btn btn-danger" type="button" onclick='deSelect_und()' value="Desmarcar todos" />
-                  </li>
-                  <li style="list-style: none;">
-                    @foreach($unidade as $und)
-                    <?php
-                    $marcado = '';
-                    if (in_array($und->id, $und_atuais))
-                      $marcado = 'checked';
-                    ?>
-                    <input type='checkbox' id="unidade[]" class="unidade" name="unidade[]" <?php echo $marcado; ?> value="<?php echo $und->id; ?>" />{{$und->sigla}}&nbsp;</input>
-                    @endforeach
-                  </li>
-                </td>
-                </tr>
-                <tr>
-                  <td colspan="2" align="right"> <br> <a href="{{ route('cadastroCentrocusto') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
-                        <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="SALVAR" id="Salvar" name="Salvar" /> </td>
-                </tr>
-						    </table>
-                <table>
-                <tr>
-                  <td> <input hidden type="text" id="acao" name="acao" value="alterar_centrocusto" class="form-control" /> </td>
-                  <td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
-                </tr>
-                </table>
-						  </form>
-            </div>
-          </fieldset> 
-         </div>
-       </div>
+                <fieldset class="show">
+                    <div class="form-card">
+                      	<form method="POST" action="{{ route('pesquisarRPACargo') }}">	
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						 <table class="table" border="0">
+                          <tr>
+                            <td colspan="4">
+                         	  @if ($errors->any())
+                               <div class="alert alert-success alert-sm">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                               </div>
+                              @endif 
+							</td>
+                          </tr>
+						  <tr>
+							<td colspan="2"><h5 class="sub-heading">CADASTRO DOS CARGOS RPA:</h5></td>
+							<td>
+							 <a class="btn btn-warning btn-sm" style="color: #FFFFFF;" href="{{ url('/homeMP') }}"> VOLTAR <i class="fas fa-undo-alt"></i> </a> 
+							</td>
+							<td>
+					   		 <a class="btn btn-dark btn-sm" style="color: #FFFFFF;" href="{{route('cargoRPANovo')}}"> NOVO <i class="fas fa-check"></i> </a>
+							</td>
+						  </tr>
+						  <tr>
+							<td colspan="2">
+						  	  <input type="text" style="width: 400px" id="pesq" name="pesq" class="form-control form-control-sm" value="" />
+							</td>
+							<td>
+						  	  <select id="pesq2" name="pesq2" class="form-control form-control-sm" required>
+							   <option id="pesq2" name="pesq2" value="">SELECIONE...</option>		
+						  	   <option id="pesq2" name="pesq2" value="1">NOME</option>
+							  </select>
+							</td>				
+							<td> <input type="submit" class="btn btn-info btn-sm" value="PESQUISAR" id="Pesquisar" name="Pesquisar" /> </td>
+						</tr>
+						</form>
+						<tbody>
+						@foreach($cargos as $cargo)
+						<tr>
+							<td style="font-size: 15px;" colspan="2">{{$cargo->cargo}}</td>
+                            <td style="font-size: 15px;"><?php echo "R$ ".number_format($cargo->valor, 2,',','.'); ?></td>
+							<td>
+							  <center>
+								<a class="btn btn-info btn-sm" href="{{route('cargoRPAAlterar', $cargo->id)}}" ><i class="fas fa-edit"></i></a>
+							    <a class="btn btn-danger btn-sm" href="{{route('cargoRPAExcluir', $cargo->id)}}" ><i class="fas fa-times-circle"></i></a>
+							  </center>
+							</td>
+						</tr>
+						@endforeach
+						</table>
+						<table>
+							<tr>
+							<td> {{ $cargos->appends(['pesq' => isset($pesq) ? $pesq : '','pesq2' => isset($pesq2) ? $pesq2 : ''])->links() }} </td>
+							</tr> 
+						</table>
+                    </div>
+                </fieldset> 
+             </div>
+        </div>
     </div>
 </div>
 </body>

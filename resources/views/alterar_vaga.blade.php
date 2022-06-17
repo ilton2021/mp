@@ -64,9 +64,9 @@
 			document.getElementById('salario_base').disabled  = true;
 		  }
 		}
-
+	
 		function desabilitarPerfil(valor){
-		  var status = document.getElementById('comportamentalB9').checked;	 
+		  var status = document.getElementById('comportamental9').checked;	
 			
 		  if(status == true){
 			document.getElementById('perfil').disabled = false;  
@@ -76,13 +76,29 @@
 		}
 		
 		function desabilitarMotivo(valor){
-		  var status = document.getElementById('motivoB9').checked;	
+		  var status = document.getElementById('motivoA9').checked;	
 			
 		  if(status == true){
 			document.getElementById('outras_competencias').disabled = false;  
 		  } else {
 			document.getElementById('outras_competencias').disabled = true;  
 		  }
+		}
+
+		function handler2(e){
+			if(document.getElementById('data_prevista').value != ''){
+				var periodo_fim = new Date(document.getElementById('data_prevista').value);
+			}
+			var periodo_inicio = new Date(document.getElementById('data_emissao').value);
+			var timeDiff = Math.abs(periodo_fim.getTime() - periodo_inicio.getTime());
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+		
+			if(periodo_fim <= periodo_inicio) {
+				if(diffDays > 2){
+					alert('Data Limite de 2 Dias Retroativos! Tente outra data!');
+					document.getElementById('data_prevista').value = "";
+				}
+	  		} 
 		}
 	</script>
 </head>
@@ -239,6 +255,8 @@
 								<font size="2"><b>Outro:</b></font>
 								@if($vaga->horario_trabalho != '07:00 as 16:00' && $vaga->horario_trabalho != '08:00 as 17:00' && $vaga->horario_trabalho != '09:00 as 19:00' && $vaga->horario_trabalho != '19:00 as 07:00')
 								<input class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" value="<?php echo $vaga->horario_trabalho; ?>" />
+								@else
+								<input disabled class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" />
 								@endif
 							</td>
 							</tr>
@@ -270,7 +288,7 @@
 							@if($vaga->escala_trabalho != 'segxsex' && $vaga->escala_trabalho != '12x36' && $vaga->escala_trabalho != '12x60')
 							<input type="text" class="form-control form-control-sm" id="escala_trabalho2" name="escala_trabalho2" value="<?php echo $vaga->escala_trabalho; ?>" /> 
 							@else
-							<input disabled type="text" class="form-control form-control-sm" id="escala_trabalho2" name="escala_trabalho2" value="<?php echo $vaga->escala_trabalho; ?>" /> 
+							<input disabled type="text" class="form-control form-control-sm" id="escala_trabalho2" name="escala_trabalho2" value="" /> 
 							@endif
 							</td> 
 							<td><font size="2"><b>Centro de Custo:</b></font> 
@@ -381,9 +399,18 @@
 							</select>
 							@if($vaga->motivo == 'substituicao_definitiva')
 							<input class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="<?php echo $vaga->motivo2; ?>" /> 
+							@else
+							<input disabled class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="" /> 
 							@endif
 							</td>
 							@if($vaga->motivo == 'substituicao_definitiva')
+							<td><label id="data_demissao_lbl"><font size="2"><b>Data da Demissão:</b></font></label>
+								<input type="date" id="data_demissao" name="data_demissao" class="form-control form-control-sm" value="<?php echo $vaga->data_demissao; ?>" required>		
+								<br>
+								<label id="salario_base_lbl"><b><font size="2">Salário Base:</font></b></label>
+								<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" type="number" required id="salario_base" name="salario_base" value="<?php echo $vaga->salario_base; ?>" title="ex: 2500 ou 2580,21" />
+							</td>
+							@else
 							<td><label id="data_demissao_lbl"><font size="2"><b>Data da Demissão:</b></font></label>
 								<input type="date" id="data_demissao" name="data_demissao" class="form-control form-control-sm" value="<?php echo $vaga->data_demissao; ?>" required>		
 								<br>

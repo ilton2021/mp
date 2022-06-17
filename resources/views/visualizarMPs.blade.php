@@ -71,11 +71,19 @@
     <div class="row d-flex justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card2 b-0">
-
+                
                 <fieldset class="show">
                     <div class="form-card2">
                         <h5 class="sub-heading"><br><br>Escolha uma opção:</h5>
-
+                        @if ($errors->any())
+                         <div class="alert alert-danger alert-sm">
+                          <ul>
+                            @foreach ($errors->all() as $error)
+                             <li>{{ $error }}</li>
+                            @endforeach
+                          </ul>
+                         </div>
+                        @endif 
                         <div class="row px-1 radio2-group">
                             <div class="card2-block radio">
 							 <a href="{{ route('criadasMPs') }}">
@@ -110,12 +118,12 @@
                 <div class="card-body text-center">
                     <a href="{{ route('minhasMPS') }}" class="btn btn-outline-warning btn-sm">HISTÓRICO MP'S</a>   &nbsp;&nbsp; 
                     @if(Auth::user()->id == 30 || Auth::user()->id == 62 || Auth::user()->id == 71 || Auth::user()->id == 1 || Auth::user()->id == 34 || Auth::user()->id == 48 || Auth::user()->id == 60 || Auth::user()->id == 5 || Auth::user()->id == 61 || Auth::user()->id == 59 || Auth::user()->id == 13)
-                    <a href="{{ route('graphicsIndex') }}" class="btn btn-outline-info btn-sm">GRÁFICOS MP</a>
+                    <a href="{{ route('graphicsIndex') }}" class="btn btn-outline-info btn-sm">GRÁFICOS MP</a> &nbsp;&nbsp; 
                     <span class="font-weight-bold"></span>
                     @endif 
+                    <a href="{{url('homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
                 </div>
-
-                <a href="{{url('homeMP')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
+                
              </div>
         </div>
     </div>

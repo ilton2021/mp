@@ -2492,14 +2492,16 @@ class HomeController extends Controller
 				$demissao  = DB::table('demissao')->where('mp_id',$mp[0]->id)->get();
 				$qtdDE 	   = sizeof($demissao);
 				$alteracao = DB::table('alteracao_funcional')->where('mp_id',$mp[0]->id)->get();
-				$qtdAL 	   = sizeof($alteracao); $email7 = 'ilton.albuquerque@hcpgestao.org.br'; $email8 = ''; $email9 = '';
+				$qtdAL 	   = sizeof($alteracao); 
+				$admissaoRPA = DB::table('admissao_rpa')->where('mp_id',$mp[0]->id)->get();
+    			$qtdRPA      = sizeof($admissaoRPA);
+				$email7 = 'ilton.albuquerque@hcpgestao.org.br'; $email8 = ''; $email9 = '';
 				if($qtdAD > 0) {
-					if($admissao[0]->tipo == "rpa"){
-						$tipo = 'RPA';
-					} else {
-						$tipo = 'CLT';
-					}
+					$tipo = 'CLT';
 				}
+				if($qtdRPA > 0){
+    			    $tipo = 'RPA';
+    			}
 				if($qtdDE > 0) {
 					$tipo = 'CLT';
 				}
@@ -2689,13 +2691,14 @@ class HomeController extends Controller
 				$qtdDE 	   = sizeof($demissao);
 				$alteracao = DB::table('alteracao_funcional')->where('mp_id',$mp[0]->id)->get();
 				$qtdAL 	   = sizeof($alteracao); $email7 = '';
+				$admissaoRPA = DB::table('admissao_rpa')->where('mp_id',$mp[0]->id)->get();
+    			$qtdRPA      = sizeof($admissaoRPA);
 				if($qtdAD > 0) {
-					if($admissao[0]->tipo == "rpa"){
-						$tipo = 'RPA';
-					} else {
-						$tipo = 'CLT';
-					}
+					$tipo = 'CLT';
 				}
+				if($qtdRPA > 0){
+    			    $tipo = 'RPA';
+    			}
 				if($qtdDE > 0) {
 					$tipo = 'CLT';
 				}
@@ -3086,33 +3089,41 @@ class HomeController extends Controller
 	}
 
 	public function inativarVagas($id) {
-		$vagas   = Vaga::where('id', $id)->get();
-		$idU     = $vagas[0]->unidade_id;
-		$unidade = Unidade::where('id',$idU)->get();
-		$idG     = $vagas[0]->solicitante;
-		$gestor  = Gestor::where('nome',$idG)->get();
-		if($vagas[0]->solicitante != Auth::user()->name || Auth::user()->id == 30){
-			$validator = "Você não tem Permissão!";
-			$vagas     = Vaga::where('solicitante', Auth::user()->nome)->paginate(20);
-			$unidades  = Unidade::all();
-			return view('excluirVagas', compact('unidades','vagas'))
-				->withErrors($validator);
-		} else {
-			return view('inativandoVagas', compact('vagas','unidade','gestor'));
+		try{
+			$vagas   = Vaga::where('id', $id)->get();
+			$idU     = $vagas[0]->unidade_id;
+			$unidade = Unidade::where('id',$idU)->get();
+			$idG     = $vagas[0]->solicitante;
+			$gestor  = Gestor::where('nome',$idG)->get();
+			if($vagas[0]->solicitante != Auth::user()->name || Auth::user()->id == 30){
+				$validator = "Você não tem Permissão!";
+				$vagas     = Vaga::where('solicitante', Auth::user()->nome)->paginate(20);
+				$unidades  = Unidade::all();
+				return view('excluirVagas', compact('unidades','vagas'))
+					->withErrors($validator);
+			} else {
+				return view('inativandoVagas', compact('vagas','unidade','gestor'));
+			}
+		} catch(Throwable $e) {
+			return view('welcomeErrovaga');
 		}
 	}
 	
 	public function inativandoVagas($id, Request $request) {
-		$input 		= $request->all();
-		$unidades  	= Unidade::all();
-		$vagas 		= Vaga::where('id',$id)->get();
-		DB::statement('UPDATE vaga SET inativa = 1 WHERE id = '.$id.';');
-		$vagas      = Vaga::where('id',0)->paginate(20);
-		$input['acao'] = $input['acao'].$id;
-		$loggers    = Loggers::create($input);
-		$validator  = 'Vaga Inativada com sucesso!!';
-		return view('excluirVagas', compact('unidades','vagas'))
-				->withErrors($validator)
-                ->withInput(session()->flashInput($request->input()));
+		try{
+			$input 		= $request->all();
+			$unidades  	= Unidade::all();
+			$vagas 		= Vaga::where('id',$id)->get();
+			DB::statement('UPDATE vaga SET inativa = 1 WHERE id = '.$id.';');
+			$vagas      = Vaga::where('id',0)->paginate(20);
+			$input['acao'] = $input['acao'].$id;
+			$loggers    = Loggers::create($input);
+			$validator  = 'Vaga Inativada com sucesso!!';
+			return view('excluirVagas', compact('unidades','vagas'))
+					->withErrors($validator)
+					->withInput(session()->flashInput($request->input()));
+		} catch(Throwable $e) {
+			return view('welcomeErrovaga');
+		}
 	}
 }

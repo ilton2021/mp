@@ -72,7 +72,8 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/home/validar/{id}/updem/{id_dem}', 'MPController@updateMPDemissao')->name('updateMPDemissao');
 		Route::get('/home/validar/{id}/upadm/{id_adm}', 'MPController@alterarMPAdmissao')->name('alterarMPAdmissao');
 		Route::post('/home/validar/{id}/upadm/{id_adm}', 'MPController@updateMPAdmissao')->name('updateMPAdmissao');
-		
+		Route::get('/home/error','MPController@welcomeErro')->name('welcomeErro');
+
 		Route::get('/home/validar/{id}/upadm_rpa/{id_adm_rpa}', 'MPController@alterarMPAdmissaoRPA')->name('alterarMPAdmissaoRPA');
 		Route::post('/home/validar/{id}/upadm_rpa/{id_adm_rpa}', 'MPController@updateMPAdmissaoRPA')->name('updateMPAdmissaoRPA');
 		
@@ -116,7 +117,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/home/visualizarVagas/criadasVagas/pesquisaVagas', 'VagaController@pesquisaVagas')->name('pesquisaVagas');
 		Route::get('/home/visualizarVagas/aprovadasVagas/pesquisaVagas', 'VagaController@pesquisaVagasAp')->name('pesquisaVagasAp');
 		Route::get('/home/visualizarVagas/reprovadasVagas/pesquisaVagas', 'VagaController@pesquisaVagasRe')->name('pesquisaVagasRe');
-		Route::post('/home/visualizarVagas/criadasVagas/pesquisaVagas/', 'VagaController@pesquisaVagas')->name('pesquisaVagas');
+		Route::post('/home/visualizarVagas/criadasVagas/pesquisaVagas', 'VagaController@pesquisaVagas')->name('pesquisaVagas');
 		Route::post('/home/visualizarVagas/aprovadasVagas/pesquisaVagas/', 'VagaController@pesquisaVagasAp')->name('pesquisaVagasAp');
 		Route::post('/home/visualizarVagas/reprovadasVagas/pesquisaVagas/', 'VagaController@pesquisaVagasRe')->name('pesquisaVagasRe');
 		Route::get('/homeVaga/validar/{id}/up/', 'VagaController@alterarVaga')->name('alterarVaga');
@@ -128,6 +129,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeVaga/visualizarVagas/minhasVagas', 'VagaController@minhasVagas')->name('minhasVagas');
 		Route::get('/homeVaga/visualizarVagas/minhasVagas/pesquisa', 'VagaController@pesquisaHistVagas')->name('pesquisaHistVagas');
 		Route::post('/homeVaga/visualizarVagas/minhasVagas/pesquisa', 'VagaController@pesquisaHistVagas')->name('pesquisaHistVagas');
+		Route::get('/home/errorVaga','VagaController@welcomeErroVaga')->name('welcomeErroVaga');
 		////
 		
 		//ProgramaDegrau

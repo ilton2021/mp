@@ -65,7 +65,7 @@
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card b-0">
                 @if ($errors->any())
-                  <div class="alert alert-success">
+                  <div class="alert alert-danger">
                    <ul>
                     @foreach ($errors->all() as $error)
                      <li>{{ $error }}</li>
@@ -230,7 +230,7 @@
 					@endif
 					<tr> 
 						<td>Justificativa:</td>
-						<td><textarea id="motivo" name="motivo" class="form-control" rows="8" value=""></textarea></td>
+						<td><textarea id="motivo" name="motivo" class="form-control" rows="8" value="" required></textarea></td>
 					</tr>
 					</table>
 					<table border="0" class="table table-sm" style="height: 5px;" cellspacing="0">

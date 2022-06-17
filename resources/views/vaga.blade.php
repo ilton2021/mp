@@ -248,7 +248,7 @@
 								@endif
 								</select>
 								<font size="2"><b>Outro:</b></font>
-								<input class="form-control form-control-sm" disabled type="text" id="horario_trabalho2" name="horario_trabalho2" value="{{ old('horario_trabalho2') }}" />
+								<input class="form-control form-control-sm" disabled required type="text" id="horario_trabalho2" name="horario_trabalho2" value="{{ old('horario_trabalho') }}" />
 							</td>
 							</tr>
 							<tr>
@@ -284,9 +284,9 @@
 							</select>
 							<br>
 							@if(old('escala_trabalho') == 'outra')
-							<input type="text" class="form-control form-control-sm" id="escala_trabalho2" name="escala_trabalho2" value=""> 
+							<input required type="text" class="form-control form-control-sm" id="escala_trabalho2" name="escala_trabalho2" value="{{ old('escala_trabalho2') }}"> 
 							@else
-							<input disabled class="form-control form-control-sm" type="text" id="escala_trabalho2" name="escala_trabalho2"> 
+							<input required disabled class="form-control form-control-sm" type="text" id="escala_trabalho2" name="escala_trabalho2"> 
 							@endif
 							</td> 
 							<td><b><font size="2">Centro de Custo:</font></b> 
@@ -383,9 +383,9 @@
 								@endif
 							</select>
 							@if(old('tipo') == 'rpa')	 
-							<br><input type="text" class="form-control form-control-sm" id="periodo_contrato" name="periodo_contrato" placeholder="Período Contrato (RPA)" /> 		
+							<br><input required type="text" class="form-control form-control-sm" id="periodo_contrato" name="periodo_contrato" placeholder="Período Contrato (RPA)" value="{{ old('periodo_contrato') }}" /> 		
 							@else	
-							<br><input disabled class="form-control form-control-sm" type="text" id="periodo_contrato" name="periodo_contrato" placeholder="Período Contrato (RPA)" /> 		
+							<br><input required disabled class="form-control form-control-sm" type="text" id="periodo_contrato" name="periodo_contrato" placeholder="Período Contrato (RPA)" /> 		
 							@endif
 							</td>
 							<td><b><font size="2">Motivo:</font></b><br> 
@@ -419,13 +419,13 @@
 								@endif 
 							</select>	
 								@if(old('motivo') == 'substituicao_definitiva')
-								<br><input class="form-control form-control-sm" type="text" id="motivo2" name="motivo2">  	 
+								<br><input required class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="{{ old('motivo2') }}">  	 
 								@else
-								<br><input disabled class="form-control form-control-sm" type="text" id="motivo2" name="motivo2">  	 
+								<br><input required disabled class="form-control form-control-sm" type="text" id="motivo2" name="motivo2">  	 
 								@endif
 							</td>
 							<td><label id="data_demissao_lbl"><font size="2"><b>Data da Demissão:</b></font></label>
-								<input disabled type="date" id="data_demissao" name="data_demissao" class="form-control form-control-sm" required>		
+								<input disabled type="date" id="data_demissao" name="data_demissao" class="form-control form-control-sm" required value="{{ old('data_demissao') }}">		
 								<br>
 								<label id="salario_base_lbl"><b><font size="2">Salário Base:</font></b></label>
 								<input disabled class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="salario_base" name="salario_base" value="{{ old('salario_base') }}" title="ex: 2500 ou 2580,21" />
@@ -552,8 +552,8 @@
 							<td colspan="1"><font size="3">Idiomas:</font></td>
 						</tr>
 						<tr>
-							<td><textarea required type="text" id="formacao" name="formacao" class="form-control form-control-sm" required rows="5" cols="60" value="">{{ Request::old('formacao') }} </textarea></td>     
-							<td><textarea required type="text" id="idiomas" name="idiomas" class="form-control form-control-sm" required rows="5" cols="60" value="">{{ Request::old('idiomas') }}</textarea></td>     
+							<td><textarea type="text" id="formacao" name="formacao" class="form-control form-control-sm" required rows="5" cols="60">{{ Request::old('formacao') }}</textarea></td>     
+							<td><textarea type="text" id="idiomas" name="idiomas" class="form-control form-control-sm" required rows="5" cols="60">{{ Request::old('idiomas') }}</textarea></td>     
 						</tr>
 						<tr>
 							<td>Competências: <br><br> 

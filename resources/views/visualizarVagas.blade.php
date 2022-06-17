@@ -71,7 +71,15 @@
     <div class="row d-flex justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card2 b-0">
-
+                @if ($errors->any())
+                 <div class="alert alert-danger alert-sm">
+                   <ul>
+                    @foreach ($errors->all() as $error)
+                      <li>{{ $error }}</li>
+                    @endforeach
+                   </ul>
+                 </div>
+                @endif 
                 <fieldset class="show">
                     <div class="form-card2">
                         <h5 class="sub-heading"><br><br>Escolha uma opção:</h5>
@@ -113,9 +121,8 @@
                     <a href="{{ route('graphicsVagaIndex') }}" class="btn btn-outline-info btn-sm">GRÁFICOS VAGAS</a>
                     @endif 
                     <span class="font-weight-bold"></span>
+                    <a href="{{url('homeVaga')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
                 </div>
-
-                <a href="{{url('homeVaga')}}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
              </div>
         </div>
     </div>

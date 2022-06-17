@@ -88,7 +88,8 @@
                             Ocorreu um <b>Erro Inesperado!</b> <br><br>
                             Entre em contato com o <b>Suporte da MP!</b> <br><br>
                             Abra um chamado no Helpdesk: <a href="http://helpdesk/" target="_blank"> clique aqui.</a> <br><br>
-                            Informe o número da MP que está com erro. <br><br>
+                            Informe os detalhes do Erro. <br><br>
+                            Qual tela, Qual MP...
                             <a href="javascript:history.back();" class="btn btn-warning btn btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
                           </font>
                         </center>

@@ -16,8 +16,8 @@
   <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
-  	    <img src="{{asset('img/Imagem1.png')}}" height="50" class="d-inline-block align-top" alt="">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm p-3 mb-5 rounded fixed-top">
+  	    <img src="{{asset('img/Imagem1.png')}}"  height="50" class="d-inline-block align-top" alt="">
 			<span class="navbar-brand mb-0 h1" style="margin-left:10px;margin-top:5px ;color: rgb(103, 101, 103) !important">
 				<h4 class="d-none d-sm-block">Movimentação de Pessoal - RH</h4>
 			</span>
@@ -66,79 +66,35 @@
                         @endguest
                     </ul>
                 </div>
-  </nav>
+    </nav>
   <div class="container-fluid px-1 py-5 mx-auto">
     <div class="row d-flex justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card2 b-0">
+                @if ($errors->any())
+                 <div class="alert alert-danger alert-sm">
+                  <ul>
+                    @foreach ($errors->all() as $error)
+                     <li>{{ $error }}</li>
+                    @endforeach
+                  </ul>
+                 </div>
+                @endif 
                 <fieldset class="show">
                     <div class="form-card2">
-                        <h5 class="sub-heading"><br><br>Escolha uma opção:</h5>
-                        @if ($errors->any())
-                         <div class="alert alert-danger alert-sm">
-                          <ul>
-                            @foreach ($errors->all() as $error)
-                             <li>{{ $error }}</li>
-                            @endforeach
-                          </ul>
-                         </div>
-                        @endif 
-                        <div class="row px-1 radio2-group">
-                            <div class="card2-block radio">
-							 <a href="{{ route('indexVaga2') }}">
-                                <div class="image2-icon">
-                                    <img class="icon2 icon1" src="{{asset('img/mp.png')}}">
-                                </div>
-                                <p class="sub-desc"><center>CADASTRAR NOVA VAGA</center></p> 
-							 </a>
-                            </div>
-                            
-                            <div class="card2-block radio">
-							 <a href="{{ route('visualizarVagas') }}">
-                                <div class="image2-icon">
-                                    <img class="icon2 icon1" src="{{asset('img/mpVisualizar.png')}}">
-                                </div>
-                                <p class="sub-desc"><center>VISUALIZAR VAGAS</center></p>
-							 </a>
-                            </div>
-
-                            @foreach($vagas as $vaga)
-                             @if($vaga->gestor_id == Auth::user()->id && $vaga->concluida == 0 && $vaga->inativa == 0 || ($vaga->gestor_id == 61 && Auth::user()->id == 104) || ($vaga->gestor_id == 62 && Auth::user()->id == 61))
-                             <div class="card2-block radio">
-							  <a href="{{ route('indexValidaVaga') }}">
-                                <div class="image2-icon">
-                                    <img class="icon2 icon1" src="{{asset('img/mpVisualizar.png')}}">
-                                </div>
-                                <p class="sub-desc"><center>VALIDAR VAGA</center></p>
-                                </a>
-                             </div>
-                             @break
-                             @endif
-                            @endforeach
-                            
-                        </div>
+                        <h5 class="sub-heading"> <br><br>
+                        <center>
+                          <font size="4">
+                            Ocorreu um <b>Erro Inesperado!</b> <br><br>
+                            Entre em contato com o <b>Suporte da MP!</b> <br><br>
+                            Abra um chamado no Helpdesk: <a href="http://helpdesk/" target="_blank"> clique aqui.</a> <br><br>
+                            Informe os detalhes do Erro. <br><br>
+                            Qual tela, Qual Vaga...
+                            <a href="javascript:history.back();" class="btn btn-warning btn btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
+                          </font>
+                        </center>
                     </div>
-                </fieldset> <br>
-                <div class="container">
-                <div class="row">
-                    <div class="col align-self-start">
-                    @if(Auth::user()->funcao == "Administrador")
-                    <button style="color:#FFFFFF; margin-bottom:0px;" class="btn btn-info dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        CADASTRAR
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ route('cadastroUnidade') }}">Unidade</a>
-                        <a class="dropdown-item" href="{{ route('cadastroGestor') }}">Gestor</a>
-                    </div>
-                    <a href="{{ route('excluirVagas') }}" class="btn-danger btn btn-sm">EXCLUIR VAGAS</a>
-                    @else
-                    <a href="{{ route('excluirVagas') }}" class="btn-danger btn btn-sm">EXCLUIR VAGAS</a>
-                    @endif
-                    <a href="{{ url('/duvidasVagas') }}" class="btn btn-success btn btn-sm" style="color: #FFFFFF;"> DÚVIDAS </a>
-                    <a href="{{ url('/home') }}" class="btn btn-warning btn btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
-                    </div>
-                </div>
-                </div>
+                </fieldset> 
              </div>
         </div>
     </div>

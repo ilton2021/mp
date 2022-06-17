@@ -765,7 +765,7 @@ class MPController extends Controller
 			$pdf->setPaper('A4', 'landscape');
 			return $pdf->download('mp.pdf');
 		} catch(Throwable $e) {
-			$validator = "Algo está errado!! Verifique os campos novamente!";
+			return view('welcomeErro');
 		}  
 	}
 	

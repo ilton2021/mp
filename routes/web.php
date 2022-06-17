@@ -129,7 +129,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::get('/homeVaga/visualizarVagas/minhasVagas', 'VagaController@minhasVagas')->name('minhasVagas');
 		Route::get('/homeVaga/visualizarVagas/minhasVagas/pesquisa', 'VagaController@pesquisaHistVagas')->name('pesquisaHistVagas');
 		Route::post('/homeVaga/visualizarVagas/minhasVagas/pesquisa', 'VagaController@pesquisaHistVagas')->name('pesquisaHistVagas');
-		Route::get('/home/errorVaga','VagaController@welcomeErroVaga')->name('welcomeErroVaga');
+		Route::get('/homeVaga/errorVaga','VagaController@welcomeErroVaga')->name('welcomeErroVaga');
 		////
 		
 		//ProgramaDegrau
@@ -161,6 +161,7 @@ Route::middleware(['auth'])->group( function() {
 		Route::post('/homeProgramaDegrau/validar/{id}/n_autorizarPD', 'ProgramaDegrauController@storeNAutPD')->name('storeNAutPD');
 		Route::get('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@autorizarPD')->name('autorizarPD');
 		Route::post('/homeProgramaDegrau/validar/{id}/autorizarPD', 'ProgramaDegrauController@storeAutPD')->name('storeAutPD');
+		Route::get('/homeProgramaDegrau/errorVagaPD','VagaController@welcomeErroVagaPD')->name('welcomeErroVagaPD');
 		////
 		
 		//Unidade

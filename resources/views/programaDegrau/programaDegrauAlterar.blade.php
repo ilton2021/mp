@@ -201,9 +201,9 @@
 								</select>
 								<font size="2"><b>Outro:</b></font>
 								@if($pd[0]->horario_trabalho != '07:00 as 16:00' && $pd[0]->horario_trabalho != '08:00 as 17:00' && $pd[0]->horario_trabalho != '09:00 as 19:00' && $pd[0]->horario_trabalho != '19:00 as 07:00')
-								<input class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" value="<?php echo $pd[0]->horario_trabalho; ?>" />
+								<input required class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" value="<?php echo $pd[0]->horario_trabalho; ?>" />
 								@else
-								<input class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" value="" disabled />
+								<input required class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" value="" disabled />
 								@endif
 							</td>
 							</tr>
@@ -238,9 +238,9 @@
 								@endif
 							</select>
 							@if($pd[0]->escala_trabalho != 'segxsex' && $pd[0]->escala_trabalho != '12x36' && $pd[0]->escala_trabalho != '12x60')
-							<input class="form-control form-control-sm" type="text" id="escala_trabalho6" name="escala_trabalho6" value="<?php echo $pd[0]->escala_trabalho; ?>">
+							<input required class="form-control form-control-sm" type="text" id="escala_trabalho6" name="escala_trabalho6" value="<?php echo $pd[0]->escala_trabalho; ?>">
 							@else
-							<input class="form-control form-control-sm" disabled type="text" id="escala_trabalho6" name="escala_trabalho6" value="">  	  
+							<input required class="form-control form-control-sm" disabled type="text" id="escala_trabalho6" name="escala_trabalho6" value="">  	  
 							@endif
 							</td> 
 							<td><font size="2"><b>Centro de Custo:</b></font> 
@@ -346,9 +346,9 @@
 								@endif
 							</select>
 							@if($pd[0]->tipo == 'rpa')
-							<input class="form-control form-control-sm" type="text" id="periodo_contrato" name="periodo_contrato" value="<?php echo $pd[0]->periodo_contrato; ?>" /> 		
+							<input required class="form-control form-control-sm" type="text" id="periodo_contrato" name="periodo_contrato" value="<?php echo $pd[0]->periodo_contrato; ?>" /> 		
 							@else
-							<input class="form-control form-control-sm" disabled type="text" id="periodo_contrato" name="periodo_contrato" /> 		
+							<input required class="form-control form-control-sm" disabled type="text" id="periodo_contrato" name="periodo_contrato" /> 		
 							@endif
 							</td>
 							<td><font size="2"><b>Motivo:</b></font><br> 
@@ -382,9 +382,9 @@
 								@endif
 							</select>
 							@if($pd[0]->motivo == 'substituicao_definitiva')
-								<input class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="<?php echo $pd[0]->motivo2; ?>">
+								<input required class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="<?php echo $pd[0]->motivo2; ?>">
 							@else
-								<input class="form-control form-control-sm" disabled type="text" id="motivo2" name="motivo2">
+								<input required class="form-control form-control-sm" disabled type="text" id="motivo2" name="motivo2">
 							@endif
 							</td>
 							</tr>
@@ -605,8 +605,8 @@
 						<table class="table table-bordered" style="height: 10px;">
 						<tr>
 							<td align="right"> 
-							<a href="javascript:history.back();" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a> 
-							<input type="submit" onclick="validar()" class="btn btn-success btn-sm" value="ALTERAR" id="Salvar" name="Salvar" /> 
+							 <a href="javascript:history.back();" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a> 
+							 <input type="submit" onclick="validar()" class="btn btn-success btn-sm" value="ALTERAR" id="Salvar" name="Salvar" /> 
 							</td>
 						</tr>
 						</table>

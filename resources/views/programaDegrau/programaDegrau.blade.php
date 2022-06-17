@@ -77,6 +77,22 @@
 				document.getElementById('horario_trabalho2').disabled = true;
 			}
 		}
+
+		function handler2(e){
+			if(document.getElementById('data_prevista').value != ''){
+				var periodo_fim = new Date(document.getElementById('data_prevista').value);
+			}
+			var periodo_inicio = new Date(document.getElementById('data_emissao').value);
+			var timeDiff = Math.abs(periodo_fim.getTime() - periodo_inicio.getTime());
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+			
+			if(periodo_fim <= periodo_inicio) {
+				if(diffDays > 0){
+					alert('Data Prevista tem que ser maior ou igual a Data da Emissão!');
+					document.getElementById('data_prevista').value = "";
+				}
+	  		} 
+		}
   </script>
 </head>
 <body>
@@ -142,7 +158,7 @@
 							</select>
 							</td>
 							<td><b><font size="2">Data de Emissão:</font></b><input class="form-control form-control-sm" type="text" id="data_emissao" name="data_emissao" value="<?php echo date('d-m-Y', strtotime('now')); ?>" readonly /></td>
-							<td><b><font size="2">Data Prevista:</font></b><input class="form-control form-control-sm" type="date" id="data_prevista" name="data_prevista" value="{{ Request::old('data_prevista') }}" required /></td>
+							<td><b><font size="2">Data Prevista:</font></b><input class="form-control form-control-sm" type="date" id="data_prevista" name="data_prevista" value="{{ Request::old('data_prevista') }}" required onchange="handler2(event);" /></td>
 							</tr>
 						</table>
 						</center>
@@ -199,11 +215,15 @@
 								<option id="horario_trabalho" name="horario_trabalho" value="08:00 as 17:00">08h às 17h</option>
 								<option id="horario_trabalho" name="horario_trabalho" value="09:00 as 19:00">09h às 19h</option>
 								<option id="horario_trabalho" name="horario_trabalho" value="19:00 as 07:00">19h às 07h</option>
-								<option id="horario_trabalho" name="horario_trabalho" value="0">Outro...</option>
+								<option id="horario_trabalho" name="horario_trabalho" value="0" selected>Outro...</option>
 								@endif
 								</select>
 								<font size="2"><b>Outro:</b></font>
-								<input class="form-control form-control-sm" required type="text" id="horario_trabalho2" name="horario_trabalho2" value="{{ old('horario_trabalho2') }}" disabled />
+								@if(old('horario_trabalho') != '07:00 as 16:00' && old('horario_trabalho') != '08:00 as 17:00' && old('horario_trabalho') != '09:00 as 19:00' && old('horario_trabalho') != '19:00 as 07:00')
+								 <input class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" value="{{ old('horario_trabalho2') }}" />
+								@else
+								 <input disabled class="form-control form-control-sm" type="text" id="horario_trabalho2" name="horario_trabalho2" />
+								@endif
 							</td>
 							</tr>
 							<tr>
@@ -238,9 +258,9 @@
 								@endif
 							</select> <br>
 							@if(old('escala_trabalho') == 'outra')
-							<input class="form-control form-control-sm" required type="text" id="escala_trabalho6" name="escala_trabalho6" value="{{ old('escala_trabalho6') }}" />
+							<input required class="form-control form-control-sm" required type="text" id="escala_trabalho6" name="escala_trabalho6" value="{{ old('escala_trabalho6') }}" />
 							@else
-							<input class="form-control form-control-sm" type="text" id="escala_trabalho6" name="escala_trabalho6" value="{{ old('escala_trabalho6') }}" disabled />
+							<input required class="form-control form-control-sm" type="text" id="escala_trabalho6" name="escala_trabalho6" disabled />
 							@endif
 							</td> 
 							<td><b><font size="2">Centro de Custo:</font></b> 
@@ -349,7 +369,7 @@
 							@if(old('tipo') == 'rpa')
 							<input class="form-control form-control-sm" required type="text" id="periodo_contrato" name="periodo_contrato" value="{{ old('periodo_contrato') }}" />
 							@else
-							<input class="form-control form-control-sm" type="text" id="periodo_contrato" name="periodo_contrato" value="{{ old('periodo_contrato') }}" disabled />
+							<input required class="form-control form-control-sm" type="text" id="periodo_contrato" name="periodo_contrato" disabled />
 							@endif
 							</td>
 							<td><b><font size="2">Motivo:</font></b><br> 
@@ -385,7 +405,7 @@
 							@if(old('motivo') == 'substituicao_definitiva')
 								<input class="form-control form-control-sm" required type="text" id="motivo2" name="motivo2" value="{{ old('motivo2') }}" />
 							@else
-								<input class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="{{ old('motivo2') }}" disabled />
+								<input required class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" disabled />
 							@endif
 							</td>
 							</tr>
@@ -510,8 +530,8 @@
 							<td>Idiomas: </td>
 						</tr>
 						<tr>
-							<td><textarea required type="text" id="formacao" name="formacao" class="form-control form-control-sm" required rows="5" cols="60" value="">{{ Request::old('formacao') }} </textarea></td>     
-							<td><textarea required type="text" id="idiomas" name="idiomas" class="form-control form-control-sm" required rows="5" cols="60" value="">{{ Request::old('idiomas') }}</textarea></td>     
+							<td><textarea type="text" id="formacao" name="formacao" class="form-control form-control-sm" required rows="5" cols="60">{{ Request::old('formacao') }}</textarea></td>     
+							<td><textarea type="text" id="idiomas" name="idiomas" class="form-control form-control-sm" required rows="5" cols="60">{{ Request::old('idiomas') }}</textarea></td>     
 						</tr>
 						<tr>
 							<td>Competências: <br><br> 

@@ -145,7 +145,7 @@
 					</tr>
 					<tr> 
 						<td>Justificativa:</td>
-						<td><textarea id="motivo" name="motivo" class="form-control" rows="6" value=""></textarea></td>
+						<td><textarea id="motivo" name="motivo" class="form-control" rows="6" value="" required></textarea></td>
 					</tr>
 					</table>
 					</center>	

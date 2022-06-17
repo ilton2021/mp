@@ -71,7 +71,15 @@
     <div class="row d-flex justify-content-center">
         <div class="col-xl-5 col-lg-6 col-md-7">
             <div class="card2 b-0">
-
+                @if ($errors->any())
+                 <div class="alert alert-danger alert-sm">
+                  <ul>
+                    @foreach ($errors->all() as $error)
+                     <li>{{ $error }}</li>
+                    @endforeach
+                  </ul>
+                 </div>
+                @endif 
                 <fieldset class="show">
                     <div class="form-card2">
                         <h5 class="sub-heading"><br><br>Escolha uma opção:</h5>

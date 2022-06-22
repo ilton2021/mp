@@ -34,10 +34,10 @@ class MPController extends Controller
 	//Tela Inicial da MP
 	public function inicioMP(){
 		$unidades  = Unidade::all();
-		$mps 	   = MP::all();
-		$aprovacao = Aprovacao::all();
-		$gestores  = Gestor::all();
-		return view('/welcome', compact('unidades','mps','aprovacao','gestores'));
+		$mps 	   = MP::where('inativa',0)->get();
+		$aprovacao = Aprovacao::where('id',0)->get();
+		$gestores  = Gestor::where('id',0)->get();
+		return view('welcome', compact('unidades','mps','aprovacao','gestores'));
 	}
 
 	//Tela de cadastro da MP//

@@ -28,9 +28,9 @@ class VagaController extends Controller
 {
 	public function inicioVaga(){
 		$unidades  = Unidade::all();
-		$vagas 	   = Vaga::all();
-		$aprovacao = Aprovacao::all();
-		$gestores  = Gestor::all();
+		$vagas 	   = Vaga::where('inativa',0)->where('concluida',0)->get();
+		$aprovacao = Aprovacao::where('id',0)->get();
+		$gestores  = Gestor::where('id',0)->get();
 		return view('welcome_vaga', compact('unidades','vagas','aprovacao','gestores'));
 	}
 	
@@ -1085,8 +1085,20 @@ class VagaController extends Controller
 		} else if($gIm == "LUCIANA VENANCIO SANTOS SOUZA") {
 			$idI = 61;
 			$gestores = Gestor::where('id',$idI)->get();
-		} else if($gIm == "CINTHIA MARIA DE OLIVEIRA LIMA KOMURO"){
-			$idI = 65;
+		} else if($gIm == "NICOLE VIANA LEAL"){
+			$idI = 215;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "LUIZ GONZAGA JUNIOR") {
+			$idI = 160;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "ALEXANDRA SILVESTRE AMARAL PEIXOTO"){ 
+			$idI = 5;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "JOAO CLAUDIO FERREIRA PEIXOTO") {
+			$idI = 155;
+			$gestores = Gestor::where('id',$idI)->get();
+		} else if($gIm == "ADRIANA CAVALCANTI BEZERRA") {
+			$idI = 167;
 			$gestores = Gestor::where('id',$idI)->get();
 		} else {
 			$gestores = Gestor::where('nome',$gIm)->get();
@@ -1099,7 +1111,23 @@ class VagaController extends Controller
 				$idI = 1;
 				$gestores = Gestor::where('id',$idI)->get();
 			}
-		} 
+		}
+		if($idG == 30) {
+		    if($id_unidade == 2) {
+		        $idI = 174;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    } else if($id_unidade == 9) {
+		        $idI = 183;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    } else {
+		        $idI = 61;
+		        $gestores = Gestor::where('id',$idI)->get();
+		    }
+		}
+		if($idG == 65 || $idG == 183) {
+			$idI = 30;
+		    $gestores = Gestor::where('id',$idI)->get();
+		}
 		$cargos = Cargos::all();
 		$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
 		$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $id_unidade . '%')->get();
@@ -1334,7 +1362,8 @@ class VagaController extends Controller
 			$idU      = $vaga[0]->unidade_id;
 			$unidade  = Unidade::where('id', $idU)->get();
 			$vaga 	  = $vaga[0]->vaga;
-			$gestor   = Gestor::where('id', $idG)->get();
+			$gestor   = VagaController::retornarGestor($idU);
+			$idG      = $gestor[0]->id;
 			$email 	  = $gestor[0]->email;
 			DB::statement('UPDATE vaga SET gestor_id = '.$idG.' WHERE id = '.$id.';');
 			/*Mail::send([], [], function($m) use ($email,$vaga) {
@@ -1385,6 +1414,8 @@ class VagaController extends Controller
 			$dataP = $input['data_prevista'];
 			$dataPrevista = date('d-m-Y', strtotime($dataP));
 			$hoje 		  = date('d-m-Y', strtotime('now'));
+			$gestores = VagaController::retornarGestor($id_unidade);
+			var_dump($gestores); exit();
 			$validator = Validator::make($request->all(), [
 				'vaga'                      => 'required|max:255',
 				'codigo_vaga' 				=> 'required|max:255',
@@ -1438,6 +1469,7 @@ class VagaController extends Controller
 				if($input['horario_trabalho'] == "0") {
 					$input['horario_trabalho'] = $input['horario_trabalho2'];
 				}
+				$input['gestor_id'] = $gestores[0]->id;
 				$vaga = Vaga::find($id);
 				$vaga->update($input);
 				$J   = JustificativaVaga::where('vaga_id', $id)->get();

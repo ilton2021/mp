@@ -660,9 +660,7 @@ class MPController extends Controller
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}	
-				if($input['outras_verbas'] == ""){
-					$input['outras_verbas'] = 0.00;
-				}
+				$input['outras_verbas']  = 0.00;
 				$input['periodo_inicio'] = date('Y-m-d', strtotime($input['mes_ano']));
 				$input['periodo_fim']    = date('Y-m-d', strtotime($input['mes_ano2']));
 				$input['unidade_id']     = $id_unidade;

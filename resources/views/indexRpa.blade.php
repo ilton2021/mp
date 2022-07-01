@@ -20,7 +20,9 @@
 			m1 = Number(document.getElementById("valor_plantao").value);
 			m2 = Number(document.getElementById("quantidade_plantao").value);
 			r = Number(m1*m2);
+			document.getElementById('salario').value = m1;
 			document.getElementById("valor_pago_plantao").value = r;
+			document.getElementById("remuneracao_total").value = r;
 		}
 
 		function somarSalarios(){
@@ -83,6 +85,10 @@
 			let z = y.substr(y.indexOf("/") + 2);
 			
 			document.getElementById('valor_plantao').value = z;
+			document.getElementById('salario').value = z;
+			document.getElementById('valor_pago_plantao').value = "";
+			document.getElementById('quantidade_plantao').value = "";
+			document.getElementById('remuneracao_total').value = "";
 		}
 
 		function handler(e){	
@@ -231,7 +237,6 @@
 									@endforeach
 								@endif
 								</select>
-								<br><br>
 								<b><font size="2">Centro de Custo:</font></b>
 								<select id="centro_custo" name="centro_custo" class="form-control form-control-sm" required>
 								<option id="centro_custo" name="centro_custo" value="">Selecione...</option>
@@ -248,9 +253,9 @@
 							</td>
 							<td>
 							<b><font size="2">Salário:</font></b><br>
-							<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="salario" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" />
-							<b><font size="2">Outras Verbas:</font></b>
-							<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" />
+							<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="salario" title="Preencha o campo Valor do Plantão" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" readonly />
+							<!--b><font size="2">Outras Verbas:</font></b>
+							<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" /-->
 							<b><font size="2">Remuneração Total:</font></b>
 							<input class="form-control form-control-sm" disabled id="remuneracao_total" name="remuneracao_total" value="{{ old('remuneracao_total') }}" />
 							</td>
@@ -377,7 +382,7 @@
 								<option id="jornada" name="jornada" value="outra">Outra</option>	   
 								@endif
 								</select>
-							<br><b><font size="2">Turno:</font></b><br> 
+							<b><font size="2">Turno:</font></b>
 							<select class="form-control form-control-sm" id="turno" name="turno" required>
 							@if(old('turno') == "dia")
 								<option id="turno" name="turno" value=""> Selecione... </option>
@@ -397,7 +402,7 @@
 							<td><font size="2"><b> Período (01 Competência): </b></font><br> 
 							<input type="date" id="mes_ano" name="mes_ano" required onchange="handler(event);" value="{{ old('mes_ano') }}" /> Até
 							<input type="date" id="mes_ano2" name="mes_ano2" required onchange="handler(event);" value="{{ old('mes_ano2') }}" />
-							<br><br><font size="2">Quantidades de Dias: <b>(*máximo 31 dias)</font></b><br>
+							<br><font size="2">Quantidades de Dias: <b>(*máximo 31 dias)</font></b><br>
 							<input type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" style="width:200px;" value="{{ old('qtdDias') }}" />
 							</td>
 							</tr>
@@ -460,7 +465,7 @@
 							</td>
 						</tr>
 						<tr> 
-							<td><b><font size="2">Substituto:</font></b>
+							<td><b><font size="2">Substituído:</font></b>
 							<input class="form-control form-control-sm" required type="text" id="substituto" name="substituto" value="{{ old('substituto') }}" />
 							</td>
 							<td><b><font size="2">Departamento:</font></b> 

@@ -390,33 +390,33 @@
 						<center><h5><font size="2"><b>Admissão RPA</b></font></h5> <input type="checkbox" id="tipo_mov1" name="tipo_mov1" checked readonly disabled /></center>
 						<?php $a = 0; ?>
 							@if(Auth::user()->name == $mps[0]->solicitante && $mps[0]->gestor_id == Auth::user()->id)
-							@if(empty($aprovacao))
-							<br><center><a class="btn btn-primary btn-sm" href="{{ route('alterarMPAdmissaoRPA', array($mp->id, $adm->id)) }}">ALTERAR</a></center>
-							@else 
-							@foreach($aprovacao as $ap)
+							 @if(empty($aprovacao))
+							  <br><center><a class="btn btn-primary btn-sm" href="{{ route('alterarMPAdmissaoRPA', array($mp->id, $adm->id)) }}">ALTERAR</a></center>
+							 @else 
+							 @foreach($aprovacao as $ap)
 								<?php if($ap->resposta == 3){ $a = 1; } ?>
-							@endforeach	
-							@if($a == 0)
+							 @endforeach	
+							  @if($a == 0)
 								<br><center><a class="btn btn-primary btn-sm" href="{{ route('alterarMPAdmissaoRPA', array($mp->id, $adm->id)) }}">ALTERAR</a></center>
-							@endif
-							@endif
+							  @endif
+							 @endif
 							@endif
 						</td>
 						<td>
-						<b><font size="2">Cargo:</font></b><input class="form-control form-control-sm" type="text" id="cargo" name="cargo" value="<?php echo $adm->cargo; ?>" readonly /> <br><br>
+						<b><font size="2">Cargo:</font></b><input class="form-control form-control-sm" type="text" id="cargo" name="cargo" value="<?php echo $adm->cargo; ?>" readonly />
 						<b><font size="2">Centro de Custo:</font></b><input class="form-control form-control-sm" type="text" id="centro_custo" name="centro_custo" value="<?php echo $adm->centro_custo; ?>" readonly />
 						</td>
 						<td>
 						<b><font size="2">Remuneração Total:</font></b>
-						<input class="form-control form-control-sm" type="text" id="salario" name="salario" value="<?php echo "R$ ".number_format($adm->salario + $adm->outras_verbas, 2,',','.'); ?>" readonly />
+						<input class="form-control form-control-sm" type="text" id="salario" name="salario" value="<?php echo "R$ ".number_format($adm->valor_pago_plantao + $adm->valor_pago_plantao_2 + $adm->valor_pago_plantao_3, 2,',','.'); ?>" readonly />
 						<b><font size="2">Salário:</font></b>
-						<input class="form-control form-control-sm" type="text" id="salario" name="salario" value="<?php echo "R$ ".number_format($adm->salario, 2,',','.'); ?>" readonly />
+						<input class="form-control form-control-sm" type="text" id="salario" name="salario" value="<?php echo "R$ ".number_format($adm->valor_plantao + $adm->valor_plantao_2 + $adm->valor_plantao_3, 2,',','.'); ?>" readonly />
 						<b><font size="2">Outras Verbas:</font></b>
 						<input class="form-control form-control-sm" type="text" id="outras_verbas" name="outras_verbas" value="<?php echo "R$ ".number_format($adm->outras_verbas, 2,',','.'); ?>" readonly />
 						<td><b><font size="2">Horário de Trabalho:</font></b><br><input class="form-control form-control-sm" type="text" id="horario_trabalho" name="horario_trabalho" value="<?php echo $adm->horario_trabalho; ?>" readonly /></td>
 						</tr>
 						<tr>
-						<td><b><font size="2">Escala de Trabalho:</font></b><br><br>
+						<td><b><font size="2">Escala de Trabalho:</font></b>
 						@if($adm->escala_trabalho == "segxsex")
 							<input type="text" class="form-control form-control-sm" selected id="escala_trabalho" name="escala_trabalho" value="Seg x Sex" disabled/> 
 						@elseif($adm->escala_trabalho == "12x36")
@@ -441,30 +441,17 @@
 						@elseif($adm->jornada == "outra")
 						<input class="form-control form-control-sm" type="text" id="jornada" name="jornada" value="Outra" disabled />
 						@endif
-						<br><b><font size="2">Turno:</font></b><br> 
+						</td>
+						<td>
+						<b><font size="2">Turno:</font></b><br> 
 						@if($adm->turno == "dia")
 						<input class="form-control form-control-sm" type="text" id="turno" name="turno" value="Dia" disabled />  
 						@elseif($adm->turno == "noite")
 						<input class="form-control form-control-sm" type="text" id="turno" name="turno" value="Noite" disabled /> 
 						@endif
 						</td>
-						<td><b><font size="2">Período (01 Competência):</font></b><br> 
-						<input class="form-control form-control-sm" type="text" id="mes_ano" name="mes_ano" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_inicio)); ?>" /> Até
-						<input class="form-control form-control-sm" type="text" id="mes_ano2" name="mes_ano2" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim)); ?>" />
-						<font size="2">Quantidades de Dias: <b>(*máximo 31 dias)</font></b><br>
-						<input type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias; ?>" />
-						</td>
 						</tr>
 						<tr>
-						<td><b><font size="2">Profissional:</font></b> 
-							@if(!empty($cargos_rpa))	
-								@foreach($cargos_rpa as $cargoP)
-								@if($adm->cargos_rpa_id == $cargoP->id)
-									<input id="cargo_rpa_id" name="cargo_rpa_id" class="form-control form-control-sm" value="<?php echo $cargoP->cargo; ?>" readonly />	
-								@endif					  
-								@endforeach
-							@endif
-						</td>
 						<td><b><font size="2">Contratação de Deficiente:</font></b><br> 
 						@if($adm->possibilidade_contratacao == "sim")
 							<input id="possibilidade_contratacao" name="possibilidade_contratacao" value="Sim" class="form-control form-control-sm" readonly> 
@@ -472,22 +459,22 @@
 							<input id="possibilidade_contratacao" name="possibilidade_contratacao" value="Não" class="form-control form-control-sm" readonly>  
 						@endif
 						</td>
-						<td colspan="2"><b><font size="2">Necessidade de conta de e-mail:</font></b><br> 
+						<td><b><font size="2">Necessidade de conta de e-mail:</font></b><br> 
 						@if($adm->necessidade_email == "sim")
 							<input type="text" id="necessidade_email" name="necessidade_email" value="Sim" class="form-control form-control-sm" readonly> 
 						@else
 							<input type="text" id="necessidade_email" name="necessidade_email" value="Não" class="form-control form-control-sm" readonly> 
 						@endif
 						</td>
-					</tr>
+						<td><b><font size="2">Departamento:</font></b> 
+						 <input type="text" id="setor_plantao" name="setor_plantao" value="<?php echo $adm->departamento; ?>" class="form-control form-control-sm" readonly />
+						</td>
+					    </tr>
 						<tr>
-						<td><b><font size="2">Substituto:</font></b>
+						<td><b><font size="2">Substituído:</font></b>
 						<input class="form-control form-control-sm" readonly type="text" id="substituto" name="substituto" value="<?php echo $adm->substituto; ?>" />
 						</td>
-						<td><b><font size="2">Departamento:</font></b> 
-						<input type="text" id="setor_plantao" name="setor_plantao" value="<?php echo $adm->departamento; ?>" class="form-control form-control-sm" readonly />
-						</td>
-						<td colspan="2"><b><font size="2">Motivo:</font></b><br> 
+						<td><b><font size="2">Motivo:</font></b><br> 
 						@if($adm->motivo == "aumento_quadro")
 						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Aumento Quadro" disabled /> 
 						@elseif($adm->motivo == "substituicao_temporaria")
@@ -501,12 +488,32 @@
 						@elseif($adm->motivo == "licenca_maternidade")
 						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Licença Maternidade" disabled /> 
 						@elseif($adm->motivo == "substituicao_definitiva")
-						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Substituicao Definitiva a:" disabled /> 
-						<br><input class="form-control form-control-sm" type="text" id="motivo2" name="motivo2" value="<?php echo $adm->motivo2; ?>" disabled /> </td>
+						<input class="form-control form-control-sm" type="text" id="motivo" name="motivo" value="Substituicao Definitiva a:" disabled /> </td>
 						@endif
 						</tr>
-						<tr>
-						<td><b><font size="2">Quantidade:</font></b>
+					</table>
+					</center>
+
+					<center>
+					<table class="table table-bordered table-sm">
+					  <tr>
+					   <td><b><font size="2">Profissional:</font></b> 
+							@if(!empty($cargos_rpa))	
+								@foreach($cargos_rpa as $cargoP)
+								@if($adm->cargos_rpa_id == $cargoP->id)
+									<input id="cargo_rpa_id" name="cargo_rpa_id" class="form-control form-control-sm" value="<?php echo $cargoP->cargo; ?>" readonly />	
+								@endif					  
+								@endforeach
+							@endif
+					   </td>
+					   <td><b><font size="2">Período:</font></b><br> 
+						<input class="form-control form-control-sm" type="text" id="mes_ano" name="mes_ano" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_inicio)); ?>" />
+					   </td> 
+					   <td><b><font size="2">Até:</font></b>
+						<input class="form-control form-control-sm" type="text" id="mes_ano2" name="mes_ano2" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim)); ?>" />
+						<input hidden type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias; ?>" />
+					   </td>
+					   <td><b><font size="2">Quantidade:</font></b>
 						<input type="text" class="form-control form-control-sm" readonly id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $adm->quantidade_plantao; ?>" />
 						</td>
 						<td><b><font size="2">Valor:</font></b>
@@ -515,8 +522,66 @@
 						<td><b><font size="2">Valor a ser Pago:</font></b>
 							<input readonly class="form-control form-control-sm" title="(Quantidade * Valor)" type="text" id="valor_pago_plantao" name="valor_pago_plantao" value="<?php echo "R$ ".number_format($adm->valor_pago_plantao, 2,',','.'); ?>" />	
 						</td>
+					  </tr>
+					  @if($adm->cargos_rpa_id_2)
+					  <tr>
+					   <td><b><font size="2">Profissional:</font></b> 
+							@if(!empty($cargos_rpa))	
+								@foreach($cargos_rpa as $cargoP)
+								@if($adm->cargos_rpa_id_2 == $cargoP->id)
+									<input id="cargos_rpa_id_2" name="cargos_rpa_id_2" class="form-control form-control-sm" value="<?php echo $cargoP->cargo .' - '. $cargoP->tipo; ?>" readonly />	
+								@endif					  
+								@endforeach
+							@endif
+					   </td>
+					   <td><b><font size="2">Período:</font></b><br> 
+						<input class="form-control form-control-sm" type="text" id="mes_ano_2" name="mes_ano_2" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_inicio_2)); ?>" />
+					   </td> 
+					   <td><b><font size="2">Até:</font></b>
+						<input class="form-control form-control-sm" type="text" id="mes_ano2_2" name="mes_ano2_2" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim_2)); ?>" />
+						<input hidden type="text" id="qtdDias_2" name="qtdDias_2" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias_2; ?>" />
+					   </td>
+					   <td><b><font size="2">Quantidade:</font></b>
+						<input type="text" class="form-control form-control-sm" readonly id="quantidade_plantao_2" name="quantidade_plantao_2" value="<?php echo $adm->quantidade_plantao_2; ?>" />
+						</td>
+						<td><b><font size="2">Valor:</font></b>
+							<input readonly class="form-control form-control-sm" type="text" id="valor_plantao_2" name="valor_plantao_2" value="<?php echo "R$ ".number_format($adm->valor_plantao_2, 2,',','.'); ?>" />
+						</td>
+						<td><b><font size="2">Valor a ser Pago:</font></b>
+							<input readonly class="form-control form-control-sm" title="(Quantidade * Valor)" type="text" id="valor_pago_plantao_2" name="valor_pago_plantao_2" value="<?php echo "R$ ".number_format($adm->valor_pago_plantao_2, 2,',','.'); ?>" />	
+						</td>
+					  </tr>	
+					  @endif
+					  @if($adm->cargos_rpa_id_3)
+					  <tr>
+					   <td><b><font size="2">Profissional:</font></b> 
+							@if(!empty($cargos_rpa))	
+								@foreach($cargos_rpa as $cargoP)
+								@if($adm->cargos_rpa_id_3 == $cargoP->id)
+									<input id="cargos_rpa_id_3" name="cargos_rpa_id_3" class="form-control form-control-sm" value="<?php echo $cargoP->cargo .' - '. $cargoP->tipo; ?>" readonly />	
+								@endif					  
+								@endforeach
+							@endif
+					   </td>
+					   <td><b><font size="2">Período:</font></b><br> 
+						<input class="form-control form-control-sm" type="text" id="mes_ano_3" name="mes_ano_3" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_inicio_3)); ?>" />
+					   </td> 
+					   <td><b><font size="2">Até:</font></b>
+						<input class="form-control form-control-sm" type="text" id="mes_ano2_3" name="mes_ano2_3" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim_3)); ?>" />
+						<input hidden type="text" id="qtdDias_3" name="qtdDias_3" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias_3; ?>" />
+					   </td>
+					   <td><b><font size="2">Quantidade:</font></b>
+						<input type="text" class="form-control form-control-sm" readonly id="quantidade_plantao_3" name="quantidade_plantao_3" value="<?php echo $adm->quantidade_plantao_3; ?>" />
+						</td>
+						<td><b><font size="2">Valor:</font></b>
+							<input readonly class="form-control form-control-sm" type="text" id="valor_plantao_3" name="valor_plantao_3" value="<?php echo "R$ ".number_format($adm->valor_plantao_3, 2,',','.'); ?>" />
+						</td>
+						<td><b><font size="2">Valor a ser Pago:</font></b>
+							<input readonly class="form-control form-control-sm" title="(Quantidade * Valor)" type="text" id="valor_pago_plantao_3" name="valor_pago_plantao_3" value="<?php echo "R$ ".number_format($adm->valor_pago_plantao_3, 2,',','.'); ?>" />	
+						</td>
+					  </tr>	
+					  @endif
 					</table>
-					</center>
 					@endforeach	 
 					@endif
 					

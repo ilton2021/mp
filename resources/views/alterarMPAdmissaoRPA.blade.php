@@ -16,10 +16,50 @@
   <script src="https://kit.fontawesome.com/7656d93ed3.js" crossorigin="anonymous"></script>
   <script type="text/javascript">
 		function multiplicar(){
-			m1 = Number(document.getElementById("valor_plantao").value);
-			m2 = Number(document.getElementById("quantidade_plantao").value);
+			m1 = Number(document.getElementById("valor_plantao").value.replace(",",".",2));
+			m2 = Number(document.getElementById("quantidade_plantao").value.replace(",",".",2));
 			r = Number(m1*m2);
+			document.getElementById('salario').value = m1;
 			document.getElementById("valor_pago_plantao").value = r;
+			document.getElementById("remuneracao_total").value = r;
+		}
+
+		function multiplicar2(){
+			m1 = Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
+			m2 = Number(document.getElementById("quantidade_plantao_2").value.replace(",",".",2));
+			r2 = Number(m1*m2);
+			document.getElementById("valor_pago_plantao_2").value = r2;
+			
+			v1 = Number(document.getElementById('valor_plantao').value.replace(",",".",2));
+			v2 = Number(document.getElementById('valor_plantao_2').value.replace(",",".",2));
+			v3 = Number(document.getElementById('valor_plantao_3').value.replace(",",".",2));
+			v = v1+v2+v3;
+			document.getElementById("salario").value = v;
+
+			vp1 = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2));
+			vp2 = Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
+			vp3 = Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
+			vp = Number(vp1+vp2+vp3);
+			document.getElementById("remuneracao_total").value = vp;
+		}
+
+		function multiplicar3(){
+			m1 = Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
+			m2 = Number(document.getElementById("quantidade_plantao_3").value.replace(",",".",2));
+			r = Number(m1*m2);
+			document.getElementById("valor_pago_plantao_3").value = r;
+
+			v1 = Number(document.getElementById('valor_plantao').value.replace(",",".",2));
+			v2 = Number(document.getElementById('valor_plantao_2').value.replace(",",".",2));
+			v3 = Number(document.getElementById('valor_plantao_3').value.replace(",",".",2));
+			v = v1+v2+v3;
+			document.getElementById('salario').value = v;
+			
+			vp1 = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2));
+			vp2 = Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
+			vp3 = Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
+			vp = Number(vp1+vp2+vp3);
+			document.getElementById("remuneracao_total").value = vp;
 		}
 
 		function somarSalarios(){
@@ -43,9 +83,9 @@
 			var x = document.getElementById('motivo'); 
 			var y = x.options[x.selectedIndex].text; 
 		  if (y == "Substituição Definitiva") {
-			document.getElementById('motivo2').hidden = false;
+			document.getElementById('motivo2').disabled = false;
 		  }else {
-			document.getElementById('motivo2').hidden = true;  
+			document.getElementById('motivo2').disabled = true;  
 		  }
 		}
 
@@ -79,11 +119,37 @@
 		function funcaoCargoPlantao(valor) {
 			let x = document.getElementById('cargos_rpa_id'); 
 			var y = x.options[x.selectedIndex].text;
-			let z = y.substr(y.indexOf("/") + 1);
+			let z = y.substr(y.indexOf("/") + 2);
 			
 			document.getElementById('valor_plantao').value = z;
-
+			document.getElementById('salario').value = z;
+			document.getElementById('valor_pago_plantao').value = "";
+			document.getElementById('remuneracao_total').value = "";
 			multiplicar();
+		}
+
+		function funcaoCargoPlantao2(valor) {
+			let x = document.getElementById('cargos_rpa_id_2'); 
+			var y = x.options[x.selectedIndex].text;
+			let z = y.substr(y.indexOf("/") + 2);
+			
+			document.getElementById('valor_plantao_2').value = z;
+			document.getElementById('salario').value = z;
+			document.getElementById('valor_pago_plantao_2').value = "";
+			document.getElementById('remuneracao_total').value = "";
+			multiplicar2();
+		}
+		
+		function funcaoCargoPlantao3(valor) {
+			let x = document.getElementById('cargos_rpa_id_3'); 
+			var y = x.options[x.selectedIndex].text;
+			let z = y.substr(y.indexOf("/") + 2);
+			
+			document.getElementById('valor_plantao_3').value = z;
+			document.getElementById('salario').value = z;
+			document.getElementById('valor_pago_plantao_3').value = "";
+			document.getElementById('remuneracao_total').value = "";
+			multiplicar2();
 		}
 
 		function handler(e){	
@@ -93,29 +159,112 @@
 				var a = 1;
 			}
 			if(document.getElementById('mes_ano2').value != '') {
-				var periodo_fim    = new Date(document.getElementById('mes_ano2').value);
+				var periodo_fim = new Date(document.getElementById('mes_ano2').value);
 				var a = 2;
 			}
 			var timeDiff = Math.abs(periodo_fim.getTime() - periodo_inicio.getTime());
 			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 			if(a == 2){ 
 			  if(periodo_fim > periodo_inicio) {
-				 
 				if(diffDays >= 31){
 					alert('Limite de 31 dias! Tente outro Período!');
 					document.getElementById('mes_ano').value = "";
 					document.getElementById('mes_ano2').value = "";
 					document.getElementById('qtdDias').value = "";
+					document.getElementById('quantidade_plantao').value = "";
 				} else {
 					document.getElementById('qtdDias').value = diffDays + 1;
+					document.getElementById('quantidade_plantao').value = diffDays + 1;
+					multiplicar();
 				}
 	  		  } else if(periodo_fim < periodo_inicio) { 
 				alert('Data Inválida! Tente outro Período!');
 				document.getElementById('mes_ano').value = "";
 				document.getElementById('mes_ano2').value = "";
 				document.getElementById('qtdDias').value = '';
+				document.getElementById('quantidade_plantao').value = "";
 			  } else {
 				document.getElementById('qtdDias').value = diffDays + 1;
+				document.getElementById('quantidade_plantao').value = diffDays + 1;
+				multiplicar();
+			  }
+			}
+		}
+
+		function handler2_1(e){	
+			var a = 0;
+			if(document.getElementById('mes_ano_2').value != ''){
+				var periodo_inicio = new Date(document.getElementById('mes_ano_2').value);
+				var a = 1;
+			}
+			if(document.getElementById('mes_ano2_2').value != '') {
+				var periodo_fim = new Date(document.getElementById('mes_ano2_2').value);
+				var a = 2;
+			}
+			var timeDiff = Math.abs(periodo_fim.getTime() - periodo_inicio.getTime());
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+			if(a == 2){ 
+			  if(periodo_fim > periodo_inicio) {
+				if(diffDays >= 31){
+					alert('Limite de 31 dias! Tente outro Período!');
+					document.getElementById('mes_ano_2').value = "";
+					document.getElementById('mes_ano2_2').value = "";
+					document.getElementById('qtdDias_2').value = "";
+					document.getElementById('quantidade_plantao_2').value = "";
+				} else {
+					document.getElementById('qtdDias_2').value = diffDays + 1;
+					document.getElementById('quantidade_plantao_2').value = diffDays + 1;
+					multiplicar2();
+				}
+	  		  } else if(periodo_fim < periodo_inicio) { 
+				alert('Data Inválida! Tente outro Período!');
+				document.getElementById('mes_ano_2').value = "";
+				document.getElementById('mes_ano2_2').value = "";
+				document.getElementById('qtdDias_2').value = '';
+				document.getElementById('quantidade_plantao_2').value = "";
+			  } else {
+				document.getElementById('qtdDias_2').value = diffDays + 1;
+				document.getElementById('quantidade_plantao_2').value = diffDays + 1;
+				multiplicar2();
+			  }
+			}
+		}
+
+		function handler3(e){	
+			var a = 0;
+			if(document.getElementById('mes_ano_3').value != ''){
+				var periodo_inicio = new Date(document.getElementById('mes_ano_3').value);
+				var a = 1;
+			}
+			if(document.getElementById('mes_ano2_3').value != '') {
+				var periodo_fim = new Date(document.getElementById('mes_ano2_3').value);
+				var a = 2;
+			}
+			var timeDiff = Math.abs(periodo_fim.getTime() - periodo_inicio.getTime());
+			var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+			if(a == 2){ 
+			  if(periodo_fim > periodo_inicio) {
+				if(diffDays >= 31){
+					alert('Limite de 31 dias! Tente outro Período!');
+					document.getElementById('mes_ano_3').value = "";
+					document.getElementById('mes_ano2_3').value = "";
+					document.getElementById('qtdDias_3').value = "";
+					document.getElementById('quantidade_plantao_3').value = "";
+				} else {
+					document.getElementById('qtdDias_3').value = diffDays + 1;
+					document.getElementById('quantidade_plantao_3').value = diffDays + 1;
+					multiplicar3();
+				}
+	  		  } else if(periodo_fim < periodo_inicio) { 
+				alert('Data Inválida! Tente outro Período!');
+				document.getElementById('mes_ano_3').value = "";
+				document.getElementById('mes_ano2_3').value = "";
+				document.getElementById('qtdDias_3').value = '';
+				document.getElementById('quantidade_plantao_3').value = "";
+			  } else {
+				document.getElementById('qtdDias_3').value = diffDays + 1;
+				document.getElementById('quantidade_plantao_3').value = diffDays + 1;
+				multiplicar3();
 			  }
 			}
 		}
@@ -134,6 +283,70 @@
 					document.getElementById('data_prevista').value = "";
 				}
 	  		} 
+		}
+
+		function exibirProfissional2()
+		{
+			var x = document.getElementById('val').checked;
+			if(x == true){
+				document.getElementById('cargos_rpa_id_2').disabled = false;
+				document.getElementById('cargos_rpa_id_2').value    = "";
+				document.getElementById('mes_ano_2').disabled 		= false;
+				document.getElementById('mes_ano_2').value 			= "";
+				document.getElementById('mes_ano2_2').disabled	    = false;
+				document.getElementById('mes_ano2_2').value	    	= "";
+				document.getElementById('valor_plantao_2').disabled = false;
+				document.getElementById('valor_plantao_2').value 	= "";
+				document.getElementById('quantidade_plantao_2').value = "";
+				document.getElementById('valor_pago_plantao_2').value = "";
+				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
+				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
+			} else {
+				document.getElementById('cargos_rpa_id_2').disabled = true;
+				document.getElementById('cargos_rpa_id_2').value 	= "";
+				document.getElementById('mes_ano_2').disabled 	 	= true;
+				document.getElementById('mes_ano_2').value 	 		= "";
+				document.getElementById('mes_ano2_2').disabled 		= true;
+				document.getElementById('mes_ano2_2').value 		= "";
+				document.getElementById('valor_plantao_2').disabled	= true;
+				document.getElementById('valor_plantao_2').value	= "";
+				document.getElementById('quantidade_plantao_2').value = "";
+				document.getElementById('valor_pago_plantao_2').value = "";
+				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
+				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
+			}
+		}
+
+		function exibirProfissional3()
+		{
+			var x = document.getElementById('val2').checked;
+			if(x == true){
+				document.getElementById('cargos_rpa_id_3').disabled = false;
+				document.getElementById('cargos_rpa_id_3').value 	= "";
+				document.getElementById('mes_ano_3').disabled 	 	= false;
+				document.getElementById('mes_ano_3').value 	 		= "";
+				document.getElementById('mes_ano2_3').disabled 		= false;
+				document.getElementById('mes_ano2_3').value 		= "";
+				document.getElementById('valor_plantao_3').disabled = false;
+				document.getElementById('valor_plantao_3').value 	= "";
+				document.getElementById('quantidade_plantao_3').value = "";
+				document.getElementById('valor_pago_plantao_3').value = "";
+				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
+				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
+			} else {
+				document.getElementById('cargos_rpa_id_3').disabled = true;
+				document.getElementById('cargos_rpa_id_3').value 	= "";
+				document.getElementById('mes_ano_3').disabled 	    = true;
+				document.getElementById('mes_ano_3').value 	 		= "";
+				document.getElementById('mes_ano2_3').disabled 	    = true;
+				document.getElementById('mes_ano2_3').value 		= "";
+				document.getElementById('valor_plantao_3').disabled = true;
+				document.getElementById('valor_plantao_3').value 	= "";
+				document.getElementById('quantidade_plantao_3').value = "";
+				document.getElementById('valor_pago_plantao_3').value = "";
+				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
+				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
+			}
 		}
   </script>
 </head>
@@ -228,7 +441,7 @@
 								@endforeach
 							@endif
 							</select>
-						<br><br><b><font size="2">Centro de Custo:</font></b>
+						<b><font size="2">Centro de Custo:</font></b>
 						<select id="centro_custo" name="centro_custo" class="form-control form-control-sm" required>
 							<option id="centro_custo" name="centro_custo" value="">Selecione...</option>
 							@if(!empty($centro_custos))
@@ -244,11 +457,11 @@
 						</td>
 						<td>
 						<b><font size="2">Remuneração Total:</font></b>
-						<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="remuneracao_total" name="remuneracao_total" value="<?php echo $adm->salario + $adm->outras_verbas; ?>" onchange="somarSalarios('sim')" disabled />
+						<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="remuneracao_total" name="remuneracao_total" value="<?php echo $adm->valor_pago_plantao + $adm->valor_pago_plantao_2 + $adm->valor_pago_plantao_3; ?>" onchange="somarSalarios('sim')" disabled />
 						<b><font size="2">Salário:</font></b>
-							<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario" name="salario" value="<?php echo $adm->salario; ?>" onchange="somarSalarios('sim')" />
+						 <input disabled class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario" name="salario" value="<?php echo $adm->valor_plantao + $adm->valor_plantao_2 + $adm->valor_plantao_3; ?>" onchange="somarSalarios('sim')" />
 						<b><font size="2">Outras Verbas:</font></b>
-						<input class="form-control form-control-sm" id="outras_verbas" name="outras_verbas" value="<?php echo $adm->outras_verbas; ?>" />
+						 <input disabled class="form-control form-control-sm" id="outras_verbas" name="outras_verbas" value="<?php echo $adm->outras_verbas; ?>" />
 						<td><b><font size="2">Horário de Trabalho:</font></b><br>
 						<select class="form-control form-control-sm" id="horario_trabalho" name="horario_trabalho" required onchange="ativarOutra('sim')">
 							<option id="horario_trabalho" name="horario_trabalho" value="">Selecione...</option>
@@ -293,7 +506,7 @@
 						</td>
 						</tr>
 						<tr>
-						<td><b><font size="2">Escala de Trabalho:</font></b><br><br>
+						<td><b><font size="2">Escala de Trabalho:</font></b>
 						<select id="escala_trabalho" name="escala_trabalho" class="form-control form-control-sm" onclick="desabilitarOutra('sim')" required>
 							@if(old('escala_trabalho') == "segxsex")
 							<option id="escala_trabalho" name="escala_trabalho" value=""> Selecione... </option>
@@ -366,104 +579,77 @@
 							<option id="jornada" name="jornada" value="outra">Outra</option>	   
 							@endif
 							</select>
-						<br><b><font size="2">Turno:</font></b><br> 
+						</td>
+						<td><b><font size="2">Turno:</font></b><br> 
 						<select class="form-control form-control-sm" id="turno" name="turno" required>
-						@if($adm->turno == "dia")
+						   @if($adm->turno == "dia")
 							<option id="turno" name="turno" value=""> Selecione... </option>
 							<option id="turno" name="turno" value="dia" selected> Dia </option>
 							<option id="turno" name="turno" value="noite"> Noite</option>
-						@elseif($adm->turno == "noite")
+						   @elseif($adm->turno == "noite")
 							<option id="turno" name="turno" value=""> Selecione... </option>
 							<option id="turno" name="turno" value="dia"> Dia </option>
 							<option id="turno" name="turno" value="noite" selected> Noite</option>
-						@else
+						   @else
 							<option id="turno" name="turno" value=""> Selecione... </option>
 							<option id="turno" name="turno" value="dia"> Dia </option>	  
 							<option id="turno" name="turno" value="noite"> Noite</option>
-						@endif
+						   @endif
 						</select>
-						</td>
-						<td colspan="1"><font size="2"><b> Período (01 Competência): </b></font><br> 
-						<input type="date" id="mes_ano" name="mes_ano" style="width: 140px;" required onchange="handler(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_inicio)); ?>" /> Até
-						<input type="date" id="mes_ano2" name="mes_ano2" style="width: 140px;" required onchange="handler(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim)); ?>" />
-						<br><br><font size="2">Quantidades de Dias: <b>(*máximo 31 dias)</font></b><br>
-						<input type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias; ?>" />
 						</td>
 						</tr>
 						<tr>
-						<td><b><font size="2">Profissional:</font></b> 
-						<select required class="form-control form-control-sm" id="cargos_rpa_id" name="cargos_rpa_id" onchange="funcaoCargoPlantao('sim')">
-						 <option id="cargos_rpa_id" name="cargos_rpa_id" value="">Selecione...</option>
-						 @if(!empty($cargos_rpa))	
-						  @foreach($cargos_rpa as $cargoP)
-							@if(old('cargos_rpa_id') == $cargoP->id)
-							  @if($unidade[0]->id == 2)
-								<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>	
-						      @else
-							    <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} / </option>	
-							  @endif
-							@else
-							  @if($unidade[0]->id == 2)	
-								<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / {{ $cargoP->valor }}</option>  
-							  @else
-								<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} / </option>  
-							  @endif
-							@endif					  
-						  @endforeach
-						 @endif
-						</select>
-						</td>
 						<td><b><font size="2">Contratação de Deficiente:</font></b><br> 
 						<select id="possibilidade_contratacao" name="possibilidade_contratacao" class="form-control form-control-sm" required>
-						@if($adm->possibilidade_contratacao == "sim")
+						  @if($adm->possibilidade_contratacao == "sim")
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value=""> Selecione... </option>	
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value="sim" selected> Sim </option>
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value="nao"> Não </option> 
-						@elseif($adm->possibilidade_contratacao == "nao")
+						  @elseif($adm->possibilidade_contratacao == "nao")
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value=""> Selecione... </option>	
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value="sim"> Sim </option>  
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value="nao" selected> Não </option> 
-						@else
+						  @else
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value=""> Selecione... </option>	
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value="sim"> Sim </option>  
 							<option id="possibilidade_contratacao" name="possibilidade_contratacao" value="nao"> Não </option> 
-						@endif
+						  @endif
 						</select>
 						</td>
-						<td colspan="2"><b><font size="2">Necessidade de conta de e-mail:</font></b><br> 
+						<td><b><font size="2">Necessidade de conta de e-mail:</font></b><br> 
 						<select id="necessidade_email" name="necessidade_email" class="form-control form-control-sm" required>
-						@if($adm->necessidade_email == "sim")
+						  @if($adm->necessidade_email == "sim")
 							<option id="necessidade_email" name="necessidade_email" value=""> Selecione... </option>	
 							<option id="necessidade_email" name="necessidade_email" value="sim" selected> Sim </option>
 							<option id="necessidade_email" name="necessidade_email" value="nao"> Não </option> 
-						@elseif($adm->necessidade_email == "nao")
+						  @elseif($adm->necessidade_email == "nao")
 							<option id="necessidade_email" name="necessidade_email" value=""> Selecione... </option>	
 							<option id="necessidade_email" name="necessidade_email" value="sim"> Sim </option>  
 							<option id="necessidade_email" name="necessidade_email" value="nao" selected> Não </option> 
-						@else
+						  @else
 							<option id="necessidade_email" name="necessidade_email" value=""> Selecione... </option>	
 							<option id="necessidade_email" name="necessidade_email" value="sim"> Sim </option>  
 							<option id="necessidade_email" name="necessidade_email" value="nao"> Não </option> 
-						@endif
+						  @endif
 						</select>
-						</td>
-					</tr>
-						<tr>
-						<td><b><font size="2">Substituto:</font></b>
-						<input class="form-control form-control-sm" type="text" id="substituto" name="substituto" value="<?php echo $adm->substituto; ?>" />
 						</td>
 						<td><b><font size="2">Departamento:</font></b> 
 						<select  class="form-control form-control-sm" id="departamento" name="departamento" required>
-						@foreach($setores as $setor)
+						  @foreach($setores as $setor)
 							@if($adm->departamento == $setor->nome)
 							<option id="departamento" name="departamento" value="<?php echo $setor->nome; ?>" selected>{{ $setor->nome }}</option>
 							@else
 							<option id="departamento" name="departamento" value="<?php echo $setor->nome; ?>">{{ $setor->nome }}</option>   
 							@endif
-						@endforeach
+						  @endforeach
 						</select>
 						</td>
-						<td colspan="2"><b><font size="2">Motivo:</font></b><br> 
+					</tr>
+						<tr>
+						<td><b><font size="2">Substituído:</font></b>
+						<input class="form-control form-control-sm" type="text" id="substituto" name="substituto" value="<?php echo $adm->substituto; ?>" />
+						</td>
+						<td><b><font size="2">Motivo:</font></b><br> 
 						<select required  name="motivo" id="motivo" class="form-control form-control-sm" onchange="desabilitarSubst('sim')">	
 							@if($adm->motivo == "aumento_quadro")  
 							<option id="motivo" name="motivo" value="">Selecione..</option>
@@ -556,38 +742,240 @@
 							<option id="motivo" name="motivo" value="substituicao_definitiva">Substituição Definitiva</option>
 							<option id="motivo" name="motivo" value="outras">Outras (Informe na Justificativa)</option>
 							@endif
-							</select>
-							@if($adm->motivo == "substituicao_definitiva")
-							<input class="form-control form-control-sm" placeholder="Nome do Funcionário:" type="text" id="motivo2" name="motivo2" value="<?php echo $adm->motivo2; ?>"/>
-							@else
-							<input hidden class="form-control form-control-sm" placeholder="Nome do Funcionário:" type="text" id="motivo2" name="motivo2" />
-							@endif
 						</select>
+						   </td>
 						</tr>
 						<tr>
-						<td><b><font size="2">Quantidade:</font></b>
-						<select required class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();">
-						@for($a = 1; $a < 32; $a++)  
-							@if($a == $adm->quantidade_plantao)
-							<option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>" selected>{{ $a }}</option>
+					</table>
+					</center>
+
+					<center>
+					<table class="table table-bordered table-sm">
+					 <tr>
+					   <td> 
+						@if($adm->quantidade_plantao_2 != "")
+						  Ativar Campo 2: <input type="checkbox" checked onclick="exibirProfissional2('sim')" id="val" name="val" />
+						@else
+						  Ativar Campo 2: <input type="checkbox" onclick="exibirProfissional2('sim')" id="val" name="val" />
+						@endif
+						@if($adm->quantidade_plantao_3 != "")
+						  Ativar Campo 3: <input type="checkbox" checked onclick="exibirProfissional3('sim')" id="val2" name="val2" />
+						@else
+						  Ativar Campo 3: <input type="checkbox" onclick="exibirProfissional3('sim')" id="val2" name="val2" />
+						@endif
+					   </td>
+					 </tr>
+					 <tr>
+					  <td><b><font size="2">Profissional:</font></b> 
+						<select required class="form-control form-control-sm" id="cargos_rpa_id" name="cargos_rpa_id" onchange="funcaoCargoPlantao('sim')">
+						 <option id="cargos_rpa_id" name="cargos_rpa_id" value="">Selecione...</option>
+						 @if(!empty($cargos_rpa))	
+						  @foreach($cargos_rpa as $cargoP)
+							@if($adm->cargos_rpa_id == $cargoP->id)
+							  @if($unidade[0]->id == 2)
+								<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
+						      @else
+							    <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
+							  @endif
 							@else
-							<option id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $a; ?>">{{ $a }}</option>
-							@endif
-						@endfor
+							  @if($unidade[0]->id == 2)	
+								<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
+							  @else
+								<option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  
+							  @endif
+							@endif					  
+						  @endforeach
+						 @endif
 						</select>
 						</td>
-						<td><b><font size="2">Valor:</font></b>
-							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" onChange="multiplicar();" />
+					  <td colspan="1"><font size="2"><b> Período: </b></font><br> 
+						<input class="form-control form-control-sm" type="date" id="mes_ano" name="mes_ano" style="width: 140px;" required onchange="handler(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_inicio)); ?>" /> 
+					  </td>
+					  <td><b><font size="2">Até:</font></b>
+						<input class="form-control form-control-sm" type="date" id="mes_ano2" name="mes_ano2" style="width: 140px;" required onchange="handler(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim)); ?>" />
+						<input hidden type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias; ?>" />
+				   	  </td>
+					  <td><b><font size="2">Quantidade:</font></b>
+						 <input required readonly class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();" value="<?php echo $adm->qtdDias; ?>">
+					  </td>
+					  <td><b><font size="2">Valor:</font></b>
+							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="<?php echo $adm->valor_plantao; ?>" onChange="multiplicar();" />
+					  </td>
+					  <td><b><font size="2">Valor a ser Pago:</font></b>
+							<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="<?php echo $adm->valor_pago_plantao; ?>" />
+					  </td>
+					 </tr>
+					 @if($adm->cargos_rpa_id_2)
+					 <tr>
+					  <td><b><font size="2">Profissional:</font></b> 
+						<select required class="form-control form-control-sm" id="cargos_rpa_id_2" name="cargos_rpa_id_2" onchange="funcaoCargoPlantao2('sim')">
+						 <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="">Selecione...</option>
+						 @if(!empty($cargos_rpa))	
+						  @foreach($cargos_rpa as $cargoP)
+							@if($adm->cargos_rpa_id_2 == $cargoP->id)
+							  @if($unidade[0]->id == 2)
+								<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
+						      @else
+							    <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
+							  @endif
+							@else
+							  @if($unidade[0]->id == 2)	
+								<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
+							  @else
+								<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  
+							  @endif
+							@endif					  
+						  @endforeach
+						 @endif
+						</select>
 						</td>
-						<td><b><font size="2">Valor a ser Pago:</font></b>
-							<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao" name="valor_pago_plantao" value="{{ old('valor_pago_plantao') }}" />
+					  <td colspan="1"><font size="2"><b> Período: </b></font><br> 
+						<input class="form-control form-control-sm" type="date" id="mes_ano_2" name="mes_ano_2" style="width: 140px;" required onchange="handler2_1(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_inicio_2)); ?>" /> 
+					  </td>
+					  <td><b><font size="2">Até:</font></b>
+						<input class="form-control form-control-sm" type="date" id="mes_ano2_2" name="mes_ano2_2" style="width: 140px;" required onchange="handler2_1(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim_2)); ?>" />
+						<input hidden type="text" id="qtdDias_2" name="qtdDias_2" readonly class="form-control form-control-sm" value="<?php echo $adm->quantidade_plantao_2; ?>" />
+				   	  </td>
+					  <td><b><font size="2">Quantidade:</font></b>
+						 <input required readonly class="form-control form-control-sm" id="quantidade_plantao_2" name="quantidade_plantao_2" onChange="multiplicar2();" value="<?php echo $adm->quantidade_plantao_2; ?>">
+					  </td>
+					  <td><b><font size="2">Valor:</font></b>
+							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao_2" name="valor_plantao_2" value="<?php echo $adm->valor_plantao_2; ?>" onChange="multiplicar2();" />
+					  </td>
+					  <td><b><font size="2">Valor a ser Pago:</font></b>
+							<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao_2" name="valor_pago_plantao_2" value="<?php echo $adm->valor_pago_plantao_2; ?>" />
+					  </td>
+					 </tr>
+					 @else
+					 <tr>
+					  <td><b><font size="2">Profissional:</font></b> 
+						<select disabled required class="form-control form-control-sm" id="cargos_rpa_id_2" name="cargos_rpa_id_2" onchange="funcaoCargoPlantao2('sim')">
+						 <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="">Selecione...</option>
+						 @if(!empty($cargos_rpa))	
+						  @foreach($cargos_rpa as $cargoP)
+							@if($adm->cargos_rpa_id_2 == $cargoP->id)
+							  @if($unidade[0]->id == 2)
+								<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
+						      @else
+							    <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
+							  @endif
+							@else
+							  @if($unidade[0]->id == 2)	
+								<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
+							  @else
+								<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  
+							  @endif
+							@endif					  
+						  @endforeach
+						 @endif
+						</select>
 						</td>
+					  <td colspan="1"><font size="2"><b> Período: </b></font><br> 
+						<input disabled class="form-control form-control-sm" type="date" id="mes_ano_2" name="mes_ano_2" style="width: 140px;" required onchange="handler2_1(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_inicio_2)); ?>" /> 
+					  </td>
+					  <td><b><font size="2">Até:</font></b>
+						<input disabled class="form-control form-control-sm" type="date" id="mes_ano2_2" name="mes_ano2_2" style="width: 140px;" required onchange="handler2_1(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim_2)); ?>" />
+						<input hidden type="text" id="qtdDias_2" name="qtdDias_2" readonly class="form-control form-control-sm" value="<?php echo $adm->quantidade_plantao_2; ?>" />
+				   	  </td>
+					  <td><b><font size="2">Quantidade:</font></b>
+						<input required readonly class="form-control form-control-sm" id="quantidade_plantao_2" name="quantidade_plantao_2" onChange="multiplicar2();" value="<?php echo $adm->quantidade_plantao_2; ?>">
+					  </td>
+					  <td><b><font size="2">Valor:</font></b>
+						<input disabled class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao_2" name="valor_plantao_2" value="<?php echo $adm->valor_plantao_2; ?>" onChange="multiplicar2();" />
+					  </td>
+					  <td><b><font size="2">Valor a ser Pago:</font></b>
+						<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao_2" name="valor_pago_plantao_2" value="<?php echo $adm->valor_pago_plantao_2; ?>" />
+					  </td>
+					 </tr>
+					 @endif
+					 @if($adm->cargos_rpa_id_3)
+					 <tr>
+					  <td><b><font size="2">Profissional:</font></b> 
+						<select required class="form-control form-control-sm" id="cargos_rpa_id_3" name="cargos_rpa_id_3" onchange="funcaoCargoPlantao3('sim')">
+						 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="">Selecione...</option>
+						 @if(!empty($cargos_rpa))	
+						  @foreach($cargos_rpa as $cargoP)
+							@if($adm->cargos_rpa_id_3 == $cargoP->id)
+							  @if($unidade[0]->id == 3)
+								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
+						      @else
+							    <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
+							  @endif
+							@else
+							  @if($unidade[0]->id == 3)	
+								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
+							  @else
+								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  
+							  @endif
+							@endif					  
+						  @endforeach
+						 @endif
+						</select>
+						</td>
+					  <td colspan="1"><font size="2"><b> Período: </b></font><br> 
+						<input class="form-control form-control-sm" type="date" id="mes_ano_3" name="mes_ano_3" style="width: 140px;" required onchange="handler3(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_inicio_3)); ?>" /> 
+					  </td>
+					  <td><b><font size="2">Até:</font></b>
+						<input class="form-control form-control-sm" type="date" id="mes_ano2_3" name="mes_ano2_3" style="width: 140px;" required onchange="handler3(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim_3)); ?>" />
+						<input hidden type="text" id="qtdDias_3" name="qtdDias_3" readonly class="form-control form-control-sm" value="<?php echo $adm->quantidade_plantao_3; ?>" />
+				   	  </td>
+					  <td><b><font size="2">Quantidade:</font></b>
+						 <input required readonly class="form-control form-control-sm" id="quantidade_plantao_3" name="quantidade_plantao_3" onChange="multiplicar3();" value="<?php echo $adm->quantidade_plantao_3; ?>">
+					  </td>
+					  <td><b><font size="2">Valor:</font></b>
+							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao_3" name="valor_plantao_3" value="<?php echo $adm->valor_plantao_3; ?>" onChange="multiplicar3();" />
+					  </td>
+					  <td><b><font size="2">Valor a ser Pago:</font></b>
+							<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao_3" name="valor_pago_plantao_3" value="<?php echo $adm->valor_pago_plantao_3; ?>" />
+					  </td>
+					 </tr>
+					 @else
+					 <tr>
+					  <td><b><font size="2">Profissional:</font></b> 
+						<select disabled required class="form-control form-control-sm" id="cargos_rpa_id_3" name="cargos_rpa_id_3" onchange="funcaoCargoPlantao3('sim')">
+						 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="">Selecione...</option>
+						 @if(!empty($cargos_rpa))	
+						  @foreach($cargos_rpa as $cargoP)
+							@if($adm->cargos_rpa_id_3 == $cargoP->id)
+							  @if($unidade[0]->id == 3)
+								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
+						      @else
+							    <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
+							  @endif
+							@else
+							  @if($unidade[0]->id == 3)	
+								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
+							  @else
+								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  
+							  @endif
+							@endif					  
+						  @endforeach
+						 @endif
+						</select>
+						</td>
+					  <td colspan="1"><font size="2"><b> Período: </b></font><br> 
+						<input disabled class="form-control form-control-sm" type="date" id="mes_ano_3" name="mes_ano_3" style="width: 140px;" required onchange="handler3(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_inicio_3)); ?>" /> 
+					  </td>
+					  <td><b><font size="2">Até:</font></b>
+						<input disabled class="form-control form-control-sm" type="date" id="mes_ano2_3" name="mes_ano2_3" style="width: 140px;" required onchange="handler3(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim_3)); ?>" />
+						<input hidden type="text" id="qtdDias_3" name="qtdDias_3" readonly class="form-control form-control-sm" value="<?php echo $adm->quantidade_plantao_3; ?>" />
+				   	  </td>
+					  <td><b><font size="2">Quantidade:</font></b>
+						<input required readonly class="form-control form-control-sm" id="quantidade_plantao_3" name="quantidade_plantao_3" onChange="multiplicar3();" value="<?php echo $adm->quantidade_plantao_3; ?>">
+					  </td>
+					  <td><b><font size="2">Valor:</font></b>
+						<input disabled class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao_3" name="valor_plantao_3" value="<?php echo $adm->valor_plantao_3; ?>" onChange="multiplicar3();" />
+					  </td>
+					  <td><b><font size="2">Valor a ser Pago:</font></b>
+						<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_pago_plantao_3" name="valor_pago_plantao_3" value="<?php echo $adm->valor_pago_plantao_3; ?>" />
+					  </td>
+					 </tr>				
+					 @endif
 					</table>
 					</center>
 					@endforeach	 
 					@endif
 
-					<br>
 					<center>		
 					<table class="table table-bordered" style="height: 10px;">
 					<tr>

@@ -654,7 +654,7 @@ class MPController extends Controller
 							->withInput(session()->flashInput($request->input()));
 					} 
 				}
-				if($input['qtdDias'] == 'Data Inválida' || $input['qtdDias'] > 31) {
+				if(($input['qtdDias'] == 'Data Inválida' || $input['qtdDias'] > 31) || ($input['qtdDias_2'] == 'Data Inválida' || $input['qtdDias_2'] > 31) || ($input['qtdDias_3'] == 'Data Inválida' || $input['qtdDias_3'] > 31)) {
 					$validator = "Período máximo de RPA são 31 dias!";
 					return view('indexRpa', compact('unidade','gestores','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
 						->withErrors($validator)
@@ -663,10 +663,14 @@ class MPController extends Controller
 				$input['outras_verbas']  = 0.00;
 				$input['periodo_inicio'] = date('Y-m-d', strtotime($input['mes_ano']));
 				$input['periodo_fim']    = date('Y-m-d', strtotime($input['mes_ano2']));
-				$input['unidade_id']     = $id_unidade;
-				$unidades 			     = Unidade::all();
-				$qtdU 				     = sizeof($unidades);
-				$input['data_emissao']   = date('Y-m-d',(strtotime($dataEmissao)));
+				if(!empty($input['mes_ano_2'])){ $input['periodo_inicio_2'] = date('Y-m-d', strtotime($input['mes_ano_2'])); }
+				if(!empty($input['periodo_fim_2'])) { $input['periodo_fim_2'] = date('Y-m-d', strtotime($input['mes_ano2_2'])); }
+				if(!empty($input['periodo_inicio_3'])) { $input['periodo_inicio_3'] = date('Y-m-d', strtotime($input['mes_ano_3'])); }
+				if(!empty($input['periodo_fim_3'])) { $input['periodo_fim_3'] = date('Y-m-d', strtotime($input['mes_ano2_3'])); }
+				$input['unidade_id']   = $id_unidade;
+				$unidades 			   = Unidade::all();
+				$qtdU 				   = sizeof($unidades);
+				$input['data_emissao'] = date('Y-m-d',(strtotime($dataEmissao)));
 				for($i = 1; $i <= $qtdU; $i++) {
 					if($id_unidade == $i) {
 						$idU   = $input['unidade_id'];
@@ -1285,10 +1289,9 @@ class MPController extends Controller
 			$dataP 		   = $input['data_prevista'];
 			$dataEmissao   = date('d-m-Y', strtotime($dataE));
 			$dataPrevista  = date('d-m-Y', strtotime($dataP));
-			$mp            = MP::where('id',$id)->get();
-			$gestores      = MPController::retornarGestor($mp[0]->unidade_id);
 			$unidades 	   = Unidade::all();
 			$mps 		   = MP::where('id',$id)->get();
+			$gestores      = MPController::retornarGestor($mps[0]->unidade_id);
 			$justificativa = Justificativa::where('mp_id', $mps[0]->id)->get();
 			$solicitante   = $mps[0]->solicitante;
 			$solic   	   = Gestor::where('nome',$solicitante)->get();
@@ -1298,20 +1301,21 @@ class MPController extends Controller
 			$unidade 	   = Unidade::where('id',$unidade)->get();
 			$admissaoRPA   = AdmissaoRPA::where('mp_id',$mps[0]->id)->get();
 			$aprovacao 	   = Aprovacao::where('mp_id',$id)->get();
-			$cargos    		 = Cargos::all();
-			$cargos_rpa 	 = CargosRPA::all();
+			$cargos    	   = Cargos::all();
+			$cargos_rpa    = CargosRPA::all();
+			$idA  		   = $id_adm_rpa;
+			$idMP 		   = $id;
 			$centro_custos   = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 			$setores 	   	 = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 			$centro_custo_nv = DB::table('centro_custo')->where('centro_custo.unidade', 'like', '%' . $unidade[0]->id . '%')->get();
 			$validator = Validator::make($request->all(), [
-				'local_trabalho' => 'required|max:255',
-				'solicitante'    => 'required|max:255',
-				'nome' 			 => 'required|max:255',	
-				'departamento' 	 => 'required|max:255',
-				'data_emissao' 	 => 'required|date',
-				'data_prevista'  => 'required|date',
+				'local_trabalho'			=> 'required|max:255',
+				'solicitante'    			=> 'required|max:255',
+				'nome' 			 			=> 'required|max:255',	
+				'departamento' 				=> 'required|max:255',
+				'data_emissao' 				=> 'required|date',
+				'data_prevista'  			=> 'required|date',
 				'cargo' 					=> 'required|max:255',
-				'salario'  					=> 'required',
 				'horario_trabalho' 			=> 'required|max:255',
 				'escala_trabalho' 			=> 'required|max:255',
 				'centro_custo' 				=> 'required|max:255',
@@ -1328,14 +1332,14 @@ class MPController extends Controller
 				'impacto_financeiro'		=> 'required'
 			]);
 			if ($validator->fails()) {
-				return view('indexRpa', compact('unidade','gestores','gestor','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
+				return view('alterarMPAdmissaoRPA', compact('unidade','gestores','unidades','mps','admissaoRPA','idA','idMP','cargos','cargos_rpa','centro_custos','justificativa','gestor','setores','centro_custo_nv'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 			} else {
 				if($input['horario_trabalho'] == "0"){
 					if($input['horario_trabalho2'] == ""){
 						$validator = "Informe qual é o Horário de Trabalho!";
-						return view('indexRpa', compact('unidade','gestores','gestor','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
+						return view('alterarMPAdmissaoRPA', compact('unidade','gestores','unidades','mps','admissaoRPA','idA','idMP','cargos','cargos_rpa','centro_custos','justificativa','gestor','setores','centro_custo_nv'))
 							->withErrors($validator)
 							->withInput(session()->flashInput($request->input()));
 					} else {
@@ -1345,7 +1349,7 @@ class MPController extends Controller
 				if($input['escala_trabalho'] == "outra"){
 					if($input['escala_trabalho6'] == ""){
 						$validator = "Informe qual é a Escala de Trabalho!";
-						return view('indexRpa', compact('unidade','gestores','gestor','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
+						return view('alterarMPAdmissaoRPA', compact('unidade','gestores','unidades','mps','admissaoRPA','idA','idMP','cargos','cargos_rpa','centro_custos','justificativa','gestor','setores','centro_custo_nv'))
 							->withErrors($validator)
 							->withInput(session()->flashInput($request->input()));
 					} else {
@@ -1357,22 +1361,42 @@ class MPController extends Controller
 				} else {
 					if($input['motivo2'] == ""){
 						$validator = "Informe qual é o Funcionário que vai ser substituído!";
-						return view('indexRpa', compact('unidade','gestores','gestor','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
+						return view('alterarMPAdmissaoRPA', compact('unidade','gestores','unidades','mps','admissaoRPA','idA','idMP','cargos','cargos_rpa','centro_custos','justificativa','gestor','setores','centro_custo_nv'))
 							->withErrors($validator)
 							->withInput(session()->flashInput($request->input()));
 					} 
 				}
-				if($input['qtdDias'] == 'Data Inválida' || $input['qtdDias'] > 31) {
+				if(($input['qtdDias'] == 'Data Inválida' || $input['qtdDias'] > 31) || ($input['qtdDias_2'] == 'Data Inválida' || $input['qtdDias_2'] > 31) || ($input['qtdDias_3'] == 'Data Inválida' || $input['qtdDias_3'] > 31)) {
 					$validator = "Período máximo de RPA são 31 dias!";
-					return view('indexRpa', compact('unidade','gestores','gestor','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
+					return view('alterarMPAdmissaoRPA', compact('unidade','gestores','unidades','mps','admissaoRPA','idA','idMP','cargos','cargos_rpa','centro_custos','justificativa','gestor','setores','centro_custo_nv'))
 						->withErrors($validator)
 						->withInput(session()->flashInput($request->input()));
 				}	
-				if($input['outras_verbas'] == ""){
-					$input['outras_verbas'] = 0.00;
-				}
+				$input['outras_verbas']  = 0.00;
 				$input['periodo_inicio'] = date('Y-m-d', strtotime($input['mes_ano']));
 				$input['periodo_fim']    = date('Y-m-d', strtotime($input['mes_ano2']));
+				if(!empty($input['cargos_rpa_id_2'])){
+					$input['periodo_inicio_2'] = date('Y-m-d', strtotime($input['mes_ano_2']));
+					$input['periodo_fim_2']    = date('Y-m-d', strtotime($input['mes_ano2_2']));
+				} else {
+					$input['cargos_rpa_id_2']      = NULL;
+					$input['periodo_inicio_2'] 	   = NULL;
+					$input['periodo_fim_2']    	   = NULL;
+					$input['quantidade_plantao_2'] = NULL;
+					$input['valor_plantao_2'] 	   = NULL;
+					$input['valor_pago_plantao_2'] = NULL;
+				}
+				if(!empty($input['cargos_rpa_id_3'])){
+					$input['periodo_inicio_3'] = date('Y-m-d', strtotime($input['mes_ano_3']));
+					$input['periodo_fim_3']    = date('Y-m-d', strtotime($input['mes_ano2_3']));
+				} else {
+					$input['cargos_rpa_id_3']      = NULL;
+					$input['periodo_inicio_3'] 	   = NULL;
+					$input['periodo_fim_3']    	   = NULL;
+					$input['quantidade_plantao_3'] = NULL;
+					$input['valor_plantao_3'] 	   = NULL;
+					$input['valor_pago_plantao_3'] = NULL;
+				}
 				$input['unidade_id']     = $mps[0]->unidade_id;
 				$unidades 			     = Unidade::all();
 				$qtdU 				     = sizeof($unidades);
@@ -1442,7 +1466,7 @@ class MPController extends Controller
 			}
 		} catch(Throwable $e) {
 			$validator = "Algo está errado!! Verifique os campos novamente!";
-			return view('indexRpa', compact('unidade','gestores','gestor','unidades','cargos','centro_custos','setores','centro_custo_nv','cargos_rpa'))
+			return view('alterarMPAdmissaoRPA', compact('unidade','gestores','unidades','mps','admissaoRPA','idA','idMP','cargos','cargos_rpa','centro_custos','justificativa','gestor','setores','centro_custo_nv'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		}  

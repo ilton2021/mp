@@ -513,10 +513,10 @@
 						<input class="form-control form-control-sm" type="text" id="mes_ano2" name="mes_ano2" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim)); ?>" />
 						<input hidden type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias; ?>" />
 					   </td>
-					   <td><b><font size="2">Quantidade:</font></b>
+					   <td><b><font size="2">Qtd Plantão/Diária:</font></b>
 						<input type="text" class="form-control form-control-sm" readonly id="quantidade_plantao" name="quantidade_plantao" value="<?php echo $adm->quantidade_plantao; ?>" />
 						</td>
-						<td><b><font size="2">Valor:</font></b>
+						<td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input readonly class="form-control form-control-sm" type="text" id="valor_plantao" name="valor_plantao" value="<?php echo "R$ ".number_format($adm->valor_plantao, 2,',','.'); ?>" />
 						</td>
 						<td><b><font size="2">Valor a ser Pago:</font></b>
@@ -541,10 +541,10 @@
 						<input class="form-control form-control-sm" type="text" id="mes_ano2_2" name="mes_ano2_2" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim_2)); ?>" />
 						<input hidden type="text" id="qtdDias_2" name="qtdDias_2" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias_2; ?>" />
 					   </td>
-					   <td><b><font size="2">Quantidade:</font></b>
+					   <td><b><font size="2">Qtd Plantão/Diária:</font></b>
 						<input type="text" class="form-control form-control-sm" readonly id="quantidade_plantao_2" name="quantidade_plantao_2" value="<?php echo $adm->quantidade_plantao_2; ?>" />
 						</td>
-						<td><b><font size="2">Valor:</font></b>
+						<td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input readonly class="form-control form-control-sm" type="text" id="valor_plantao_2" name="valor_plantao_2" value="<?php echo "R$ ".number_format($adm->valor_plantao_2, 2,',','.'); ?>" />
 						</td>
 						<td><b><font size="2">Valor a ser Pago:</font></b>
@@ -570,10 +570,10 @@
 						<input class="form-control form-control-sm" type="text" id="mes_ano2_3" name="mes_ano2_3" readonly diabled value="<?php echo date('d/m/Y', strtotime($adm->periodo_fim_3)); ?>" />
 						<input hidden type="text" id="qtdDias_3" name="qtdDias_3" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias_3; ?>" />
 					   </td>
-					   <td><b><font size="2">Quantidade:</font></b>
+					   <td><b><font size="2">Qtd Plantão/Diária:</font></b>
 						<input type="text" class="form-control form-control-sm" readonly id="quantidade_plantao_3" name="quantidade_plantao_3" value="<?php echo $adm->quantidade_plantao_3; ?>" />
 						</td>
-						<td><b><font size="2">Valor:</font></b>
+						<td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input readonly class="form-control form-control-sm" type="text" id="valor_plantao_3" name="valor_plantao_3" value="<?php echo "R$ ".number_format($adm->valor_plantao_3, 2,',','.'); ?>" />
 						</td>
 						<td><b><font size="2">Valor a ser Pago:</font></b>

@@ -21,7 +21,18 @@
 			r = Number(m1*m2);
 			document.getElementById('salario').value = m1;
 			document.getElementById("valor_pago_plantao").value = r;
-			document.getElementById("remuneracao_total").value = r;
+
+			v1 = Number(document.getElementById('valor_plantao').value.replace(",",".",2));
+			v2 = Number(document.getElementById('valor_plantao_2').value.replace(",",".",2));
+			v3 = Number(document.getElementById('valor_plantao_3').value.replace(",",".",2));
+			v = v1+v2+v3;
+			document.getElementById("salario").value = v;
+
+			vp1 = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2));
+			vp2 = Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
+			vp3 = Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
+			vp = Number(vp1+vp2+vp3);
+			document.getElementById("remuneracao_total").value = vp;
 		}
 
 		function multiplicar2(){
@@ -297,7 +308,7 @@
 				document.getElementById('mes_ano2_2').value	    	= "";
 				document.getElementById('valor_plantao_2').disabled = false;
 				document.getElementById('valor_plantao_2').value 	= "";
-				document.getElementById('quantidade_plantao_2').value = "";
+				document.getElementById('quantidade_plantao_2').disabled = false;
 				document.getElementById('valor_pago_plantao_2').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
@@ -310,7 +321,7 @@
 				document.getElementById('mes_ano2_2').value 		= "";
 				document.getElementById('valor_plantao_2').disabled	= true;
 				document.getElementById('valor_plantao_2').value	= "";
-				document.getElementById('quantidade_plantao_2').value = "";
+				document.getElementById('quantidade_plantao_2').disabled = true;
 				document.getElementById('valor_pago_plantao_2').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
@@ -329,7 +340,7 @@
 				document.getElementById('mes_ano2_3').value 		= "";
 				document.getElementById('valor_plantao_3').disabled = false;
 				document.getElementById('valor_plantao_3').value 	= "";
-				document.getElementById('quantidade_plantao_3').value = "";
+				document.getElementById('quantidade_plantao_3').disabled = false;
 				document.getElementById('valor_pago_plantao_3').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
@@ -342,7 +353,7 @@
 				document.getElementById('mes_ano2_3').value 		= "";
 				document.getElementById('valor_plantao_3').disabled = true;
 				document.getElementById('valor_plantao_3').value 	= "";
-				document.getElementById('quantidade_plantao_3').value = "";
+				document.getElementById('quantidade_plantao_3').disabled = true;
 				document.getElementById('valor_pago_plantao_3').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
@@ -458,10 +469,10 @@
 						<td>
 						<b><font size="2">Remuneração Total:</font></b>
 						<input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="remuneracao_total" name="remuneracao_total" value="<?php echo $adm->valor_pago_plantao + $adm->valor_pago_plantao_2 + $adm->valor_pago_plantao_3; ?>" onchange="somarSalarios('sim')" disabled />
-						<b><font size="2">Salário:</font></b>
-						 <input disabled class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario" name="salario" value="<?php echo $adm->valor_plantao + $adm->valor_plantao_2 + $adm->valor_plantao_3; ?>" onchange="somarSalarios('sim')" />
-						<b><font size="2">Outras Verbas:</font></b>
-						 <input disabled class="form-control form-control-sm" id="outras_verbas" name="outras_verbas" value="<?php echo $adm->outras_verbas; ?>" />
+						<b><font size="2" hidden>Salário:</font></b>
+						 <input hidden disabled class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="salario" name="salario" value="" onchange="somarSalarios('sim')" />
+						<b><font size="2" hidden>Outras Verbas:</font></b>
+						 <input hidden disabled class="form-control form-control-sm" id="outras_verbas" name="outras_verbas" value="">
 						<td><b><font size="2">Horário de Trabalho:</font></b><br>
 						<select class="form-control form-control-sm" id="horario_trabalho" name="horario_trabalho" required onchange="ativarOutra('sim')">
 							<option id="horario_trabalho" name="horario_trabalho" value="">Selecione...</option>
@@ -793,10 +804,10 @@
 					  </td>
 					  <td><b><font size="2">Até:</font></b>
 						<input class="form-control form-control-sm" type="date" id="mes_ano2" name="mes_ano2" style="width: 140px;" required onchange="handler(event);" value="<?php echo date('Y-m-d', strtotime($adm->periodo_fim)); ?>" />
-						<input hidden type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->qtdDias; ?>" />
+						<input hidden type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" value="<?php echo $adm->quantidade_plantao; ?>" />
 				   	  </td>
 					  <td><b><font size="2" title="Quantidade (Máximo 31 dias)">Qtd Plantão/Diária:</font></b>
-						 <input required class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();" value="<?php echo $adm->qtdDias; ?>">
+						 <input required class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" onChange="multiplicar();" value="<?php echo $adm->quantidade_plantao; ?>">
 					  </td>
 					  <td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input class="form-control form-control-sm" required placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="<?php echo $adm->valor_plantao; ?>" onChange="multiplicar();" />
@@ -896,13 +907,13 @@
 						 @if(!empty($cargos_rpa))	
 						  @foreach($cargos_rpa as $cargoP)
 							@if($adm->cargos_rpa_id_3 == $cargoP->id)
-							  @if($unidade[0]->id == 3)
+							  @if($unidade[0]->id == 2)
 								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
 						      @else
 							    <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
 							  @endif
 							@else
-							  @if($unidade[0]->id == 3)	
+							  @if($unidade[0]->id == 2)	
 								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
 							  @else
 								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  
@@ -937,13 +948,13 @@
 						 @if(!empty($cargos_rpa))	
 						  @foreach($cargos_rpa as $cargoP)
 							@if($adm->cargos_rpa_id_3 == $cargoP->id)
-							  @if($unidade[0]->id == 3)
+							  @if($unidade[0]->id == 2)
 								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
 						      @else
 							    <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
 							  @endif
 							@else
-							  @if($unidade[0]->id == 3)	
+							  @if($unidade[0]->id == 2)	
 								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
 							  @else
 								<option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>  

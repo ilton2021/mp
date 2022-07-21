@@ -308,7 +308,7 @@
 				document.getElementById('mes_ano2_2').value	    	= "";
 				document.getElementById('valor_plantao_2').disabled = false;
 				document.getElementById('valor_plantao_2').value 	= "";
-				document.getElementById('quantidade_plantao_2').value = "";
+				document.getElementById('quantidade_plantao_2').disabled = false;
 				document.getElementById('valor_pago_plantao_2').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
@@ -321,7 +321,7 @@
 				document.getElementById('mes_ano2_2').value 		= "";
 				document.getElementById('valor_plantao_2').disabled	= true;
 				document.getElementById('valor_plantao_2').value	= "";
-				document.getElementById('quantidade_plantao_2').value = "";
+				document.getElementById('quantidade_plantao_2').disabled = true;
 				document.getElementById('valor_pago_plantao_2').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_3").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_3").value.replace(",",".",2));
@@ -340,7 +340,7 @@
 				document.getElementById('mes_ano2_3').value 		= "";
 				document.getElementById('valor_plantao_3').disabled = false;
 				document.getElementById('valor_plantao_3').value 	= "";
-				document.getElementById('quantidade_plantao_3').value = "";
+				document.getElementById('quantidade_plantao_3').disabled = false;
 				document.getElementById('valor_pago_plantao_3').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
@@ -353,7 +353,7 @@
 				document.getElementById('mes_ano2_3').value 		= "";
 				document.getElementById('valor_plantao_3').disabled = true;
 				document.getElementById('valor_plantao_3').value 	= "";
-				document.getElementById('quantidade_plantao_3').value = "";
+				document.getElementById('quantidade_plantao_3').disabled = true;
 				document.getElementById('valor_pago_plantao_3').value = "";
 				document.getElementById('salario').value = Number(document.getElementById("valor_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_plantao_2").value.replace(",",".",2));
 				document.getElementById('remuneracao_total').value = Number(document.getElementById("valor_pago_plantao").value.replace(",",".",2)) + Number(document.getElementById("valor_pago_plantao_2").value.replace(",",".",2));
@@ -472,8 +472,8 @@
 						  </select>
 						 </td>
 						 <td>
-						  <b><font size="2">Salário:</font></b><br>
-						  <input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="salario" title="Preencha o campo Valor do Plantão" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" readonly />
+						  <b><font size="2" hidden>Salário:</font></b>
+						  <input hidden class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" required id="salario" title="Preencha o campo Valor do Plantão" name="salario" value="{{ old('salario') }}" onchange="somarSalarios('sim')" readonly />
 						  <!--b><font size="2">Outras Verbas:</font></b>
 						  <input class="form-control form-control-sm" placeholder="ex: 2500 ou 2580,21" step="00.01" type="number" id="outras_verbas" name="outras_verbas" value="{{ old('outras_verbas') }}" onchange="somarSalarios('sim')" /-->
 						  <b><font size="2">Remuneração Total:</font></b>
@@ -797,19 +797,23 @@
 						   <option id="cargos_rpa_id" name="cargos_rpa_id" value="">Selecione...</option>
 						 	@if(!empty($cargos_rpa))	
 							 @foreach($cargos_rpa as $cargoP)
-							  @if(old('cargos_rpa_id') == $cargoP->id)
-							   @if($unidade[0]->id == 2)
-								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
-							   @else
-							     <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
-							   @endif
-							  @else
-							   @if($unidade[0]->id == 2)	
-							  	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
-							   @else
-							 	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }}  </option>  
-							   @endif
-							  @endif					  
+							    @if($unidade[0]->id == 2)
+							 	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HMR }}</option>  
+								@elseif($unidade[0]->id == 3)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->BeloJardim }}</option>  
+								@elseif($unidade[0]->id == 4)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arcoverde }}</option>  
+								@elseif($unidade[0]->id == 5)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arruda }}</option>  
+								@elseif($unidade[0]->id == 6)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Caruaru }}</option>  
+								@elseif($unidade[0]->id == 7)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HSS }}</option>  
+								@elseif($unidade[0]->id == 8)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HPR }}</option>  
+								@elseif($unidade[0]->id == 9)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Igarassu }}</option>  
+								@endif
 							 @endforeach
 							@endif
 						  </select>
@@ -821,10 +825,10 @@
 						   <input class="form-control form-control-sm" type="date" style="width: 130px;" id="mes_ano2" name="mes_ano2" required onchange="handler(event);" value="{{ old('mes_ano2') }}" />
 						   <input hidden type="text" id="qtdDias" name="qtdDias" readonly class="form-control form-control-sm" style="width:200px;" value="{{ old('qtdDias') }}" />
 						 </td>
-						 <td><b><font size="2" title="Quantidade - Máximo 31 dias">Qtd: (*máx 31)</font></b>
-						   <input readonly required class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" value="{{ old('quantidade_plantao') }}">
+						 <td><b><font size="2" title="Quantidade (Máximo 31 dias)">Qtd Plantão/Diária:</font></b>
+						   <input required class="form-control form-control-sm" id="quantidade_plantao" name="quantidade_plantao" value="{{ old('quantidade_plantao') }}" onChange="multiplicar();">
 						 </td>
-						 <td><b><font size="2">Valor:</font></b>
+						 <td><b><font size="2">Valor Plantão/Diária:</font></b>
 						   <input class="form-control form-control-sm" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_plantao" name="valor_plantao" value="{{ old('valor_plantao') }}" onChange="multiplicar();" />
 						 </td>
 						 <td><b><font size="2">Valor a ser Pago:</font></b>
@@ -836,21 +840,25 @@
 						 <td><b><font size="2">Profissional:</font></b> 
 						  <select required class="form-control form-control-sm" id="cargos_rpa_id_2" name="cargos_rpa_id_2" onchange="funcaoCargoPlantao2('sim')">
 							<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="">Selecione...</option>
-						  	  @if(!empty($cargos_rpa))	
-							   @foreach($cargos_rpa as $cargoP)
-								@if(old('cargos_rpa_id_2') == $cargoP->id)
-								 @if($unidade[0]->id == 2)
-									<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
-								 @else
-								    <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
-								 @endif
-								@else
-								 @if($unidade[0]->id == 2)	
-									<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
-							 	 @else
-									<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }}  </option>  
-								 @endif
-								@endif					  
+						  	 @if(!empty($cargos_rpa))	
+							  @foreach($cargos_rpa as $cargoP)
+							   @if($unidade[0]->id == 2)
+							 	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HMR }}</option>  
+								@elseif($unidade[0]->id == 3)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->BeloJardim }}</option>  
+								@elseif($unidade[0]->id == 4)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arcoverde }}</option>  
+								@elseif($unidade[0]->id == 5)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arruda }}</option>  
+								@elseif($unidade[0]->id == 6)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Caruaru }}</option>  
+								@elseif($unidade[0]->id == 7)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HSS }}</option>  
+								@elseif($unidade[0]->id == 8)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HPR }}</option>  
+								@elseif($unidade[0]->id == 9)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Igarassu }}</option>  
+								@endif
 							  @endforeach
 							 @endif
 						  </select>
@@ -862,10 +870,10 @@
 							<input class="form-control form-control-sm" type="date" style="width: 130px;" id="mes_ano2_2" name="mes_ano2_2" required onchange="handler2_1(event);" value="{{ old('mes_ano2_2') }}" />
 							<input hidden type="text" id="qtdDias_2" name="qtdDias_2" readonly class="form-control form-control-sm" style="width:200px;" value="{{ old('qtdDias_2') }}" />
 						 </td>
-						 <td><b><font size="2" title="Quantidade - Máximo 31 dias">Qtd: (*máx 31)</font></b>
-							 <input readonly required class="form-control form-control-sm" id="quantidade_plantao_2" name="quantidade_plantao_2" value="{{ old('quantidade_plantao_2') }}">
+						 <td><b><font size="2" title="Quantidade (Máximo 31 dias)">Qtd Plantão/Diária:</font></b>
+							 <input disabled required class="form-control form-control-sm" id="quantidade_plantao_2" name="quantidade_plantao_2" value="{{ old('quantidade_plantao_2') }}" onChange="multiplicar2();">
 						 </td>
-						 <td><b><font size="2">Valor:</font></b>
+						 <td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input class="form-control form-control-sm" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_plantao_2" name="valor_plantao_2" value="{{ old('valor_plantao_2') }}" onChange="multiplicar2();" />
 						 </td>
 						 <td><b><font size="2">Valor a ser Pago:</font></b>
@@ -879,19 +887,23 @@
 							<option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="">Selecione...</option>
 						  	 @if(!empty($cargos_rpa))	
 							  @foreach($cargos_rpa as $cargoP)
-							   @if(old('cargos_rpa_id_2') == $cargoP->id)
-								@if($unidade[0]->id == 2)
-								  <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
-								@else
-								  <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
-								@endif
-							   @else
-							    @if($unidade[0]->id == 2)	
-							 	  <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
-							 	@else
-								  <option id="cargos_rpa_id_2" name="cargos_rpa_id_2" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }}  </option>  
-								@endif
-							   @endif					  
+							   @if($unidade[0]->id == 2)
+							 	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HMR }}</option>  
+								@elseif($unidade[0]->id == 3)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->BeloJardim }}</option>  
+								@elseif($unidade[0]->id == 4)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arcoverde }}</option>  
+								@elseif($unidade[0]->id == 5)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arruda }}</option>  
+								@elseif($unidade[0]->id == 6)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Caruaru }}</option>  
+								@elseif($unidade[0]->id == 7)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HSS }}</option>  
+								@elseif($unidade[0]->id == 8)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HPR }}</option>  
+								@elseif($unidade[0]->id == 9)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Igarassu }}</option>  
+							   @endif
 							  @endforeach
 							 @endif
 						  </select>
@@ -903,10 +915,10 @@
 							<input disabled class="form-control form-control-sm" type="date" style="width: 130px;" id="mes_ano2_2" name="mes_ano2_2" required onchange="handler2_1(event);" value="{{ old('mes_ano2_2') }}" />
 							<input hidden type="text" id="qtdDias_2" name="qtdDias_2" readonly class="form-control form-control-sm" style="width:200px;" value="{{ old('qtdDias_2') }}" />
 						 </td>
-						 <td><b><font size="2" title="Quantidade - Máximo 31 dias">Qtd: (*máx 31)</font></b>
-						    <input readonly required class="form-control form-control-sm" id="quantidade_plantao_2" name="quantidade_plantao_2" value="{{ old('quantidade_plantao_2') }}">
+						 <td><b><font size="2" title="Quantidade (Máximo 31 dias)">Qtd Plantão/Diária:</font></b>
+						    <input disabled required class="form-control form-control-sm" id="quantidade_plantao_2" name="quantidade_plantao_2" value="{{ old('quantidade_plantao_2') }}" onChange="multiplicar2();">
 						 </td>
-						 <td><b><font size="2">Valor:</font></b>
+						 <td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input disabled class="form-control form-control-sm" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_plantao_2" name="valor_plantao_2" value="{{ old('valor_plantao_2') }}" onChange="multiplicar2();" />
 						 </td>
 						 <td><b><font size="2">Valor a ser Pago:</font></b>
@@ -921,19 +933,23 @@
 						   <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="">Selecione...</option>
 						  	@if(!empty($cargos_rpa))	
 							 @foreach($cargos_rpa as $cargoP)
-							  @if(old('cargos_rpa_id_3') == $cargoP->id)
-							   @if($unidade[0]->id == 2)
-							 	 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
-							   @else
-							     <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
-							   @endif
-							  @else
-							   @if($unidade[0]->id == 2)	
-							  	 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
-							   @else
-							 	 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }}  </option>  
-							   @endif
-							  @endif					  
+							  @if($unidade[0]->id == 2)
+							 	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HMR }}</option>  
+								@elseif($unidade[0]->id == 3)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->BeloJardim }}</option>  
+								@elseif($unidade[0]->id == 4)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arcoverde }}</option>  
+								@elseif($unidade[0]->id == 5)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arruda }}</option>  
+								@elseif($unidade[0]->id == 6)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Caruaru }}</option>  
+								@elseif($unidade[0]->id == 7)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HSS }}</option>  
+								@elseif($unidade[0]->id == 8)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HPR }}</option>  
+								@elseif($unidade[0]->id == 9)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Igarassu }}</option>  
+							  @endif
 							 @endforeach
 							@endif
 						  </select>
@@ -945,10 +961,10 @@
 							<input class="form-control form-control-sm" type="date" style="width: 130px;" id="mes_ano2_3" name="mes_ano2_3" required onchange="handler3(event);" value="{{ old('mes_ano2_3') }}" />
 							<input hidden type="text" id="qtdDias_3" name="qtdDias_3" readonly class="form-control form-control-sm" style="width:200px;" value="{{ old('qtdDias_3') }}" />
 						 </td>
-						 <td><b><font size="2" title="Quantidade - Máximo 31 dias">Qtd: (*máx 31)</font></b>
-						    <input readonly required class="form-control form-control-sm" id="quantidade_plantao_3" name="quantidade_plantao_3" value="{{ old('quantidade_plantao_3') }}">
+						 <td><b><font size="2" title="Quantidade (Máximo 31 dias)">Qtd Plantão/Diária:</font></b>
+						    <input required class="form-control form-control-sm" id="quantidade_plantao_3" name="quantidade_plantao_3" value="{{ old('quantidade_plantao_3') }}" onChange="multiplicar3();">
 						 </td>
-						 <td><b><font size="2">Valor:</font></b>
+						 <td><b><font size="2">Valor Plantão/Diária:</font></b>
 							<input class="form-control form-control-sm" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_plantao_3" name="valor_plantao_3" value="{{ old('valor_plantao_3') }}" onChange="multiplicar3();" />
 						 </td>
 						 <td><b><font size="2">Valor a ser Pago:</font></b>
@@ -962,19 +978,23 @@
 						   <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="">Selecione...</option>
 							@if(!empty($cargos_rpa))	
 							 @foreach($cargos_rpa as $cargoP)
-							  @if(old('cargos_rpa_id_3') == $cargoP->id)
-							   @if($unidade[0]->id == 2)
-							 	 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>	
-							   @else
-							     <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>" selected>{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / </option>	
-							   @endif
-							  @else
-							   @if($unidade[0]->id == 2)	
-							 	 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->valor }}</option>  
-							   @else
-							  	 <option id="cargos_rpa_id_3" name="cargos_rpa_id_3" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }}  </option>  
-							   @endif
-							  @endif					  
+							  @if($unidade[0]->id == 2)
+							 	 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HMR }}</option>  
+								@elseif($unidade[0]->id == 3)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->BeloJardim }}</option>  
+								@elseif($unidade[0]->id == 4)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arcoverde }}</option>  
+								@elseif($unidade[0]->id == 5)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Arruda }}</option>  
+								@elseif($unidade[0]->id == 6)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Caruaru }}</option>  
+								@elseif($unidade[0]->id == 7)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HSS }}</option>  
+								@elseif($unidade[0]->id == 8)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->HPR }}</option>  
+								@elseif($unidade[0]->id == 9)
+								 <option id="cargos_rpa_id" name="cargos_rpa_id" value="<?php echo $cargoP->id; ?>">{{ $cargoP->cargo }} - {{ $cargoP->tipo }} / {{ $cargoP->Igarassu }}</option>  
+							  @endif
 							 @endforeach
 							@endif
 						  </select>
@@ -986,14 +1006,14 @@
 							<input disabled class="form-control form-control-sm" type="date" style="width: 130px;" id="mes_ano2_3" name="mes_ano2_3" required onchange="handler3(event);" value="{{ old('mes_ano2_3') }}" />
 							<input hidden type="text" id="qtdDias_3" name="qtdDias_3" readonly class="form-control form-control-sm" style="width:200px;" value="{{ old('qtdDias_3') }}" />
 						 </td>
-						 <td><b><font size="2" title="Quantidade - Máximo 31 dias">Qtd: (*máx 31)</font></b>
-							<input readonly required class="form-control form-control-sm" id="quantidade_plantao_3" name="quantidade_plantao_3" value="{{ old('quantidade_plantao_3') }}">
+						 <td><b><font size="2" title="Quantidade (Máximo 31 dias)">Qtd Plantão/Diária:</font></b>
+							<input disabled required class="form-control form-control-sm" id="quantidade_plantao_3" name="quantidade_plantao_3" value="{{ old('quantidade_plantao_3') }}" onChange="multiplicar3();">
 						 </td>
-						 <td><b><font size="2">Valor:</font></b>
-							<input disabled class="form-control form-control-sm" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_plantao_3" name="valor_plantao_3" value="{{ old('valor_plantao_3') }}" onChange="multiplicar3();" />
+						 <td><b><font size="2">Valor Plantão/Diária:</font></b>
+							<input class="form-control form-control-sm" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_plantao_3" name="valor_plantao_3" value="{{ old('valor_plantao_3') }}" onChange="multiplicar3();" />
 						 </td>
 						 <td><b><font size="2">Valor a ser Pago:</font></b>
-							<input disabled class="form-control form-control-sm" title="(Quantidade * Valor)" readonly step="00.01" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_pago_plantao_3" name="valor_pago_plantao_3" value="{{ old('valor_pago_plantao_3') }}" />
+							<input class="form-control form-control-sm" title="(Quantidade * Valor)" readonly step="00.01" placeholder="2500 / 2580,21" step="00.01" type="number" id="valor_pago_plantao_3" name="valor_pago_plantao_3" value="{{ old('valor_pago_plantao_3') }}" />
 						 </td>
 						</tr>
 						@endif

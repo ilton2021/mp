@@ -127,16 +127,54 @@
 							  </select>
 							</td>
 						 </tr>
-						 @foreach($unidades as $unidade)	
-						 @if($unidade->id > 1)
+						 <tr>
+                            <td> HMR (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="HMR" name="HMR" required value="{{ old('HMR') }}" />
+                            </td>
+                         </tr>
                          <tr>
-							<td> {{ $unidade->sigla }} (VALOR): </td>
-							<td>
-							 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="valor" name="valor" required value="{{ old('valor') }}" />
-							</td>
-						 </tr>
-						 @endif
-						 @endforeach
+                            <td> BELO JARDIM (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="BeloJardim" name="BeloJardim" required value="{{ old('BeloJardim') }}" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> ARCOVERDE (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Arcoverde" name="Arcoverde" required value="{{ old('Arcoverde') }}" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> ARRUDA (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Arruda" name="Arruda" required value="{{ old('Arruda') }}" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> CARUARU (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Caruaru" name="Caruaru" required value="{{ old('Caruaru') }}" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> HSS (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="HSS" name="HSS" required value="{{ old('HSS') }}" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> HPR (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="HPR" name="HPR" required value="{{ old('HPR') }}" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> IGARASSU (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Igarassu" name="Igarassu" required value="{{ old('Igarassu') }}'" />
+                            </td>
+                         </tr>
 						 <tr>
 							<td colspan="2" align="right"> <a href="{{ route('cadastroRPACargo') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-bottom:30px;margin-top: 5px;color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
 							 <input type="submit" class="btn btn-success btn-sm" style="margin-bottom:30px;margin-top: 5px;" value="SALVAR" id="Salvar" name="Salvar" /> 

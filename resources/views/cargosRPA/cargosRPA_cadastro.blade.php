@@ -114,8 +114,19 @@
 						<tbody>
 						@foreach($cargos as $cargo)
 						<tr>
-							<td style="font-size: 15px;" colspan="2">{{$cargo->cargo}}</td>
-                            <td style="font-size: 15px;"><?php echo "R$ ".number_format($cargo->valor, 2,',','.'); ?></td>
+							<td style="font-size: 15px;">{{$cargo->cargo}}</td>
+              <td style="font-size: 15px;">
+               @if($cargo->tipo == "D")
+                {{ 'DIA' }}
+               @elseif($cargo->tipo == "N")
+                {{ 'NOITE' }}
+               @elseif($cargo->tipo == "FDS - D")
+                {{ 'FDS - D' }}
+               @elseif($cargo->tipo == "FDS - N")
+                {{ 'FDS - N' }}
+               @endif
+              </td>
+              <td style="font-size: 15px;"><?php echo "R$ ".number_format($cargo->valor, 2,',','.'); ?></td>
 							<td>
 							  <center>
 								<a class="btn btn-info btn-sm" href="{{route('cargoRPAAlterar', $cargo->id)}}" ><i class="fas fa-edit"></i></a>

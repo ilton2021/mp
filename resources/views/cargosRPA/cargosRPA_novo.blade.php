@@ -115,26 +115,28 @@
 							 <input class="form-control" style="width: 400px" type="text" id="cargo" name="cargo" required value="{{ old('cargo') }}" />
 							</td>
 						 </tr>
+						 <tr>
+							<td>TIPO:</td>
+							<td>
+							  <select id="tipo" name="tipo" class="form-control" style="width: 400px">
+							    <option id="tipo" name="tipo" value="">Selecione...</option>
+								<option id="tipo" name="tipo" value="D">DIA</option>
+								<option id="tipo" name="tipo" value="N">NOITE</option>
+								<option id="tipo" name="tipo" value="FDS - D">FIM DE SEMANA - DIA</option>
+								<option id="tipo" name="tipo" value="FDS - N">FIM DE SEMANA - NOITE</option>
+							  </select>
+							</td>
+						 </tr>
+						 @foreach($unidades as $unidade)	
+						 @if($unidade->id > 1)
                          <tr>
-							<td> VALOR: </td>
+							<td> {{ $unidade->sigla }} (VALOR): </td>
 							<td>
 							 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="valor" name="valor" required value="{{ old('valor') }}" />
 							</td>
 						 </tr>
-                         <tr>
-							<td> Unidade(s): </td>
-							<td>
-							  <li style="list-style: none;">
-								<input style="font-size: 12px;" class="btn btn-primary" type="button" onclick='selects_und()' value="Marcar todos" />
-								<input style="font-size: 12px;" class="btn btn-danger" type="button" onclick='deSelect_und()' value="Desmarcar todos" />
-							  </li>
-							  <li style="list-style: none;">
-								@foreach($unidades as $unidade)
-								 <input type='checkbox' id="unidade[]" class="unidade" name="unidade[]" value="<?php echo $unidade->id; ?>" />{{$unidade->sigla}}&nbsp;</input>
-								@endforeach
-							  </li>
-							</td>
-                         </tr>
+						 @endif
+						 @endforeach
 						 <tr>
 							<td colspan="2" align="right"> <a href="{{ route('cadastroRPACargo') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-bottom:30px;margin-top: 5px;color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
 							 <input type="submit" class="btn btn-success btn-sm" style="margin-bottom:30px;margin-top: 5px;" value="SALVAR" id="Salvar" name="Salvar" /> 

@@ -74,15 +74,15 @@ class CargosRPAController extends Controller
 	}	
 	
 	public function updateRPACargo(Request $request, $id) {   
-		$input     = $request->all(); 
+		$input     = $request->all();  
 		$unidades  = Unidade::all();
 		$validator = Validator::make($request->all(), [
-			'cargo'   => 'required|max:255',
-            'valor'   => 'required',
-			'unidade' => 'required'
+			'cargo' => 'required|max:255',
+            'tipo'  => 'required'
 		]);
 		if ($validator->fails()) {
-			return view('cargosRPA/cargosRPA_alterar', compact('unidades'))
+			$cargos = CargosRPA::where('id',$id)->get();
+			return view('cargosRPA/cargosRPA_alterar', compact('unidades','cargos'))
 					->withErrors($validator)
 					->withInput(session()->flashInput($request->input()));
 		} else {

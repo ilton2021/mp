@@ -10,8 +10,15 @@ class CargosRPA extends Model
 
     protected $fillable = [
         'cargo',
-        'valor',
-        'unidade',
+        'tipo',
+        'HMR',
+        'BeloJardim',
+        'Arcoverde',
+        'Arruda',
+        'Caruaru',
+        'HSS',
+        'HPR',
+        'Igarassu',
         'created_at',
         'updated_at'
     ];

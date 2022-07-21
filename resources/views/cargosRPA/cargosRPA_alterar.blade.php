@@ -118,36 +118,93 @@
 							</td>
 						 </tr>
                          <tr>
-							<td> VALOR: </td>
+							<td>TIPO:</td>
 							<td>
-							 <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="valor" name="valor" required value="<?php echo $cargos[0]->valor; ?>" />
+							  <select id="tipo" name="tipo" class="form-control" style="width: 400px">
+                                @if($cargos[0]->tipo == "D")
+							      <option id="tipo" name="tipo" value="">Selecione...</option>
+								  <option id="tipo" name="tipo" value="D" selected>DIA</option>
+								  <option id="tipo" name="tipo" value="N">NOITE</option>
+								  <option id="tipo" name="tipo" value="FDS - D">FIM DE SEMANA - DIA</option>
+								  <option id="tipo" name="tipo" value="FDS - N">FIM DE SEMANA - NOITE</option>
+                                @elseif($cargos[0]->tipo == "N")
+                                <option id="tipo" name="tipo" value="">Selecione...</option>
+								  <option id="tipo" name="tipo" value="D">DIA</option>
+								  <option id="tipo" name="tipo" value="N" selected>NOITE</option>
+								  <option id="tipo" name="tipo" value="FDS - D">FIM DE SEMANA - DIA</option>
+								  <option id="tipo" name="tipo" value="FDS - N">FIM DE SEMANA - NOITE</option>
+                                @elseif($cargos[0]->tipo == "FDS - D")
+                                  <option id="tipo" name="tipo" value="">Selecione...</option>
+								  <option id="tipo" name="tipo" value="D">DIA</option>
+								  <option id="tipo" name="tipo" value="N">NOITE</option>
+								  <option id="tipo" name="tipo" value="FDS - D" selected>FIM DE SEMANA - DIA</option>
+								  <option id="tipo" name="tipo" value="FDS - N">FIM DE SEMANA - NOITE</option>
+                                @elseif($cargos[0]->tipo == "FDS - N")
+                                  <option id="tipo" name="tipo" value="">Selecione...</option>
+								  <option id="tipo" name="tipo" value="D">DIA</option>
+								  <option id="tipo" name="tipo" value="N">NOITE</option>
+								  <option id="tipo" name="tipo" value="FDS - D">FIM DE SEMANA - DIA</option>
+								  <option id="tipo" name="tipo" value="FDS - N" selected>FIM DE SEMANA - NOITE</option>
+                                @endif
+							  </select>
 							</td>
 						 </tr>
                          <tr>
-							<td> Unidade(s): </td>
-							<td>
-                            <li style="list-style: none;">
-								<input style="font-size: 12px;" class="btn btn-primary" type="button" onclick='selects_und()' value="Marcar todos" />
-								<input style="font-size: 12px;" class="btn btn-danger" type="button" onclick='deSelect_und()' value="Desmarcar todos" />
-							</li>
-                            <li style="list-style: none;">
-                                @foreach($unidades as $und)
-                                <?php
-                                $marcado = '';
-                                if (in_array($und->id, $und_atuais))
-                                $marcado = 'checked';
-                                ?>
-                                <input type='checkbox' id="unidade[]" class="unidade" name="unidade[]" <?php echo $marcado; ?> value="<?php echo $und->id; ?>" />{{$und->sigla}}&nbsp;</input>
-                                @endforeach
-                            </li>
-							</td>
+                         <tr>
+                            <td> HMR (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="HMR" name="HMR" required value="<?php echo $cargos[0]->HMR; ?>" />
+                            </td>
                          </tr>
-						 </tr>
+                         <tr>
+                            <td> BELO JARDIM (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="BeloJardim" name="BeloJardim" required value="<?php echo $cargos[0]->BeloJardim; ?>" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> ARCOVERDE (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Arcoverde" name="Arcoverde" required value="<?php echo $cargos[0]->Arcoverde; ?>" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> ARRUDA (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Arruda" name="Arruda" required value="<?php echo $cargos[0]->Arruda; ?>" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> CARUARU (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Caruaru" name="Caruaru" required value="<?php echo $cargos[0]->Caruaru; ?>" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> HSS (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="HSS" name="HSS" required value="<?php echo $cargos[0]->HSS; ?>" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> HPR (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="HPR" name="HPR" required value="<?php echo $cargos[0]->HPR; ?>" />
+                            </td>
+                         </tr>
+                         <tr>
+                            <td> IGARASSU (VALOR): </td>
+                            <td>
+                             <input class="form-control" placeholder="ex: 2500 ou 2580,21" step="00.01" style="width: 400px" type="number" id="Igarassu" name="Igarassu" required value="<?php echo $cargos[0]->Igarassu; ?>" />
+                            </td>
+                         </tr>
 						 <tr>
 						  <td colspan="2" align="right"> <a href="{{ route('cadastroRPACargo') }}" id="Voltar" name="Voltar" type="button" class="btn btn-warning btn-sm" style="margin-top: 10px; color: #FFFFFF;"> VOLTAR <i class="fas fa-undo-alt"></i> </a>
-						       <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="SALVAR" id="Salvar" name="Salvar" /> </td>
+						    <input type="submit" class="btn btn-success btn-sm" style="margin-top: 10px;" value="SALVAR" id="Salvar" name="Salvar" /> 
+                          </td>
 						 </tr>
 						</table>
+                        <table>
 						 <tr>
 							<td> <input hidden type="text" id="acao" name="acao" value="alterar_cargo_rpa" class="form-control" /> </td>
 							<td> <input hidden type="text" id="user_id" name="user_id" value="<?php echo Auth::user()->id; ?>" class="form-control" /> </td>
